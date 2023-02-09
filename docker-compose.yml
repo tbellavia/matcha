@@ -10,6 +10,18 @@ services:
     container_name: api
     build:
       context: ./api
+    volumes:
+      - type: bind
+        source: ./api
+        target: /home/node/app
+      - type: volume
+        target: /home/node/app/node_modules
+    ports:
+      - 3000:3000
+    networks:
+      - backend
+    depends_on:
+      - db
 
   adminer:
     container_name: adminer
