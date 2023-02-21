@@ -10,3 +10,10 @@ app.get("/", (req, res) => {
   res.send("Bonjour le monde...");
 });
 
+app.get("/user", (req, res) => {
+  res.json({
+    username: "tony",
+    age: 23
+  })
+})
+
