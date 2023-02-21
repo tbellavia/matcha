@@ -5,6 +5,16 @@ services:
     container_name: app
     build:
       context: ./app
+    volumes:
+      - type: bind
+        source: ./app
+        target: /home/node/app
+      - type: volume
+        target: /home/node/app/node_modules
+    ports:
+      - 8000:3000
+    networks:
+      - backend
   
   api:
     container_name: api
