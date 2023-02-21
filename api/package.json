@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon index.js",
+    "start:dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,7 +16,10 @@
     "pg": "^8.9.0"
   },
   "devDependencies": {
-    "morgan": "^1.10.0"
+    "connect-livereload": "^0.6.1",
+    "livereload": "^0.9.3",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.20"
   },
   "description": ""
 }
