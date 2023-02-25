@@ -14,6 +14,9 @@ UserLogin :
     - DELETE    /api/user/:id
 
 UserProfile :
+    - GET       /api/user/profile/me
+    - GET       /api/user/profile/:target
+    - GET       /api/user/profile?limit=<int>
     - POST      /api/user/profile/me
         - Body 
         {
