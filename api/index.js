@@ -163,8 +163,11 @@ app.get("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
 })
 
 app.post("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
-  const sql = "INSERT INTO userprofile (first_name, last_name, genre, preference, biograpy, tags, loc, rating, photo1, photo2, photo3, photo4, photo5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)";
-  pool.query(sql, [req.params.id], (err, result) => {
+  const sql = "INSERT INTO userprofile (first_name, last_name, genre, preference, biograpy, tags, loc, rating, photo1, photo2, photo3, photo4, photo5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) SELECT @@IDENTITY AS 'id'";
+  const arg = [req.body.first_name, req.body.last_name,req.body.genre,req.body.preference, 
+    req.body.biograpy, req.body.tags, req.body.loc, req.body.rating,
+    req.body.photo1, req.body.photo2, req.body.photo3, req.body.photo4, req.body.photo5]
+  pool.query(sql, arg , (err, result) => {
 
     if (err) {
       return res.status(400).json({ message: 'Error. Wrong id' })
@@ -173,3 +176,4 @@ app.post("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
     return res.json(result)
   })
 })
+
