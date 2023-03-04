@@ -50,9 +50,9 @@ const checkTokenMiddleware = (req, res, next) => {
       console.log("3");
       res.status(401).json({ message: 'Error. Bad token' })
     } else {
-        console.log("2");
+        console.log("2"); 
         console.log(decodedToken);
-        res.locals.id_user_profile = decodedToken.id_user_profile;
+        res.locals.id_user = decodedToken.id_user;
         return next();
       }
   })
@@ -107,16 +107,17 @@ app.post('/api/user/login', (req, res) => {
       return res.status(400).json({ message: 'Error. Please enter the correct username and password' })
   }
 
-  const sql =  "SELECT id_user_profile FROM userlogin WHERE email = $1 AND passw = $2 AND active = TRUE"
+  const sql =  "SELECT id FROM userlogin WHERE email = $1 AND passw = $2 AND active = TRUE"
   
   pool.query(sql, [req.body.usermail, req.body.passWord], (err, result) => {
-
-    if (result.rowCount == 0 || err) {
+    console.log(process.env.POSTGRES_HOST)
+    console.log(err);
+    if (err || result.rowCount == 0) {
       return res.status(400).json({ message: 'Error. Wrong login or password' })
     }
-    console.log(`ID user profile : ${result.id_user_profile}`);
+    console.log(`ID user profile : ${result.rows[0].id}`);
     const token = jwt.sign({
-      id_user_profile: result.rows[0].id_user_profile
+      id_user: result.rows[0].id
     }, SECRET, { expiresIn: '3 hours' })
 
     return res.json({ access_token: token })
@@ -140,7 +141,7 @@ app.delete('/api/user/:id', (req, res) => {
 
 app.get('/api/user/test/me', checkTokenMiddleware, (req, res) => {
   res.json({
-    message: `User logged with id ${res.locals.id_user_profile}`
+    message: `User logged with id ${res.locals.id_user}`
   })
 });
 
