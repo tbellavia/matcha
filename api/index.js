@@ -18,7 +18,25 @@ const pool = new Pool({
 });
 console.log("Connexion réussie à la base de données");
 
+
 const app = express();
+
+const nodemailer = require("nodemailer")
+
+const transporter = nodemailer.createTransport({
+  host:"sntp-mail.outlook.com",
+  secureConnetion:false,
+  port:587,
+  tls:{
+    ciphers: "SSLv3"
+  },
+  auth:{
+    user:process.env.MAIL,
+    pass:process.env.MAIL_PASSWORD
+  }
+})
+
+
 
 app.use(cors())                                 
 app.use(morgan('tiny'))                         
@@ -73,8 +91,21 @@ app.get("/", (req, res) => {
   res.send("Bonjour le monde...1123");
 });
 
+function makeRandString(length) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+}
+
 app.post('/api/user/signup', (req, res) => {
   // Pas d'information à traiter
+  return res.json({ text: "stop" })
   
   if (!req.body.usermail || !req.body.passWord) {
       return res.status(400).json({ message: 'Error. Please enter the correct username and password' })
@@ -87,18 +118,48 @@ app.post('/api/user/signup', (req, res) => {
     if (result.rowCount > 0) {
       return res.status(400).json({ message: 'Error. Mail already use ' })
     }
-    const sql = "INSERT INTO userlogin (email, passw, active, id_user_profile) VALUES ($1, $2, $3, $4)";
-    const log = [req.body.usermail, req.body.passWord, false, null]
+    randString = makeRandString(124)
+    const sql = "INSERT INTO userlogin (email, passw, active, id_user_profile,mailvalidation) VALUES ($1, $2, $3, $4)";
+    const log = [req.body.usermail, req.body.passWord, false, null,randString]
     pool.query(sql, log, (err, result) => {
       if (err) {
         return console.error(err.message);
       }
+      const mailOptions={
+        from:process.env.MAIL,
+        to:"mainhivvt@gmail.com",
+        subject:"Matcha mail d'otentification",
+        text:"Lien d'activation : http://localhost:3000/api/user/validation/" + randString
+      }
+      
+      transporter.sendMail(mailOptions,(error, info)=>{
+        if (error){
+        console.log(error)
+        return console.error(err.message);
+        
+        }else{
+          console.log("e-mail envoyé" + info.response)
+      }
+      })
       return res.json({ text: "nouveau login cree" })
     });
     
   })
 
 })
+
+app.get("/api/user/validation/:stringValidation", (req, res) => {
+
+  const sql =  "UPDATE userlogin SET active = TRUE AND mailvalidation = NULL WHERE $1"
+
+  pool.query(sql, [req.params.stringValidation], (err, result) => {
+
+    if (err) {
+      return res.status(400).json({ message: 'Error. Wrong stringValidation' })
+    }
+    return res.json({ text: "user valide" })
+  })
+}) 
 
 app.post('/api/user/login', (req, res) => {
   // Pas d'information à traiter
@@ -177,4 +238,7 @@ app.post("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
     return res.json(result)
   })
 })
+
+
+
 
