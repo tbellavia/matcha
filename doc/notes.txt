@@ -4,5 +4,5 @@ POST requetes
 requetes SQL resultat
     result.rows[0].id
 
-requet app result.rows[0].id
+requet app :id
     req.params.id

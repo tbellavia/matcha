@@ -3,7 +3,8 @@ CREATE TABLE UserLogin (
     email VARCHAR(255),
     passw VARCHAR(255),
     active BOOLEAN,
-    id_user_profile INT
+    id_user_profile INT,
+    mailvalidation CHAR(125)
 );
 
 CREATE TABLE UserProfile (
