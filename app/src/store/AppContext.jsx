@@ -10,20 +10,30 @@ const AppContext = createContext({
     setToken: (token) => {},
 });
 
-const AppContextProvider = (props) => {
+export const AppContextProvider = (props) => {
     const ctx = useContext(AppContext);
     const [theme, setTheme] = useState(Theme.LIGHT);
     const [token, setToken] = useState(null);
+
+    const onThemeSet = (theme) => {
+        setTheme(theme);
+    }
+
+    const onTokenSet = (token) => {
+        setToken(token);
+    }
 
     return (
         <AppContext.Provider value={{
             ...ctx,
             theme,
-            setTheme,
+            setTheme: onThemeSet,
             token,
-            setToken,
+            setToken: onTokenSet,
         }}>
             {props.children}
         </AppContext.Provider >
     );
 };
+
+export default AppContext;
