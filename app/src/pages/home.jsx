@@ -12,16 +12,6 @@ function Home() {
 
     return (
         <div className={style.home}>
-            <select 
-                name="theme"
-                id="theme"
-                className={style.theme}
-                onChange={onThemeChange}
-            >
-                <option value="light">light</option>
-                <option value="dark">dark</option>
-                <option value="blind">blind</option>
-            </select>
             <Button variant="regular">regular</Button>
             <Button variant="validation">validation</Button>
             <Button variant="action-regular">action regular</Button>
