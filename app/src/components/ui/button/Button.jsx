@@ -6,9 +6,9 @@ function getVariantStyle(theme, variant) {
     return style[`button__${theme}__${variant}`];
 }
 
-function Button({ onClick, type, variant, children }){
+function Button({ onClick, type, variant, className, children }){
     const ctx = useContext(AppContext);
-    const classes = `${style.button} ${getVariantStyle(ctx.theme, variant)} round`;
+    const classes = `${style.button} ${getVariantStyle(ctx.theme, variant)} round ${className}`;
 
     if (!onClick) {
         onClick = () => {};
