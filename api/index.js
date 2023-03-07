@@ -24,17 +24,26 @@ const app = express();
 const nodemailer = require("nodemailer")
 
 const transporter = nodemailer.createTransport({
-  host:"sntp-mail.outlook.com",
-  secureConnetion:false,
-  port:587,
-  tls:{
-    ciphers: "SSLv3"
-  },
+  service:'Outlook',
   auth:{
     user:process.env.MAIL,
     pass:process.env.MAIL_PASSWORD
   }
 })
+
+// const transporter = nodemailer.createTransport({
+//   // host:"sntp-mail.outlook.com",
+//   host:"http://localhost:8080",
+//   secureConnetion:false,
+//   port:587,
+//   tls:{
+//     ciphers: "SSLv3"
+//   },
+//   auth:{
+//     user:process.env.MAIL,
+//     pass:process.env.MAIL_PASSWORD
+//   }
+// })
 
 
 
@@ -105,7 +114,6 @@ function makeRandString(length) {
 
 app.post('/api/user/signup', (req, res) => {
   // Pas d'information à traiter
-  return res.json({ text: "stop" })
   
   if (!req.body.usermail || !req.body.passWord) {
       return res.status(400).json({ message: 'Error. Please enter the correct username and password' })
@@ -118,13 +126,16 @@ app.post('/api/user/signup', (req, res) => {
     if (result.rowCount > 0) {
       return res.status(400).json({ message: 'Error. Mail already use ' })
     }
-    randString = makeRandString(124)
-    const sql = "INSERT INTO userlogin (email, passw, active, id_user_profile,mailvalidation) VALUES ($1, $2, $3, $4)";
+
+    randString = makeRandString(125)
+    const sql = "INSERT INTO userlogin (email, passw, active, id_user_profile,mailvalidation) VALUES ($1, $2, $3, $4, $5)";
     const log = [req.body.usermail, req.body.passWord, false, null,randString]
     pool.query(sql, log, (err, result) => {
+      
       if (err) {
-        return console.error(err.message);
+        return res.json({ text: err.message })
       }
+
       const mailOptions={
         from:process.env.MAIL,
         to:"mainhivvt@gmail.com",
@@ -132,15 +143,17 @@ app.post('/api/user/signup', (req, res) => {
         text:"Lien d'activation : http://localhost:3000/api/user/validation/" + randString
       }
       
+      
       transporter.sendMail(mailOptions,(error, info)=>{
         if (error){
-        console.log(error)
-        return console.error(err.message);
+          console.log(error)
+          return console.error(error.message);
         
         }else{
           console.log("e-mail envoyé" + info.response)
       }
       })
+
       return res.json({ text: "nouveau login cree" })
     });
     
@@ -150,12 +163,12 @@ app.post('/api/user/signup', (req, res) => {
 
 app.get("/api/user/validation/:stringValidation", (req, res) => {
 
-  const sql =  "UPDATE userlogin SET active = TRUE AND mailvalidation = NULL WHERE $1"
+  const sql =  "UPDATE userlogin SET active = 'TRUE' , mailvalidation = NULL WHERE mailvalidation = $1"
 
   pool.query(sql, [req.params.stringValidation], (err, result) => {
 
     if (err) {
-      return res.status(400).json({ message: 'Error. Wrong stringValidation' })
+      return res.status(400).json({ message: err.message })
     }
     return res.json({ text: "user valide" })
   })
