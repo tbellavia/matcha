@@ -31,22 +31,6 @@ const transporter = nodemailer.createTransport({
   }
 })
 
-// const transporter = nodemailer.createTransport({
-//   // host:"sntp-mail.outlook.com",
-//   host:"http://localhost:8080",
-//   secureConnetion:false,
-//   port:587,
-//   tls:{
-//     ciphers: "SSLv3"
-//   },
-//   auth:{
-//     user:process.env.MAIL,
-//     pass:process.env.MAIL_PASSWORD
-//   }
-// })
-
-
-
 app.use(cors())                                 
 app.use(morgan('tiny'))                         
 app.use(express.json())                         
@@ -84,13 +68,6 @@ const checkTokenMiddleware = (req, res, next) => {
       }
   })
 }
-
-
-// const users = [
-//   { id: 1, username: 'admin', password: 'password123' },
-//   { id: 2, username: 'test', password: 'password123' },
-//   { id: 3, username: 'test2', password: 'password123' }
-// ]
 
 app.listen(PORT, () => {
   console.log("Serveur démarré (http://localhost:3000/) !");
@@ -238,20 +215,35 @@ app.get("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
 })
 
 app.post("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
-  const sql = "INSERT INTO userprofile (first_name, last_name, genre, preference, biograpy, tags, loc, rating, photo1, photo2, photo3, photo4, photo5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) SELECT @@IDENTITY AS 'id'";
+  let idMax = 0
+  const sql = "INSERT INTO userprofile (first_name, last_name, genre, preference, biograpy, tags, loc, rating, photo1, photo2, photo3, photo4, photo5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) ";
   const arg = [req.body.first_name, req.body.last_name,req.body.genre,req.body.preference, 
     req.body.biograpy, req.body.tags, req.body.loc, req.body.rating,
     req.body.photo1, req.body.photo2, req.body.photo3, req.body.photo4, req.body.photo5]
   pool.query(sql, arg , (err, result) => {
-
     if (err) {
-      return res.status(400).json({ message: 'Error. Wrong id' })
+      return res.status(400).json({ message: err.message })
     }
-
-    return res.json(result)
   })
+  const sql2 = "SELECT MAX(id) AS id FROM userprofile";
+  pool.query(sql2, [] , (err2, result2) => {
+    
+    if (err2) {
+      return res.status(400).json({ message: err2.message })
+    }
+    // return res.json(result2)
+    idMax = result2.rows[0].id
+    
+    const sql3 = "UPDATE userlogin SET id_user_profile = $1 WHERE id = $2";
+    pool.query(sql3, [idMax + 1, res.locals.id_user] , (err3, result3) => {
+      
+      if (err3) {
+        return res.status(400).json({ message: err3.message })
+      }
+      // return res.json(result2)
+      return res.json({"message" : "profile cree"})
+    })
+  })
+
 })
-
-
-
 
