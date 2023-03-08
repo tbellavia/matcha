@@ -1,0 +1,33 @@
+.title {
+    font-size: 10rem;
+    line-height: 7rem;
+    font-weight: 100;
+    user-select: none;
+}
+
+/* Light */
+.title__light__light {
+    color: var(--color-light-5);
+}
+
+.title__light__dark {
+    color: var(--color-light-6);
+}
+
+/* Dark */
+.title__dark__light {
+    color: var(--color-dark-11);
+}
+
+.title__dark__dark {
+    color: var(--color-dark-12);
+}
+
+/* Blind */
+.title__blind__light {
+    color: var(--color-blind-11);
+}
+
+.title__blind__dark {
+    color: var(--color-blind-6);
+}

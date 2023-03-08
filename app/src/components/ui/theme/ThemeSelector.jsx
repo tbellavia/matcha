@@ -14,6 +14,7 @@ function ThemeSelector() {
             name="theme"
             className={style.theme}
             onChange={onThemeChange}
+            value={ctx.theme}
         >
             <option value="light">light</option>
             <option value="dark">dark</option>
