@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import style from "./TehemSelector.module.css";
+import style from "./ThemeSelector.module.css";
 import AppContext from "../../../store/AppContext";
 
-function ThemeSelector({}) {
+function ThemeSelector() {
     const ctx = useContext(AppContext);
 
     const onThemeChange = ({ target }) => {
