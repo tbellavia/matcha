@@ -13,17 +13,18 @@ const AppContext = createContext({
 
 export const AppContextProvider = (props) => {
     const ctx = useContext(AppContext);
-    const [theme, setTheme] = useState(Theme.LIGHT);
+    const [theme, setTheme] = useState(Theme.getStoredThemeOrDefault());
     const [token, setToken] = useState(null);
 
     const onThemeSet = (theme) => {
         setTheme(theme);
+        Theme.saveThemeInLocalStorage(theme);
     }
 
     const onTokenSet = (token) => {
         setToken(token);
     }
-    changeBackground(theme);
+    changeBackground(Theme.getStoredThemeOrDefault());
     return (
         <AppContext.Provider value={{
             ...ctx,
