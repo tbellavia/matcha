@@ -5,6 +5,16 @@
     user-select: none;
 }
 
+/* 1444/758 */
+@media screen and (max-height: 768px) {
+    .title {
+        font-size: 7rem;
+        line-height: 5rem;
+        font-weight: 100;
+        user-select: none;
+    }   
+}
+
 /* Light */
 .title__light__light {
     color: var(--color-light-5);
