@@ -196,23 +196,39 @@ app.get('/api/user/test/me', checkTokenMiddleware, (req, res) => {
   })
 });
 
+app.get("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
+  const sql =  "SELECT * FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1"
+  pool.query(sql, [res.locals.id_user], (err, result) => {
+
+    if (err) {
+      return res.status(400).json({ message: err.message })
+    }
+
+    return res.json(result.rows[0])
+  })
+
+})
+
+app.get("/api/user/profile/:target", checkTokenMiddleware, (req, res) => {
+
+  const sql =  "SELECT id FROM liketable INNER JOIN userlogin, userprofile ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 AND ((userprofile.id = liketable.user1 AND $2 = liketable.user2) OR (userprofile.id = liketable.user2 AND $2 = liketable.user1)) AND (user1like = 'TRUE' AND user2like = 'TRUE')"
+  pool.query(sql, [res.locals.id_user, req.params.target], (err, result) => {
+
+    if (err) {
+      return res.status(400).json({ message: err.message })
+    }
+
+    return res.json(result.rows[0])
+  })
+
+})
+
 app.get('*', (req, res) => {
   return res.status(404).json({ message: 'Page not found' })
 })
 
 
-app.get("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
-  const sql =  "SELECT * FROM userprofile WHERE id = $1"
-  pool.query(sql, [req.params.id], (err, result) => {
 
-    if (err) {
-      return res.status(400).json({ message: 'Error. Wrong id' })
-    }
-
-    return res.json(result)
-  })
-
-})
 
 app.post("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
   let idMax = 0
@@ -243,6 +259,22 @@ app.post("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
       // return res.json(result2)
       return res.json({"message" : "profile cree"})
     })
+  })
+
+})
+
+
+app.put("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
+  // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biograpy = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
+  const sql = "UPDATE userprofile SET first_name = $1, last_name = $2, genre = $3, preference = $4, biograpy = $5, tags = $6, loc = $7, rating = $8, photo1 = $9, photo2 = $10, photo3 = $11, photo4 = $12, photo5 = $13 FROM userlogin WHERE userprofile.id = userlogin.id_user_profile AND userlogin.id = $14";
+  const arg = [req.body.first_name, req.body.last_name,req.body.genre,req.body.preference, 
+    req.body.biograpy, req.body.tags, req.body.loc, req.body.rating,
+    req.body.photo1, req.body.photo2, req.body.photo3, req.body.photo4, req.body.photo5,res.locals.id_user]
+  pool.query(sql, arg , (err, result) => {
+    if (err) {
+      return res.status(400).json({ message: err.message })
+    }
+    return res.json({"message" : "profile modifier"})
   })
 
 })
