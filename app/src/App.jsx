@@ -7,6 +7,9 @@ import "./palette/dark.css";
 import "./palette/blind.css";
 import "./palette/shades.css";
 import "./App.css";
+import styles from "./App.css";
+import { useContext } from "react";
+import AppContext from "./store/AppContext";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home/> },

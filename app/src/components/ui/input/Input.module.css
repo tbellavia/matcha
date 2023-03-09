@@ -1,0 +1,48 @@
+:root {
+    --input-field-size: 2rem;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+    font-size: var(--input-field-size);
+    font-weight: 100;
+    width: 260px;
+}
+
+.input__label {
+    width: 100%;
+}
+
+.input__input {
+    padding: 0 15px;
+    font-size: 1.5rem;
+    height: 35px;
+    background-color: #BDC6D1;
+}
+
+/* Label colors */
+.input__label__light {
+    color: dark;
+}
+
+.input__label__dark {
+    color: var(--color-dark-6);
+}
+
+.input__label__blind {
+    color: dark;
+}
+
+/* Input colors */
+.input__input__light {
+    color: dark;
+}
+
+.input__input__dark {
+    color: dark;
+}
+
+.input__input__blind {
+    color: dark;
+}

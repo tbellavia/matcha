@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import Theme from "../palette/theme";
+import { changeBackground } from "../utils/theme";
 
 const AppContext = createContext({
     // Theme
@@ -22,7 +23,7 @@ export const AppContextProvider = (props) => {
     const onTokenSet = (token) => {
         setToken(token);
     }
-
+    changeBackground(theme);
     return (
         <AppContext.Provider value={{
             ...ctx,
