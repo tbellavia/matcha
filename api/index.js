@@ -211,14 +211,36 @@ app.get("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
 
 app.get("/api/user/profile/:target", checkTokenMiddleware, (req, res) => {
 
-  const sql =  "SELECT id FROM liketable INNER JOIN userlogin, userprofile ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 AND ((userprofile.id = liketable.user1 AND $2 = liketable.user2) OR (userprofile.id = liketable.user2 AND $2 = liketable.user1)) AND (user1like = 'TRUE' AND user2like = 'TRUE')"
-  pool.query(sql, [res.locals.id_user, req.params.target], (err, result) => {
+  const sql =  "SELECT id FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
+  pool.query(sql, [res.locals.id_user], (err, result) => {
 
     if (err) {
       return res.status(400).json({ message: err.message })
     }
+    const idProfile = result.rows[0].id
 
-    return res.json(result.rows[0])
+    const sql2 =  "SELECT id FROM liketable WHERE ((user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)) AND (user1like = 'TRUE' AND user2like = 'TRUE')"
+    
+    pool.query(sql2, [res.locals.id_user, req.params.target], (err2, result2) => {
+
+    if (err2) {
+      return res.status(400).json({ message: err2.message })
+    }
+    else if(result.rowCount < 1){
+      return res.json({ "erreur": 'pas de match avec cette personne' })
+    }
+    
+    const sql3 =  "SELECT * FROM userprofile WHERE id = $1"
+    pool.query(sql3, [req.params.target], (err3, result3) => {
+  
+      if (err) {
+        return res.status(400).json({ message: err3.message })
+      }
+  
+      return res.json(result3.rows[0])
+    })
+
+    })
   })
 
 })
@@ -279,3 +301,7 @@ app.put("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
 
 })
 
+app.post('/api/user/like/me/:target', (req, res) => {
+  
+
+})
