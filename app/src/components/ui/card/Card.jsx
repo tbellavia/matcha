@@ -1,7 +1,7 @@
-function Card(props) {
+function Card({ className, style, children }) {
     return (
-        <div className="round">
-            {props.children}
+        <div className={`${className} round`} style={style}>
+            {children}
         </div>
     );
 }
