@@ -1,7 +1,7 @@
 import Button from "../button/Button";
 import styles from "./Form.module.css";
 
-function Form({ label, onSubmit, children }) {
+function Form({ label, onSubmit, disabled = false, children }) {
     return (
         <form className={styles.form} onSubmit={onSubmit}>
             {children}
@@ -9,6 +9,7 @@ function Form({ label, onSubmit, children }) {
                 type="submit"
                 variant="validation"
                 className={styles['form__submit']}
+                disabled={disabled}
             >
                 {label}
             </Button>
