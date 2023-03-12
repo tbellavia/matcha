@@ -49,7 +49,7 @@ const checkTokenMiddleware = (req, res, next) => {
   // Récupération du token
   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
 
-  console.log("1");
+  // console.log("1");
   // Présence d'un token
   if (!token) {
       return res.status(401).json({ message: 'Error. Need a token' })
@@ -58,10 +58,10 @@ const checkTokenMiddleware = (req, res, next) => {
   // Véracité du token
   jwt.verify(token, SECRET, (err, decodedToken) => {
     if (err) {
-      console.log("3");
+      // console.log("3");
       res.status(401).json({ message: 'Error. Bad token' })
     } else {
-        console.log("2"); 
+        // console.log("2"); 
         console.log(decodedToken);
         res.locals.id_user = decodedToken.id_user;
         return next();
@@ -301,24 +301,71 @@ app.put("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
 
 })
 
-app.post('/api/user/like/me/:target', checkTokenMiddleware, (req, res) => {
-  
-
+async function getProfileId(userId){
   const sql =  "SELECT userprofile.id FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
-  pool.query(sql, [res.locals.id_user], (err, result) => {
-
-    if (err) {
-      return res.status(400).json({ message: err.message })
+  try {
+    const res = await pool.query(sql, [userId]); 
+    if (res.rowCount < 1){
+   
+      return null
     }
-    else if(result.rowCount < 1){
-      return res.json({ "message": "profile non defini" })
-    }
-    const idProfile = result.rows[0].id
+    const id = res.rows[0].id
+    console.log( res.rows[0].id)
+   
+    return id;
+  } catch (err){
+    console.log(err.message)
+    return null
+  }
+}
 
-    const sql2 =  "SELECT id, user1like, user2like, user1 FROM liketable WHERE ((user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1))"
+async function getChatId(user1, user2){
+  const sql = "SELECT id FROM chat WHERE (id_user1 = $1 AND id_user2 = $2) OR (id_user1 = $2 AND id_user2 = $1)"
+
+  try {
+    const res = await pool.query(sql, [user1, user2]); 
+    if (res.rowCount < 1){
+   
+      return null
+    }
+    const id = res.rows[0].id
+    console.log( res.rows[0].id)
+   
+    return id;
+  } catch (err){
+    console.log(err.message)
+    return null
+  }
+}
+
+async function creatNewChat(user1, user2){
+  idChat = await getChatId(user1, user2)
+  if( idChat != null){
     
-    
-    pool.query(sql2, [idProfile, req.params.target], (err2, result2) => {
+    return false
+  }
+  else{
+    const sql = "INSERT INTO chat (id_user1, id_user2) VALUES ($1, $2)"
+    pool.query(sql, [user1, user2] , (err, result) => {
+      if (err) {
+        return false
+      }
+      return true
+    })
+  }
+
+}
+
+app.post('/api/user/like/me/:target', checkTokenMiddleware, async (req, res) => {
+
+  const idProfile = await getProfileId(res.locals.id_user)
+
+  if (idProfile == undefined){
+    return res.status(400).json({ message: "id non trouvé" })
+  }
+
+  const sql2 =  "SELECT id, user1like, user2like, user1 FROM liketable WHERE ((user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1))"
+  pool.query(sql2, [idProfile, req.params.target], async(err2, result2) => {
 
     if (err2) {
       return res.status(400).json({ message: err2.message })
@@ -331,39 +378,43 @@ app.post('/api/user/like/me/:target', checkTokenMiddleware, (req, res) => {
           return res.status(400).json({ message: err3.message })
         }
         return res.json({"message": "like ajouté"})
-        })
+      })
     }
     else{
-
       const idLike = result2.rows[0].id
       if (result2.rows[0].user1 == idProfile){
         const sql4 = "UPDATE liketable SET user1like = 'TRUE' WHERE id = $1"
         pool.query(sql4, [idLike], (err4, result4) => {
-    
-          if (err3) {
+          if (err4) {
             return res.status(400).json({ message: err4.message })
           }
-          })
+        })
+        if (result2.rows[0].user2like == true){
+          if (await creatNewChat(idProfile, req.params.target)){
+            res.json({"message": "match nouvelle conversation ajouté"})
+          }
+        }
       }
       else{
         const sql4 = "UPDATE liketable SET user2like = 'TRUE' WHERE id = $1"      
         pool.query(sql4, [idLike], (err4, result4) => {
     
-        if (err3) {
-          return res.status(400).json({ message: err4.message })
-        }
-        
+          if (err4) {
+            return res.status(400).json({ message: err4.message })
+          }      
         })
+
+        if (result2.rows[0].user1like == true){
+
+          if (await creatNewChat(idProfile, req.params.target)){
+          
+            res.json({"message": "match nouvelle conversation ajouté"})
+          }
+        }
       }
-      return res.json({"message": "like ajouté"})
-      
+      return res.json({"message": "like ajouté"}) 
     }
-
-    })
   })
-
-
-
 })
 
 app.post('/api/user/unlike/me/:target', checkTokenMiddleware, (req, res) => {
@@ -420,13 +471,34 @@ app.post('/api/user/unlike/me/:target', checkTokenMiddleware, (req, res) => {
         
         })
       }
-      return res.json({"message": "unlike ajouté"})
-      
+      return res.json({"message": "unlike ajouté"}) 
     }
-
     })
   })
+})
 
 
+
+app.post("/api/user/chat/message/me/:target", checkTokenMiddleware, async (req, res) => {
+  // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biograpy = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
+  idProfile = await getProfileId(res.locals.id_user)
+  if (idProfile == undefined){
+    return res.status(400).json({ message: "id non trouvé" })
+  }
+
+  idChat = await getChatId(idProfile, req.params.target)
+  if (idProfile == undefined){
+    return res.status(400).json({ message: "id du chat non trouvé" })
+  }
+
+  const sql = "INSERT INTO message (id_chat, date_envoi, mess, userwrite) VALUES ($1, NOW(), $2, $3)";
+
+  const arg = [idChat, req.body.message, idProfile]
+  pool.query(sql, arg , (err, result) => {
+    if (err) {
+      return res.status(400).json({ message: err.message })
+    }
+    return res.json({"message" : "message ajouter"})
+  })
 
 })
