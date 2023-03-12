@@ -10,11 +10,13 @@ import "./App.css";
 import styles from "./App.css";
 import { useContext } from "react";
 import AppContext from "./store/AppContext";
+import Test from "./pages/test/Test";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home/> },
   { path: "/login", element: <Login/> },
-  { path: "/signup", element: <Signup/> }
+  { path: "/signup", element: <Signup/> },
+  { path: "/test", element: <Test/> }
 ]);
 
 function App() {
