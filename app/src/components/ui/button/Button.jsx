@@ -6,7 +6,7 @@ function getVariantStyle(theme, variant) {
     return style[`button__${theme}__${variant}`];
 }
 
-function Button({ onClick, type, variant, className, children }){
+function Button({ onClick, type, variant, className, disabled = false, children }){
     const ctx = useContext(AppContext);
     const classes = `${style.button} ${getVariantStyle(ctx.theme, variant)} round ${className}`;
 
@@ -19,6 +19,7 @@ function Button({ onClick, type, variant, className, children }){
             className={classes}
             type={type}
             onClick={onClick}
+            disabled={disabled}
         >
             {children.toUpperCase()}
         </button>
