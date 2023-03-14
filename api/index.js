@@ -502,3 +502,15 @@ app.post("/api/user/chat/message/me/:target", checkTokenMiddleware, async (req, 
   })
 
 })
+
+app.get("/api/user/chat/me/:target?limit=<int>&skip=<int>", checkTokenMiddleware, async (req, res)=>{
+  
+  idProfile = await getProfileId(res.locals.id_user)
+  if (idProfile == undefined){
+    return res.status(400).json({ message: "id non trouvé" })
+  }
+  
+  const sql = ""
+
+
+})
