@@ -360,7 +360,7 @@ app.post('/api/user/like/me/:target', checkTokenMiddleware, async (req, res) => 
 
   const idProfile = await getProfileId(res.locals.id_user)
 
-  if (idProfile == undefined){
+  if (idProfile == null){
     return res.status(400).json({ message: "id non trouvé" })
   }
 
@@ -482,12 +482,12 @@ app.post('/api/user/unlike/me/:target', checkTokenMiddleware, (req, res) => {
 app.post("/api/user/chat/message/me/:target", checkTokenMiddleware, async (req, res) => {
   // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biograpy = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
   idProfile = await getProfileId(res.locals.id_user)
-  if (idProfile == undefined){
+  if (idProfile == null){
     return res.status(400).json({ message: "id non trouvé" })
   }
 
   idChat = await getChatId(idProfile, req.params.target)
-  if (idProfile == undefined){
+  if (idProfile == null){
     return res.status(400).json({ message: "id du chat non trouvé" })
   }
 
@@ -510,7 +510,17 @@ app.get("/api/user/chat/me/:target?limit=<int>&skip=<int>", checkTokenMiddleware
     return res.status(400).json({ message: "id non trouvé" })
   }
   
-  const sql = ""
+  idChat = await getChatId(idProfile, req.params.target)
+  if (idChat == null){
+    return res.status(400).jdon({message: "conversation non trouvé"})
+  }
 
-
+  sql = "SELECT * FROM message WHERE id_chat = $1 ORDER BY date_envoi DESC LIMIT $2, $3"
+  const arg = [idChat, req.params.skip, req.params.limit]
+  pool.query(sql, arg , (err, result) => {
+    if (err) {
+      return res.status(400).json({ message: err.message })
+    }
+    return res.json({"result" : result.rows})
+  })
 })
