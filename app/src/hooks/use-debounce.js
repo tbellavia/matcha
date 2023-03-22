@@ -7,7 +7,7 @@ function useDebounce(fn, ms, deps = []) {
         return () => {
             clearTimeout(id);
         }
-    }, deps);
+    }, [fn, ms, ...deps]);
 }
 
 export default useDebounce;
