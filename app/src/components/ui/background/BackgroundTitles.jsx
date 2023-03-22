@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import AppContext from "../../../store/AppContext";
+import React from "react";
 import BackgroundTitle from "./BackgroundTitle";
 
 function BackgroundTitles({ n, children}) {
