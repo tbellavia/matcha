@@ -1,17 +1,25 @@
-import { useContext } from "react";
-import Card from "../card/Card";
+import React, { useContext, useImperativeHandle, useRef } from "react";
 import styles from "./Input.module.css";
 import AppContext from "../../../store/AppContext";
 
-function Input({ label, type, value, onChange }) {
+const Input = React.forwardRef(({ label, type, value, onChange }, ref) => {
     const ctx = useContext(AppContext);
     const onChangeHandler = (event) => {
         onChange(event.target.value);
     }
+    const inputRef = useRef();
     const labelColor = styles[`input__label__${ctx.theme}`];
     const inputColor = styles[`input__input__$(ctx.theme)`];
     const name = label.replace(/ /g, "_");
-
+    
+    useImperativeHandle(ref, () => {
+        return { 
+            focus: () => {
+                inputRef.current.focus();
+            } 
+        }
+    });
+    
     return (
         <div className={styles.input}>
             <label 
@@ -26,9 +34,10 @@ function Input({ label, type, value, onChange }) {
                 type={type}
                 value={value}
                 onChange={onChangeHandler}
+                ref={inputRef}
             />
         </div>
     );
-}
+})
 
 export default Input;
