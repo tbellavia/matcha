@@ -8,6 +8,6 @@ COPY ./package*.json ./
 
 RUN npm install
 
-CMD ["npm", "start"]
+CMD npm start --host 0.0.0.0 --disableHostCheck true
 
 EXPOSE 8000
