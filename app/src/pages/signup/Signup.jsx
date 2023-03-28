@@ -4,13 +4,15 @@ import Form from "../../components/ui/form/Form";
 import Input from "../../components/ui/input/Input";
 import { useEffect, useRef, useState } from "react";
 import { validateEmail, validatePassword } from "../../utils/validation";
+import Alert from "../../components/ui/alert/Alert";
+import useDebounce from "../../hooks/use-debounce";
 
 function Signup() {
     const [email, setEmail] = useState({ value: "", valid: false });
     const [password, setPassword] = useState({ value: "", valid: false });
     const [validationPassword, setValidationPassword] = useState({ value: "", valid: false });
     const [formIsValid, setFormIsValid] = useState(false);
-    // const [errorMsg, setErrorMsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
     const emailRef = useRef();
     const passwordRef = useRef();
     const validationPasswordRef = useRef();
@@ -28,12 +30,32 @@ function Signup() {
         setFormIsValid(email.valid && password.valid && validationPassword.valid);
     }, [email.valid, password.valid, validationPassword.valid]);
 
+    useEffect(() => {
+        if (password.value !== validatePassword.value && validationPassword.value.length > 0) {
+            setErrorMsg("Validation password mismatch!");
+        } else {
+            setErrorMsg("");
+        }
+    }, [validationPassword.value]);
+
     const emailChange = (value) => {
         // Check if email doesn't already exists
-        setEmail({ value: value, valid: validateEmail(value) });
+        const isValid = validateEmail(value);
+
+        if (!isValid)
+            setErrorMsg("Mail is not valid!");
+        else
+            setErrorMsg("");
+        setEmail({ value: value, valid: isValid });
     }
 
     const passwordChange = (value) => {
+        const isValid = validatePassword(value);
+
+        if (!isValid)
+            setErrorMsg("Password must be at least 6 characters long \nand have at leat one special character '@&$!#?'");
+        else
+            setErrorMsg("");
         setPassword({ value: value, valid: validatePassword(value) });
     }
 
@@ -55,6 +77,16 @@ function Signup() {
             return;
         }
         console.log("Form is valid!");
+    }
+
+    let errorAlert;
+
+    if (!formIsValid && errorMsg ) {
+        errorAlert = (
+            <Alert>
+                <p>{errorMsg}</p>
+            </Alert>
+        )
     }
 
     return (
@@ -82,6 +114,7 @@ function Signup() {
                         onChange={validationPasswordChange} 
                         ref={validationPasswordRef}
                     />
+                    {errorAlert}
                 </Form>
             </Background>
         </Page>
