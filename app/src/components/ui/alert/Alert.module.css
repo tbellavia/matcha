@@ -19,6 +19,7 @@
     padding: 8px 0;
     min-width: 0;
     overflow: auto;
+    max-width: 34ch;
 }
 
 /* Alert Error */
