@@ -140,7 +140,7 @@ app.post('/api/user/signup', (req, res) => {
 
 app.get("/api/user/validation/:stringValidation", (req, res) => {
 
-  const sql =  "UPDATE userlogin SET active = 'TRUE' , mailvalidation = NULL WHERE mailvalidation = $1"
+  const sql =  "UPDATE userlogin SET active = 'TRUE' , mailvalidation IS NULL WHERE mailvalidation = $1"
 
   pool.query(sql, [req.params.stringValidation], (err, result) => {
 
@@ -244,11 +244,6 @@ app.get("/api/user/profile/:target", checkTokenMiddleware, (req, res) => {
   })
 
 })
-
-app.get('*', (req, res) => {
-  return res.status(404).json({ message: 'Page not found' })
-})
-
 
 
 
@@ -503,7 +498,7 @@ app.post("/api/user/chat/message/me/:target", checkTokenMiddleware, async (req, 
 
 })
 
-app.get("/api/user/chat/me/:target?limit=<int>&skip=<int>", checkTokenMiddleware, async (req, res)=>{
+app.get("/api/user/chat/me/:target", checkTokenMiddleware, async (req, res)=>{
   
   idProfile = await getProfileId(res.locals.id_user)
   if (idProfile == undefined){
@@ -515,12 +510,83 @@ app.get("/api/user/chat/me/:target?limit=<int>&skip=<int>", checkTokenMiddleware
     return res.status(400).jdon({message: "conversation non trouvé"})
   }
 
-  sql = "SELECT * FROM message WHERE id_chat = $1 ORDER BY date_envoi DESC LIMIT $2, $3"
-  const arg = [idChat, req.params.skip, req.params.limit]
+  sql = "SELECT * FROM message WHERE id_chat = $1 ORDER BY date_envoi DESC OFFSET $2 LIMIT $3"
+  const arg = [idChat, req.query.skip, req.query.limit]
   pool.query(sql, arg , (err, result) => {
     if (err) {
       return res.status(400).json({ message: err.message })
     }
     return res.json({"result" : result.rows})
   })
+})
+
+// function getDegLatitudeToAdd(nbrOfKm){
+//   return nbrOfKm/111.12
+// }
+
+// function getDegLongitudeToAdd(nbrOfKm){
+//   return nbrOfKm/(111.12*Math.cos(nbrOfKm))
+// }
+
+app.get("/api/user/profile", checkTokenMiddleware,  (req, res)=>{
+  
+  
+  const sql =  "SELECT userprofile.id , userprofile.latitude , userprofile.longitude , userprofile.distmax , userprofile.preference, userprofile.agemin, userprofile.agemax FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
+  const arg = [res.locals.id_user]
+  pool.query(sql, arg , (err, result) => {
+    if (err) {
+      return res.status(400).json({ message: err.message }) 
+    }
+    if (result.rowCount == 0) {
+      return res.json({"message":"id non trouver"})}
+    // addLongitude = getDegLongitudeToAdd(result.rows[0].distmax)
+    // addLatitude = getDegLatitudeToAdd(result.rows[0].distmax)
+    // AND $1 != p.id AND (($2 & p.genre) != 0) / AND $1 != p.id
+    // const sql2 = "SELECT p.* FROM userprofile p INNER JOIN liketable l ON p.id = l.user1 OR p.id = l.user2 WHERE (($1 = l.user1 AND l.user1like IS NULL) OR ($1 = l.user2  AND l.user2like IS NULL))"
+    // const sql2 =  "SELECT p.*  FROM userprofile p WHERE NOT EXISTS (SELECT 1 FROM liketable l WHERE ($1 = l.user1 AND l.user2 = p.id) OR ($1 = l.user2 AND l.user1 = p.id)) UNION SELECT p.* FROM userprofile p INNER JOIN liketable l ON p.id = l.user1 OR p.id = l.user2 WHERE (($1 = l.user1 AND l.user1like IS NULL) OR ($1 = l.user2  AND l.user2like IS NULL))"
+    const sql2 =  "SELECT *, (DATE_PART('days', NOW() - subq.birth) / 365) AS age, \
+    6371 * 2 * ASIN(SQRT( \
+      POWER(SIN((subq.latitude - $5) * PI() / 180 / 2), 2) + \
+      COS($5 * PI() / 180) * COS(subq.latitude * PI() / 180) * \
+      POWER(SIN((subq.longitude - $6) * PI() / 180 / 2), 2) \
+  )) AS distance \
+    FROM (\
+      SELECT p.*  \
+      FROM userprofile p \
+      WHERE NOT EXISTS (\
+        SELECT 1 FROM liketable l \
+        WHERE ($1 = l.user1 AND l.user2 = p.id) \
+        OR ($1 = l.user2 AND l.user1 = p.id)) \
+      UNION SELECT p.* \
+      FROM userprofile p \
+      INNER JOIN liketable l ON p.id = l.user1 OR p.id = l.user2 \
+      WHERE (($1 = l.user1 AND l.user1like IS NULL) OR ($1 = l.user2  AND l.user2like IS NULL))\
+    ) AS subq \
+    WHERE subq.id != $1 AND (($2 & subq.genre) != 0) AND (DATE_PART('days', NOW() - subq.birth) / 365) > $3 AND (DATE_PART('days', NOW() - subq.birth) / 365) < $4 \
+    AND (6371 * 2 * ASIN(SQRT(POWER(SIN((subq.latitude - $5) * PI() / 180 / 2), 2) + \
+      COS($5 * PI() / 180) * COS(subq.latitude * PI() / 180) * \
+      POWER(SIN((subq.longitude - $6) * PI() / 180 / 2), 2) ))) < $7"
+    
+
+
+    // const sql2 = "SELECT  FROM userprofile "
+    // const sql2 =  "SELECT p.* FROM userprofile p WHERE NOT EXISTS (SELECT 1 FROM liketable l WHERE ($1 = l.user1 AND l.user2 = p.id) OR ($1 = l.user2 AND l.user1 = p.id)) AND $1 != p.id "
+    // const sql2 =  "SELECT p.* FROM userprofile p INNER JOIN liketable l ON p.id = l.user1 OR p.id = l.user2 WHERE ($1 = l.user1 OR $1 = l.user2) AND $1 != p.id"
+    const arg2 = [result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax]
+    pool.query(sql2, arg2 , (err2, result2) => {
+    // pool.query(sql2, [] , (err2, result2) => {
+      if (err2) {
+        return res.status(400).json({ message: err2.message })
+      }
+
+      return res.json({"result" : result2})
+    })
+    // return res.json({"result" : result.rows[0].longitude})
+  })
+})
+
+
+
+app.get('*', (req, res) => {
+  return res.status(404).json({ message: 'Page not found' })
 })
