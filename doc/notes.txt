@@ -9,3 +9,6 @@ requet app :id
 
 token
     res.locals.id_user
+
+?id=1
+    req.query.id
