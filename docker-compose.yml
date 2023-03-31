@@ -53,6 +53,7 @@ services:
       - "5432:5432"
     volumes:
       - data:/var/lib/postgresql/data
+      - ./db/matcha.sql:/docker-entrypoint-initdb.d/create_tables.sql
     networks:
       - backend
 
