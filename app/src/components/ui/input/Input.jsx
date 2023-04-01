@@ -2,10 +2,19 @@ import React, { useContext, useImperativeHandle, useRef } from "react";
 import styles from "./Input.module.css";
 import AppContext from "../../../store/AppContext";
 
-const Input = React.forwardRef(({ label, type, value, onChange }, ref) => {
+const Input = React.forwardRef(({ 
+    label,
+    type,
+    value,
+    onChange = () => {},
+    onBlur = () => {}
+}, ref) => {
     const ctx = useContext(AppContext);
     const onChangeHandler = (event) => {
         onChange(event.target.value);
+    }
+    const onBlurHandler = (event) => {
+        onBlur(event.target.value);
     }
     const inputRef = useRef();
     const labelColor = styles[`input__label__${ctx.theme}`];
@@ -34,6 +43,7 @@ const Input = React.forwardRef(({ label, type, value, onChange }, ref) => {
                 type={type}
                 value={value}
                 onChange={onChangeHandler}
+                onBlur={onBlurHandler}
                 ref={inputRef}
             />
         </div>
