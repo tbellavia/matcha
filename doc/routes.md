@@ -79,3 +79,13 @@ Message :
         {
             message:    TEXT
         }
+
+Filtre :
+    - PUT       /api/user/filtre/me
+        - Body
+        {
+            ageMin:     INT
+            ageMax:     INT
+            distMax:    INT
+            preference: INT
+        }

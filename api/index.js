@@ -176,18 +176,51 @@ app.post('/api/user/login', (req, res) => {
 
 })
 
-app.delete('/api/user/:id', (req, res) => {
-  const sql =  "DELETE FROM userlogin WHERE id_user_profile = $1"
-  
-  console.log(`User ${req.params.id}`);
-  pool.query(sql, [req.params.id], (err, result) => {
+app.delete('/api/user/me', checkTokenMiddleware, async (req, res) => {
+
+  idProfile = await getProfileId(res.locals.id_user)
+
+  const sql = "DELETE FROM message USING chat WHERE  (chat.id_user1 = $1 OR chat.id_user2 = $1) AND chat.id = message.id_chat"
+  pool.query(sql, [idProfile], (err, result) => {
 
     if (err) {
-      return res.status(400).json({ message: 'Error. Wrong id' })
+      return res.status(400).json({ message: err.message})
     }
-
-    return res.json({ text: "user delete" })
   })
+
+  const sql2 = "DELETE FROM chat WHERE  (chat.id_user1 = $1 OR chat.id_user2 = $1)"
+  pool.query(sql2, [idProfile], (err2, result2) => {
+
+    if (err2) {
+      return res.status(400).json({ message: err2.message})
+    }
+  })
+
+  const sql3 = "DELETE FROM liketable WHERE  (liketable.user1 = $1 OR liketable.user2 = $1)"
+  pool.query(sql3, [idProfile], (err3, result3) => {
+
+    if (err3) {
+      return res.status(400).json({ message: err3.message})
+    }
+  })
+
+  const sql4 = "DELETE FROM userprofile WHERE userprofile.id = $1"
+  pool.query(sql4, [idProfile], (err4, result4) => {
+
+    if (err4) {
+      return res.status(400).json({ message: err4.message})
+    }
+  })
+
+  const sql5 = "DELETE FROM userlogin WHERE userprofile.id_user_profile = $1"
+  pool.query(sql5, [idProfile], (err5, result5) => {
+
+    if (err5) {
+      return res.status(400).json({ message: err5.message})
+    }
+  })
+
+  return res.json({ text: "user delete" })
 })
 
 app.get('/api/user/test/me', checkTokenMiddleware, (req, res) => {
@@ -520,6 +553,45 @@ app.get("/api/user/chat/me/:target", checkTokenMiddleware, async (req, res)=>{
   })
 })
 
+app.delete("/api/user/chat/me/:target", checkTokenMiddleware, async (req, res)=>{
+  
+  idProfile = await getProfileId(res.locals.id_user)
+  if (idProfile == undefined){
+    return res.status(400).json({ message: "id non trouvé" })
+  }
+  
+  idChat = await getChatId(idProfile, req.params.target)
+  if (idChat == null){
+    return res.status(400).jdon({message: "conversation non trouvé"})
+  }
+
+  sql = "DELETE FROM message WHERE message.id_chat = $1"
+  const arg = [idChat]
+  pool.query(sql, arg , (err, result) => {
+    if (err) {
+      return res.status(400).json({ message: err.message })
+    }
+  })
+
+  sql2 = "DELETE FROM chat WHERE chat.id = $1"
+  const arg2 = [idChat]
+  pool.query(sql2, arg2 , (err2, result2) => {
+    if (err2) {
+      return res.status(400).json({ message: err2.message })
+    }
+  })
+
+  sql3 = "UPDATE liketable SET user1like = 'FALSE', user2like = 'FALSE' WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)"
+  const arg3 = [idProfile, req.params.target]
+  pool.query(sql3, arg3 , (err3, result3) => {
+    if (err3) {
+      return res.status(400).json({ message: err3.message })
+    }
+  })
+
+  return res.json({"result" : "conversation et like suprimer"})
+})
+
 // function getDegLatitudeToAdd(nbrOfKm){
 //   return nbrOfKm/111.12
 // }
@@ -565,14 +637,12 @@ app.get("/api/user/profile", checkTokenMiddleware,  (req, res)=>{
     WHERE subq.id != $1 AND (($2 & subq.genre) != 0) AND (DATE_PART('days', NOW() - subq.birth) / 365) > $3 AND (DATE_PART('days', NOW() - subq.birth) / 365) < $4 \
     AND (6371 * 2 * ASIN(SQRT(POWER(SIN((subq.latitude - $5) * PI() / 180 / 2), 2) + \
       COS($5 * PI() / 180) * COS(subq.latitude * PI() / 180) * \
-      POWER(SIN((subq.longitude - $6) * PI() / 180 / 2), 2) ))) < $7"
+      POWER(SIN((subq.longitude - $6) * PI() / 180 / 2), 2) ))) < $7 LIMIT $8"
     
-
-
     // const sql2 = "SELECT  FROM userprofile "
     // const sql2 =  "SELECT p.* FROM userprofile p WHERE NOT EXISTS (SELECT 1 FROM liketable l WHERE ($1 = l.user1 AND l.user2 = p.id) OR ($1 = l.user2 AND l.user1 = p.id)) AND $1 != p.id "
     // const sql2 =  "SELECT p.* FROM userprofile p INNER JOIN liketable l ON p.id = l.user1 OR p.id = l.user2 WHERE ($1 = l.user1 OR $1 = l.user2) AND $1 != p.id"
-    const arg2 = [result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax]
+    const arg2 = [result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax, req.query.limit]
     pool.query(sql2, arg2 , (err2, result2) => {
     // pool.query(sql2, [] , (err2, result2) => {
       if (err2) {
@@ -585,7 +655,104 @@ app.get("/api/user/profile", checkTokenMiddleware,  (req, res)=>{
   })
 })
 
+app.get("/api/user/chat/me", checkTokenMiddleware, async (req, res)=>{
+  
+  idProfile = await getProfileId(res.locals.id_user)
+  if (idProfile == undefined){
+    return res.status(400).json({ message: "id non trouvé" })
+  }
 
+  sql = "SELECT p.id AS idProfileUser, p.first_name, m.mess, p.photo1, c.id AS idChat , m.date_envoi \
+  FROM userprofile p \
+  JOIN chat c ON c.id_user1 = p.id OR c.id_user2 = p.id \
+  LEFT JOIN message m ON c.id = m.id_chat \
+  WHERE m.id = ( SELECT MAX(id) \
+    FROM message m2 \
+    WHERE m2.id_chat = c.id) \
+  AND (c.id_user1 = $1 OR c.id_user2 = $1) AND p.id != $1 \
+  UNION SELECT p.id AS idProfileUser, p.first_name, NULL AS mess, p.photo1, c.id AS idChat , NULL AS date_envoi \
+  FROM userprofile p \
+  JOIN chat c ON c.id_user1 = p.id OR c.id_user2 = p.id \
+  WHERE NOT EXISTS ( \
+    SELECT 1 \
+    FROM message m \
+    WHERE m.id_chat = c.id ) AND (c.id_user1 = $1 OR c.id_user2 = $1) AND p.id != $1 "
+  const arg = [idProfile]
+  pool.query(sql, arg , (err, result) => {
+    if (err) {
+      return res.status(400).json({ message: err.message })
+    }
+    return res.json({"result" : result.rows})
+  })
+})
+
+
+app.post("/api/user/blocked/me/:target", checkTokenMiddleware, async (req, res) => {
+  // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biograpy = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
+  idProfile = await getProfileId(res.locals.id_user)
+  if (idProfile == undefined){
+    return res.status(400).json({ message: "id non trouvé" })
+  }
+  
+  idChat = await getChatId(idProfile, req.params.target)
+  if (idChat == null){
+    return res.status(400).jdon({message: "conversation non trouvé"})
+  }
+
+  sql = "DELETE FROM message WHERE message.id_chat = $1"
+  const arg = [idChat]
+  pool.query(sql, arg , (err, result) => {
+    if (err) {
+      return res.status(400).json({ message: err.message })
+    }
+  })
+
+  sql2 = "DELETE FROM chat WHERE chat.id = $1"
+  const arg2 = [idChat]
+  pool.query(sql2, arg2 , (err2, result2) => {
+    if (err2) {
+      return res.status(400).json({ message: err2.message })
+    }
+  })
+
+  sql3 = "UPDATE liketable SET user1like = 'FALSE', user2like = 'FALSE' WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)"
+  const arg3 = [idProfile, req.params.target]
+  pool.query(sql3, arg3 , (err3, result3) => {
+    if (err3) {
+      return res.status(400).json({ message: err3.message })
+    }
+  })
+
+  const sql4 = "INSERT INTO blocked (user1, user2) VALUES ($1, $2)";
+
+  const arg4 = [idProfile, req.params.target]
+  pool.query(sql4, arg4 , (err4, result4) => {
+    if (err4) {
+      return res.status(400).json({ message: err4.message })
+    }
+
+    return res.json({"message" : "profile blocker"})
+  })
+
+})
+
+app.put("/api/user/filtre/me", checkTokenMiddleware, async (req, res) => {
+
+  idProfile = await getProfileId(res.locals.id_user)
+  if (idProfile == undefined){
+    return res.status(400).json({ message: "id non trouvé" })
+  }
+
+  const sql = "UPDATE userprofile SET agemin = $1, agemax = $2, distmax = $3, preference = $4 WHERE id = $5";
+  const arg = [req.body.ageMin, req.body.ageMax,req.body.distMax,req.body.preference, idProfile]
+  pool.query(sql, arg , (err, result) => {
+    if (err) {
+      return res.status(400).json({ message: err.message })
+    }
+    return res.json({"message" : "filtre modifier"})
+  })
+
+})
 
 app.get('*', (req, res) => {
   return res.status(404).json({ message: 'Page not found' })
