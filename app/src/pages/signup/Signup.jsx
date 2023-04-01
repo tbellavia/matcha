@@ -5,73 +5,95 @@ import Input from "../../components/ui/input/Input";
 import { useEffect, useRef, useState } from "react";
 import { validateEmail, validatePassword } from "../../utils/validation";
 import Alert from "../../components/ui/alert/Alert";
-import useDebounce from "../../hooks/use-debounce";
+import useInput from "../../hooks/use-input";
 
 function Signup() {
-    const [email, setEmail] = useState({ value: "", valid: false });
-    const [password, setPassword] = useState({ value: "", valid: false });
-    const [validationPassword, setValidationPassword] = useState({ value: "", valid: false });
+    const [email, setEmailValue, setEmailValid, resetEmail] = useInput("", false);
+    const [password, setPasswordValue, setPasswordValid, resetPassword] = useInput("", false);
+    const [
+        validationPassword,
+        setValidationPasswordValue,
+        setValidationPasswordValid,
+        resetValidationPassword
+    ] = useInput("", false);
     const [formIsValid, setFormIsValid] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const emailRef = useRef();
     const passwordRef = useRef();
     const validationPasswordRef = useRef();
 
-    useEffect(() => {
-        setValidationPassword(prev => {
-            return { 
-                ...prev, 
-                valid: (prev.value === password.value && prev.value.length > 0)
-            };
-        });
-    }, [password.value, validationPassword.value])
-    
-    useEffect(() => {
-        setFormIsValid(email.valid && password.valid && validationPassword.valid);
-    }, [email.valid, password.valid, validationPassword.valid]);
 
     useEffect(() => {
-        if (password.value !== validatePassword.value && validationPassword.value.length > 0) {
-            setErrorMsg("Validation password mismatch!");
+        setFormIsValid(email.valid && password.valid && validationPassword.valid);
+    }, [email.valid, password.valid, validationPassword.valid])
+
+
+    // =================== Email ===================
+
+    const emailChange = (value) => {
+        // TODO: Check if email doesn't already exists in database
+        setEmailValue(value);
+    }
+    
+    const onEmailValidate = (value) => {
+        // Validate email
+        const isValid = validateEmail(value);
+        
+        setEmailValid(isValid);
+        if (!isValid)
+            setErrorMsg("Le mail n'est pas valide");
+        else
+            setErrorMsg("");
+    }
+
+    // =================== Password ===================
+
+    const passwordChange = (value) => {
+        setPasswordValue(value);
+    }
+    
+    const onPasswordValidate = (value) => {
+        const isValid = validatePassword(value);
+    
+        setPasswordValid(isValid);
+        if (!isValid)
+            setErrorMsg("Le mot de passe doit contenir au moins 6 caractères et doit contenir au moins un caractère spécial suivant '@&$!#?'");
+        else
+            setErrorMsg("");
+    }
+
+    // =================== Confirmation ===================
+
+    const validationPasswordChange = (value) => {
+        setValidationPasswordValue(value);
+    }
+
+    const onValidationPasswordValidate = (value) => {
+        const isValid = value === password.value && value.length > 0;
+
+        setValidationPasswordValid(isValid);
+        if (!isValid) {
+            setErrorMsg("La confirmation ne correspond pas au mot de passe");
         } else {
             setErrorMsg("");
         }
-    }, [validationPassword.value]);
-
-    const emailChange = (value) => {
-        // Check if email doesn't already exists
-        const isValid = validateEmail(value);
-
-        if (!isValid)
-            setErrorMsg("Mail is not valid!");
-        else
-            setErrorMsg("");
-        setEmail({ value: value, valid: isValid });
     }
 
-    const passwordChange = (value) => {
-        const isValid = validatePassword(value);
-
-        if (!isValid)
-            setErrorMsg("Password must be at least 6 characters long \nand have at leat one special character '@&$!#?'");
-        else
-            setErrorMsg("");
-        setPassword({ value: value, valid: validatePassword(value) });
-    }
-
-    const validationPasswordChange = (value) => {
-        setValidationPassword({ value: value, valid: false })
-    }
+    // =================== Submit ===================
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
+
         if (!formIsValid) {
             console.log("Form is not valid!");
             if (!email.valid) {
                 emailRef.current.focus();
+                onEmailValidate(email.value);
             } else if (!password.valid) {
                 passwordRef.current.focus();
+                onPasswordValidate(password.value);
             } else if (!validationPassword.valid) {
+                onValidationPasswordValidate(validationPassword.value);
                 validationPasswordRef.current.focus();
             }
             return;
@@ -98,6 +120,7 @@ function Signup() {
                         type="email"
                         value={email.value}
                         onChange={emailChange}
+                        onBlur={onEmailValidate}
                         ref={emailRef} 
                     />
                     <Input 
@@ -105,6 +128,7 @@ function Signup() {
                         type="password"
                         value={password.value}
                         onChange={passwordChange} 
+                        onBlur={onPasswordValidate}
                         ref={passwordRef}
                     />
                     <Input
@@ -112,6 +136,7 @@ function Signup() {
                         type="password"
                         value={validationPassword.value}
                         onChange={validationPasswordChange} 
+                        onBlur={onValidationPasswordValidate}
                         ref={validationPasswordRef}
                     />
                     {errorAlert}
