@@ -14,3 +14,7 @@ reload:
 force-reload:
 	docker system prune -a
 	docker-compose up -d
+
+.PHONY: react-dev
+react-dev:
+	cd app ; npm run start:local
