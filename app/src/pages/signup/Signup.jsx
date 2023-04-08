@@ -8,6 +8,7 @@ import Alert from "../../components/ui/alert/Alert";
 import useInput from "../../hooks/use-input";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ERROR_MAIL, ERROR_PASSWORD, ERROR_VALIDATION_PASSWORD } from "../../utils/messages";
 
 function Signup() {
     const [email, setEmailValue, setEmailValid, resetEmail] = useInput("", false);
@@ -44,7 +45,7 @@ function Signup() {
 
         setEmailValid(isValid);
         if (!isValid)
-            setErrorMsg("Le mail n'est pas valide");
+            setErrorMsg(ERROR_MAIL);
         else
             setErrorMsg("");
     }
@@ -60,7 +61,7 @@ function Signup() {
 
         setPasswordValid(isValid);
         if (!isValid)
-            setErrorMsg("Le mot de passe doit contenir au moins 6 caractères et doit contenir au moins un caractère spécial suivant '@&$!#?'");
+            setErrorMsg(ERROR_PASSWORD);
         else
             setErrorMsg("");
     }
@@ -76,7 +77,7 @@ function Signup() {
 
         setValidationPasswordValid(isValid);
         if (!isValid) {
-            setErrorMsg("La confirmation ne correspond pas au mot de passe");
+            setErrorMsg(ERROR_VALIDATION_PASSWORD);
         } else {
             setErrorMsg("");
         }
