@@ -1,7 +1,7 @@
 import React from "react";
 
 
-export default function useErrors() {
+export default function useErrorManager() {
     const [errors, setErrors] = React.useState(new Set());
 
     // Function to add an error

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import Background from "../../components/ui/background/Background";
 import Page from "../page/Page";
 import Input from "../../components/ui/input/Input";
@@ -6,23 +6,27 @@ import Form from "../../components/ui/form/Form";
 import Alert from "../../components/ui/alert/Alert";
 import { validateEmail } from "../../utils/validation";
 import { ERROR_MAIL, ERROR_PASSWORD } from "../../utils/messages";
-import useErrors from "../../hooks/use-error-msg";
+import useErrorManager from "../../hooks/use-error-manager";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const errorManager = useErrors();
+    const errManager = useErrorManager();
+    const { errors } = errManager;
+    const formValid = errors.length === 0;
+    const emailRef = useRef();
+    const passwordRef = useRef();
 
     const onMailHandler = (value) => {
         setEmail(value);
     }
-
+    
     const onMailValidate = (value) => {
         if (!validateEmail(value)) {
-            errorManager.addError(ERROR_MAIL);
+            errManager.addError(ERROR_MAIL);
         }
         else {
-            errorManager.removeError(ERROR_MAIL);
+            errManager.removeError(ERROR_MAIL);
         }
     }
 
@@ -32,21 +36,26 @@ function Login() {
 
     const onPassWordValidate = (value) => {
         if (!value) {
-            errorManager.addError(ERROR_PASSWORD);
+            errManager.addError(ERROR_PASSWORD);
         } else {
-            errorManager.removeError(ERROR_PASSWORD);
+            errManager.removeError(ERROR_PASSWORD);
         }
     }
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
+        if (!formValid){
+            console.log("Form is not valid!");
+            return;
+        } 
+        console.log(`Form is valid: ${formValid}`);
         console.log(`Login: ${email} Password: ${password}`)
     }
 
     let errorAlert;
 
-    if (errorManager.errors.length !== 0) {
-        const [errorMsg] = errorManager.errors;
+    if (errors.length !== 0) {
+        const [errorMsg] = errors;
 
         errorAlert = (
             <Alert>
@@ -65,6 +74,7 @@ function Login() {
                         value={email}
                         onChange={onMailHandler}
                         onBlur={onMailValidate}
+                        ref={emailRef}
                     />
                     <Input
                         label="mot de passe"
@@ -72,6 +82,7 @@ function Login() {
                         value={password}
                         onChange={onPasswordHandler}
                         onBlur={onPassWordValidate}
+                        ref={passwordRef}
                     />
                     {errorAlert}
                 </Form>
