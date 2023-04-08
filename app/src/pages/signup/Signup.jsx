@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { validateEmail, validatePassword } from "../../utils/validation";
 import Alert from "../../components/ui/alert/Alert";
 import useInput from "../../hooks/use-input";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
     const [email, setEmailValue, setEmailValid, resetEmail] = useInput("", false);
@@ -21,6 +23,7 @@ function Signup() {
     const emailRef = useRef();
     const passwordRef = useRef();
     const validationPasswordRef = useRef();
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -34,11 +37,11 @@ function Signup() {
         // TODO: Check if email doesn't already exists in database
         setEmailValue(value);
     }
-    
+
     const onEmailValidate = (value) => {
         // Validate email
         const isValid = validateEmail(value);
-        
+
         setEmailValid(isValid);
         if (!isValid)
             setErrorMsg("Le mail n'est pas valide");
@@ -51,10 +54,10 @@ function Signup() {
     const passwordChange = (value) => {
         setPasswordValue(value);
     }
-    
+
     const onPasswordValidate = (value) => {
         const isValid = validatePassword(value);
-    
+
         setPasswordValid(isValid);
         if (!isValid)
             setErrorMsg("Le mot de passe doit contenir au moins 6 caractères et doit contenir au moins un caractère spécial suivant '@&$!#?'");
@@ -81,7 +84,7 @@ function Signup() {
 
     // =================== Submit ===================
 
-    const onSubmitHandler = (e) => {
+    const onSubmitHandler = async (e) => {
         e.preventDefault();
 
         if (!formIsValid) {
@@ -98,12 +101,22 @@ function Signup() {
             }
             return;
         }
-        console.log("Form is valid!");
+
+        try {
+            const response = await axios.post('http://localhost:3000/api/user/signup', {
+                usermail: email.value,
+                passWord: password.value
+            })
+            navigate("/mailValidation")
+        }
+        catch (e) {
+            setErrorMsg(e.response.data.message);
+        }
     }
 
     let errorAlert;
 
-    if (!formIsValid && errorMsg ) {
+    if (errorMsg) {
         errorAlert = (
             <Alert>
                 <p>{errorMsg}</p>
@@ -113,7 +126,7 @@ function Signup() {
 
     return (
         <Page>
-            <Background paddingTop={2} title="inscription">
+            <Background paddingTop={1} title="inscription">
                 <Form label="valider" onSubmit={onSubmitHandler}>
                     <Input
                         label="mail"
@@ -121,13 +134,13 @@ function Signup() {
                         value={email.value}
                         onChange={emailChange}
                         onBlur={onEmailValidate}
-                        ref={emailRef} 
+                        ref={emailRef}
                     />
-                    <Input 
+                    <Input
                         label="mot de passe"
                         type="password"
                         value={password.value}
-                        onChange={passwordChange} 
+                        onChange={passwordChange}
                         onBlur={onPasswordValidate}
                         ref={passwordRef}
                     />
@@ -135,7 +148,7 @@ function Signup() {
                         label="confirmation"
                         type="password"
                         value={validationPassword.value}
-                        onChange={validationPasswordChange} 
+                        onChange={validationPasswordChange}
                         onBlur={onValidationPasswordValidate}
                         ref={validationPasswordRef}
                     />
