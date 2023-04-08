@@ -3,14 +3,14 @@ import BackgroundGradient from "../../components/ui/background/BackgroundGradien
 import Page from "../page/Page";
 import MidLink from "../../components/ui/link/MidLink"
 
-function Error404() {
+function MailValidation() {
     return (
         <Page>
-            <BackgroundGradient paddingTop={4} midPass={2} title="error 404">
-                <MidLink lien='/' title="ici touves l'amour">nous n'avons pas trouvé la page que vous cherchez</MidLink>
+            <BackgroundGradient paddingTop={4} midPass={2} title="valide">
+                <MidLink lien='/login' title="connexion">Veuillez confirmer sur votre boite mail</MidLink>
             </BackgroundGradient>
         </Page>
     );
 }
 
-export default Error404;
+export default MailValidation;

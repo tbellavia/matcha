@@ -1,9 +1,0 @@
-.login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.login-form__submit {
-    width: 100%;
-}
