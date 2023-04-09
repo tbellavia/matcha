@@ -10,6 +10,7 @@ import "./App.css";
 import Test from "./pages/test/Test";
 import Error404 from "./pages/error404/Error404";
 import MailValidation from "./pages/mailValidation/MailValidation";
+import TestPage from "./pages/test/TestPage";
 
 const router = createBrowserRouter([
   { 
@@ -19,20 +20,20 @@ const router = createBrowserRouter([
       { path: "login", element: <Login/> },
       { path: "signup", element: <Signup/> },
       { path: "mailValidation", element: <MailValidation/>},
-      { path: "feed", element: <Test/> },
+      { path: "feed", element: <TestPage title="/feed"/> },
       { 
         path: "profile",
         children: [
-          { index: true, element: <Test/> },
-          { path: ":id", element: <Test/> },
-          { path: "create", element: <Test/> },
+          { index: true, element: <TestPage title="/profile"/> },
+          { path: ":id", element: <TestPage title="/profile/:id"/> },
+          { path: "create", element: <TestPage title="/profile/create"/> },
         ] 
       },
       { 
         path: "chat",
         children: [
-          { index: true, element: <Test/> },
-          { path: ":id", element: <Test/> },
+          { index: true, element: <TestPage title="/chat"/> },
+          { path: ":id", element: <TestPage title="/chat/:id"/> },
         ]
       },
       { path: "test", element: <Test/> },
