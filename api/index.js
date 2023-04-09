@@ -64,10 +64,25 @@ const checkTokenMiddleware = (req, res, next) => {
         // console.log("2"); 
         console.log(decodedToken);
         res.locals.id_user = decodedToken.id_user;
+        res.locals.profile_created = decodedToken.profile_created;
         return next();
       }
   })
 }
+
+const checkProfileCreated = (req, res, next) => {
+  console.log(res.locals.profile_created)
+  
+  if(res.locals.profile_created){
+    return next()
+  }
+  res.status(401).json({ message: 'Error. UserProfile not created' })
+}
+
+app.get("/api/test", checkTokenMiddleware, checkProfileCreated, (req, res) => {
+  console.log(`Request: ${req}`);
+  return res.json({ text: "user valide" })
+})
 
 app.listen(PORT, () => {
   console.log("Serveur démarré (http://localhost:3000/) !");
@@ -158,7 +173,7 @@ app.post('/api/user/login', (req, res) => {
       return res.status(400).json({ message: 'Error. Please enter the correct username and password' })
   }
 
-  const sql =  "SELECT id FROM userlogin WHERE email = $1 AND passw = $2 AND active = TRUE"
+  const sql =  "SELECT id, id_user_profile FROM userlogin WHERE email = $1 AND passw = $2 AND active = TRUE"
   
   pool.query(sql, [req.body.usermail, req.body.passWord], (err, result) => {
     console.log(process.env.POSTGRES_HOST)
@@ -168,6 +183,7 @@ app.post('/api/user/login', (req, res) => {
     }
     console.log(`ID user profile : ${result.rows[0].id}`);
     const token = jwt.sign({
+      profile_created: !(result.rows[0].id_user_profile === null),
       id_user: result.rows[0].id
     }, SECRET, { expiresIn: '3 hours' })
 
