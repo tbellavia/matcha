@@ -3,12 +3,12 @@ import Background from "../../components/ui/background/Background";
 import Form from "../../components/ui/form/Form";
 import Input from "../../components/ui/input/Input";
 import { useEffect, useRef, useState } from "react";
-import { validateEmail, validatePassword } from "../../utils/validation";
+import { validateEmail, validatePassword } from "../../../common/validation";
 import Alert from "../../components/ui/alert/Alert";
 import useInput from "../../hooks/use-input";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ERROR_MAIL, ERROR_PASSWORD, ERROR_VALIDATION_PASSWORD } from "../../utils/messages";
+import { ERROR_MAIL, ERROR_PASSWORD, ERROR_VALIDATION_PASSWORD } from "../../../common/messages";
 
 function Signup() {
     const [email, setEmailValue, setEmailValid, resetEmail] = useInput("", false);
