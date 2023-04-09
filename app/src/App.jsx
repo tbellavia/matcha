@@ -12,13 +12,33 @@ import Error404 from "./pages/error404/Error404";
 import MailValidation from "./pages/mailValidation/MailValidation";
 
 const router = createBrowserRouter([
-  { path: "/", element: <Home/> },
-  { path: "/login", element: <Login/> },
-  { path: "/signup", element: <Signup/> },
-  { path: "/test", element: <Test/> },
-  { path: "/error404", element: <Error404/>},
-  { path: "/mailValidation", element: <MailValidation/>}
-
+  { 
+    path: "/",
+    children: [
+      { index: true, element: <Home/> },
+      { path: "login", element: <Login/> },
+      { path: "signup", element: <Signup/> },
+      { path: "mailValidation", element: <MailValidation/>},
+      { path: "feed", element: <Test/> },
+      { 
+        path: "profile",
+        children: [
+          { index: true, element: <Test/> },
+          { path: ":id", element: <Test/> },
+          { path: "create", element: <Test/> },
+        ] 
+      },
+      { 
+        path: "chat",
+        children: [
+          { index: true, element: <Test/> },
+          { path: ":id", element: <Test/> },
+        ]
+      },
+      { path: "test", element: <Test/> },
+    ],
+    errorElement: <Error404/>
+  },
 ]);
 
 function App() {
