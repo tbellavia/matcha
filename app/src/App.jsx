@@ -11,6 +11,7 @@ import Test from "./pages/test/Test";
 import Error404 from "./pages/error404/Error404";
 import MailValidation from "./pages/mailValidation/MailValidation";
 import TestPage from "./pages/test/TestPage";
+import CreateProfile from "./pages/create-profile/CreateProfile";
 
 const router = createBrowserRouter([
   { 
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <TestPage title="/profile"/> },
           { path: ":id", element: <TestPage title="/profile/:id"/> },
-          { path: "create", element: <TestPage title="/profile/create"/> },
+          { path: "create", element: <CreateProfile/> },
         ] 
       },
       { 

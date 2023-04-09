@@ -1,0 +1,87 @@
+.create-profile {
+    display: flex;
+    justify-content: center;
+}
+
+.create-profile__form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+    justify-content: center;
+    margin: 25px;
+    width: 45vw;
+}
+
+.create-profile__form>div {
+    border: 1px black solid;
+}
+
+/* Image */
+.create-profile__image-container {
+    display: flex;
+    justify-content: space-evenly;
+
+    width: 100%;
+    padding: 20px;
+}
+
+/* Inputs */
+.create-profile__input-container {
+    display: flex;
+    justify-content: space-evenly;
+
+    width: 100%;
+    padding: 20px;
+}
+
+.create-profile__input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Tags */
+.create-profile__tags-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+
+    width: 100%;
+    padding: 20px;
+}
+
+/* Bio */
+.create-profile__bio-container {
+    width: 100%;
+    padding: 20px;
+}
+
+/* Button */
+.create-profile__button_container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+@media only screen and (max-width: 720px),
+only screen and (max-device-width: 500px) {
+    .create-profile__form {
+        width: 90vw;
+    }
+
+    /* Inputs */
+    .create-profile__input-container {
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* TEST BOX */
+.dummy-box {
+    height: 5vw;
+    width: 5vw;
+    border: 1px black solid;
+    /* background-color: red; */
+}
