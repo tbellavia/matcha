@@ -140,7 +140,7 @@ app.post('/api/user/signup', (req, res) => {
 
 app.get("/api/user/validation/:stringValidation", (req, res) => {
 
-  const sql =  "UPDATE userlogin SET active = 'TRUE' , mailvalidation IS NULL WHERE mailvalidation = $1"
+  const sql =  "UPDATE userlogin SET active = 'TRUE' , mailvalidation = NULL WHERE mailvalidation = $1"
 
   pool.query(sql, [req.params.stringValidation], (err, result) => {
 
