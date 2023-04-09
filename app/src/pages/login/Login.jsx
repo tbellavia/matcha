@@ -23,7 +23,7 @@ function Login() {
     
     const onMailValidate = (value) => {
         if (!validateEmail(value)) {
-            errManager.addError(ERROR_MAIL);
+            errManager.addError(ERROR_MAIL, emailRef);
         }
         else {
             errManager.removeError(ERROR_MAIL);
@@ -36,7 +36,7 @@ function Login() {
 
     const onPassWordValidate = (value) => {
         if (!value) {
-            errManager.addError(ERROR_PASSWORD);
+            errManager.addError(ERROR_PASSWORD, passwordRef);
         } else {
             errManager.removeError(ERROR_PASSWORD);
         }
@@ -45,6 +45,8 @@ function Login() {
     const onSubmitHandler = (e) => {
         e.preventDefault();
         if (!formValid){
+            const [[,ref]] = errors;
+            ref.current.focus();
             console.log("Form is not valid!");
             return;
         } 
@@ -55,7 +57,7 @@ function Login() {
     let errorAlert;
 
     if (errors.length !== 0) {
-        const [errorMsg] = errors;
+        const [[errorMsg]] = errors;
 
         errorAlert = (
             <Alert>

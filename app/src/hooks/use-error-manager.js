@@ -2,17 +2,17 @@ import React from "react";
 
 
 export default function useErrorManager() {
-    const [errors, setErrors] = React.useState(new Set());
+    const [errors, setErrors] = React.useState(new Map());
 
     // Function to add an error
-    const addError = (error) => {
-        setErrors((prevErrors) => new Set([...prevErrors, error]));
+    const addError = (error, ref) => {
+        setErrors((prevErrors) => new Map([...prevErrors, [error, ref]]));
     };
 
     // Function to remove an error
     const removeError = (error) => {
         setErrors((prevErrors) => {
-            const newErrors = new Set(prevErrors);
+            const newErrors = new Map(prevErrors);
             newErrors.delete(error);
             return newErrors;
         });
@@ -20,7 +20,7 @@ export default function useErrorManager() {
 
     // Function to clear all errors
     const clearErrors = () => {
-        setErrors(new Set());
+        setErrors(new Map());
     };
 
     return {
