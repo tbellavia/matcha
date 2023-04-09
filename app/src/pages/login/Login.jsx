@@ -4,17 +4,18 @@ import Page from "../page/Page";
 import Input from "../../components/ui/input/Input";
 import Form from "../../components/ui/form/Form";
 import Alert from "../../components/ui/alert/Alert";
-import { validateEmail } from "../../../common/validation";
-import { ERROR_MAIL, ERROR_PASSWORD } from "../../../common/messages";
+import { validateEmail } from "../../common/validation";
+import { ERROR_MAIL, ERROR_PASSWORD } from "../../common/messages";
 import useErrorManager from "../../hooks/use-error-manager";
 import axios from "axios";
 import AppContext from "../../store/AppContext";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { decode } from "punycode";
 
 function hasCreatedProfile(token) {
     const decoded = jwt_decode(token);
-
+    console.log(decoded);
     return decoded.profile_created;
 }
 
@@ -67,7 +68,7 @@ function Login() {
                 passWord: password,
             });
             const token = response.data.access_token;
-
+            
             if (hasCreatedProfile(token)) {
                 navigate("/feed");
             } else {
