@@ -29,7 +29,7 @@ function Signup() {
         const emailIsValid = validateEmail(value);
 
         if (!emailIsValid) {
-            errManager.addError(ERROR_MAIL, emailRef);
+            errManager.addInputError(ERROR_MAIL, emailRef);
         } else {
             errManager.removeError(ERROR_MAIL);
         }
@@ -44,7 +44,7 @@ function Signup() {
         const passwordIsValid = validatePassword(value);
 
         if (!passwordIsValid) {
-            errManager.addError(ERROR_PASSWORD, passwordRef);
+            errManager.addInputError(ERROR_PASSWORD, passwordRef);
         } else {
             errManager.removeError(ERROR_PASSWORD);
         }
@@ -60,7 +60,7 @@ function Signup() {
         const validationIsValid = (value === password);
 
         if (!validationIsValid) {
-            errManager.addError(ERROR_VALIDATION_PASSWORD, validationRef);
+            errManager.addInputError(ERROR_VALIDATION_PASSWORD, validationRef);
         } else {
             errManager.removeError(ERROR_VALIDATION_PASSWORD);
         }
@@ -70,28 +70,20 @@ function Signup() {
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
-        if (errManager.hasErrors()) {
+        if (errManager.hasInputErrors()) {
             errManager.focusOnError();
-            return;
-        }
-        errManager.clearErrors();
-        console.log(errManager.errors);
-        try {
-            console.log({
-                email,
-                password,
-                validation
-            })
-            const response = await axios.post('http://localhost:3000/api/user/signup', {
-                usermail: email,
-                passWord: password
-            })
-            console.log(response.data);
-            navigate("/mailValidation")
-        }
-        catch (e) {
-            console.log(e);
-            errManager.addError(e.response.data.message);
+        } else {
+            try {
+                const response = await axios.post('http://localhost:3000/api/user/signup', {
+                    usermail: email,
+                    passWord: password
+                })
+                console.log(response.data);
+                navigate("/mailValidation")
+            }
+            catch (e) {
+                errManager.addNetworkError(e.response.data.message);
+            }
         }
     }
 
@@ -111,12 +103,14 @@ function Signup() {
                         label="mail"
                         type="email"
                         ref={emailRef}
+                        value={email}
                         onChange={onEmailChangeHandler}
                         onBlur={onEmailBlurHandler}
                     />
                     <Input
                         label="mot de passe"
                         type="password"
+                        value={password}
                         ref={passwordRef}
                         onChange={onPasswordChangeHandler}
                         onBlur={onPasswordBlurHandler}
@@ -124,6 +118,7 @@ function Signup() {
                     <Input
                         label="confirmation"
                         type="password"
+                        value={validation}
                         ref={validationRef}
                         onChange={onValidationChangeHandler}
                         onBlur={onValidationBlurHandler}
