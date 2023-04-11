@@ -1,0 +1,18 @@
+.tag {
+    display: flex;
+    font-size: 1.1rem;
+    gap: 5px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    background-color: var(--color-light-3);
+}
+
+.tag > span:first-child {
+    letter-spacing: 0.15ch;
+    font-weight: 600;
+}
+
+.tag > span:nth-child(2) {
+    cursor: default;
+    user-select: none;
+}
