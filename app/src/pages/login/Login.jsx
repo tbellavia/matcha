@@ -11,7 +11,6 @@ import axios from "axios";
 import AppContext from "../../store/AppContext";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import { decode } from "punycode";
 
 function hasCreatedProfile(token) {
     const decoded = jwt_decode(token);
@@ -23,8 +22,6 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const errManager = useErrorManager();
-    const { errors } = errManager;
-    const formValid = errors.length === 0;
     const emailRef = useRef();
     const passwordRef = useRef();
     const ctx = useContext(AppContext);
@@ -36,7 +33,7 @@ function Login() {
     
     const onMailValidate = (value) => {
         if (!validateEmail(value)) {
-            errManager.addError(ERROR_MAIL, emailRef);
+            errManager.addInputError(ERROR_MAIL, emailRef);
         }
         else {
             errManager.removeError(ERROR_MAIL);
@@ -49,7 +46,7 @@ function Login() {
 
     const onPassWordValidate = (value) => {
         if (!value) {
-            errManager.addError(ERROR_PASSWORD, passwordRef);
+            errManager.addInputError(ERROR_PASSWORD, passwordRef);
         } else {
             errManager.removeError(ERROR_PASSWORD);
         }
@@ -57,37 +54,36 @@ function Login() {
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
-        if (!formValid){
-            const [[,ref]] = errors;
-            ref.current.focus();
-            return;
+        if (errManager.hasInputErrors()){
+            errManager.focusOnError();
         }
-        try {
-            const response = await axios.post("http://localhost:3000/api/user/login", {
-                usermail: email,
-                passWord: password,
-            });
-            const token = response.data.access_token;
-            
-            if (hasCreatedProfile(token)) {
-                navigate("/feed");
-            } else {
-                navigate("/profile/create");
+        else {
+            try {
+                const response = await axios.post("http://localhost:3000/api/user/login", {
+                    usermail: email,
+                    passWord: password,
+                });
+                const token = response.data.access_token;
+                
+                if (hasCreatedProfile(token)) {
+                    navigate("/feed");
+                } else {
+                    navigate("/profile/create");
+                }
+                ctx.setToken(response.data.access_token);
+            } catch (e) {
+                errManager.addNetworkError(e.response.data.message);
+                emailRef.current.focus();
             }
-            ctx.setToken(response.data.access_token);
-        } catch (e) {
-            errManager.addError(e.response.data.message, emailRef);
         }
     }
 
     let errorAlert;
 
-    if (errors.length !== 0) {
-        const [[errorMsg]] = errors;
-
+    if (errManager.hasErrors()) {
         errorAlert = (
             <Alert>
-                <p>{errorMsg}</p>
+                <p>{ errManager.getFirstError() }</p>
             </Alert>
         )
     }
