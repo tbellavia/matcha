@@ -3,8 +3,21 @@ const morgan = require("morgan");
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const { Pool } = require("pg");
-
+const {
+  ERROR_MAIL,
+  ERROR_PASSWORD,
+  ERROR_INVALID_LOGIN,
+  ERROR_USER_ALREADY_EXIST,
+  ERROR_NEED_TOKEN,
+  ERROR_BAD_TOKEN,
+  ERROR_PROFILE,
+  ERROR_CHAT
+} = require("./common/messages")
 require('dotenv').config()
+const {
+  validateEmail,
+  validatePassword
+} = require("./common/validation")
 
 const PORT = 3000
 const SECRET = process.env.SECRET_KEY
@@ -48,20 +61,15 @@ const extractBearerToken = headerValue => {
 const checkTokenMiddleware = (req, res, next) => {
   // Récupération du token
   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
-
-  // console.log("1");
-  // Présence d'un token
   if (!token) {
-      return res.status(401).json({ message: 'Error. Need a token' })
+      return res.status(401).json({ message: ERROR_NEED_TOKEN })
   }
 
   // Véracité du token
   jwt.verify(token, SECRET, (err, decodedToken) => {
     if (err) {
-      // console.log("3");
-      res.status(401).json({ message: 'Error. Bad token' })
+      res.status(401).json({ message: ERROR_BAD_TOKEN })
     } else {
-        // console.log("2"); 
         console.log(decodedToken);
         res.locals.id_user = decodedToken.id_user;
         res.locals.profile_created = decodedToken.profile_created;
@@ -70,16 +78,16 @@ const checkTokenMiddleware = (req, res, next) => {
   })
 }
 
-const checkProfileCreated = (req, res, next) => {
+const checkProfileCreatedMiddleware = (req, res, next) => {
   console.log(res.locals.profile_created)
   
   if(res.locals.profile_created){
     return next()
   }
-  res.status(401).json({ message: 'Error. UserProfile not created' })
+  res.status(401).json({ message: ERROR_PROFILE })
 }
 
-app.get("/api/test", checkTokenMiddleware, checkProfileCreated, (req, res) => {
+app.get("/api/test", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
   console.log(`Request: ${req}`);
   return res.json({ text: "user valide" })
 })
@@ -108,15 +116,20 @@ app.post('/api/user/signup', (req, res) => {
   // Pas d'information à traiter
   
   if (!req.body.usermail || !req.body.passWord) {
-      return res.status(400).json({ message: 'Error. Please enter the correct username and password' })
+      return res.status(400).json({ message: ERROR_INVALID_LOGIN })
   }
-
+  if (!validateEmail(req.body.usermail)){
+      return res.status(400).json({ message: ERROR_MAIL })
+  }
+  if (!validatePassword(req.body.passWord)){
+    return res.status(400).json({ message: ERROR_PASSWORD })
+  }
   const sql =  "SELECT email FROM userlogin WHERE email = $1"
   
   pool.query(sql, [req.body.usermail], (err, result) => {
     
     if (result.rowCount > 0) {
-      return res.status(400).json({ message: 'Error. Mail already use ' })
+      return res.status(400).json({ message: ERROR_USER_ALREADY_EXIST })
     }
 
     randString = makeRandString(125)
@@ -170,7 +183,7 @@ app.post('/api/user/login', (req, res) => {
   // Pas d'information à traiter
   
   if (!req.body.usermail || !req.body.passWord) {
-      return res.status(400).json({ message: 'Error. Please enter the correct username and password' })
+      return res.status(400).json({ message: ERROR_INVALID_LOGIN })
   }
 
   const sql =  "SELECT id, id_user_profile FROM userlogin WHERE email = $1 AND passw = $2 AND active = TRUE"
@@ -179,7 +192,8 @@ app.post('/api/user/login', (req, res) => {
     console.log(process.env.POSTGRES_HOST)
     console.log(err);
     if (err || result.rowCount == 0) {
-      return res.status(400).json({ message: 'Error. Wrong login or password' })
+
+      return res.status(400).json({ message: ERROR_INVALID_LOGIN })
     }
     console.log(`ID user profile : ${result.rows[0].id}`);
     const token = jwt.sign({
@@ -192,7 +206,7 @@ app.post('/api/user/login', (req, res) => {
 
 })
 
-app.delete('/api/user/me', checkTokenMiddleware, async (req, res) => {
+app.delete('/api/user/me', checkTokenMiddleware, checkProfileCreatedMiddleware,async (req, res) => {
 
   idProfile = await getProfileId(res.locals.id_user)
 
@@ -245,7 +259,7 @@ app.get('/api/user/test/me', checkTokenMiddleware, (req, res) => {
   })
 });
 
-app.get("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
+app.get("/api/user/profile/me", checkTokenMiddleware, checkProfileCreatedMiddleware,(req, res) => {
   const sql =  "SELECT * FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1"
   pool.query(sql, [res.locals.id_user], (err, result) => {
 
@@ -258,7 +272,7 @@ app.get("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
 
 })
 
-app.get("/api/user/profile/:target", checkTokenMiddleware, (req, res) => {
+app.get("/api/user/profile/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,(req, res) => {
 
   const sql =  "SELECT userprofile.id FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
   pool.query(sql, [res.locals.id_user], (err, result) => {
@@ -330,7 +344,7 @@ app.post("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
 })
 
 
-app.put("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
+app.put("/api/user/profile/me", checkTokenMiddleware, checkProfileCreatedMiddleware,(req, res) => {
   // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biograpy = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
   const sql = "UPDATE userprofile SET first_name = $1, last_name = $2, genre = $3, preference = $4, biograpy = $5, tags = $6, loc = $7, rating = $8, photo1 = $9, photo2 = $10, photo3 = $11, photo4 = $12, photo5 = $13 FROM userlogin WHERE userprofile.id = userlogin.id_user_profile AND userlogin.id = $14";
   const arg = [req.body.first_name, req.body.last_name,req.body.genre,req.body.preference, 
@@ -400,12 +414,12 @@ async function creatNewChat(user1, user2){
 
 }
 
-app.post('/api/user/like/me/:target', checkTokenMiddleware, async (req, res) => {
+app.post('/api/user/like/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
 
   const idProfile = await getProfileId(res.locals.id_user)
 
   if (idProfile == null){
-    return res.status(400).json({ message: "id non trouvé" })
+    return res.status(400).json({ message: ERROR_BAD_TOKEN })
   }
 
   const sql2 =  "SELECT id, user1like, user2like, user1 FROM liketable WHERE ((user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1))"
@@ -461,7 +475,7 @@ app.post('/api/user/like/me/:target', checkTokenMiddleware, async (req, res) => 
   })
 })
 
-app.post('/api/user/unlike/me/:target', checkTokenMiddleware, (req, res) => {
+app.post('/api/user/unlike/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware,(req, res) => {
   
 
   const sql =  "SELECT userprofile.id FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
@@ -523,16 +537,16 @@ app.post('/api/user/unlike/me/:target', checkTokenMiddleware, (req, res) => {
 
 
 
-app.post("/api/user/chat/message/me/:target", checkTokenMiddleware, async (req, res) => {
+app.post("/api/user/chat/message/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async (req, res) => {
   // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biograpy = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
   idProfile = await getProfileId(res.locals.id_user)
   if (idProfile == null){
-    return res.status(400).json({ message: "id non trouvé" })
+    return res.status(400).json({ message: ERROR_BAD_TOKEN })
   }
 
   idChat = await getChatId(idProfile, req.params.target)
   if (idProfile == null){
-    return res.status(400).json({ message: "id du chat non trouvé" })
+    return res.status(400).json({ message: ERROR_CHAT })
   }
 
   const sql = "INSERT INTO message (id_chat, date_envoi, mess, userwrite) VALUES ($1, NOW(), $2, $3)";
@@ -547,16 +561,16 @@ app.post("/api/user/chat/message/me/:target", checkTokenMiddleware, async (req, 
 
 })
 
-app.get("/api/user/chat/me/:target", checkTokenMiddleware, async (req, res)=>{
+app.get("/api/user/chat/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async (req, res)=>{
   
   idProfile = await getProfileId(res.locals.id_user)
   if (idProfile == undefined){
-    return res.status(400).json({ message: "id non trouvé" })
+    return res.status(400).json({ message: ERROR_BAD_TOKEN })
   }
   
   idChat = await getChatId(idProfile, req.params.target)
   if (idChat == null){
-    return res.status(400).jdon({message: "conversation non trouvé"})
+    return res.status(400).jdon({message: ERROR_CHAT})
   }
 
   sql = "SELECT * FROM message WHERE id_chat = $1 ORDER BY date_envoi DESC OFFSET $2 LIMIT $3"
@@ -569,16 +583,16 @@ app.get("/api/user/chat/me/:target", checkTokenMiddleware, async (req, res)=>{
   })
 })
 
-app.delete("/api/user/chat/me/:target", checkTokenMiddleware, async (req, res)=>{
+app.delete("/api/user/chat/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async (req, res)=>{
   
   idProfile = await getProfileId(res.locals.id_user)
   if (idProfile == undefined){
-    return res.status(400).json({ message: "id non trouvé" })
+    return res.status(400).json({ message: ERROR_BAD_TOKEN })
   }
   
   idChat = await getChatId(idProfile, req.params.target)
   if (idChat == null){
-    return res.status(400).jdon({message: "conversation non trouvé"})
+    return res.status(400).jdon({message: ERROR_CHAT})
   }
 
   sql = "DELETE FROM message WHERE message.id_chat = $1"
@@ -616,7 +630,7 @@ app.delete("/api/user/chat/me/:target", checkTokenMiddleware, async (req, res)=>
 //   return nbrOfKm/(111.12*Math.cos(nbrOfKm))
 // }
 
-app.get("/api/user/profile", checkTokenMiddleware,  (req, res)=>{
+app.get("/api/user/profile", checkTokenMiddleware,  checkProfileCreatedMiddleware,(req, res)=>{
   
   
   const sql =  "SELECT userprofile.id , userprofile.latitude , userprofile.longitude , userprofile.distmax , userprofile.preference, userprofile.agemin, userprofile.agemax FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
@@ -671,11 +685,11 @@ app.get("/api/user/profile", checkTokenMiddleware,  (req, res)=>{
   })
 })
 
-app.get("/api/user/chat/me", checkTokenMiddleware, async (req, res)=>{
+app.get("/api/user/chat/me", checkTokenMiddleware, checkProfileCreatedMiddleware,async (req, res)=>{
   
   idProfile = await getProfileId(res.locals.id_user)
   if (idProfile == undefined){
-    return res.status(400).json({ message: "id non trouvé" })
+    return res.status(400).json({ message: ERROR_BAD_TOKEN })
   }
 
   sql = "SELECT p.id AS idProfileUser, p.first_name, m.mess, p.photo1, c.id AS idChat , m.date_envoi \
@@ -703,16 +717,16 @@ app.get("/api/user/chat/me", checkTokenMiddleware, async (req, res)=>{
 })
 
 
-app.post("/api/user/blocked/me/:target", checkTokenMiddleware, async (req, res) => {
+app.post("/api/user/blocked/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
   // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biograpy = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
   idProfile = await getProfileId(res.locals.id_user)
   if (idProfile == undefined){
-    return res.status(400).json({ message: "id non trouvé" })
+    return res.status(400).json({ message: ERROR_BAD_TOKEN })
   }
   
   idChat = await getChatId(idProfile, req.params.target)
   if (idChat == null){
-    return res.status(400).jdon({message: "conversation non trouvé"})
+    return res.status(400).jdon({message: ERROR_CHAT})
   }
 
   sql = "DELETE FROM message WHERE message.id_chat = $1"
@@ -752,11 +766,11 @@ app.post("/api/user/blocked/me/:target", checkTokenMiddleware, async (req, res) 
 
 })
 
-app.put("/api/user/filtre/me", checkTokenMiddleware, async (req, res) => {
+app.put("/api/user/filtre/me", checkTokenMiddleware, checkProfileCreatedMiddleware,async (req, res) => {
 
   idProfile = await getProfileId(res.locals.id_user)
   if (idProfile == undefined){
-    return res.status(400).json({ message: "id non trouvé" })
+    return res.status(400).json({ message: ERROR_BAD_TOKEN })
   }
 
   const sql = "UPDATE userprofile SET agemin = $1, agemax = $2, distmax = $3, preference = $4 WHERE id = $5";

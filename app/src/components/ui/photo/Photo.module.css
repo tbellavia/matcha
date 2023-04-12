@@ -1,0 +1,25 @@
+.photo{
+    border-radius: 10%;
+}
+
+.little__photo{
+    width : 46px;
+    height : 46px;
+}
+
+.medium__photo{
+    width : 94px;
+    height: 94px;
+}
+
+.large__photo{
+    width: 368px;
+    height: 368px;
+}
+
+@media screen and (max-width: 500px), screen and (max-device-width:600px) {
+    .large__photo {
+        width: 95vw;
+        height: 95vw;
+    }   
+}
