@@ -9,6 +9,7 @@ const icons = {
     warning: IconWarning,
     notification: IconNotification,
     info: IconInfo,
+    addCircle: IconAddCircle
 };
 
 function Icon({ variant, className }) {
