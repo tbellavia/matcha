@@ -5,3 +5,5 @@ function IconAddCircle({ className }) {
         </svg>
     )
 }
+
+export default IconAddCircle;

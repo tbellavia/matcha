@@ -2,7 +2,7 @@ import IconError from "./IconError";
 import IconWarning from "./IconWarning";
 import IconInfo from "./IconInfo";
 import IconNotification from "./IconNotification";
-
+import IconAddCircle from "./IconAddCircle"
 
 const icons = {
     error: IconError,
