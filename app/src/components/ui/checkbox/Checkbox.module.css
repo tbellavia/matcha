@@ -1,0 +1,51 @@
+.checkbox input[type="checkbox"]+label {
+    display: flex;
+    justify-content: center;
+    padding: 3px 10px;
+    cursor: pointer;
+    text-align: center;
+    user-select: none;
+    border-radius: 10px;
+    width: 95%;
+}
+
+.checkbox input[type="checkbox"]:not(:checked), 
+.checkbox input[type="checkbox"]:checked {
+  position: absolute;
+  left: -9999%;
+}
+
+/* Light */
+.checkbox.light input[type="checkbox"]+label {
+    /* Normal */
+    color: var(--color-light-1);
+    background-color: var(--color-light-3);
+}
+
+.checkbox.light input[type="checkbox"]:checked+label {
+    /* Checked */
+    color: var(--color-light-5);
+    background-color: var(--color-light-8);
+}
+
+/* Dark */
+.checkbox.dark input[type="checkbox"]+label {
+    color: var(--color-light-1);
+    background-color: var(--color-dark-8);
+}
+
+.checkbox.dark input[type="checkbox"]:checked+label {
+    color: var(--color-dark-6);
+    background-color: var(--color-dark-13);
+}
+
+/* Blind */
+.checkbox.blind input[type="checkbox"]+label {
+    color: var(--color-blind-1);
+    background-color: var(--color-blind-3);
+}
+
+.checkbox.blind input[type="checkbox"]:checked+label {
+    color: var(--color-blind-5);
+    background-color: var(--color-blind-8);
+}
