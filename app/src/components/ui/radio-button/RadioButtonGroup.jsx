@@ -1,8 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import RadioButton from "./RadioButton"
 import styles from "./RadioButtonGroup.module.css";
+import _ from "lodash";
+import useUniqueId from "../../../hooks/use-unique-id";
 
 function RadioButtonGroup({ label, initial, values, onChange }) {
+    const [id] = useUniqueId(label);
+
     useEffect(() => {
         if (values.length === 0)
             throw new Error("RadioButtonGroup: 'values' array has a length of 0 but expect at least one element.");
@@ -13,7 +17,7 @@ function RadioButtonGroup({ label, initial, values, onChange }) {
     const radios = values.map((val, index) => {
         const checked = val === initial;
         
-        return <RadioButton name={label} value={val} checked={checked} key={index}/>;
+        return <RadioButton name={id} value={val} checked={checked} key={index}/>;
     });
 
     const onRadioGroupChangeHandler = (event) => {
@@ -22,8 +26,8 @@ function RadioButtonGroup({ label, initial, values, onChange }) {
 
     return (
         <div className={styles['radio-group']}>
-                <label htmlFor={label}>{label}</label>
-            <div className={styles['radio-container']} id={label} onChange={onRadioGroupChangeHandler}>
+            <label htmlFor={id}>{label}</label>
+            <div className={styles['radio-container']} id={id} onChange={onRadioGroupChangeHandler}>
                 {radios}
             </div>
         </div>

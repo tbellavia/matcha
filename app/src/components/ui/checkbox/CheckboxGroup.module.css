@@ -1,4 +1,15 @@
-.checkbox-group {
+.checkbox-group { 
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.checkbox-group > label {
+    text-align: left;
+    font-size: 1.2rem;
+}
+
+.checkbox-container {
     display: flex;
     flex-direction: column;
     gap: 10px;

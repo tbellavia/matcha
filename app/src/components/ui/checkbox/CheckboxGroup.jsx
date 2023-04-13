@@ -7,7 +7,8 @@ import styles from "./CheckboxGroup.module.css";
  * @param { values } an array of values that represent a single checkbox
  * @param { onChange } a callback that react when a checkbox state change
  */
-function CheckboxGroup({ 
+function CheckboxGroup({
+    label, 
     values, 
     onChange = () => { }
 }) 
@@ -36,7 +37,10 @@ function CheckboxGroup({
 
     return (
         <div className={styles['checkbox-group']}>
-            {checkboxes}
+            <label htmlFor={label}>{label}</label>
+            <div className={styles['checkbox-container']}>
+                {checkboxes}
+            </div>
         </div>
     )
 }

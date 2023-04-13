@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import styles from "./Checkbox.module.css";
 import AppContext from "../../../store/AppContext";
+import useUniqueId from "../../../hooks/use-unique-id";
 
 function Checkbox({ 
     name,
@@ -8,6 +9,7 @@ function Checkbox({
     onChange = () => {},
 }) 
 {
+    const [uniqueName] = useUniqueId(name);
     const { theme } = useContext(AppContext);
     const themeStyle = styles[`checkbox__${theme}`];
 
@@ -19,11 +21,11 @@ function Checkbox({
         <div className={`${styles.checkbox} ${themeStyle}`}>
             <input
                 type="checkbox"
-                id={name}
+                id={uniqueName}
                 value={value}
                 onChange={onChangeHandler}
             />
-            <label htmlFor={name}>{name.toUpperCase()}</label>
+            <label htmlFor={uniqueName}>{name}</label>
         </div>
     )
 }
