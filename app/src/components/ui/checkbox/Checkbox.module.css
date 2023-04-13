@@ -16,36 +16,35 @@
 }
 
 /* Light */
-.checkbox.light input[type="checkbox"]+label {
-    /* Normal */
+.checkbox__light input[type="checkbox"]+label {
     color: var(--color-light-1);
     background-color: var(--color-light-3);
 }
 
-.checkbox.light input[type="checkbox"]:checked+label {
+.checkbox__light input[type="checkbox"]:checked+label {
     /* Checked */
     color: var(--color-light-5);
     background-color: var(--color-light-8);
 }
 
 /* Dark */
-.checkbox.dark input[type="checkbox"]+label {
+.checkbox__dark input[type="checkbox"]+label {
     color: var(--color-light-1);
     background-color: var(--color-dark-8);
 }
 
-.checkbox.dark input[type="checkbox"]:checked+label {
+.checkbox__dark input[type="checkbox"]:checked+label {
     color: var(--color-dark-6);
     background-color: var(--color-dark-13);
 }
 
 /* Blind */
-.checkbox.blind input[type="checkbox"]+label {
+.checkbox__blind input[type="checkbox"]+label {
     color: var(--color-blind-1);
     background-color: var(--color-blind-3);
 }
 
-.checkbox.blind input[type="checkbox"]:checked+label {
+.checkbox__blind input[type="checkbox"]:checked+label {
     color: var(--color-blind-5);
     background-color: var(--color-blind-8);
 }
