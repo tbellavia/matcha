@@ -1,0 +1,50 @@
+.radio input[type="radio"]+label {
+    display: flex;
+    justify-content: center;
+    padding: 3px 10px;
+    cursor: pointer;
+    text-align: center;
+    user-select: none;
+    border-radius: 10px;
+    width: 95%;
+}
+
+.radio input[type="radio"]:not(:checked), 
+.radio input[type="radio"]:checked {
+  position: absolute;
+  left: -9999%;
+}
+
+/* Light */
+.radio__light input[type="radio"]+label {
+    color: var(--color-light-1);
+    background-color: var(--color-light-3);
+}
+
+.radio__light input[type="radio"]:checked+label {
+    /* Checked */
+    color: var(--color-light-5);
+    background-color: var(--color-light-8);
+}
+
+/* Dark */
+.radio__dark input[type="radio"]+label {
+    color: var(--color-light-1);
+    background-color: var(--color-dark-8);
+}
+
+.radio__dark input[type="radio"]:checked+label {
+    color: var(--color-dark-6);
+    background-color: var(--color-dark-13);
+}
+
+/* Blind */
+.radio__blind input[type="radio"]+label {
+    color: var(--color-blind-1);
+    background-color: var(--color-blind-3);
+}
+
+.radio__blind input[type="radio"]:checked+label {
+    color: var(--color-blind-5);
+    background-color: var(--color-blind-8);
+}
