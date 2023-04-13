@@ -1,11 +1,15 @@
 import styles from "./Test.module.css";
 import Page from "../page/Page";
-import Checkbox from "../../components/ui/checkbox/Chekbox";
+import RadioButtonGroup from "../../components/ui/radio-button/RadioButtonGroup";
 
-function Test(){
+function Test() {
+    const onChangeHandler = (event) => {
+        console.log(event.target.value);
+    }
+
     return (
         <Page className={styles.test}>
-            <Checkbox/>
+            <RadioButtonGroup></RadioButtonGroup>
         </Page>
     );
 }
