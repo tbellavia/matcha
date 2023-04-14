@@ -1,17 +1,28 @@
 import styles from "./Test.module.css";
 import Page from "../page/Page";
-import CheckboxGroup from "../../components/ui/checkbox/CheckboxGroup";
-import RadioButtonGroup from "../../components/ui/radio-button/RadioButtonGroup";
+import InputTagList from "../../components/ui/tags/InputTagList";
+import Autocomplete from "../../components/ui/tags/Autocomplete"
+import { useState } from "react";
+import Tags from "../../components/ui/tags/Tags";
 
-function Test() {
-    const onChangeHandler = (val) => {
-        console.log(val);
-    }
+function Test(){
+    const [test, setTest] = useState(['test','test1','test2','a','z','e','p3','test3','test13','test23','a3','z3','e3','p']);
+    const [suggest, setSugges] = useState(["one", "two", "three"]);
+    
+    const [input, setInput] = useState("");
+    // const valideValue = (val) =>{
+    //     console.log("valideValue")
+    //     setInput(val)
+    //     console.log("valideValue2")
+
+    // }
 
     return (
         <Page className={styles.test}>
-            <CheckboxGroup label="Names" values={["tony", "mai-nhi"]} onChange={onChangeHandler}/>
-            <RadioButtonGroup label="Names" values={["tony", "mai-nhi"]} onChange={onChangeHandler}/>
+            <InputTagList tags={test} suggest={suggest}/>
+            {/* <Autocomplete suggest={test} input={input} setInput={setInput} valideValue={valideValue}/> */}
+            {/* <Autocomplete2 suggestions={test}/> */}
+            {/* <Tags tags={test}/> */}
         </Page>
     );
 }
