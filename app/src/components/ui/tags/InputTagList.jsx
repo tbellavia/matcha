@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./InputTagList.module.css";
 import Tag from "./Tag";
-import Autocomplete from "./Autocomplete copy";
+import Autocomplete from "./Autocomplete";
 
 function InputTagList({tags, suggest}) {
     const [suggestedTags, setSuggestedTags] = useState(suggest);
@@ -39,7 +39,7 @@ function InputTagList({tags, suggest}) {
                                 label={label}
                                 key={index}
                                 onDelete={onDeleteHandler}
-                                isInput={false}
+                                isInput={true}
                             />
                     )}
                 </ul>
