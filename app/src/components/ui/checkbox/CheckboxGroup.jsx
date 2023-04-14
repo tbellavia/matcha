@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Checkbox from "./Checkbox";
 import styles from "./CheckboxGroup.module.css";
 import useUpdateEffect from "../../../hooks/use-update-effect";
@@ -21,12 +21,7 @@ function CheckboxGroup({
     }, [checked]);
 
     const onCheckboxChangeHandler = (val) => {
-        setChecked(prevChecked => {
-            const curr = prevChecked[val];
-            const updatedState = { ...prevChecked, [val]: !curr };
-
-            return updatedState;
-        });
+        setChecked(prevChecked => ({ ...prevChecked, [val]: !prevChecked[val] }));
     }
 
     const checkboxes = values.map(val => {
