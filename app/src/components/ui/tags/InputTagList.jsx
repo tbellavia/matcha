@@ -3,9 +3,9 @@ import styles from "./InputTagList.module.css";
 import Tag from "./Tag";
 import Autocomplete from "./Autocomplete";
 
-function InputTagList({tags, suggest}) {
+function InputTagList({tagList, setTagList, suggest}) {
     const [suggestedTags, setSuggestedTags] = useState(suggest);
-    const [tagList, setTagList] = useState(tags);
+    // const [tagList, setTagList] = useState(tags);
     const [suggestAlreadyUse, setAlreadyUse] = useState([])
     const [newTag, setNewTag] = useState("");
 
