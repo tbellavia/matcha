@@ -53,7 +53,7 @@ const Autocomplete =  (props) => {
                         className= styles.active;
                     }
                     return (
-                        <li className={className} key={suggestion} onClick={onClickSuggest}>
+                        <li className={className} key={index} onClick={onClickSuggest}>
                         {suggestion}
                         </li>
                     );
