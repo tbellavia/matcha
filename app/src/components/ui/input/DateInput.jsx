@@ -28,8 +28,6 @@ function DateInput ({label}){
     const minAge = getMinAge()
     const [birth, setBirth] = useState(minAge);
 
-    console.log(minAge)
-
     const onChangeHandler = (e) => {
         setBirth(e.target.value);
     }
