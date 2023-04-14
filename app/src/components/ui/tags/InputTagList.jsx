@@ -1,27 +1,29 @@
 import { useState } from "react";
 import styles from "./InputTagList.module.css";
 import Tag from "./Tag";
+import Autocomplete from "./Autocomplete copy";
 
-function InputTagList({ tags = [], suggested = [] }) {
-    const [suggestedTags, setSuggestedTags] = useState(["one", "two", "three"]);
-    const [tagList, setTagList] = useState(["foot", "beer", "baseball"]);
+function InputTagList({tags, suggest}) {
+    const [suggestedTags, setSuggestedTags] = useState(suggest);
+    const [tagList, setTagList] = useState(tags);
+    const [suggestAlreadyUse, setAlreadyUse] = useState([])
     const [newTag, setNewTag] = useState("");
 
+    const valideValue = value => {
+        console.log(value)
+        if(tagList.indexOf(value) === -1){
+            setTagList([...tagList,value])}   
+        if(suggestedTags.indexOf(value) !== -1){
+            setSuggestedTags(prevSuggestedTags => prevSuggestedTags.filter(tag => tag !== value));
+            setAlreadyUse([...suggestAlreadyUse, value])}
+        setNewTag("")
+    }
 
     const onDeleteHandler = (value) => {
         setTagList(prevTagList => prevTagList.filter(tag => tag !== value));
-    }
-
-    const onNewTagChangeHandler = (event) => {
-        setNewTag(event.target.value);
-    }
-
-    const onNewTagKeydownHandler = (event) => {
-        if (event.key === "Enter"){
-            setTagList(prevTagList => [...prevTagList, newTag]);
-            setSuggestedTags(prevSuggestedTags => prevSuggestedTags.filter(tag => tag !== newTag));
-            setNewTag("");
-        }
+        if(suggestAlreadyUse.indexOf(value) !== -1){
+            setAlreadyUse(prevSuggestedTags => prevSuggestedTags.filter(tag => tag !== value));
+            setSuggestedTags([...suggestedTags, value])}
     }
 
     return (
@@ -37,22 +39,12 @@ function InputTagList({ tags = [], suggested = [] }) {
                                 label={label}
                                 key={index}
                                 onDelete={onDeleteHandler}
+                                isInput={false}
                             />
                     )}
                 </ul>
-                <input
-                    type="text" 
-                    list="taglist"
-                    onChange={onNewTagChangeHandler}
-                    value={newTag}
-                    onKeyDown={onNewTagKeydownHandler}
-                />
-                <datalist id="taglist">
-                    {suggestedTags.map(
-                        (label, index) => <option value={label} key={index}>{label}</option>
-                    )}
-                </datalist>
             </div>
+            <Autocomplete suggest={suggestedTags} input={newTag} setInput={setNewTag} valideValue={valideValue}/>
         </div>
     );
 }

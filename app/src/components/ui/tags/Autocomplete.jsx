@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from "./Autocomplete.module.css"
 
 const Autocomplete = (props) => {
   const [active, setActive] = useState(0);
@@ -21,14 +22,14 @@ const Autocomplete = (props) => {
     const onClick = e => {
         setActive(0);
         setFiltered([]);
-        setIsShow(false);
+        setIsShow(true);
         setInput(e.currentTarget.innerText)
     };
     const onKeyDown = e => {
         if (e.keyCode === 13) { // enter key
-        setActive(0);
-        setIsShow(false);
-        setInput(filtered[active])
+            setActive(0);
+            setIsShow(false);
+            setInput(filtered[active])
         }
         else if (e.keyCode === 38) { // up arrow
         return (active === 0) ? null : setActive(active - 1);
@@ -41,11 +42,11 @@ const Autocomplete = (props) => {
         if (isShow && input) {
         if (filtered.length) {
             return (
-            <ul className="autocomplete">
+            <ul className={styles.autocomplete}>
                 {filtered.map((suggestion, index) => {
                 let className;
                 if (index === active) {
-                    className = "active";
+                    className= styles.active;
                 }
                 return (
                     <li className={className} key={suggestion} onClick={onClick}>
@@ -57,7 +58,7 @@ const Autocomplete = (props) => {
             );
         } else {
             return (
-            <div className="no-autocomplete">
+            <div className={styles["no-autocomplete"]}>
                 <em>Not found</em>
             </div>
             );
