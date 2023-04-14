@@ -1,9 +1,8 @@
 import styles from "./Test.module.css";
 import Page from "../page/Page";
 import InputTagList from "../../components/ui/tags/InputTagList";
-import Autocomplete from "../../components/ui/tags/Autocomplete copy"
+import Autocomplete from "../../components/ui/tags/Autocomplete"
 import { useState } from "react";
-import Autocomplete2 from "../../components/ui/tags/Autocomplete";
 import Tags from "../../components/ui/tags/Tags";
 
 function Test(){
@@ -20,10 +19,10 @@ function Test(){
 
     return (
         <Page className={styles.test}>
-            {/* <InputTagList tags={test} suggest={suggest}/> */}
+            <InputTagList tags={test} suggest={suggest}/>
             {/* <Autocomplete suggest={test} input={input} setInput={setInput} valideValue={valideValue}/> */}
             {/* <Autocomplete2 suggestions={test}/> */}
-            <Tags tags={test}/>
+            {/* <Tags tags={test}/> */}
         </Page>
     );
 }
