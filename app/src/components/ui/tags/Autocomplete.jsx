@@ -1,38 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./Autocomplete.module.css"
 
-const Autocomplete =  (props) => {
-    const {suggest, setInput, input, valideValue} = props;
+const Autocomplete = ({
+    suggest,
+    onChange,
+    value,
+    onSubmit
+}) => {
     const [autocompleteList, setAutocplete] = useState([])
     const [active, setActive] = useState(-1);
     const [isShow, setIsShow] = useState(false);
+    const currentElementRef = useRef();
 
-    const onChange = (event) => {
+    useEffect(() => {
+        if (currentElementRef.current) {
+            currentElementRef.current.scrollIntoView();
+        }
+    });
+
+    const onChangeHandler = (event) => {
         const input = event.currentTarget.value;
         const newAutocompleteList = suggest.filter(
-        suggestion =>
-            suggestion.toLowerCase().indexOf(input.toLowerCase()) > -1
+            suggestion =>
+                suggestion.toLowerCase().indexOf(input.toLowerCase()) > -1
         );
         setActive(-1);
         setAutocplete(newAutocompleteList);
         setIsShow(true);
-        setInput(event.target.value)
-        console.log(event.target.value)
+        onChange(event.target.value)
     };
-    const onClickSuggest = e => {
+
+    const onClickSuggestHandler = e => {
         setActive(-1);
         setAutocplete([]);
         setIsShow(false);
-        valideValue(e.currentTarget.innerText)
+        onSubmit(e.currentTarget.innerText)
     };
-    const onKeyDown = e => {
+
+    const onKeyDownHandler = e => {
         if (e.keyCode === 13) {
             setActive(-1);
             setIsShow(false);
-            if(autocompleteList.length && active > -1){
-                valideValue(autocompleteList[active])}
-            else{
-                valideValue(input)
+            if (autocompleteList.length && active > -1) {
+                onSubmit(autocompleteList[active])
+            }
+            else {
+                onSubmit(value)
             }
         }
         else if (e.keyCode === 38) {
@@ -42,50 +55,49 @@ const Autocomplete =  (props) => {
             return (active - 1 === autocompleteList.length) ? null : setActive(active + 1);
         }
     };
-    const renderAutocomplete = () => {
-        if (isShow) {
-            if (autocompleteList.length) {
-                return (
+    
+    const renderAutocompleteList = () => {
+        if (isShow && autocompleteList.length) {
+            return (
                 <ul className={styles.autocomplete} >
-                    {autocompleteList.map((suggestion, index) => {
-                    let className;
-                    if (index === active) {
-                        className= styles.active;
-                    }
-                    return (
-                        <li className={className} key={index} onClick={onClickSuggest}>
-                        {suggestion}
+                    {autocompleteList.map((suggestion, index) => (
+                        <li 
+                            className={(index === active) ? styles.active : ""} 
+                            key={index} 
+                            onClick={onClickSuggestHandler}
+                            ref={(index === active) ? currentElementRef : null}
+                        >
+                            {suggestion}
                         </li>
-                    );
-                    })}
+                    ))}
                 </ul>
-                );
-            } 
+            );
         }
-        return <></>;
     }
-    const onClick = e => {
+
+    const onClickHandler = e => {
         const newAutocompleteList = suggest.filter(
             suggestion =>
-                suggestion.toLowerCase().indexOf(input.toLowerCase()) > -1
-            );
+                suggestion.toLowerCase().indexOf(value.toLowerCase()) > -1
+        );
         setActive(-1);
         setAutocplete(newAutocompleteList);
         setIsShow(true);
     };
 
     return (
-    <>
-        <input
-            type="text"
-            onChange={onChange}
-            onKeyDown={onKeyDown}
-            onClick={onClick}
-            value={input}
-            
-        />
-        {renderAutocomplete()}
-    </>)
+        <div className={styles['autocomplete-container']}>
+            <input
+                className={styles['autocomplete-input']}
+                type="text"
+                onChange={onChangeHandler}
+                onKeyDown={onKeyDownHandler}
+                onClick={onClickHandler}
+                value={value}
+            />
+            {renderAutocompleteList()}
+        </div>
+    )
 }
 
 export default Autocomplete;
