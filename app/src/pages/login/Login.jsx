@@ -1,6 +1,6 @@
 import React, { useRef, useState , useContext } from "react";
 import Background from "../../components/ui/background/Background";
-import Page from "../page/Page";
+import GenericPage from "../page/GenericPage";
 import Input from "../../components/ui/input/Input";
 import Form from "../../components/ui/form/Form";
 import Alert from "../../components/ui/alert/Alert";
@@ -89,7 +89,7 @@ function Login() {
     }
 
     return (
-        <Page>
+        <GenericPage>
             <Background paddingTop={2} title="connexion">
                 <Form onSubmit={onSubmitHandler} label="valider">
                     <Input
@@ -111,7 +111,7 @@ function Login() {
                     {errorAlert}
                 </Form>
             </Background>
-        </Page>
+        </GenericPage>
     );
 }
 

@@ -1,5 +1,5 @@
 import style from "./Home.module.css";
-import Page from "../page/Page";
+import GenericPage from "../page/GenericPage";
 import HomeBackground from "../../components/home/HomeBackground";
 import Button from "../../components/ui/button/Button";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ function Home() {
     }
 
     return (
-        <Page className={style.home}>
+        <GenericPage className={style.home}>
             <HomeBackground>
                 <div className={style['button-box']}>
                     <form action="/login" onSubmit={onSubmitHandler}>
@@ -24,7 +24,7 @@ function Home() {
                     </form>
                 </div>
             </HomeBackground>
-        </Page>
+        </GenericPage>
     );
 }
 

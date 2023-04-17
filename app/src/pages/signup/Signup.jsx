@@ -1,4 +1,4 @@
-import Page from "../page/Page";
+import GenericPage from "../page/GenericPage";
 import Background from "../../components/ui/background/Background";
 import Form from "../../components/ui/form/Form";
 import Input from "../../components/ui/input/Input";
@@ -96,7 +96,7 @@ function Signup() {
     }
 
     return (
-        <Page>
+        <GenericPage>
             <Background paddingTop={1} title="inscription">
                 <Form label="valider" onSubmit={onSubmitHandler}>
                     <Input
@@ -126,7 +126,7 @@ function Signup() {
                     {errorAlert}
                 </Form>
             </Background>
-        </Page>
+        </GenericPage>
     );
 }
 

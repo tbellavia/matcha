@@ -1,7 +1,7 @@
 import React from "react";
 import ThemeSelector from "../../components/ui/theme/ThemeSelector";
 
-function Page({ children, className, style }) {
+function GenericPage({ children, className, style }) {
     return (
         <div className={className} style={style}>
             {children}
@@ -10,4 +10,4 @@ function Page({ children, className, style }) {
     );
 }
 
-export default Page;
+export default GenericPage;

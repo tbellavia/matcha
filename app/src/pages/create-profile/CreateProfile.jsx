@@ -1,4 +1,4 @@
-import Page from "../page/Page";
+import PageHeader from "../../components/ui/page/PageHeader";
 import styles from "./CreateProfile.module.css";
 
 function Box({ children }) {
@@ -9,11 +9,11 @@ function Box({ children }) {
 
 function CreateProfile() {
     return (
-        <Page className={styles['create-profile']}>
+        <PageHeader className={styles['create-profile']}>
             <section className={styles['create-profile__form']}>
                 {/* Profile picture */}
                 <div className={styles['create-profile__image-container']}>
-                    <Box />
+                    <Box /> 
                 </div>
 
                 {/* Input group */}
@@ -53,7 +53,7 @@ function CreateProfile() {
                     <button>valider</button>
                 </div>
             </section>
-        </Page>
+        </PageHeader>
     );
 }
 
