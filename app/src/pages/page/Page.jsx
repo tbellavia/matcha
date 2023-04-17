@@ -1,9 +1,9 @@
 import React from "react";
 import ThemeSelector from "../../components/ui/theme/ThemeSelector";
 
-function Page({ children, className }) {
+function Page({ children, className, style }) {
     return (
-        <div className={className}>
+        <div className={className} style={style}>
             {children}
             <ThemeSelector/>
         </div>
