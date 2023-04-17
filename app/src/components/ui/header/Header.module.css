@@ -19,3 +19,9 @@
     height: 7px;
     background-color: var(--color-light-6);
 }
+
+@media screen and (max-width: 600px) {
+    .header {
+        display: none;
+    }
+}
