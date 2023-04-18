@@ -39,21 +39,24 @@ const Autocomplete = ({
     };
 
     const onKeyDownHandler = e => {
-        if (e.keyCode === 13) {
-            setActive(-1);
-            setIsShow(false);
-            if (autocompleteList.length && active > -1) {
-                onSubmit(autocompleteList[active])
-            }
-            else {
-                onSubmit(value)
-            }
-        }
-        else if (e.keyCode === 38) {
-            return (active === 0) ? null : setActive(active - 1);
-        }
-        else if (e.keyCode === 40) {
-            return (active - 1 === autocompleteList.length) ? null : setActive(active + 1);
+        switch (e.keyCode) {
+            // Enter
+            case 13:
+                setActive(-1);
+                setIsShow(false);
+                if (autocompleteList.length && active > -1)
+                    onSubmit(autocompleteList[active])
+                else
+                    onSubmit(value)
+            // Up Arrow
+            case 38:
+                return (active === 0) ? null : setActive(active - 1);
+            // Down Arrow
+            case 40:
+                return (active - 1 === autocompleteList.length) ? null : setActive(active + 1);
+            // Escape
+            case 27:
+                setIsShow(false);
         }
     };
     
