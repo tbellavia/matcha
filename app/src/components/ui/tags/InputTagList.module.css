@@ -1,22 +1,27 @@
 .input-tag-list {
     display: flex;
     flex-direction: column;
+    gap: 5px;
+    width: 100%;
 }
 
 .tag-label-container {
-    
+    width: 100%;
+    /* background-color: rebeccapurple; */
+}
+
+.tag-label-container > label { 
+    font-size: var(--label-font-size);
 }
 
 .tags-container {
-    margin: 5px;
-
     width: 100%;
-    flex-wrap: wrap ;
     display: flex;
     gap: 10px;
 }
 
 .tags {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
 }
