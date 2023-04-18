@@ -1,15 +1,13 @@
 .header {
     height: 138px;
-    background-color: var(--color-light-8);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.header > h1 {
+.header>h1 {
     font-size: 5rem;
     font-weight: 100;
-    color: var(--color-light-6);
 }
 
 .header__bar {
@@ -17,11 +15,49 @@
     top: -0.9rem;
     width: 100%;
     height: 7px;
-    background-color: var(--color-light-6);
 }
 
 @media screen and (max-width: 600px) {
     .header {
         display: none;
     }
+}
+
+/* Light */
+.header__light {
+    background-color: var(--color-light-8);
+}
+
+.header__light>h1 {
+    color: var(--color-light-6);
+}
+
+.header__light>div.header__bar {
+    background-color: var(--color-light-6);
+}
+
+/* Dark */
+.header__dark {
+    background-color: var(--color-dark-8);
+}
+
+.header__dark>h1 {
+    color: var(--color-dark-6);
+}
+
+.header__dark>div.header__bar {
+    background-color: var(--color-dark-6);
+}
+
+/* blind */
+.header__blind {
+    background-color: var(--color-blind-8);
+}
+
+.header__blind>h1 {
+    color: var(--color-blind-6);
+}
+
+.header__blind>div.header__bar {
+    background-color: var(--color-blind-6);
 }
