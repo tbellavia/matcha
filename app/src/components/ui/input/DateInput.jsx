@@ -38,7 +38,7 @@ function DateInput ({label}){
                 htmlFor={name}
                 className={`${styles['input__label']} ${labelColor}`}
             >
-                {label.toUpperCase()}
+                {label}
             </label>
             <input 
                 className={`${styles['input__input']} ${inputColor} round`}
