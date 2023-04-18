@@ -4,7 +4,9 @@ import { useState } from "react";
 import React from "react";
 import Icon from "../icons/Icon";
 
-function AddPhoto({ onChange }) {
+function AddPhoto({ 
+    onChange = () => { },
+}) {
     const classes = `${styles.addPhoto}`
     const classe = `${style.medium__photo} ${style.photo}`
     const [selectedFile, setSelectedFile] = useState([])
