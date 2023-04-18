@@ -5,7 +5,8 @@ const Autocomplete = ({
     suggest,
     onChange,
     value,
-    onSubmit
+    onSubmit,
+    id
 }) => {
     const [autocompleteList, setAutocplete] = useState([])
     const [active, setActive] = useState(-1);
@@ -94,6 +95,7 @@ const Autocomplete = ({
                 onKeyDown={onKeyDownHandler}
                 onClick={onClickHandler}
                 value={value}
+                id={id}
             />
             {renderAutocompleteList()}
         </div>
