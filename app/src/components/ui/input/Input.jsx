@@ -7,7 +7,8 @@ const Input = React.forwardRef(({
     type,
     value,
     onChange = () => {},
-    onBlur = () => {}
+    onBlur = () => {},
+    placeholder
 }, ref) => {
     const ctx = useContext(AppContext);
     const onChangeHandler = (event) => {
@@ -45,6 +46,7 @@ const Input = React.forwardRef(({
                 onChange={onChangeHandler}
                 onBlur={onBlurHandler}
                 ref={inputRef}
+                placeholder={placeholder}
             />
         </div>
     );
