@@ -6,6 +6,7 @@
     text-align: center;
     user-select: none;
     border-radius: 10px;
+    font-size: var(--input-font-size);
     width: 95%;
 }
 

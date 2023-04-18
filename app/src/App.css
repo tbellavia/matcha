@@ -1,3 +1,9 @@
+/* Global app variable */
+:root {
+    --input-font-size: 1.2rem;
+    --label-font-size: calc(var(--input-font-size) + 0.1rem);
+}
+
 /* Theme */
 .background__light {
     background-color: var(--color-light-4);

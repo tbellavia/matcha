@@ -1,22 +1,18 @@
-:root {
-    --input-field-size: 2rem;
-}
-
 .input {
     display: flex;
     flex-direction: column;
-    font-size: var(--input-field-size);
     font-weight: 100;
-    width: 260px;
+    width: 100%;
 }
 
 .input__label {
     width: 100%;
+    font-size: var(--label-font-size);
 }
 
 .input__input {
     padding: 0 15px;
-    font-size: 1.5rem;
+    font-size: var(--input-font-size);
     height: 35px;
     background-color: #BDC6D1;
 }
