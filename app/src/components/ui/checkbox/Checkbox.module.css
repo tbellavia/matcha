@@ -1,13 +1,14 @@
 .checkbox input[type="checkbox"]+label {
     display: flex;
     justify-content: center;
-    padding: 3px 10px;
+    align-items: center;
+    height: var(--input-height);
     cursor: pointer;
     text-align: center;
     user-select: none;
     border-radius: 10px;
     font-size: var(--input-font-size);
-    width: 95%;
+    width: 100%;
 }
 
 .checkbox input[type="checkbox"]:not(:checked), 

@@ -6,8 +6,9 @@
   background-color: var(--color-light-3);
   border-radius: 10px;
   box-sizing: border-box;
-  padding: 8px;
-  font-size: 1.1rem;
+  padding: 0 15px;
+  height: var(--input-height);
+  font-size: var(--input-font-size);
   width: 100%;
 }
 

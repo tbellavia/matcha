@@ -13,7 +13,7 @@
 .input__input {
     padding: 0 15px;
     font-size: var(--input-font-size);
-    height: 35px;
+    height: var(--input-height);
     background-color: #BDC6D1;
 }
 
