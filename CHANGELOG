@@ -1,0 +1,23 @@
+# Changelog
+
+## [19-04-2023] - Tony
+
+- Ajout de deux hooks, `useIsFirstRender` et `useUpdateEffect`
+- Ajout de documentation sur les fonctions de validations
+- Ajout d'une fonction `getAge` pour récupérer l'âge à partir d'un objet date
+- Ajout d'une fonction de validation `validateDate` qui vérifie si une date est valide et si la date de naissance est bien antérieure à 18 ans à partir de la date actuelle
+- Ajout de deux variables CSS `--input-font-size` et `--label-font-size` pour rendre les tailles cohérentes
+- Fix du CSS de Autocomplete, la taille de l'input est à 100% et le container de tags wrap désormais les tags
+- Changements du nommage des propriétés `setInput` -> `onChange`, `valideValue` -> `onSubmit` et `input` -> `value` dans les composants `Autocomplete`, `DateInput` et `InputTagList` pour rendre le nommage cohérent avec la doc React
+- Ajout de la gestion de la touche Échap dans le composant `Aucomplete` pour cacher le menu
+- Ajout du scroll sur le dropdown menu du composant `Autocomplete`
+- Refacto des conditions dans la fonction `onKeyDownHandler` en un switch/case pour faciliter la lecture et l'ajout de nouvelles touches
+- Ajout d'une propriété placeholder sur le composant `Input`
+- Fix les tailles des composants `Input` pour toujours prendre 100% du container parent
+- Réduction de la taille du menu de sélection de thème
+- Ajout du composant `Header`
+- Ajout d'un composant `PageHeader` qui représente une page avec un composant `Header`
+- Renommage du composant `Page` en `GenericPage`
+- Fix du warning sur les checkbox grâce aux hooks ajoutés
+- Utilisation des reducers pour la gestion des états des inputs
+- Ajout de la fonction `createInputReducer` pour faciliter la création des reducers
