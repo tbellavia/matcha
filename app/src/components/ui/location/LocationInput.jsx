@@ -1,10 +1,13 @@
 import { useState } from "react";
 import Autocomplete from "../tags/Autocomplete";
 import { cities } from "../../../utils/cities";
+import styles from "./LocationInput.module.css";
 
-function LocationInput({ onChange }) {
+function LocationInput({ 
+    onChange = () => {}
+}) {
     const [city, setCity] = useState("");
-    const [suggestedCities, setSuggestedCities] = useState(cities.map(val => `${val.city}, ${val.region}`));
+    const [suggestedCities] = useState(cities.map(val => `${val.city}, ${val.region}`));
 
     const onBlur = (val) => {
         console.log(val);
@@ -12,12 +15,16 @@ function LocationInput({ onChange }) {
     }
 
     return (
-        <Autocomplete 
-            suggest={suggestedCities}
-            input={city}
-            setInput={setCity}
-            valideValue={onBlur}
-        />
+        <div className={styles['location-input']}>
+            <label htmlFor="location">Localisation</label>
+            <Autocomplete
+                id="location" 
+                suggest={suggestedCities}
+                value={city}
+                onChange={setCity}
+                onSubmit={onBlur}
+            />
+        </div>
     ); 
 }
 
