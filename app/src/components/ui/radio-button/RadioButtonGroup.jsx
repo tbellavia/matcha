@@ -4,7 +4,12 @@ import styles from "./RadioButtonGroup.module.css";
 import _ from "lodash";
 import useUniqueId from "../../../hooks/use-unique-id";
 
-function RadioButtonGroup({ label, initial, values, onChange }) {
+function RadioButtonGroup({
+    label,
+    initial,
+    values,
+    onChange = () => {}
+}) {
     const [id] = useUniqueId(label);
 
     useEffect(() => {
