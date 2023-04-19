@@ -51,6 +51,7 @@ const Autocomplete = ({
                     onSubmit(autocompleteList[active])
                 else
                     onSubmit(value)
+                break;
             // Up Arrow
             case 38:
                 return (active === 0) ? null : setActive(active - 1);
@@ -60,6 +61,9 @@ const Autocomplete = ({
             // Escape
             case 27:
                 setIsShow(false);
+                break;
+            default:
+                break;
         }
     };
     
