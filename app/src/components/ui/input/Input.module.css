@@ -14,7 +14,7 @@
     padding: 0 15px;
     font-size: var(--input-font-size);
     height: var(--input-height);
-    background-color: #BDC6D1;
+    background-color: var(--color-light-3);
 }
 
 /* Label colors */
