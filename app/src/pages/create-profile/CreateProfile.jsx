@@ -1,7 +1,16 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import PageHeader from "../../components/ui/page/PageHeader";
 import styles from "./CreateProfile.module.css";
 import _ from "lodash";
+import AddPhoto from "../../components/ui/photo/AddPhoto";
+import Input from "../../components/ui/input/Input";
+import DateInput from "../../components/ui/input/DateInput";
+import CheckboxGroup from "../../components/ui/checkbox/CheckboxGroup";
+import RadioButtonGroup from "../../components/ui/radio-button/RadioButtonGroup";
+import InputTagList from "../../components/ui/tags/InputTagList";
+import Button from "../../components/ui/button/Button";
+import LocationInput from "../../components/ui/location/LocationInput";
+import BioInput from "../../components/ui/input/BioInput";
 
 function Box({ children }) {
     return <div className={styles['dummy-box']}>
@@ -51,52 +60,56 @@ const locationReducer = createInputReducer(location => true);
 // TODO: Make sure bio is valid
 const biographyReducer = createInputReducer(bio => true);
 
-
+const genres = ["homme", "femme", "non binaire"];
+// TODO: remove hard coded suggests
+const dummySuggests = ["beer", "baseball", "football", "yoga", "healthy"];
 
 function CreateProfile() {
+    const [val, setVal] = useState("");
+
     return (
         <PageHeader className={styles['create-profile']}>
             <section className={styles['create-profile__form']}>
                 {/* Profile picture */}
                 <div className={styles['create-profile__image-container']}>
-                    <Box />
+                    <AddPhoto />
                 </div>
 
                 {/* Input group */}
                 <div className={styles['create-profile__input-container']}>
-                    <Box />
-                    <Box />
+                    <Input label="Prénom" placeholder="John"/>
+                    <Input label="Nom" placeholder="Doe"/>
                 </div>
 
                 {/* Input group */}
                 <div className={styles['create-profile__input-container']}>
-                    <Box />
-                    <Box />
+                    <DateInput label="Date de naissance"/>
+                    <LocationInput/>
                 </div>
 
                 {/* Input group */}
                 <div className={styles['create-profile__input-container']}>
                     <div className={styles['create-profile__input-group']}>
-                        <Box />
+                        <RadioButtonGroup label="Genre" initial="homme" values={genres}/>
                     </div>
                     <div className={styles['create-profile__input-group']}>
-                        <Box />
+                        <CheckboxGroup label="Préférences" values={genres}/>
                     </div>
                 </div>
 
                 {/* Tag group */}
                 <div className={styles['create-profile__tags-container']}>
-                    <Box />
+                    <InputTagList value={dummySuggests} suggest={dummySuggests}/>
                 </div>
 
                 {/* Bio */}
                 <div className={styles['create-profile__bio-container']}>
-                    <Box />
+                    <BioInput value={val} onChange={setVal} limit={300}/>
                 </div>
 
                 {/* Button */}
                 <div className={styles['create-profile__button-container']}>
-                    <button>valider</button>
+                    <Button variant="validation">valider</Button>
                 </div>
             </section>
         </PageHeader>
