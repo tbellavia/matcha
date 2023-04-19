@@ -22,4 +22,6 @@
 - Utilisation des reducers pour la gestion des états des inputs
 - Ajout de la fonction `createInputReducer` pour faciliter la création des reducers
 - Ajout d'un composant `Label` pour faciliter la gestion des labels (thème, font-size, ...)
+- Remplacement de tous les labels des composants de type **input** avec le composant Label
 - Ajout d'un composant `BioInput` qui contient un champs pour rentrer la biographie de l'utilisateur, le composant prend en paramètre une taille limite de caractères
+- Fix de la couleur des `li` du dropdown du composant `Autocomplete` en Dark mode
