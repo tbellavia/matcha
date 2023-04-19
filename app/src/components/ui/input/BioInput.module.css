@@ -1,0 +1,45 @@
+.bio {
+    width: 100%;
+}
+
+.bio__label-container {
+    width: 100%;
+}
+
+.bio__input-container {
+    width: 100%;
+}
+
+.bio__input-container > textarea {
+    background-color: var(--color-light-3);
+    padding: 7px 15px;
+    font-size: var(--input-font-size);
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 100px;
+    max-height: 200px;
+    width: 100%;
+    border-radius: 10px;
+
+    /* Remove basic style */
+    border-style: none;
+    border-color: Transparent;
+    overflow: auto;
+    outline: none;
+}
+
+.bio__counter-container {
+    width: 100%;
+    text-align: right;
+}
+
+/* Light / Blind */
+.bio__counter__light,
+.bio__counter__blind {
+    color: dark;
+}
+
+/* Dark */
+.bio__counter__dark {
+    color: var(--color-dark-6);
+}
