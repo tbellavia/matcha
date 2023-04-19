@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import AppContext from "../../../store/AppContext";
 import styles from "./Autocomplete.module.css"
 
 const Autocomplete = ({
@@ -13,6 +14,7 @@ const Autocomplete = ({
     const [active, setActive] = useState(-1);
     const [isShow, setIsShow] = useState(false);
     const currentElementRef = useRef();
+    const { theme } = useContext(AppContext);
 
     useEffect(() => {
         if (currentElementRef.current) {
@@ -63,18 +65,23 @@ const Autocomplete = ({
     
     const renderAutocompleteList = () => {
         if (isShow && autocompleteList.length) {
+            const themeClass = styles[`autocomplete-li__${theme}`];
+
             return (
                 <ul className={styles.autocomplete}>
-                    {autocompleteList.map((suggestion, index) => (
-                        <li 
-                            className={(index === active) ? styles.active : ""} 
-                            key={index} 
-                            onClick={onClickSuggestHandler}
-                            ref={(index === active) ? currentElementRef : null}
-                        >
-                            {suggestion}
-                        </li>
-                    ))}
+                    {autocompleteList.map((suggestion, index) => {
+                        const activeClass = (index === active) ? styles.active : "";
+                        return (
+                            <li 
+                                className={`${activeClass} ${themeClass}`} 
+                                key={index} 
+                                onClick={onClickSuggestHandler}
+                                ref={(index === active) ? currentElementRef : null}
+                            >
+                                {suggestion}
+                            </li>
+                        )
+                    })}
                 </ul>
             );
         }

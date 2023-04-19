@@ -49,9 +49,19 @@
   padding: 8px;
 }
 
+.autocomplete-li__light,
+.autocomplete-li__blind {
+  color: dark;
+}
+
+.autocomplete-li__dark {
+  color: var(--color-dark-6);
+}
+
 .autocomplete>.active,
 .autocomplete li:hover {
   background-color: var(--color-light-3);
+  color: dark;
   cursor: pointer;
   font-weight: 700;
 }
