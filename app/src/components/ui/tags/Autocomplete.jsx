@@ -6,7 +6,8 @@ const Autocomplete = ({
     onChange,
     value,
     onSubmit,
-    id
+    id,
+    placeholder
 }) => {
     const [autocompleteList, setAutocplete] = useState([])
     const [active, setActive] = useState(-1);
@@ -63,7 +64,7 @@ const Autocomplete = ({
     const renderAutocompleteList = () => {
         if (isShow && autocompleteList.length) {
             return (
-                <ul className={styles.autocomplete} >
+                <ul className={styles.autocomplete}>
                     {autocompleteList.map((suggestion, index) => (
                         <li 
                             className={(index === active) ? styles.active : ""} 
@@ -89,6 +90,12 @@ const Autocomplete = ({
         setIsShow(true);
     };
 
+    const onBlurHandle = () => {
+        setTimeout(() => {
+            setIsShow(false);
+        }, 200);
+    }
+
     return (
         <div className={styles['autocomplete-container']}>
             <input
@@ -99,6 +106,8 @@ const Autocomplete = ({
                 onClick={onClickHandler}
                 value={value}
                 id={id}
+                placeholder={placeholder}
+                onBlur={onBlurHandle}
             />
             {renderAutocompleteList()}
         </div>

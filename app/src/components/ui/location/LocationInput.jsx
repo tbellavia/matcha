@@ -23,6 +23,7 @@ function LocationInput({
                 value={city}
                 onChange={setCity}
                 onSubmit={onBlur}
+                placeholder="Paris, Île-de-France"
             />
         </div>
     ); 
