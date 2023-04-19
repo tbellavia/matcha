@@ -1,0 +1,12 @@
+.label {
+    font-size: var(--label-font-size);
+}
+
+.label__light,
+.label__blind {
+    color: dark;
+}
+
+.label__dark {
+    color: var(--color-dark-6);
+}
