@@ -2,6 +2,8 @@ import { useState } from "react";
 import styles from "./InputTagList.module.css";
 import Tag from "./Tag";
 import Autocomplete from "./Autocomplete";
+import Label from "../label/Label";
+import useUniqueId from "../../../hooks/use-unique-id";
 
 function InputTagList({
     value,
@@ -11,6 +13,7 @@ function InputTagList({
     const [suggestedTags, setSuggestedTags] = useState(suggest);
     const [suggestAlreadyUse, setAlreadyUse] = useState([])
     const [newTag, setNewTag] = useState("");
+    const [tagsId] = useUniqueId("tags")
 
     const valideValue = val => {
 
@@ -35,7 +38,7 @@ function InputTagList({
     return (
         <div className={styles["input-tag-list"]}>
             <div className={styles["tag-label-container"]}>
-                <label htmlFor="">Tags</label>
+                <Label htmlFor={tagsId} label="Tags"/>
             </div>
             <div className={styles["tags-container"]}>
                 <ul className={styles["tags"]}>
@@ -55,6 +58,8 @@ function InputTagList({
                 value={newTag}
                 onChange={setNewTag}
                 onSubmit={valideValue}
+                placeholder="Tags..."
+                id={tagsId}
             />
         </div>
     );

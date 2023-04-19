@@ -1,6 +1,7 @@
 import React, { useContext, useImperativeHandle, useRef } from "react";
 import styles from "./Input.module.css";
 import AppContext from "../../../store/AppContext";
+import Label from "../label/Label";
 
 const Input = React.forwardRef(({ 
     label,
@@ -10,7 +11,7 @@ const Input = React.forwardRef(({
     onBlur = () => {},
     placeholder
 }, ref) => {
-    const ctx = useContext(AppContext);
+    const { theme } = useContext(AppContext);
     const onChangeHandler = (event) => {
         onChange(event.target.value);
     }
@@ -18,8 +19,7 @@ const Input = React.forwardRef(({
         onBlur(event.target.value);
     }
     const inputRef = useRef();
-    const labelColor = styles[`input__label__${ctx.theme}`];
-    const inputColor = styles[`input__input__$(ctx.theme)`];
+    const inputColor = styles[`input__input__${theme}`];
     const name = label.replace(/ /g, "_");
     
     useImperativeHandle(ref, () => {
@@ -32,12 +32,7 @@ const Input = React.forwardRef(({
     
     return (
         <div className={styles.input}>
-            <label 
-                htmlFor={name}
-                className={`${styles['input__label']} ${labelColor}`}
-            >
-                {label}
-            </label>
+            <Label label={label} htmlFor={name} className={styles['input__label']}/>
             <input 
                 className={`${styles['input__input']} ${inputColor} round`}
                 name={name} 

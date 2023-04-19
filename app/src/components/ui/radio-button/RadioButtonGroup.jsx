@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import RadioButton from "./RadioButton"
 import styles from "./RadioButtonGroup.module.css";
-import _ from "lodash";
 import useUniqueId from "../../../hooks/use-unique-id";
+import Label from "../label/Label";
 
 function RadioButtonGroup({
     label,
@@ -31,7 +31,7 @@ function RadioButtonGroup({
 
     return (
         <div className={styles['radio-group']}>
-            <label htmlFor={id}>{label}</label>
+            <Label htmlFor={id} label={label}/>
             <div className={styles['radio-container']} id={id} onChange={onRadioGroupChangeHandler}>
                 {radios}
             </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Checkbox from "./Checkbox";
 import styles from "./CheckboxGroup.module.css";
 import useUpdateEffect from "../../../hooks/use-update-effect";
+import Label from "../label/Label";
 
 /**
  * 
@@ -30,7 +31,7 @@ function CheckboxGroup({
 
     return (
         <div className={styles['checkbox-group']}>
-            <label htmlFor={label}>{label}</label>
+            <Label htmlFor={label} label={label}/>
             <div className={styles['checkbox-container']}>
                 {checkboxes}
             </div>

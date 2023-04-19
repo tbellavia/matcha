@@ -2,6 +2,7 @@ import { useState } from "react";
 import Autocomplete from "../tags/Autocomplete";
 import { cities } from "../../../utils/cities";
 import styles from "./LocationInput.module.css";
+import Label from "../label/Label";
 
 function LocationInput({ 
     onChange = () => {}
@@ -16,7 +17,7 @@ function LocationInput({
 
     return (
         <div className={styles['location-input']}>
-            <label htmlFor="location">Localisation</label>
+            <Label label="Localisation" htmlFor="location"/>
             <Autocomplete
                 id="location" 
                 suggest={suggestedCities}
