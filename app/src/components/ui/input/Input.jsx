@@ -42,6 +42,7 @@ const Input = React.forwardRef(({
                 onBlur={onBlurHandler}
                 ref={inputRef}
                 placeholder={placeholder}
+                autoComplete="off"
             />
         </div>
     );
