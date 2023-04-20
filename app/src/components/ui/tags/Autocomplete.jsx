@@ -8,7 +8,8 @@ const Autocomplete = ({
     value,
     onSubmit,
     id,
-    placeholder
+    placeholder,
+    onBlur = () => { }
 }) => {
     const [autocompleteList, setAutocplete] = useState([])
     const [active, setActive] = useState(-1);
@@ -101,7 +102,8 @@ const Autocomplete = ({
         setIsShow(true);
     };
 
-    const onBlurHandle = () => {
+    const onBlurHandle = (e) => {
+        onBlur(e.target.value);
         setTimeout(() => {
             setIsShow(false);
         }, 200);
@@ -119,6 +121,7 @@ const Autocomplete = ({
                 id={id}
                 placeholder={placeholder}
                 onBlur={onBlurHandle}
+                autoComplete="off"
             />
             {renderAutocompleteList()}
         </div>
