@@ -32,7 +32,6 @@ function BioInput({
         <div className={styles.bio}>
             <div className={styles['bio__label-container']}>
                 <Label label="Bio" htmlFor={id}/>
-                {/* <label htmlFor="">Bio</label> */}
             </div>
             <div className={styles['bio__input-container']}>
                 <textarea
