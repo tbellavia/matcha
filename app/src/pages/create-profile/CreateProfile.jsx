@@ -18,17 +18,7 @@ function Box({ children }) {
     </div>;
 }
 
-const initialProfileState = {
-    photos: [],
-    firstname: null,
-    lastname: null,
-    birthdate: null,
-    location: null,
-    genre: null,
-    preferences: [],
-    tags: [],
-    biography: null
-};
+const initialInputState = { value: "", valid: null }
 
 function createInputReducer(validateFn) {
     return (state, action) => {
@@ -43,16 +33,16 @@ function createInputReducer(validateFn) {
     }
 }
 
-const photosReducer = createInputReducer(photos => 
-    photos && 
-    photos.length > 1 && 
+const photosReducer = createInputReducer(photos =>
+    photos &&
+    photos.length > 1 &&
     photos.length <= 5
 );
-const firstnameReducer = createInputReducer(firstname => _.isEmpty(firstname));
-const lastnameReducer = createInputReducer(lastname => _.isEmpty(lastname));
-const genreReducer = createInputReducer(genre => _.isEmpty(genre));
-const preferencesReducer = createInputReducer(prefs => _.isEmpty(prefs));
-const tagsReducer = createInputReducer(tags => _.isEmpty(tags));
+const firstnameReducer = createInputReducer(firstname => !_.isEmpty(firstname));
+const lastnameReducer = createInputReducer(lastname => !_.isEmpty(lastname));
+const genreReducer = createInputReducer(genre => !_.isEmpty(genre));
+const preferencesReducer = createInputReducer(prefs => !_.isEmpty(prefs));
+const tagsReducer = createInputReducer(tags => !_.isEmpty(tags));
 // TODO: Check if date is in valid range
 const dateReducer = createInputReducer(date => _.isDate(date));
 // TODO: Make sure location is in France
@@ -65,7 +55,99 @@ const genres = ["homme", "femme", "non binaire"];
 const dummySuggests = ["beer", "baseball", "football", "yoga", "healthy"];
 
 function CreateProfile() {
-    const [val, setVal] = useState("");
+    const [firstname, dispatchFirstname] = useReducer(firstnameReducer, initialInputState);
+    const [lastname, dispatchLastname] = useReducer(lastnameReducer, initialInputState);
+    const [birthDate, dispatchBirthDate] = useReducer(dateReducer, initialInputState);
+    const [location, dispatchLocation] = useReducer(locationReducer, initialInputState);
+    const [genre, dispatchGenre] = useReducer(genreReducer, initialInputState);
+    const [preferences, dispatchPreference] = useReducer(preferencesReducer, initialInputState);
+    const [tags, dispatchTags] = useReducer(tagsReducer, { value: [], valid: null });
+    const [biography, dispatchBiography] = useReducer(biographyReducer, initialInputState);
+
+    console.clear();
+    console.log("================================");
+    console.table({
+        firstname,
+        lastname, 
+        birthDate, 
+        location,
+        genre,
+        preferences, 
+        tags,
+        biography
+    });
+
+    /* Firstname */
+    const onFirstnameChange = (value) => {
+        dispatchFirstname({ type: "UPDATE", value });
+    }
+
+    const onFirstnameValidate = (value) => {
+        dispatchFirstname({ type: "VALIDATE" });
+    }
+
+    /* Lastname */
+    const onLastnameChange = (value) => {
+        dispatchLastname({ type: "UPDATE", value });
+    }
+
+    const onLastnameBlur = (value) => {
+        dispatchLastname({ type: "VALIDATE" });
+    }
+
+    /* Birth Date */
+    const onBirthDateChange = (value) => {
+        dispatchBirthDate({ type: "UPDATE", value });
+    }
+
+    const onBirthDateBlur = (value) => {
+        dispatchBirthDate({ type: "VALIDATE" });
+    }
+
+    /* Location */
+    const onLocationChange = (value) => {
+        dispatchLocation({ type: "UPDATE", value });
+    }
+
+    const onLocationBlur = (value) => {
+        dispatchLocation({ type: "VALIDATE" });
+    }
+
+    /* Genre */
+    const onGenreChange = (value) => {
+        dispatchGenre({ type: "UPDATE", value });
+    }
+
+    const onGenreValidate = (value) => {
+        dispatchGenre({ type: "VALIDATE" });
+    }
+
+    /* Preferences */
+    const onPreferencesChange = (value) => {
+        dispatchPreference({ type: "UPDATE", value });
+    }
+
+    const onPreferencesValidate = (value) => {
+        dispatchPreference({ type: "VALIDATE" });
+    }
+
+    /* Tags */
+    const onTagsChange = (value) => {
+        dispatchTags({ type: "UPDATE", value });
+    }
+
+    const onTagsValidate = (value) => {
+        dispatchTags({ type: "VALIDATE" });
+    }
+
+    /* Bio */
+    const onBiographyChange = (value) => {
+        dispatchBiography({ type: "UPDATE", value });
+    }
+
+    const onBiographyValidate = (value) => {
+        dispatchBiography({ type: "VALIDATE" });
+    }
 
     return (
         <PageHeader className={styles['create-profile']}>
@@ -77,34 +159,70 @@ function CreateProfile() {
 
                 {/* Input group */}
                 <div className={styles['create-profile__input-container']}>
-                    <Input label="Prénom" placeholder="John"/>
-                    <Input label="Nom" placeholder="Doe"/>
+                    <Input
+                        label="Prénom"
+                        placeholder="John"
+                        value={firstname.value}
+                        onChange={onFirstnameChange}
+                        onBlur={onFirstnameValidate}
+                    />
+                    <Input
+                        label="Nom"
+                        placeholder="Doe"
+                        value={lastname.value}
+                        onChange={onLastnameChange}
+                        onBlur={onLastnameBlur}
+                    />
                 </div>
 
                 {/* Input group */}
                 <div className={styles['create-profile__input-container']}>
-                    <DateInput label="Date de naissance"/>
-                    <LocationInput/>
+                    <DateInput
+                        label="Date de naissance"
+                        value={birthDate.value}
+                        onChange={onBirthDateChange}
+                        onBlur={onBirthDateBlur}
+                    />
+                    <LocationInput onSubmit={onLocationChange} onBlur={onLocationBlur} />
                 </div>
 
                 {/* Input group */}
                 <div className={styles['create-profile__input-container']}>
                     <div className={styles['create-profile__input-group']}>
-                        <RadioButtonGroup label="Genre" initial="homme" values={genres}/>
+                        <RadioButtonGroup
+                            label="Genre"
+                            initial="homme"
+                            values={genres}
+                            onChange={onGenreChange}
+                        />
                     </div>
                     <div className={styles['create-profile__input-group']}>
-                        <CheckboxGroup label="Préférences" values={genres}/>
+                        <CheckboxGroup
+                            label="Préférences"
+                            values={genres}
+                            onChange={onPreferencesChange}
+                        />
                     </div>
                 </div>
 
                 {/* Tag group */}
                 <div className={styles['create-profile__tags-container']}>
-                    <InputTagList value={dummySuggests} suggest={dummySuggests}/>
+                    <InputTagList
+                        initial={tags.value}
+                        suggest={dummySuggests}
+                        onChange={onTagsChange}
+                        onBlur={onTagsValidate}
+                    />
                 </div>
 
                 {/* Bio */}
                 <div className={styles['create-profile__bio-container']}>
-                    <BioInput value={val} onChange={setVal} limit={300}/>
+                    <BioInput
+                        value={biography.value}
+                        onChange={onBiographyChange}
+                        onBlur={onBiographyValidate}
+                        limit={300}
+                    />
                 </div>
 
                 {/* Button */}
