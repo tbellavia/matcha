@@ -21,15 +21,23 @@ function getMinAge(){
     return (yyyy-18) + "-" + mm + "-" + dd
 }
 
-function DateInput ({label}){
+function DateInput ({
+    label,
+    value,
+    onChange = () => {},
+    onBlur = () => {}
+}) {
     const { theme } = useContext(AppContext);
     const inputColor = styles[`input__input__${theme}`];
     const name = label.replace(/ /g, "_");
     const minAge = getMinAge()
-    const [birth, setBirth] = useState(minAge);
 
     const onChangeHandler = (e) => {
-        setBirth(e.target.value);
+        onChange(e.target.value);
+    }
+
+    const onBlurHandler = (e) => {
+        onBlur(e.target.value);
     }
 
     return (
@@ -39,9 +47,10 @@ function DateInput ({label}){
                 className={`${styles['input__input']} ${inputColor} round`}
                 name={name} 
                 type="date"
-                value= {birth}
+                value={value}
                 max={minAge}
                 onChange={onChangeHandler}
+                onBlur={onBlurHandler}
             />
         </div>
     );
