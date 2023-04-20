@@ -4,35 +4,39 @@ import Tag from "./Tag";
 import Autocomplete from "./Autocomplete";
 import Label from "../label/Label";
 import useUniqueId from "../../../hooks/use-unique-id";
+import useUpdateEffect from "../../../hooks/use-update-effect";
 
 function InputTagList({
-    value,
+    initial,
     suggest, 
     onChange = () => {},
+    onBlur = () => {}
 }) {
     const [suggestedTags, setSuggestedTags] = useState(suggest);
+    const [tagList, setTagList] = useState(initial);
     const [suggestAlreadyUse, setAlreadyUse] = useState([])
     const [newTag, setNewTag] = useState("");
     const [tagsId] = useUniqueId("tags")
 
-    const valideValue = val => {
 
-        if (value.indexOf(val) === -1) {
-            onChange([...value, val])
-        }
-        if (suggestedTags.indexOf(val) !== -1) {
-            setSuggestedTags(prevSuggestedTags => prevSuggestedTags.filter(tag => tag !== val));
-            setAlreadyUse([...suggestAlreadyUse, val])
-        }
+    useUpdateEffect(() => {
+        onChange(tagList);
+    }, [tagList])
+
+    const valideValue = value => {
+        if(tagList.indexOf(value) === -1){
+            setTagList([...tagList,value])}   
+        if(suggestedTags.indexOf(value) !== -1){
+            setSuggestedTags(prevSuggestedTags => prevSuggestedTags.filter(tag => tag !== value));
+            setAlreadyUse([...suggestAlreadyUse, value])}
         setNewTag("")
     }
 
-    const onDeleteHandler = (val) => {
-        onChange(prevTagList => prevTagList.filter(tag => tag !== val));
-        if (suggestAlreadyUse.indexOf(val) !== -1) {
-            setAlreadyUse(prevSuggestedTags => prevSuggestedTags.filter(tag => tag !== val));
-            setSuggestedTags([...suggestedTags, val])
-        }
+    const onDeleteHandler = (value) => {
+        setTagList(prevTagList => prevTagList.filter(tag => tag !== value));
+        if(suggestAlreadyUse.indexOf(value) !== -1){
+            setAlreadyUse(prevSuggestedTags => prevSuggestedTags.filter(tag => tag !== value));
+            setSuggestedTags([...suggestedTags, value])}
     }
 
     return (
@@ -42,7 +46,7 @@ function InputTagList({
             </div>
             <div className={styles["tags-container"]}>
                 <ul className={styles["tags"]}>
-                    {value.map(
+                    {tagList.map(
                         (label, index) =>
                             <Tag
                                 label={label}
@@ -59,6 +63,7 @@ function InputTagList({
                 onChange={setNewTag}
                 onSubmit={valideValue}
                 placeholder="Tags..."
+                onBlur={onBlur}
                 id={tagsId}
             />
         </div>
