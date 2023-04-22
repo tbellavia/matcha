@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 import PageHeader from "../../components/ui/page/PageHeader";
 import styles from "./CreateProfile.module.css";
 import _ from "lodash";
@@ -11,12 +11,7 @@ import InputTagList from "../../components/ui/tags/InputTagList";
 import Button from "../../components/ui/button/Button";
 import LocationInput from "../../components/ui/location/LocationInput";
 import BioInput from "../../components/ui/input/BioInput";
-
-function Box({ children }) {
-    return <div className={styles['dummy-box']}>
-        {children}
-    </div>;
-}
+import { validatePreferences } from "../../common/validation";
 
 const initialInputState = { value: "", valid: null }
 
@@ -41,7 +36,7 @@ const photosReducer = createInputReducer(photos =>
 const firstnameReducer = createInputReducer(firstname => !_.isEmpty(firstname));
 const lastnameReducer = createInputReducer(lastname => !_.isEmpty(lastname));
 const genreReducer = createInputReducer(genre => !_.isEmpty(genre));
-const preferencesReducer = createInputReducer(prefs => !_.isEmpty(prefs));
+const preferencesReducer = createInputReducer(validatePreferences);
 const tagsReducer = createInputReducer(tags => !_.isEmpty(tags));
 // TODO: Check if date is in valid range
 const dateReducer = createInputReducer(date => _.isDate(date));
@@ -194,6 +189,7 @@ function CreateProfile() {
                             initial="homme"
                             values={genres}
                             onChange={onGenreChange}
+                            onBlur={onGenreValidate}
                         />
                     </div>
                     <div className={styles['create-profile__input-group']}>
@@ -201,6 +197,7 @@ function CreateProfile() {
                             label="Préférences"
                             values={genres}
                             onChange={onPreferencesChange}
+                            onBlur={onPreferencesValidate}
                         />
                     </div>
                 </div>

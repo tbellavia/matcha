@@ -8,7 +8,8 @@ function RadioButtonGroup({
     label,
     initial,
     values,
-    onChange = () => {}
+    onChange = () => {},
+    onBlur = () => {}
 }) {
     const [id] = useUniqueId(label);
 
@@ -29,10 +30,19 @@ function RadioButtonGroup({
         onChange(event.target.value);
     }
 
+    const onBlurHandler = (event) => {
+        onBlur(event.target.value);
+    }
+
     return (
         <div className={styles['radio-group']}>
             <Label htmlFor={id} label={label}/>
-            <div className={styles['radio-container']} id={id} onChange={onRadioGroupChangeHandler}>
+            <div 
+                id={id} 
+                className={styles['radio-container']} 
+                onChange={onRadioGroupChangeHandler}
+                onBlur={onBlurHandler}
+            >
                 {radios}
             </div>
         </div>

@@ -1,5 +1,8 @@
 import _ from "lodash";
 import { getAge } from "./validation-utils";
+import { isSameArray } from "./utils";
+
+const genders = ["femme", "homme", "non binaire"];
 
 /**
  * Validate an email.
@@ -35,4 +38,18 @@ export function validatePassword(password) {
  */
 export function validateDate(date) {
     return _.isDate(date) && getAge(date) >= 18;
+}
+
+/**
+ * Validate preferences.
+ * A preferences object is considered valid if it contains all of the propositions,
+ * and at least one of its field has a value of true.
+ * @param   {Object}    preferences An object of the form {"homme": <bool>, "femme": <bool>, "non binaire": <bool>}
+ * @returns {Boolean}               A boolean, true if preferences is valid, false otherwise
+ */
+export function validatePreferences(preferences) {
+    const keys = Object.keys(preferences);
+    const vals = Object.values(preferences);
+
+    return !_.isEmpty(preferences) && isSameArray(genders, keys) && vals.some(val => val === true);
 }

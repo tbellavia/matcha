@@ -12,7 +12,8 @@ import Label from "../label/Label";
 function CheckboxGroup({
     label, 
     values, 
-    onChange = () => { }
+    onChange = () => { },
+    onBlur = () => { },
 }) 
 {
     const [checked, setChecked] = useState(values.reduce((acc, val) => ({ ...acc, [val]: false }), {}));
@@ -29,10 +30,15 @@ function CheckboxGroup({
         return <Checkbox key={val} name={val} value={val} onChange={onCheckboxChangeHandler}/>
     });
 
+    const onBlurHandler = () => {
+        onBlur(checked);
+    }
+
+
     return (
         <div className={styles['checkbox-group']}>
             <Label htmlFor={label} label={label}/>
-            <div className={styles['checkbox-container']}>
+            <div className={styles['checkbox-container']} onBlur={onBlurHandler}>
                 {checkboxes}
             </div>
         </div>
