@@ -34,3 +34,25 @@ export function isSameArray(a, b) {
     }
     return true;
 }
+
+/**
+ * Get minimum age date.
+ * The minimum age date is the current date minus 18 years.
+ * @returns {String}  A string, representing the minimum age date in the form 'yyyy-mm-dd'.
+ */
+export function getMinAge() {
+    const today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1;
+    let yyyy = today.getFullYear();
+
+    if (dd < 10) {
+        dd = "0" + dd;
+      }
+  
+    if (mm < 10) {
+        mm = "0" + mm;
+      }
+
+    return (yyyy-18) + "-" + mm + "-" + dd
+}
