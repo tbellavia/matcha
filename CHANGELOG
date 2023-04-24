@@ -27,3 +27,5 @@
 - Fix de la couleur des `li` du dropdown du composant `Autocomplete` en Dark mode
 - Ajout de la fonction de validation `validateGender`
 - Ajout d'une suite de tests pour tester la fonction `validateGender`
+- Changement de place de la fonction `getMinAge` de -> `DateInput` à `utils`
+- Intégration de la librairie AJV pour faire de la validation de schéma JSON
