@@ -1,25 +1,8 @@
 import React, { useContext } from "react";
 import styles from "./Input.module.css";
 import AppContext from "../../../store/AppContext";
-import { useState } from "react";
 import Label from "../label/Label";
-
-function getMinAge(){
-    const today = new Date();
-    let dd = today.getDate();
-    let mm = today.getMonth() + 1;
-    let yyyy = today.getFullYear();
-
-    if (dd < 10) {
-        dd = "0" + dd;
-      }
-  
-    if (mm < 10) {
-        mm = "0" + mm;
-      }
-
-    return (yyyy-18) + "-" + mm + "-" + dd
-}
+import { getMinAge } from "../../../common/utils";
 
 function DateInput ({
     label,
