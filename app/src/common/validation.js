@@ -53,3 +53,14 @@ export function validatePreferences(preferences) {
 
     return !_.isEmpty(preferences) && isSameArray(genders, keys) && vals.some(val => val === true);
 }
+
+/**
+ * Validate a gender.
+ * A gender is considered valid if it belongs to at least one of the
+ * following gender set : 'homme', 'femme' or 'non binaire'.
+ * @param {String}      gender  The gender to validate.
+ * @returns {Boolean}           A boolean, true if gender is valid, false otherwise
+ */
+export function validateGender(gender) {
+    return genders.includes(gender);
+}
