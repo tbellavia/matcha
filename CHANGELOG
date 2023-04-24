@@ -25,3 +25,5 @@
 - Remplacement de tous les labels des composants de type **input** avec le composant Label
 - Ajout d'un composant `BioInput` qui contient un champs pour rentrer la biographie de l'utilisateur, le composant prend en paramètre une taille limite de caractères
 - Fix de la couleur des `li` du dropdown du composant `Autocomplete` en Dark mode
+- Ajout de la fonction de validation `validateGender`
+- Ajout d'une suite de tests pour tester la fonction `validateGender`
