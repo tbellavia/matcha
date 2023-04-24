@@ -64,3 +64,14 @@ export function validatePreferences(preferences) {
 export function validateGender(gender) {
     return genders.includes(gender);
 }
+
+/**
+ * Validate a biography.
+ * A biography is considered valid if it a string and has a size between 1 and 300
+ * characters.
+ * @param {String}      bio The biography to validate.
+ * @returns {Boolean}       A boolean, true if biography is valid, false otherwise.
+ */
+export function validateBio(bio) {
+    return _.isString(bio) && bio.length > 0 && bio.length <= 300;
+}

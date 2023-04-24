@@ -1,5 +1,5 @@
 import { getMinAge } from "../common/utils";
-import { validateDate, validateGender } from "../common/validation";
+import { validateBio, validateDate, validateGender } from "../common/validation";
 
 describe("validate gender correctly", () => {
     it("returns true with valid genders", () => {
@@ -45,5 +45,31 @@ describe("validate date correctly", () => {
         invalidDates.forEach(date => {
             expect(validateDate(date)).toBeFalsy();
         });
+    });
+});
+
+describe("validate biography correctly", () => {
+    it("returns true with valid bio", () => {
+        const validBios = [
+            "a",
+            "x".repeat(300),
+            "tony",
+        ];
+        
+        validBios.forEach(bio => {
+            expect(validateBio(bio)).toBeTruthy();
+        })
+    });
+
+    it("returns false with invalid bio", () => {
+        const invalidBios = [
+            NaN,
+            "",
+            "1".repeat(301)
+        ];
+
+        invalidBios.forEach(bio => {
+            expect(validateBio(bio)).toBeFalsy();
+        })
     });
 });
