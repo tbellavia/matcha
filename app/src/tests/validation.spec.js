@@ -1,5 +1,5 @@
 import { getMinAge } from "../common/utils";
-import { validateBio, validateDate, validateGender } from "../common/validation";
+import { validateBio, validateDate, validateGender, validateLocation } from "../common/validation";
 
 describe("validate gender correctly", () => {
     it("returns true with valid genders", () => {
@@ -71,5 +71,37 @@ describe("validate biography correctly", () => {
         invalidBios.forEach(bio => {
             expect(validateBio(bio)).toBeFalsy();
         })
+    });
+});
+
+describe("validate location correctly", () => {
+    it("returns true with valid location", () => {
+        const validLocations = [
+            { "city": "Paris", "lat": 48.8566, "lng": 2.3522, "region": "Île-de-France" },
+            { "city": "Nice", "lat": 43.7034, "lng": 7.2663, "region": "Provence-Alpes-Côte d’Azur" },
+            { "city": "Toulouse", "lat": 43.6045, "lng": 1.444, "region": "Occitanie" }
+        ];
+
+        validLocations.forEach(location => {
+            expect(validateLocation(location)).toBeTruthy();
+        });
+    });
+
+    it("returns false with invalid location", () => {
+        const invalidLocations = [
+            { },
+            // Missing one key
+            { "city": "Paris", "lat": 48.8566, "lng": 2.3522 },
+            // Value of invalid type
+            { "city": "Toulouse", "lat": "43.6045", "lng": "1.444", "region": "Occitanie" },
+            // Invalid value
+            123,
+            // Inexistent city
+            { "city": "Tony", "lat": "43.6045", "lng": "1.444", "region": "Occitanie" },
+        ];
+
+        invalidLocations.forEach(location => {
+            expect(validateLocation(location)).toBeFalsy();
+        });
     });
 });

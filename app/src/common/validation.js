@@ -1,8 +1,21 @@
 import _ from "lodash";
 import { getAge } from "./validation-utils";
 import { isSameArray } from "./utils";
+import { cities } from "../utils/cities";
+import Ajv from "ajv";
 
 const genders = ["femme", "homme", "non binaire"];
+const validateLocationSchema = new Ajv({ allErrors: true }).compile({
+    type: "object",
+    properties: {
+        city: { type: "string" },
+        lat: { type: "number" },
+        lng: { type: "number" },
+        region: { type: "string" }
+    },
+    required: ["city", "lat", "lng", "region"],
+    additionalProperties: false,
+});
 
 /**
  * Validate an email.
@@ -74,4 +87,19 @@ export function validateGender(gender) {
  */
 export function validateBio(bio) {
     return _.isString(bio) && bio.length > 0 && bio.length <= 300;
+}
+
+
+/**
+ * Validate a location.
+ * A valid location is an object composed of the following fields : "city", "lat", "lng", "region" and
+ * that is present within the `cities.js` json map.
+ * @param {Object}      location    A location object to validate. 
+ * @returns {Boolean}               A boolean, true if location is valid, false otherwise.
+ */
+export function validateLocation(location) {
+    if (!validateLocationSchema(location))
+        return false;
+    const key = `${location.city}, ${location.region}`;
+    return key in cities && _.isEqual(cities[key], location);
 }
