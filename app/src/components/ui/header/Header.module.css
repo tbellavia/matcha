@@ -38,7 +38,7 @@
 
 /* Dark */
 .header__dark {
-    background-color: var(--color-dark-8);
+    background-color: var(--color-dark-13)
 }
 
 .header__dark>h1 {
