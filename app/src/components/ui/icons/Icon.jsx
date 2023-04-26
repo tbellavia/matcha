@@ -12,14 +12,18 @@ const icons = {
     addCircle: IconAddCircle
 };
 
-function Icon({ variant, className }) {
+function Icon({ 
+    variant, 
+    className,
+    onClick = () => {} 
+}) {
     const CurrentIcon = icons[variant];
 
     if (!CurrentIcon){
         throw new Error(`Icon: unknown variant '${variant}`);
     }
     return (
-        <CurrentIcon className={className}/>
+        <CurrentIcon className={className} onClick={onClick}/>
     );
 }
 

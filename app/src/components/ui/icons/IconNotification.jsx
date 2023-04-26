@@ -1,6 +1,6 @@
-function IconNotification({ className }) {
+function IconNotification(props) {
     return (
-        <svg className={className} xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24">
+        <svg {...props} xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24">
             <g>
                 <path d="M0,0h24v24H0V0z" fill="none" />
             </g>
