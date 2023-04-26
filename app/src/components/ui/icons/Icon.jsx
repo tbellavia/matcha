@@ -3,13 +3,15 @@ import IconWarning from "./IconWarning";
 import IconInfo from "./IconInfo";
 import IconNotification from "./IconNotification";
 import IconAddCircle from "./IconAddCircle"
+import IconPosition from "./IconPosition";
 
 const icons = {
     error: IconError,
     warning: IconWarning,
     notification: IconNotification,
     info: IconInfo,
-    addCircle: IconAddCircle
+    addCircle: IconAddCircle,
+    position: IconPosition,
 };
 
 function Icon({ 
