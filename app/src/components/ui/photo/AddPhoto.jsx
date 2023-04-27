@@ -42,9 +42,7 @@ function AddPhoto({
     if (selectedFile.length < 5) {
         inp = (
             <label className={classes}>
-                <input
-                    type="file"
-                    onChange={onChangeHandle} />
+                <input type="file" onChange={onChangeHandle} accept="image/*"/>
                 <Icon className={`${styles.icon}`} variant="addCircle" />
             </label>
         )
