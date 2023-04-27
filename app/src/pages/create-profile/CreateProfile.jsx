@@ -11,7 +11,7 @@ import InputTagList from "../../components/ui/tags/InputTagList";
 import Button from "../../components/ui/button/Button";
 import LocationInput from "../../components/ui/location/LocationInput";
 import BioInput from "../../components/ui/input/BioInput";
-import { validatePreferences } from "../../common/validation";
+import { validatePreferences, validateTags } from "../../common/validation";
 
 const initialInputState = { value: "", valid: null }
 
@@ -37,7 +37,7 @@ const firstnameReducer = createInputReducer(firstname => !_.isEmpty(firstname));
 const lastnameReducer = createInputReducer(lastname => !_.isEmpty(lastname));
 const genreReducer = createInputReducer(genre => !_.isEmpty(genre));
 const preferencesReducer = createInputReducer(validatePreferences);
-const tagsReducer = createInputReducer(tags => !_.isEmpty(tags));
+const tagsReducer = createInputReducer(tags => validateTags);
 // TODO: Check if date is in valid range
 const dateReducer = createInputReducer(date => _.isDate(date));
 // TODO: Make sure location is in France

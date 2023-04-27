@@ -103,3 +103,17 @@ export function validateLocation(location) {
     const key = `${location.city}, ${location.region}`;
     return key in cities && _.isEqual(cities[key], location);
 }
+
+/**
+ * Validate tags.
+ * A valid tags is a non-empty array of non-empty strings.
+ * @param {Array}       tags    A non-empty array of non-empty strings.
+ * @returns {Boolean}           A boolean, true if tags is valid, false otherwise.    
+ */
+export function validateTags(tags) {
+    return (
+        _.isArray(tags) && 
+        !_.isEmpty(tags) &&
+        tags.every(tag => _.isString(tag) && !_.isEmpty(tag))
+    );
+}
