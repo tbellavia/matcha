@@ -15,7 +15,7 @@ function AddPhoto({
 
     const onChangeHandle = ((e) => {
         const newSelectedFiles = [...selectedFile, e.target.files[0]];
-        const filesToUpload = newSelectedFiles.map(file => new File([file], file.name));
+        const filesToUpload = newSelectedFiles.map(file => new File([file], file.name, { type: file.type }));
         onChange(filesToUpload);
         onBlur(filesToUpload);
         setSelectedFile(newSelectedFiles);
