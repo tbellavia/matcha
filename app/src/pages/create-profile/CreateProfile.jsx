@@ -1,7 +1,6 @@
 import { useReducer } from "react";
 import PageHeader from "../../components/ui/page/PageHeader";
 import styles from "./CreateProfile.module.css";
-import _ from "lodash";
 import AddPhoto from "../../components/ui/photo/AddPhoto";
 import Input from "../../components/ui/input/Input";
 import DateInput from "../../components/ui/input/DateInput";
@@ -11,7 +10,16 @@ import InputTagList from "../../components/ui/tags/InputTagList";
 import Button from "../../components/ui/button/Button";
 import LocationInput from "../../components/ui/location/LocationInput";
 import BioInput from "../../components/ui/input/BioInput";
-import { validatePreferences, validateTags } from "../../common/validation";
+import {
+    validateBio,
+    validateDate,
+    validateGender,
+    validateLocation,
+    validatePhotos,
+    validatePreferences,
+    validateString,
+    validateTags
+} from "../../common/validation";
 
 const initialInputState = { value: "", valid: null }
 
@@ -28,22 +36,18 @@ function createInputReducer(validateFn) {
     }
 }
 
-const photosReducer = createInputReducer(photos =>
-    photos &&
-    photos.length > 1 &&
-    photos.length <= 5
-);
-const firstnameReducer = createInputReducer(firstname => !_.isEmpty(firstname));
-const lastnameReducer = createInputReducer(lastname => !_.isEmpty(lastname));
-const genreReducer = createInputReducer(genre => !_.isEmpty(genre));
+const photosReducer = createInputReducer(validatePhotos);
+const firstnameReducer = createInputReducer(validateString);
+const lastnameReducer = createInputReducer(validateString);
+const genreReducer = createInputReducer(validateGender);
 const preferencesReducer = createInputReducer(validatePreferences);
-const tagsReducer = createInputReducer(tags => validateTags);
+const tagsReducer = createInputReducer(validateTags);
 // TODO: Check if date is in valid range
-const dateReducer = createInputReducer(date => _.isDate(date));
+const dateReducer = createInputReducer(validateDate);
 // TODO: Make sure location is in France
-const locationReducer = createInputReducer(location => true);
+const locationReducer = createInputReducer(validateLocation);
 // TODO: Make sure bio is valid
-const biographyReducer = createInputReducer(bio => true);
+const biographyReducer = createInputReducer(validateBio);
 
 const genres = ["homme", "femme", "non binaire"];
 // TODO: remove hard coded suggests
@@ -65,11 +69,11 @@ function CreateProfile() {
     console.table({
         photos,
         firstname,
-        lastname, 
-        birthDate, 
+        lastname,
+        birthDate,
         location,
         genre,
-        preferences, 
+        preferences,
         tags,
         biography
     });
@@ -160,7 +164,7 @@ function CreateProfile() {
             <section className={styles['create-profile__form']}>
                 {/* Profile picture */}
                 <div className={styles['create-profile__image-container']}>
-                    <AddPhoto 
+                    <AddPhoto
                         onChange={onPhotosChange}
                         onBlur={onPhotosValidate}
                     />
