@@ -1,35 +1,32 @@
 import styles from "./Test.module.css";
 import GenericPage from "../page/GenericPage";
-import AddPhoto from "../../components/ui/photo/AddPhoto";
+import LocationInput from "../../components/ui/location/LocationInput";
 
-function Test(){
-    // const suggestedTags = ["beer", "ping-pong", "football", "baseball", "baise", "mainhi", "tony", "matcha"];
-    // const [tags, setTags] = useState([]);
-
-    // console.log("CHANGED");
-    // const onChangeHandler = (newTags) => {
-    //     console.log(newTags)
-    //     setTags(newTags);
-    // }
-
+function Test() {
     const style = {
         display: "flex",
         justiyContent: "center",
         alignItems: "center",
+        padding: "100px"
     }
-    
-    const onPhotoChangeHandler = (photos) => {
-        console.table(photos);
+
+    const onClickHandler = () => {
+        console.log("Clicked!");
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                console.log("Success!");
+                console.log(position);
+            },
+            (error) => {
+                console.log("Error getting geolocation!");
+                console.log(error);
+            }
+        );
     }
 
     return (
         <GenericPage className={styles.test} style={style}>
-            <AddPhoto onChange={onPhotoChangeHandler}/>
-            {/* <InputTagList
-                suggest={suggestedTags}
-                value={tags}
-                onChange={onChangeHandler}
-            /> */}
+            <LocationInput/>
         </GenericPage>
     );
 }
