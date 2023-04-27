@@ -8,12 +8,10 @@ const genders = ["femme", "homme", "non binaire"];
 const validateLocationSchema = new Ajv({ allErrors: true }).compile({
     type: "object",
     properties: {
-        city: { type: "string" },
         lat: { type: "number" },
         lng: { type: "number" },
-        region: { type: "string" }
     },
-    required: ["city", "lat", "lng", "region"],
+    required: ["lat", "lng"],
     additionalProperties: false,
 });
 const authorizedImageExtensions = [
@@ -105,10 +103,7 @@ export function validateBio(bio) {
  * @returns {Boolean}               A boolean, true if location is valid, false otherwise.
  */
 export function validateLocation(location) {
-    if (!validateLocationSchema(location))
-        return false;
-    const key = `${location.city}, ${location.region}`;
-    return key in cities && _.isEqual(cities[key], location);
+    return validateLocationSchema(location);
 }
 
 /**

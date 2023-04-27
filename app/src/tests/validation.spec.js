@@ -63,7 +63,7 @@ describe("validate biography correctly", () => {
             "x".repeat(300),
             "tony",
         ];
-        
+
         validBios.forEach(bio => {
             expect(validateBio(bio)).toBeTruthy();
         })
@@ -85,9 +85,9 @@ describe("validate biography correctly", () => {
 describe("validate location correctly", () => {
     it("returns true with valid location", () => {
         const validLocations = [
-            { "city": "Paris", "lat": 48.8566, "lng": 2.3522, "region": "Île-de-France" },
-            { "city": "Nice", "lat": 43.7034, "lng": 7.2663, "region": "Provence-Alpes-Côte d’Azur" },
-            { "city": "Toulouse", "lat": 43.6045, "lng": 1.444, "region": "Occitanie" }
+            { "lat": 48.8566, "lng": 2.3522 },
+            { "lat": 43.7034, "lng": 7.2663 },
+            { "lat": 43.6045, "lng": 1.444  }
         ];
 
         validLocations.forEach(location => {
@@ -97,15 +97,16 @@ describe("validate location correctly", () => {
 
     it("returns false with invalid location", () => {
         const invalidLocations = [
-            { },
+            {},
             // Missing one key
-            { "city": "Paris", "lat": 48.8566, "lng": 2.3522 },
+            { "lat": 48.8566 },
+            { "lng": 48.8566 },
             // Value of invalid type
-            { "city": "Toulouse", "lat": "43.6045", "lng": "1.444", "region": "Occitanie" },
+            { "lat": 43.6045, "lng": "1.444" },
+            { "lat": "43.6045", "lng": 1.444 },
+            { "lat": "43.6045", "lng": "1.444" },
             // Invalid value
-            123,
-            // Inexistent city
-            { "city": "Tony", "lat": "43.6045", "lng": "1.444", "region": "Occitanie" },
+            123
         ];
 
         invalidLocations.forEach(location => {
@@ -126,7 +127,7 @@ describe("validate tags correctly", () => {
             expect(validateTags(tags)).toBeTruthy();
         });
     });
-    
+
     it("return false with invalid tags", () => {
         const invalidTagsArrays = [
             [],
