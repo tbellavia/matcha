@@ -1,5 +1,5 @@
 import { getMinAge } from "../common/utils";
-import { validateBio, validateDate, validateGender, validateLocation } from "../common/validation";
+import { validateBio, validateDate, validateGender, validateLocation, validateTags } from "../common/validation";
 
 describe("validate gender correctly", () => {
     it("returns true with valid genders", () => {
@@ -102,6 +102,35 @@ describe("validate location correctly", () => {
 
         invalidLocations.forEach(location => {
             expect(validateLocation(location)).toBeFalsy();
+        });
+    });
+});
+
+describe("validate tags correctly", () => {
+    it("returns true with valid tags", () => {
+        const validTagsArrays = [
+            ["beer"],
+            ["beer", "baseball"],
+            ["beer", "baseball", "football"],
+        ];
+
+        validTagsArrays.forEach(tags => {
+            expect(validateTags(tags)).toBeTruthy();
+        });
+    });
+    
+    it("return false with invalid tags", () => {
+        const invalidTagsArrays = [
+            [],
+            [""],
+            ["", ""],
+            true,
+            NaN
+        ];
+        
+        invalidTagsArrays.forEach(tags => {
+            console.log(tags);
+            expect(validateTags(tags)).toBeFalsy();
         });
     });
 });
