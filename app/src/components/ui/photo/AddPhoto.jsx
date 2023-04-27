@@ -6,6 +6,7 @@ import Icon from "../icons/Icon";
 
 function AddPhoto({ 
     onChange = () => { },
+    onBlur = () => { }
 }) {
     const classes = `${styles.addPhoto}`
     const classe = `${style.medium__photo} ${style.photo}`
@@ -13,7 +14,9 @@ function AddPhoto({
 
     const onChangeHandle = ((e) => {
         const newSelectedFiles = [...selectedFile, e.target.files[0]];
-        onChange(newSelectedFiles);
+        const filesToUpload = newSelectedFiles.map(file => new File([file], file.name));
+        onChange(filesToUpload);
+        onBlur(filesToUpload);
         setSelectedFile(newSelectedFiles);
         e.target.value = null
     })
@@ -27,6 +30,11 @@ function AddPhoto({
         }
         images.splice(index, 1)
     })
+
+    const onBlurHandle = () => {
+        const filesToUpload = selectedFile.map(file => new File([file], file.name));
+        onBlur(filesToUpload);
+    }
 
     let images = []
     let inp = null
@@ -57,7 +65,7 @@ function AddPhoto({
     }
 
     return (
-        <div className={`${styles.divAdd}`}>
+        <div className={`${styles.divAdd}`} onBlur={onBlurHandle}>
             <React.Fragment>{images}</React.Fragment>
             {inp}
         </div>

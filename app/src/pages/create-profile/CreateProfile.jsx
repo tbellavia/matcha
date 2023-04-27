@@ -50,6 +50,7 @@ const genres = ["homme", "femme", "non binaire"];
 const dummySuggests = ["beer", "baseball", "football", "yoga", "healthy"];
 
 function CreateProfile() {
+    const [photos, dispatchPhotos] = useReducer(photosReducer, { value: [], valid: null });
     const [firstname, dispatchFirstname] = useReducer(firstnameReducer, initialInputState);
     const [lastname, dispatchLastname] = useReducer(lastnameReducer, initialInputState);
     const [birthDate, dispatchBirthDate] = useReducer(dateReducer, initialInputState);
@@ -62,6 +63,7 @@ function CreateProfile() {
     console.clear();
     console.log("================================");
     console.table({
+        photos,
         firstname,
         lastname, 
         birthDate, 
@@ -71,6 +73,15 @@ function CreateProfile() {
         tags,
         biography
     });
+
+    /* Photos */
+    const onPhotosChange = (value) => {
+        dispatchPhotos({ type: "UPDATE", value });
+    }
+
+    const onPhotosValidate = (value) => {
+        dispatchPhotos({ type: "VALIDATE" });
+    }
 
     /* Firstname */
     const onFirstnameChange = (value) => {
@@ -149,7 +160,10 @@ function CreateProfile() {
             <section className={styles['create-profile__form']}>
                 {/* Profile picture */}
                 <div className={styles['create-profile__image-container']}>
-                    <AddPhoto />
+                    <AddPhoto 
+                        onChange={onPhotosChange}
+                        onBlur={onPhotosValidate}
+                    />
                 </div>
 
                 {/* Input group */}
