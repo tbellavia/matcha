@@ -17,10 +17,10 @@ const validateLocationSchema = new Ajv({ allErrors: true }).compile({
     additionalProperties: false,
 });
 const authorizedImageExtensions = [
-    ".jpeg",
-    ".jpg",
-    ".png",
-]
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+];
 
 export const authorizedImageExtensionsString = authorizedImageExtensions.join(",");
 
@@ -122,5 +122,31 @@ export function validateTags(tags) {
         _.isArray(tags) && 
         !_.isEmpty(tags) &&
         tags.every(tag => _.isString(tag) && !_.isEmpty(tag))
+    );
+}
+
+/**
+ * Validate a photo.
+ * A valid photo is a javascript File object with one of the following MIME type : image/jpeg, image/jpg, image/png.
+ * @param {File}        photo   A photo to validate.
+ * @returns {Boolean}           A boolean, true if photo is valid, false otherwise.
+ */
+export function validatePhoto(photo) {
+    return (photo instanceof File) && authorizedImageExtensions.includes(photo.type);
+}
+
+/**
+ * Validate photos.
+ * A valid photos, is a non-empty array composed of at least one image file
+ * and a maximum of five images file.
+ * @param {Array}       photos  A file array containing images only.
+ * @returns {Boolean}           A boolean, true if photos is valid, false otherwise.
+ */
+export function validatePhotos(photos) {
+    return (
+        _.isArray(photos) && 
+        photos.length > 1 && 
+        photos.length <= 5 &&
+        photos.every(photo => validatePhoto(photo))
     );
 }

@@ -1,5 +1,13 @@
 import { getMinAge } from "../common/utils";
-import { validateBio, validateDate, validateGender, validateLocation, validateTags } from "../common/validation";
+import {
+    validateBio,
+    validateDate,
+    validateGender,
+    validateLocation,
+    validatePhoto,
+    validatePhotos,
+    validateTags 
+} from "../common/validation";
 
 describe("validate gender correctly", () => {
     it("returns true with valid genders", () => {
@@ -127,10 +135,66 @@ describe("validate tags correctly", () => {
             true,
             NaN
         ];
-        
+
         invalidTagsArrays.forEach(tags => {
-            console.log(tags);
             expect(validateTags(tags)).toBeFalsy();
+        });
+    });
+});
+
+function createFile(filename, type, content = "") {
+    const blob = new Blob([content], { type });
+    return new File([blob], filename, { type });
+}
+
+describe("validate a photo correctly", () => {
+    it("returns true if photo is valid", () => {
+        const validPhotos = [
+            createFile("1.jpeg", "image/jpeg"),
+            createFile("2.jpg", "image/jpg"),
+            createFile("3.png", "image/png"),
+        ];
+
+        validPhotos.forEach(photo => {
+            expect(validatePhoto(photo)).toBeTruthy();
+        })
+    });
+
+    it("returns false if photo is invalid", () => {
+        const invalidPhotos = [
+            createFile("1.pdf", "application/jpeg"),
+            createFile("2.json", "application/json"),
+            createFile("3.mp3", "audio/mpeg"),
+        ];
+
+        invalidPhotos.forEach(photo => {
+            expect(validatePhoto(photo)).toBeFalsy();
+        })
+    });
+});
+
+describe("validate photos correctly", () => {
+    it("returns true with valid photos", () => {
+        const validPhotos = [
+            // Jpeg
+            [createFile("1.jpeg", "image/jpeg"), createFile("2.jpeg", "image/jpeg"), createFile("3.jpeg", "image/jpeg"), createFile("4.jpeg", "image/jpeg"), createFile("5.jpeg", "image/jpeg")],
+            [createFile("1.jpeg", "image/jpeg"), createFile("2.jpeg", "image/jpeg"), createFile("3.jpeg", "image/jpeg"), createFile("4.jpeg", "image/jpeg")],
+            [createFile("1.jpeg", "image/jpeg"), createFile("2.jpeg", "image/jpeg"), createFile("3.jpeg", "image/jpeg")],
+            [createFile("1.jpeg", "image/jpeg"), createFile("2.jpeg", "image/jpeg")],
+            // jpg
+            [createFile("1.jpg", "image/jpg"), createFile("2.jpg", "image/jpg"), createFile("3.jpg", "image/jpg"), createFile("4.jpg", "image/jpg"), createFile("5.jpg", "image/jpg")],
+            [createFile("1.jpg", "image/jpg"), createFile("2.jpg", "image/jpg"), createFile("3.jpg", "image/jpg"), createFile("4.jpg", "image/jpg")],
+            [createFile("1.jpg", "image/jpg"), createFile("2.jpg", "image/jpg"), createFile("3.jpg", "image/jpg")],
+            [createFile("1.jpg", "image/jpg"), createFile("2.jpg", "image/jpg")],
+            // png
+            [createFile("1.png", "image/png"), createFile("2.png", "image/png"), createFile("3.png", "image/png"), createFile("4.png", "image/png"), createFile("5.png", "image/png")],
+            [createFile("1.png", "image/png"), createFile("2.png", "image/png"), createFile("3.png", "image/png"), createFile("4.png", "image/png")],
+            [createFile("1.png", "image/png"), createFile("2.png", "image/png"), createFile("3.png", "image/png")],
+            [createFile("1.png", "image/png"), createFile("2.png", "image/png")],
+        ];
+
+        validPhotos.forEach(photos => {
+            expect(validatePhotos(photos)).toBeTruthy();
         });
     });
 });
