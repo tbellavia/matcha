@@ -1,7 +1,6 @@
 import _ from "lodash";
 import { getAge } from "./validation-utils";
 import { isSameArray } from "./utils";
-import { cities } from "../utils/cities";
 import Ajv from "ajv";
 
 const genders = ["femme", "homme", "non binaire"];
@@ -144,4 +143,14 @@ export function validatePhotos(photos) {
         photos.length <= 5 &&
         photos.every(photo => validatePhoto(photo))
     );
+}
+
+/**
+ * Validate a string.
+ * A string is considered valid if it is non-empty.
+ * @param {string}      s   A string to validate.
+ * @returns {Boolean}       A boolean, true if s is valid, false otherwise.
+ */
+export function validateString(s) {
+    return !_.isEmpty(s);
 }
