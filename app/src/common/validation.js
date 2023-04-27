@@ -16,6 +16,13 @@ const validateLocationSchema = new Ajv({ allErrors: true }).compile({
     required: ["city", "lat", "lng", "region"],
     additionalProperties: false,
 });
+const authorizedImageExtensions = [
+    ".jpeg",
+    ".jpg",
+    ".png",
+]
+
+export const authorizedImageExtensionsString = authorizedImageExtensions.join(",");
 
 /**
  * Validate an email.

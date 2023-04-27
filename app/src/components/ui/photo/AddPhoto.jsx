@@ -3,6 +3,7 @@ import style from "./Photo.module.css";
 import { useState } from "react";
 import React from "react";
 import Icon from "../icons/Icon";
+import { authorizedImageExtensionsString } from "../../../common/validation";
 
 function AddPhoto({ 
     onChange = () => { },
@@ -42,7 +43,7 @@ function AddPhoto({
     if (selectedFile.length < 5) {
         inp = (
             <label className={classes}>
-                <input type="file" onChange={onChangeHandle} accept="image/*"/>
+                <input type="file" onChange={onChangeHandle} accept={authorizedImageExtensionsString}/>
                 <Icon className={`${styles.icon}`} variant="addCircle" />
             </label>
         )
