@@ -10,7 +10,7 @@ function AddPhoto({
     onBlur = () => { }
 }) {
     const classes = `${styles.addPhoto}`
-    const classe = `${style.medium__photo} ${style.photo}`
+    // const classe = `${style.photo}`
     const [selectedFile, setSelectedFile] = useState([])
 
     const onChangeHandle = ((e) => {
@@ -52,14 +52,16 @@ function AddPhoto({
 
     for (var i = 0; i < selectedFile.length; i++) {
         images.push(
-            <img
-                key={i}
-                data-index={i}
-                className={classe}
-                src={window.URL.createObjectURL(selectedFile[i])}
-                alt=""
-                onClick={onClickHandle}
-            />
+            <div key={i} className={styles['photo-container']}>
+                <img
+                    key={i}
+                    data-index={i}
+                    className={styles['photo']}
+                    src={window.URL.createObjectURL(selectedFile[i])}
+                    alt=""
+                    onClick={onClickHandle}
+                />
+            </div>
         )
     }
 
