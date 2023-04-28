@@ -1,20 +1,26 @@
+:root {
+    --photo-little-size: 46px;
+    --photo-medium-size: 94px;
+    --photo-large-size: 368px;
+}
+
 .photo{
     border-radius: 10%;
 }
 
 .little__photo{
-    width : 46px;
-    height : 46px;
+    width : var(--photo-little-size);
+    height : var(--photo-little-size);
 }
 
 .medium__photo{
-    width : 94px;
-    height: 94px;
+    width : var(--photo-medium-size);
+    height: var(--photo-medium-size);
 }
 
 .large__photo{
-    width: 368px;
-    height: 368px;
+    width: var(--photo-large-size);
+    height: var(--photo-large-size);
 }
 
 @media screen and (max-width: 500px), screen and (max-device-width:600px) {
