@@ -3,6 +3,7 @@
     --input-font-size: 1.2rem;
     --label-font-size: calc(var(--input-font-size) + 0.1rem);
     --input-height: calc(var(--input-font-size) + 0.9rem);
+    --header-padded-size: 11%;
 }
 
 /* Theme */

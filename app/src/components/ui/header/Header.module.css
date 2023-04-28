@@ -25,7 +25,7 @@
 
 /* Left variant */
 .left__left-line {
-    width: 15%;
+    width: var(--header-padded-size);
 }
 
 .left__right-line {
@@ -38,7 +38,7 @@
 }
 
 .right__right-line {
-    width: 15%;
+    width: var(--header-padded-size);
 }
 
 @media screen and (max-width: 600px) {
