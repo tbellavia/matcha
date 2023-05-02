@@ -18,6 +18,30 @@
     height: 7px;
 }
 
+@media screen and (max-width: 600px) {
+    .header {
+        display: none;
+    }
+}
+
+/* Center the title on medium screen size */
+@media screen and (max-width: 1190px) {
+    .center__left-line,
+    .center__right-line {
+        width: 100%;
+    }
+
+    .left__left-line,
+    .left__right-line {
+        width: 100% !important;
+    }
+
+    .right__left-line,
+    .right__right-line {
+        width: 100% !important;
+    }
+}
+
 /* Center variant */
 .center__left-line,
 .center__right-line {
@@ -40,12 +64,6 @@
 
 .right__right-line {
     width: var(--header-padded-size);
-}
-
-@media screen and (max-width: 600px) {
-    .header {
-        display: none;
-    }
 }
 
 /* Light */
