@@ -1,0 +1,92 @@
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 100;
+}
+
+.profile > h1, h2, h3, h4 {
+    letter-spacing: 1px;
+}
+
+/* profile container */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+    top: calc(var(--photo-medium-size) / -2);
+    width: 600px;
+}
+
+/* Navigation */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.nav__left-container {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+}
+
+.name-label {
+    font-size: var(--profile-h2-size);
+}
+
+.nav__right-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Main infos */
+.profile-main-infos {
+    display: flex;
+    flex-direction: column;
+    padding-top: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-main-infos-top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-left-infos > h2 {
+    line-height: 1.7rem;
+}
+
+.profile-right-infos > h3 {
+    font-size: var(--profile-h3-size);
+    text-align: right;
+}
+
+.profile-right-infos > h4 {
+    font-size: var(--profile-h4-size);
+    text-align: right;
+}
+
+/* Carousel */
+
+/* Bio */
+
+/* Tags */
+
+/* Buttons */
+.button-container {
+    padding-top: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.button {
+    height: 40px;
+    width: 100%;
+}
