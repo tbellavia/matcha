@@ -17,6 +17,7 @@ const icons = {
 function Icon({ 
     variant, 
     className,
+    iconColor = "black",
     onClick = () => {} 
 }) {
     const CurrentIcon = icons[variant];
@@ -25,7 +26,7 @@ function Icon({
         throw new Error(`Icon: unknown variant '${variant}`);
     }
     return (
-        <CurrentIcon className={className} onClick={onClick}/>
+        <CurrentIcon className={className} onClick={onClick} iconColor={iconColor}/>
     );
 }
 
