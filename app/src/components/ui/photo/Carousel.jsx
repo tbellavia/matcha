@@ -7,7 +7,6 @@ function Carousel({ tabPhotos }) {
     const [checkedPhotos, setcheckedPhotos] = useState(0)
 
     const onChangeHandle = ((e) => {
-        console.log(e.target.id)
         setcheckedPhotos(parseInt(e.target.id))
     })
 
@@ -24,10 +23,13 @@ function Carousel({ tabPhotos }) {
             </React.Fragment>
         )
 
-        inputs2.push(<Photo data={tabPhotos[i]} size="large" />)
+        inputs2.push(
+            <Photo key={i} data={tabPhotos[i]} size="large" />
+        )
     }
 
-    return (<div>
+    return (
+        <div>
             <div className={`${styles["carousel"]}`}>
                 {inputs}
             </div>
