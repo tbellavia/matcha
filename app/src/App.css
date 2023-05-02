@@ -4,6 +4,7 @@
     --label-font-size: calc(var(--input-font-size) + 0.1rem);
     --input-height: calc(var(--input-font-size) + 0.9rem);
     --header-padded-size: 11%;
+    --border-radius: 10px;
 }
 
 /* Theme */
@@ -21,5 +22,5 @@
 
 /* Global Styles */
 .round {
-    border-radius: 10px;
+    border-radius: var(--border-radius);
 }
