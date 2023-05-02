@@ -5,6 +5,16 @@
     --input-height: calc(var(--input-font-size) + 0.9rem);
     --header-padded-size: 11%;
     --border-radius: 10px;
+    --profile-h2-size: calc(var(--label-font-size) + 0.7rem);
+    --profile-h3-size: calc(var(--label-font-size) + 0.2rem);
+    --profile-h4-size: calc(var(--label-font-size));
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-weight: 100;
 }
 
 /* Theme */
