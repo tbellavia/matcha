@@ -6,6 +6,7 @@
 
 .photo{
     border-radius: 10%;
+    object-fit: cover;
 }
 
 .little__photo{
