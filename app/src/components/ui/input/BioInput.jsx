@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import useUniqueId from "../../../hooks/use-unique-id";
-import Label from "../label/Label";
 import styles from "./BioInput.module.css";
 import _ from "lodash";
 import AppContext from "../../../store/AppContext";
+import Bio from "../bio/Bio";
 
 function BioInput({
     value,
@@ -30,17 +30,7 @@ function BioInput({
 
     return (
         <div className={styles.bio}>
-            <div className={styles['bio__label-container']}>
-                <Label label="Bio" htmlFor={id}/>
-            </div>
-            <div className={styles['bio__input-container']}>
-                <textarea
-                    id={id} 
-                    onChange={onChangeHandler} 
-                    onBlur={onBlurHandler}
-                    value={value}
-                ></textarea>
-            </div>
+            <Bio id={id} value={value} onChange={onChangeHandler} onBlur={onBlurHandler}/>
             <div className={styles['bio__counter-container']}>
                 <p className={styles[`bio__counter__${theme}`]}>{`${value.length}/${limit}`}</p>
             </div>

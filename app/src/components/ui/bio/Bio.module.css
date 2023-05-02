@@ -1,0 +1,17 @@
+.bio {
+    background-color: var(--color-light-3);
+    padding: 7px 15px;
+    font-size: var(--input-font-size);
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 100px;
+    max-height: 200px;
+    width: 100%;
+    border-radius: 10px;
+
+    /* Remove basic style */
+    border-style: none;
+    border-color: Transparent;
+    overflow: auto;
+    outline: none;
+}
