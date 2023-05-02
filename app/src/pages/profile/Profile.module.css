@@ -48,8 +48,8 @@
     flex-direction: column;
     padding-top: 15px;
     width: 100%;
-    display: flex;
     justify-content: space-between;
+    gap: 5px;
 }
 
 .profile-main-infos-top {
@@ -89,4 +89,47 @@
 .button {
     height: 40px;
     width: 100%;
+}
+
+/* Footer nav */
+.footer-nav {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    background-color: #EED9DD;
+    width: 100vw;
+    display: flex;
+    padding: 10px 0;
+}
+
+@media screen and (min-width: 600px) {
+    .footer-nav {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .profile {
+        gap: 20px;
+    }
+
+    .profile-container {
+        width: 95vw;
+        top: 0px;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .profile-main-infos {
+        flex-direction: column-reverse;
+    }
+}
+
+@media screen and (min-height: 840px) {
+    .footer-nav {
+        position: fixed;
+        bottom: 0px;
+    }
 }
