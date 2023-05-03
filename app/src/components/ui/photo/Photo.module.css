@@ -24,9 +24,9 @@
     height: var(--photo-large-size);
 }
 
-@media screen and (max-width: 500px), screen and (max-device-width:600px) {
+@media screen and (max-width: 500px) {
     .large__photo {
         width: 95vw;
         height: 95vw;
-    }   
+    }       
 }
