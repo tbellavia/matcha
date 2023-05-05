@@ -21,6 +21,7 @@ function InputTagList({
 
     useUpdateEffect(() => {
         onChange(tagList);
+        onBlur();
     }, [tagList])
 
     const valideValue = value => {
@@ -36,7 +37,8 @@ function InputTagList({
         setTagList(prevTagList => prevTagList.filter(tag => tag !== value));
         if(suggestAlreadyUse.indexOf(value) !== -1){
             setAlreadyUse(prevSuggestedTags => prevSuggestedTags.filter(tag => tag !== value));
-            setSuggestedTags([...suggestedTags, value])}
+            setSuggestedTags([...suggestedTags, value])
+        }
     }
 
     return (
