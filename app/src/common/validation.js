@@ -48,14 +48,15 @@ export function validatePassword(password) {
 
 /**
  * Validate a date.
- * A date is considered valid if it is an instance of Date object and if the date is 
+ * A date is considered valid if it is a string in the format "yyyy-mm-dd" and if the date string is 
  * at least the current year minus 18 years.
- * @param {Date}        date    A date object
- * @returns {Boolean}           A boolean, true if date is valid, false otherwise
+ * @param {Date}        strDate     A date string in the following format : "yyyy-mm-dd"
+ * @returns {Boolean}               A boolean, true if date is valid, false otherwise
  */
-export function validateDate(date) {
-    return _.isDate(date) && getAge(date) >= 18;
+export function validateDate(strDate) {
+    return _.isString(strDate) && getAge(new Date(strDate)) >= 18;
 }
+
 
 /**
  * Validate preferences.

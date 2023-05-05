@@ -59,7 +59,7 @@ function CreateProfile() {
     const [lastname, dispatchLastname] = useReducer(lastnameReducer, initialInputState);
     const [birthDate, dispatchBirthDate] = useReducer(dateReducer, initialInputState);
     const [location, dispatchLocation] = useReducer(locationReducer, initialInputState);
-    const [genre, dispatchGenre] = useReducer(genreReducer, initialInputState);
+    const [genre, dispatchGenre] = useReducer(genreReducer, { value: "homme", valid: null });
     const [preferences, dispatchPreference] = useReducer(preferencesReducer, initialInputState);
     const [tags, dispatchTags] = useReducer(tagsReducer, { value: [], valid: null });
     const [biography, dispatchBiography] = useReducer(biographyReducer, initialInputState);
