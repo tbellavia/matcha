@@ -1,3 +1,5 @@
+import { Buffer } from "buffer";
+
 /**
  * Check if two arrays are equal.
  * Two array are considered equal if their size are equal and if every
@@ -55,4 +57,11 @@ export function getMinAge() {
       }
 
     return (yyyy-18) + "-" + mm + "-" + dd
+}
+
+/**
+ * Transform file object to base64.
+ */
+export async function fileToBase64(file) {
+    return Buffer.from(await file.arrayBuffer()).toString('base64');
 }

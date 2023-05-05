@@ -20,8 +20,12 @@ import {
     validateString,
     validateTags
 } from "../../common/validation";
+import Alert from "../../components/ui/alert/Alert";
+import { fileToBase64 } from "../../common/utils";
 
-const initialInputState = { value: "", valid: null }
+function createInitialState(value, fieldname) {
+    return { valid: null, value, fieldname };
+}
 
 function createInputReducer(validateFn) {
     return (state, action) => {
@@ -33,6 +37,33 @@ function createInputReducer(validateFn) {
             default:
                 throw new Error(`Unkown action '${action}'`);
         }
+    }
+}
+
+function errorReducer(state, action) {
+    switch (action.type) {
+        case "PHOTOS":
+            return "Votre profil doit contenir au moins 2 photos";
+        case "FIRSTNAME":
+            return "Votre prénom doit contenir au moins 1 caractère";
+        case "LASTNAME":
+            return "Votre nom doit contenir au moins 1 caractère";
+        case "BIRTH_DATE":
+            return "Vous devez avoir au moins 18 ans pour vous inscrire";
+        case "LOCATION":
+            return "Vous devez préciser une géolocalisation";
+        case "GENRE":
+            return "Vous devez renseigner votre genre";
+        case "PREFERENCES":
+            return "Vous devez au choisir moins une préférence";
+        case "TAGS":
+            return "Vous devez avoir au moins un tags";
+        case "BIOGRAPHY":
+            return "Votre biographie ne peut pas être vide, décrivez vous en 300 caractères :)";
+        case "CLEAR":
+            return null;
+        default:
+            throw new Error(`Unknown action '${action}'`);
     }
 }
 
@@ -54,33 +85,23 @@ const genres = ["homme", "femme", "non binaire"];
 const dummySuggests = ["beer", "baseball", "football", "yoga", "healthy"];
 
 function CreateProfile() {
-    const [photos, dispatchPhotos] = useReducer(photosReducer, { value: [], valid: null });
-    const [firstname, dispatchFirstname] = useReducer(firstnameReducer, initialInputState);
-    const [lastname, dispatchLastname] = useReducer(lastnameReducer, initialInputState);
-    const [birthDate, dispatchBirthDate] = useReducer(dateReducer, initialInputState);
-    const [location, dispatchLocation] = useReducer(locationReducer, initialInputState);
-    const [genre, dispatchGenre] = useReducer(genreReducer, { value: "homme", valid: null });
-    const [preferences, dispatchPreference] = useReducer(preferencesReducer, initialInputState);
-    const [tags, dispatchTags] = useReducer(tagsReducer, { value: [], valid: null });
-    const [biography, dispatchBiography] = useReducer(biographyReducer, initialInputState);
+    const [photos, dispatchPhotos] = useReducer(photosReducer, createInitialState([], "PHOTOS"));
+    const [firstname, dispatchFirstname] = useReducer(firstnameReducer, createInitialState("", "FIRSTNAME"));
+    const [lastname, dispatchLastname] = useReducer(lastnameReducer, createInitialState("", "LASTNAME"));
+    const [birthDate, dispatchBirthDate] = useReducer(dateReducer, createInitialState("", "BIRTH_DATE"));
+    const [location, dispatchLocation] = useReducer(locationReducer, createInitialState("", "LOCATION"));
+    const [genre, dispatchGenre] = useReducer(genreReducer, { valid: true, value: "homme", fieldname: "GENRE" });
+    const [preferences, dispatchPreference] = useReducer(preferencesReducer, createInitialState("", "PREFERENCES"));
+    const [tags, dispatchTags] = useReducer(tagsReducer, createInitialState([], "TAGS"));
+    const [biography, dispatchBiography] = useReducer(biographyReducer, createInitialState("", "BIOGRAPHY"));
+    const [error, dispatchError] = useReducer(errorReducer, null);
+    const fields = [photos, firstname, lastname, birthDate, location, genre, preferences, tags, biography];
 
-    console.clear();
-    console.log("================================");
-    console.table({
-        photos,
-        firstname,
-        lastname,
-        birthDate,
-        location,
-        genre,
-        preferences,
-        tags,
-        biography
-    });
 
     /* Photos */
     const onPhotosChange = (value) => {
         dispatchPhotos({ type: "UPDATE", value });
+        dispatchError({ type: "CLEAR" });
     }
 
     const onPhotosValidate = (value) => {
@@ -90,6 +111,7 @@ function CreateProfile() {
     /* Firstname */
     const onFirstnameChange = (value) => {
         dispatchFirstname({ type: "UPDATE", value });
+        dispatchError({ type: "CLEAR" });
     }
 
     const onFirstnameValidate = (value) => {
@@ -99,6 +121,7 @@ function CreateProfile() {
     /* Lastname */
     const onLastnameChange = (value) => {
         dispatchLastname({ type: "UPDATE", value });
+        dispatchError({ type: "CLEAR" });
     }
 
     const onLastnameBlur = (value) => {
@@ -108,6 +131,7 @@ function CreateProfile() {
     /* Birth Date */
     const onBirthDateChange = (value) => {
         dispatchBirthDate({ type: "UPDATE", value });
+        dispatchError({ type: "CLEAR" });
     }
 
     const onBirthDateBlur = (value) => {
@@ -117,6 +141,7 @@ function CreateProfile() {
     /* Location */
     const onLocationChange = (value) => {
         dispatchLocation({ type: "UPDATE", value });
+        dispatchError({ type: "CLEAR" });
     }
 
     const onLocationBlur = (value) => {
@@ -126,6 +151,7 @@ function CreateProfile() {
     /* Genre */
     const onGenreChange = (value) => {
         dispatchGenre({ type: "UPDATE", value });
+        dispatchError({ type: "CLEAR" });
     }
 
     const onGenreValidate = (value) => {
@@ -135,6 +161,7 @@ function CreateProfile() {
     /* Preferences */
     const onPreferencesChange = (value) => {
         dispatchPreference({ type: "UPDATE", value });
+        dispatchError({ type: "CLEAR" });
     }
 
     const onPreferencesValidate = (value) => {
@@ -144,6 +171,7 @@ function CreateProfile() {
     /* Tags */
     const onTagsChange = (value) => {
         dispatchTags({ type: "UPDATE", value });
+        dispatchError({ type: "CLEAR" });
     }
 
     const onTagsValidate = (value) => {
@@ -153,10 +181,43 @@ function CreateProfile() {
     /* Bio */
     const onBiographyChange = (value) => {
         dispatchBiography({ type: "UPDATE", value });
+        dispatchError({ type: "CLEAR" });
     }
 
     const onBiographyValidate = (value) => {
         dispatchBiography({ type: "VALIDATE" });
+    }
+
+    const onClickHandler = async () => {
+        console.table({
+            photos,
+            firstname,
+            lastname,
+            birthDate,
+            location,
+            genre,
+            preferences,
+            tags,
+            biography
+        });
+
+        const invalidField = fields.find(field => !field.valid);
+        if (invalidField) {
+            return dispatchError({ type: invalidField.fieldname });
+        }
+
+        const data = {
+            first_name: firstname.value,
+            last_name: lastname.value,
+            genre: genre.value,
+            preference: preferences.value,
+            biography: biography.value,
+            tags: tags.value,
+            latitude: location.value.lat,
+            longitutde: location.value.lng,
+            photos: await Promise.all(photos.value.map(fileToBase64)),
+        }
+        console.log(data);
     }
 
     return (
@@ -240,9 +301,15 @@ function CreateProfile() {
                     />
                 </div>
 
+                {error &&
+                    <div className={styles['create-profile__alert-container']}>
+                        <Alert>{error}</Alert>
+                    </div>
+                }
+
                 {/* Button */}
                 <div className={styles['create-profile__button-container']}>
-                    <Button variant="validation">valider</Button>
+                    <Button variant="validation" onClick={onClickHandler}>valider</Button>
                 </div>
             </section>
         </PageHeader>

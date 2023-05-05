@@ -17,10 +17,6 @@
     width: 700px;
 }
 
-.create-profile__form>div {
-    /* border: 1px black solid; */
-}
-
 /* Image */
 .create-profile__image-container {
     display: flex;
@@ -56,6 +52,11 @@
 
 /* Bio */
 .create-profile__bio-container {
+    width: 100%;
+    padding: var(--create-profile-padding);
+}
+
+.create-profile__alert-container {
     width: 100%;
     padding: var(--create-profile-padding);
 }
