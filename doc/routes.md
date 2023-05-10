@@ -27,6 +27,7 @@ UserProfile :
             preference: [string] => ["homme", "femme"]
             biograpy:   string(500)
             tags:       [string] => ["beer", "baseball", ...]
+            newTags:    [string]
             latitude:   float
             longitude:  float
             photos:     [Blob]
