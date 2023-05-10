@@ -22,17 +22,14 @@ UserProfile :
         {
             first_name: string(100)
             last_name:  string(100)
-            genre:      int
-            preference: int
+            birthdate:  str
+            genre:      str => "homme", "femme", ...
+            preference: [string] => ["homme", "femme"]
             biograpy:   string(500)
-            tags:       int
-            loc:        string(50)
-            rating:     int
-            photo1:     text 
-            photo2:     text
-            photo3:     text
-            photo4:     text
-            photo5:     text
+            tags:       [string] => ["beer", "baseball", ...]
+            latitude:   float
+            longitude:  float
+            photos:     [Blob]
             usermail:   string(20)
             passWord:   string(20)
         }
@@ -41,17 +38,14 @@ UserProfile :
         {
             first_name: string(100)
             last_name:  string(100)
-            genre:      int
-            preference: int
+            birthdate:  str
+            genre:      string => "homme", "femme"
+            preference: [string] => ["homme", "femme"]
             biograpy:   string(500)
-            tags:       int
-            loc:        string(50)
-            rating:     int
-            photo1:     text 
-            photo2:     text
-            photo3:     text
-            photo4:     text
-            photo5:     text
+            tags:       [string] => ["beer", "baseball", ...]
+            latitude:   float
+            longitude:  float
+            photos:     [Blob]
             usermail:   string(20)
             passWord:   string(20)
         }
