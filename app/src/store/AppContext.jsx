@@ -14,7 +14,7 @@ const AppContext = createContext({
 export const AppContextProvider = (props) => {
     const ctx = useContext(AppContext);
     const [theme, setTheme] = useState(Theme.getStoredThemeOrDefault());
-    const [token, setToken] = useState(null);
+    const [token, setToken] = useState(localStorage.getItem("token"));
 
     const onThemeSet = (theme) => {
         setTheme(theme);
@@ -23,7 +23,9 @@ export const AppContextProvider = (props) => {
 
     const onTokenSet = (token) => {
         setToken(token);
+        localStorage.setItem("token", token);
     }
+
     changeBackground(Theme.getStoredThemeOrDefault());
     return (
         <AppContext.Provider value={{
