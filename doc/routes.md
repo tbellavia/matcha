@@ -27,12 +27,9 @@ UserProfile :
             preference: [string] => ["homme", "femme"]
             biograpy:   string(500)
             tags:       [string] => ["beer", "baseball", ...]
-            newTags:    [string]
             latitude:   float
             longitude:  float
             photos:     [Blob]
-            usermail:   string(20)
-            passWord:   string(20)
         }
     - PUT         /api/user/profile/me
         - Body 
@@ -47,8 +44,6 @@ UserProfile :
             latitude:   float
             longitude:  float
             photos:     [Blob]
-            usermail:   string(20)
-            passWord:   string(20)
         }
     - DELETE    /api/user/profile/me
     - DELETE    /api/user/profile/:id

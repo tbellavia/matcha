@@ -22,6 +22,8 @@ import {
 } from "../../common/validation";
 import Alert from "../../components/ui/alert/Alert";
 import { fileToBase64 } from "../../common/utils";
+import useFetch from "../../hooks/use-fetch";
+import { useCallback } from "react";
 
 function createInitialState(value, fieldname) {
     return { valid: null, value, fieldname };
@@ -188,6 +190,8 @@ function CreateProfile() {
         dispatchBiography({ type: "VALIDATE" });
     }
 
+    const fetcher = useFetch();
+
     const onClickHandler = async () => {
         console.table({
             photos,
@@ -209,6 +213,7 @@ function CreateProfile() {
         const data = {
             first_name: firstname.value,
             last_name: lastname.value,
+            birthdate: birthDate.value,
             genre: genre.value,
             preference: preferences.value,
             biography: biography.value,
@@ -217,8 +222,9 @@ function CreateProfile() {
             longitutde: location.value.lng,
             photos: await Promise.all(photos.value.map(fileToBase64)),
         }
+        fetcher("/api/user/profile/me", "POST", {data})
         console.log(data);
-    }
+    };
 
     return (
         <PageHeader className={styles['create-profile']}>
