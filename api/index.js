@@ -628,7 +628,7 @@ app.get("/api/user/chat/me/:target", checkTokenMiddleware, checkProfileCreatedMi
     if (err) {
       return res.status(400).json({ message: err.message })
     }
-    return res.json({"result" : result.rows})
+    return res.json({"chatId": idChat,"result" : result.rows})
   })
 })
 

@@ -75,16 +75,16 @@ INSERT INTO UserLogin
     active,
     id_user_profile
 )
-VALUES ('test1@test1','pwd',TRUE,1),
-('test2@test2','pwd',TRUE,2),
-('test3@test3','pwd',TRUE,3),
-('test4@test4','pwd',TRUE,4),
-('test5@test5','pwd',TRUE,5),
-('test6@test6','pwd',TRUE,6),
-('test7@test7','pwd',TRUE,7),
-('test8@test8','pwd',TRUE,8),
-('test9@test9','pwd',TRUE,9),
-('test10@test10','pwd',TRUE,10);
+VALUES ('test1@test1.com','pwd',TRUE,1),
+('test2@test2.com','pwd',TRUE,2),
+('test3@test3.com','pwd',TRUE,3),
+('test4@test4.com','pwd',TRUE,4),
+('test5@test5.com','pwd',TRUE,5),
+('test6@test6.com','pwd',TRUE,6),
+('test7@test7.com','pwd',TRUE,7),
+('test8@test8.com','pwd',TRUE,8),
+('test9@test9.com','pwd',TRUE,9),
+('test10@test10.com','pwd',TRUE,10);
 
 INSERT INTO UserProfile
 (
