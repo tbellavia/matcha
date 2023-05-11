@@ -18,7 +18,8 @@ function Carousel({ tabPhotos }) {
                 <input type="radio" className={`${styles.inputCarousel}`} name="a" id={`${i}`} checked={checkedPhotos === i} onChange={onChangeHandle} />
                 <label className={`${styles.labelCarousel}`} htmlFor={`${i}`} ></label>
                 <div className={`${styles.ci}`}>
-                    <img src={tabPhotos[i]} alt="Snow on leafs" />
+                    {/* <img src={tabPhotos[i]}/> */}
+                    <Photo key={i} data={tabPhotos[i]} size="large" />
                 </div>
             </React.Fragment>
         )
@@ -29,7 +30,7 @@ function Carousel({ tabPhotos }) {
     }
 
     return (
-        <div>
+        <div className={styles['carousel-container']}>
             <div className={`${styles["carousel"]}`}>
                 {inputs}
             </div>
