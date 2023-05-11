@@ -1,3 +1,4 @@
+import Label from "../label/Label";
 import styles from "./InputTagList.module.css";
 import Tag from "./Tag";
 
@@ -6,7 +7,7 @@ function Tags({tags}) {
     return (
         <div className={styles["input-tag-list"]}>
             <div className={styles["tag-label-container"]}>
-                <label htmlFor="">Tags</label>
+                <Label label="Tags"/>
             </div>
             <div className={styles["tags-container"]}>
                 <ul className={styles["tags"]}>
