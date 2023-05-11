@@ -308,14 +308,59 @@ app.get("/api/user/profile/:target", checkTokenMiddleware, checkProfileCreatedMi
 
 })
 
+function getGenreStringToInt(genre){
+  const tabGenre = ["homme","femme","non binaire"]
 
+  for(var i = 0, lth = tabGenre.length; i < lth; i++){  
+    if (genre == tabGenre[i]){
+      return(1 << i)
+    }
+  }
+  return(1 << i)
+}
+
+function getPrefTabToInt(TabPref){
+  let countPref = 0
+
+  for(var i = 0, lth = TabPref.length; i < lth; i++){  
+    constPref &= getGenreStringToInt(TabPref[i])
+  }
+  if (countPref == 0){
+    return (1 << 0)
+  }
+  return countPref
+}
+
+function getSaveNewTags(newTags){
+  const sql = "INSERT INTO tag (tag) VALUES ($1)";
+
+  for(var i = 0, lth = newTags.length; i < lth; i++){
+    pool.query(sql, newTags[i] , (err, result) => {
+      if (err) {
+        return res.status(400).json({ message: err.message })
+      }
+    })
+  }
+  return res.json({"message":"nouveaux tags enregistrer"})
+}
+
+function getPhotos(tabPhoto){
+  for(var i = tabPhoto.length; i < 5; i++){
+    tabPhoto.push(null)
+  }
+  return tabPhoto
+}
 
 app.post("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
   let idMax = 0
+  const genre = getGenreStringToInt(req.body.genre)
+  const pref = getPrefTabToInt(req.body.preference)
+  getSaveNewTags(req.body.newTags)
+  const photos = getPhotos(req.body.photos)
   const sql = "INSERT INTO userprofile (first_name, last_name, genre, preference, biograpy, tags, loc, rating, photo1, photo2, photo3, photo4, photo5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) ";
-  const arg = [req.body.first_name, req.body.last_name,req.body.genre,req.body.preference, 
-    req.body.biograpy, req.body.tags, req.body.loc, req.body.rating,
-    req.body.photo1, req.body.photo2, req.body.photo3, req.body.photo4, req.body.photo5]
+  const arg = [req.body.first_name, req.body.last_name,genre,pref, 
+    req.body.biograpy, req.body.tags.toString(), req.body.loc, req.body.rating,
+    photos[0], photos[1], photos[2], photos[3], photos[4]]
   pool.query(sql, arg , (err, result) => {
     if (err) {
       return res.status(400).json({ message: err.message })
@@ -346,10 +391,14 @@ app.post("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
 
 app.put("/api/user/profile/me", checkTokenMiddleware, checkProfileCreatedMiddleware,(req, res) => {
   // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biograpy = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
+  const genre = getGenreStringToInt(req.body.genre)
+  const pref = getPrefTabToInt(req.body.preference)
+  getSaveNewTags(req.body.newTags)
+  const photos = getPhotos(req.body.photos)
   const sql = "UPDATE userprofile SET first_name = $1, last_name = $2, genre = $3, preference = $4, biograpy = $5, tags = $6, loc = $7, rating = $8, photo1 = $9, photo2 = $10, photo3 = $11, photo4 = $12, photo5 = $13 FROM userlogin WHERE userprofile.id = userlogin.id_user_profile AND userlogin.id = $14";
-  const arg = [req.body.first_name, req.body.last_name,req.body.genre,req.body.preference, 
+  const arg = [req.body.first_name, req.body.last_name,genre,pref, 
     req.body.biograpy, req.body.tags, req.body.loc, req.body.rating,
-    req.body.photo1, req.body.photo2, req.body.photo3, req.body.photo4, req.body.photo5,res.locals.id_user]
+    photos[0], photos[1], photos[2], photos[3], photos[4],res.locals.id_user]
   pool.query(sql, arg , (err, result) => {
     if (err) {
       return res.status(400).json({ message: err.message })
@@ -570,7 +619,7 @@ app.get("/api/user/chat/me/:target", checkTokenMiddleware, checkProfileCreatedMi
   
   idChat = await getChatId(idProfile, req.params.target)
   if (idChat == null){
-    return res.status(400).jdon({message: ERROR_CHAT})
+    return res.status(400).json({message: ERROR_CHAT})
   }
 
   sql = "SELECT * FROM message WHERE id_chat = $1 ORDER BY date_envoi DESC OFFSET $2 LIMIT $3"
@@ -592,7 +641,7 @@ app.delete("/api/user/chat/me/:target", checkTokenMiddleware, checkProfileCreate
   
   idChat = await getChatId(idProfile, req.params.target)
   if (idChat == null){
-    return res.status(400).jdon({message: ERROR_CHAT})
+    return res.status(400).json({message: ERROR_CHAT})
   }
 
   sql = "DELETE FROM message WHERE message.id_chat = $1"
@@ -726,7 +775,7 @@ app.post("/api/user/blocked/me/:target", checkTokenMiddleware, checkProfileCreat
   
   idChat = await getChatId(idProfile, req.params.target)
   if (idChat == null){
-    return res.status(400).jdon({message: ERROR_CHAT})
+    return res.status(400).json({message: ERROR_CHAT})
   }
 
   sql = "DELETE FROM message WHERE message.id_chat = $1"

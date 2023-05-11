@@ -13,6 +13,7 @@ import MailValidation from "./pages/mailValidation/MailValidation";
 import TestPage from "./pages/test/TestPage";
 import CreateProfile from "./pages/create-profile/CreateProfile";
 import Profile from "./pages/profile/Profile";
+import Chat from "./pages/chat/Chat"
 
 const router = createBrowserRouter([
   { 
@@ -35,7 +36,7 @@ const router = createBrowserRouter([
         path: "chat",
         children: [
           { index: true, element: <TestPage title="/chat"/> },
-          { path: ":id", element: <TestPage title="/chat/:id"/> },
+          { path: ":id", element: <Chat title="/chat/:id"/> },
         ]
       },
       { path: "test", element: <Test/> },
