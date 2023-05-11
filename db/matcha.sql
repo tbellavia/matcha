@@ -15,7 +15,7 @@ CREATE TABLE UserProfile (
     genre INT,
     preference INT,
     biograpy TEXT,
-    tags INT,
+    tags TEXT,
     latitude FLOAT,
     longitude FLOAT,
     rating INT,
