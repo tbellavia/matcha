@@ -9,15 +9,17 @@ export default function useFetch(){
 
     return async (uri, verb, payload) => {
         const url = `http://localhost:3000${uri}`
-    
+        
         if(!payload){
             payload = {}
         }
         if(!payload.headers){
             payload.headers = {}
         }
+        if (!payload.headers["Content-Type"]){
+            payload.headers["Content-Type"] = "application/json"
+        }
         payload.headers.Authorization = `Bearer ${ctx.token}`
-        console.log(url);
         try {
             switch (verb){
                 case "GET":
@@ -33,8 +35,7 @@ export default function useFetch(){
             }
         }
         catch (e){
-            console.log(e);
-            if(e.response.status === 401){
+            if(e.response && e.response.status === 401){
                 navigate("/login")
             }
         }
