@@ -13,11 +13,11 @@ export default function useFetch(unauthorizedFallback = "/login"){
 
     return async (uri, method, data) => {
         try {
-            client.request({
+            return await client.request({
                 url: uri,
                 method,
                 data,
-            })
+            });
         }
         catch (e){
             if(e.response && e.response.status === 401){
