@@ -357,9 +357,9 @@ app.post("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
   const pref = getPrefTabToInt(req.body.preference)
   getSaveNewTags(req.body.newTags)
   const photos = getPhotos(req.body.photos)
-  const sql = "INSERT INTO userprofile (first_name, last_name, genre, preference, biograpy, tags, loc, rating, photo1, photo2, photo3, photo4, photo5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) ";
+  const sql = "INSERT INTO userprofile (first_name, last_name, genre, preference, biograpy, tags, latitude, longitude, photo1, photo2, photo3, photo4, photo5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) ";
   const arg = [req.body.first_name, req.body.last_name,genre,pref, 
-    req.body.biograpy, req.body.tags.toString(), req.body.loc, req.body.rating,
+    req.body.biograpy, req.body.tags.toString(), req.body.latitude,req.body.longitude,
     photos[0], photos[1], photos[2], photos[3], photos[4]]
   pool.query(sql, arg , (err, result) => {
     if (err) {
@@ -395,9 +395,9 @@ app.put("/api/user/profile/me", checkTokenMiddleware, checkProfileCreatedMiddlew
   const pref = getPrefTabToInt(req.body.preference)
   getSaveNewTags(req.body.newTags)
   const photos = getPhotos(req.body.photos)
-  const sql = "UPDATE userprofile SET first_name = $1, last_name = $2, genre = $3, preference = $4, biograpy = $5, tags = $6, loc = $7, rating = $8, photo1 = $9, photo2 = $10, photo3 = $11, photo4 = $12, photo5 = $13 FROM userlogin WHERE userprofile.id = userlogin.id_user_profile AND userlogin.id = $14";
+  const sql = "UPDATE userprofile SET first_name = $1, last_name = $2, genre = $3, preference = $4, biograpy = $5, tags = $6, latitude = $7, longitude = $8, photo1 = $9, photo2 = $10, photo3 = $11, photo4 = $12, photo5 = $13 FROM userlogin WHERE userprofile.id = userlogin.id_user_profile AND userlogin.id = $14";
   const arg = [req.body.first_name, req.body.last_name,genre,pref, 
-    req.body.biograpy, req.body.tags, req.body.loc, req.body.rating,
+    req.body.biograpy, req.body.tags, req.body.latitude, req.body.longitude, 
     photos[0], photos[1], photos[2], photos[3], photos[4],res.locals.id_user]
   pool.query(sql, arg , (err, result) => {
     if (err) {
