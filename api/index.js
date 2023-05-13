@@ -352,15 +352,17 @@ function getPhotos(tabPhoto){
 }
 
 app.post("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
+  console.log(req.body.birth);
   let idMax = 0
   const genre = getGenreStringToInt(req.body.genre)
   const pref = getPrefTabToInt(req.body.preference)
   // getSaveNewTags(req.body.newTags)
   const photos = getPhotos(req.body.photos)
-  const sql = "INSERT INTO userprofile (first_name, last_name, genre, preference, biograpy, tags, latitude, longitude, photo1, photo2, photo3, photo4, photo5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) ";
+  const sql = "INSERT INTO userprofile (first_name, last_name, birth, genre, preference, biograpy, tags, latitude, longitude, photo1, photo2, photo3, photo4, photo5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) ";
   const arg = [
     req.body.first_name, 
     req.body.last_name,
+    req.body.birth,
     genre,
     pref, 
     req.body.biograpy, 

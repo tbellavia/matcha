@@ -23,7 +23,7 @@ import {
 import Alert from "../../components/ui/alert/Alert";
 import { fileToBase64 } from "../../common/utils";
 import useFetch from "../../hooks/use-fetch";
-import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
 function createInitialState(value, fieldname) {
     return { valid: null, value, fieldname };
@@ -34,6 +34,8 @@ function createInputReducer(validateFn) {
         switch (action.type) {
             case "UPDATE":
                 return { ...state, value: action.value };
+            case "UPDATE_AND_VALIDATE":
+                return { value: action.value, valid: validateFn(action.value) };
             case "VALIDATE":
                 return { ...state, valid: validateFn(state.value) };
             default:
@@ -62,6 +64,8 @@ function errorReducer(state, action) {
             return "Vous devez avoir au moins un tags";
         case "BIOGRAPHY":
             return "Votre biographie ne peut pas être vide, décrivez vous en 300 caractères :)";
+        case "NETWORK":
+            return action.value;
         case "CLEAR":
             return null;
         default:
@@ -98,7 +102,8 @@ function CreateProfile() {
     const [biography, dispatchBiography] = useReducer(biographyReducer, createInitialState("", "BIOGRAPHY"));
     const [error, dispatchError] = useReducer(errorReducer, null);
     const fields = [photos, firstname, lastname, birthDate, location, genre, preferences, tags, biography];
-
+    const fetcher = useFetch();
+    const navigate = useNavigate();
 
     /* Photos */
     const onPhotosChange = (value) => {
@@ -147,7 +152,8 @@ function CreateProfile() {
     }
 
     const onLocationBlur = (value) => {
-        dispatchLocation({ type: "VALIDATE" });
+        console.log("UPDATE AND VALIDATE");
+        dispatchLocation({ type: "UPDATE_AND_VALIDATE", value });
     }
 
     /* Genre */
@@ -190,7 +196,6 @@ function CreateProfile() {
         dispatchBiography({ type: "VALIDATE" });
     }
 
-    const fetcher = useFetch();
 
     const onClickHandler = async () => {
         console.table({
@@ -209,21 +214,25 @@ function CreateProfile() {
         if (invalidField) {
             return dispatchError({ type: invalidField.fieldname });
         }
-
-        const data = {
-            first_name: firstname.value,
-            last_name: lastname.value,
-            birthdate: birthDate.value,
-            genre: genre.value,
-            preference: preferences.value,
-            biography: biography.value,
-            tags: tags.value,
-            latitude: location.value.lat,
-            longitutde: location.value.lng,
-            photos: await Promise.all(photos.value.map(fileToBase64)),
+        
+        try {
+            await fetcher("/api/user/profile/me", "post", {
+                first_name: firstname.value,
+                last_name: lastname.value,
+                birth: birthDate.value,
+                genre: genre.value,
+                preference: preferences.value,
+                biograpy: biography.value,
+                tags: tags.value,
+                latitude: location.value.lat,
+                longitude: location.value.lng,
+                photos: await Promise.all(photos.value.map(fileToBase64)),
+            });
+            navigate("/feed");
+        } catch (e) {
+            // TODO: show proper error from back
+            dispatchError({ type: "NETWORK", value: e.message });
         }
-        fetcher("/api/user/profile/me", "POST", {data})
-        console.log(data);
     };
 
     return (

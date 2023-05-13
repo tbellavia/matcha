@@ -21,8 +21,9 @@ export default function useFetch(unauthorizedFallback = "/login"){
         }
         catch (e){
             if(e.response && e.response.status === 401){
-                navigate("/login")
+                return navigate("/login");
             }
+            throw e;
         }
     }
 }
