@@ -9,6 +9,7 @@
     letter-spacing: 1px;
 }
 
+
 /* profile container */
 .profile-container {
     display: flex;
@@ -32,8 +33,44 @@
     align-items: center;
 }
 
+/* Name top label */
+.name-top__light {
+    color: var(--color-light-5);
+}
+
+.name-top__blind {
+    color: var(--color-blind-5);
+}
+
+.name-top__dark {
+    color: var(--color-dark-6);
+}
+
+/* Name bottom label */
+.name-bottom__light {
+    color: var(--color-light-8);
+}
+
+.name-bottom__blind {
+    color: var(--color-blind-8);
+}
+
+.name-bottom__dark {
+    color: var(--color-dark-8);
+}
+
 .name-label {
     font-size: var(--profile-h2-size);
+}
+
+/* Nav label color */
+.nav-color__light,
+.nav-color__blind {
+    color: black;
+}
+
+.nav-color__dark {
+    color: white;
 }
 
 .nav__right-container {

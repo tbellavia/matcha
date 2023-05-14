@@ -8,8 +8,15 @@ import Carousel from "../../components/ui/photo/Carousel";
 import Tags from "../../components/ui/tags/Tags";
 import Button from "../../components/ui/button/Button";
 import Bio from "../../components/ui/bio/Bio";
+import { useTheme } from "../../hooks/use-theme";
 
 function Profile() {
+    const theme = useTheme();
+    const myNameTopStyle = styles[`name-top__${theme}`];
+    const myNameBottomStyle = styles[`name-bottom__${theme}`];
+    const navLabelColor = styles[`nav-color__${theme}`];
+    const iconButtonBackground = styles[`icon-button-color__${theme}`];
+
     return (
         <GenericPage className={styles.profile}>
             <Header variant="left" />
@@ -19,17 +26,17 @@ function Profile() {
                     <div className={styles['nav__left-container']}>
                         <Photo data={tonyImg} size="medium" />
                         <div>
-                            <h2 className={styles['name-label']}>TONY</h2>
-                            <h2 className={styles['name-label']}>LE TOMBEUR DE CES DAMES</h2>
+                            <h2 className={`${styles['name-label']} ${myNameTopStyle}`}>TONY</h2>
+                            <h2 className={`${styles['name-label']} ${myNameBottomStyle}`}>LE TOMBEUR DE CES DAMES</h2>
                         </div>
                     </div>
                     <div className={styles['nav__right-container']}>
-                        <IconButton iconColor="#EE8B98" label="FILTRES" />
-                        <IconButton iconColor="#EE8B98" label="CHAT" />
+                        <IconButton label="FILTRES"/>
+                        <IconButton label="CHAT" />
                     </div>
                 </nav>
 
-                <div className={styles['profile-main-infos']}>
+                <div className={`${styles['profile-main-infos']} ${navLabelColor}`}>
                     <div className={styles['profile-main-infos-top']}>
                         <div className={styles['profile-left-infos']}>
                             <h2 className={styles['name-label']}>TONY</h2>
