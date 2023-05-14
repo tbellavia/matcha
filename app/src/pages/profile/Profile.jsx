@@ -1,7 +1,6 @@
 import GenericPage from "../page/GenericPage";
 import Header from "../../components/ui/header/Header";
 import styles from "./Profile.module.css";
-import tonyImg from "../../tony.jpeg";
 import Photo from "../../components/ui/photo/Photo";
 import IconButton from "../../components/ui/button/IconButton";
 import Carousel from "../../components/ui/photo/Carousel";
@@ -9,13 +8,14 @@ import Tags from "../../components/ui/tags/Tags";
 import Button from "../../components/ui/button/Button";
 import Bio from "../../components/ui/bio/Bio";
 import { useTheme } from "../../hooks/use-theme";
+import maleImg from "../../assets/image/male.jpeg";
+import femaleImg from "../../assets/image/female.jpeg";
 
 function Profile() {
     const theme = useTheme();
     const myNameTopStyle = styles[`name-top__${theme}`];
     const myNameBottomStyle = styles[`name-bottom__${theme}`];
     const navLabelColor = styles[`nav-color__${theme}`];
-    const iconButtonBackground = styles[`icon-button-color__${theme}`];
 
     return (
         <GenericPage className={styles.profile}>
@@ -24,7 +24,7 @@ function Profile() {
             <main className={styles['profile-container']}>
                 <nav className={styles.nav}>
                     <div className={styles['nav__left-container']}>
-                        <Photo data={tonyImg} size="medium" />
+                        <Photo data={maleImg} size="medium" />
                         <div>
                             <h2 className={`${styles['name-label']} ${myNameTopStyle}`}>TONY</h2>
                             <h2 className={`${styles['name-label']} ${myNameBottomStyle}`}>LE TOMBEUR DE CES DAMES</h2>
@@ -49,7 +49,7 @@ function Profile() {
                         </div>
                     </div>
                     <div className={styles['profile-main-infos-bottom']}>
-                        <Carousel tabPhotos={[tonyImg, tonyImg, tonyImg, tonyImg, tonyImg]} />
+                        <Carousel tabPhotos={[maleImg, femaleImg, maleImg, femaleImg, maleImg]} />
                     </div>
                 </div>
 
