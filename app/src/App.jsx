@@ -41,8 +41,8 @@ const router = createBrowserRouter([
       },
       { path: "test", element: <Test/> },
     ],
-    errorElement: <Error404/>
   },
+  { path: "*", element: <Error404 /> }
 ]);
 
 function App() {
