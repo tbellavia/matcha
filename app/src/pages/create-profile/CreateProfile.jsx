@@ -35,7 +35,7 @@ function createInputReducer(validateFn) {
             case "UPDATE":
                 return { ...state, value: action.value };
             case "UPDATE_AND_VALIDATE":
-                return { value: action.value, valid: validateFn(action.value) };
+                return { ...state, value: action.value, valid: validateFn(action.value) };
             case "VALIDATE":
                 return { ...state, valid: validateFn(state.value) };
             default:
@@ -147,12 +147,11 @@ function CreateProfile() {
 
     /* Location */
     const onLocationChange = (value) => {
-        dispatchLocation({ type: "UPDATE", value });
+        dispatchLocation({ type: "UPDATE_AND_VALIDATE", value });
         dispatchError({ type: "CLEAR" });
     }
 
     const onLocationBlur = (value) => {
-        console.log("UPDATE AND VALIDATE");
         dispatchLocation({ type: "UPDATE_AND_VALIDATE", value });
     }
 
@@ -214,7 +213,6 @@ function CreateProfile() {
         if (invalidField) {
             return dispatchError({ type: invalidField.fieldname });
         }
-        
         try {
             await fetcher("/api/user/profile/me", "post", {
                 first_name: firstname.value,
