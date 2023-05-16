@@ -21,24 +21,24 @@ app.use(express.json({ limit: '100mb' }))
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use("/api/user",          userRouter);
-app.use("/api/user/chat",     chatRouter);
-app.use("/api/user/filtre",   filterRouter);
-app.use("/api/user/like",     likeRouter);
-app.use("/api/user/unlike",   unlikeRouter);
-app.use("/api/user/profile",  profileRouter);
-app.use("/api/user/blocked",  blockedRouter);
+app.use("/api/user", userRouter);
+app.use("/api/user/chat", chatRouter);
+app.use("/api/user/filtre", filterRouter);
+app.use("/api/user/like", likeRouter);
+app.use("/api/user/unlike", unlikeRouter);
+app.use("/api/user/profile", profileRouter);
+app.use("/api/user/blocked", blockedRouter);
 app.use("/api/test", testRouter);
 
+const http = require('http').createServer(app);
+const io = require('socket.io')(http, { cors: { origin: "*" } });
 
-app.get("/", (req, res) => {
-  res.send("Bonjour le monde...1123");
-});
+require("./socket/message")(io);
 
 app.get('*', (req, res) => {
   return res.status(404).json({ message: 'Page not found' })
 })
 
-app.listen(3000, () => {
-  console.log("Serveur démarré (http://localhost:3000/) !");
-});
+http.listen(3000, () => {
+  console.log('listening on *:3000')
+})

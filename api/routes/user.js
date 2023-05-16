@@ -6,7 +6,6 @@ const nodemailer = require("nodemailer");
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
 
-
 const transporter = nodemailer.createTransport({
     service: 'Outlook',
     auth: {

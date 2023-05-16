@@ -1,0 +1,20 @@
+.inputChat{
+    width: calc(100% - 50px);
+}
+
+.buttonChat{
+    width: 50px;
+    color: aliceblue;
+    background-color: var(--color-light-3) !important;
+}
+
+.chatPage{
+    width: 400px;
+    height: 100vh;
+}
+
+.page{
+    display: flex;
+    justify-content: center;
+
+}
