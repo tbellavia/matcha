@@ -354,40 +354,54 @@ function getPhotos(tabPhoto){
 }
 
 app.post("/api/user/profile/me", checkTokenMiddleware, (req, res) => {
+  console.log(req.body.birth);
   let idMax = 0
   const genre = getGenreStringToInt(req.body.genre)
   const pref = getPrefTabToInt(req.body.preference)
-  getSaveNewTags(req.body.newTags)
+  // getSaveNewTags(req.body.newTags)
   const photos = getPhotos(req.body.photos)
-  const sql = "INSERT INTO userprofile (first_name, last_name, genre, preference, biograpy, tags, latitude, longitude, photo1, photo2, photo3, photo4, photo5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) ";
-  const arg = [req.body.first_name, req.body.last_name,genre,pref, 
-    req.body.biograpy, req.body.tags.toString(), req.body.latitude,req.body.longitude,
-    photos[0], photos[1], photos[2], photos[3], photos[4]]
+  const sql = "INSERT INTO userprofile (first_name, last_name, birth, genre, preference, biograpy, tags, latitude, longitude, photo1, photo2, photo3, photo4, photo5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) ";
+  const arg = [
+    req.body.first_name, 
+    req.body.last_name,
+    req.body.birth,
+    genre,
+    pref, 
+    req.body.biograpy, 
+    req.body.tags.toString(), 
+    req.body.latitude,
+    req.body.longitude,
+    photos[0],
+    photos[1],
+    photos[2],
+    photos[3],
+    photos[4]
+  ]
+
   pool.query(sql, arg , (err, result) => {
     if (err) {
       return res.status(400).json({ message: err.message })
     }
-  })
-  const sql2 = "SELECT MAX(id) AS id FROM userprofile";
-  pool.query(sql2, [] , (err2, result2) => {
-    
-    if (err2) {
-      return res.status(400).json({ message: err2.message })
-    }
-    // return res.json(result2)
-    idMax = result2.rows[0].id
-    
-    const sql3 = "UPDATE userlogin SET id_user_profile = $1 WHERE id = $2";
-    pool.query(sql3, [idMax + 1, res.locals.id_user] , (err3, result3) => {
+    const sql2 = "SELECT MAX(id) AS id FROM userprofile";
+    pool.query(sql2, [] , (err2, result2) => {
       
-      if (err3) {
-        return res.status(400).json({ message: err3.message })
+      if (err2) {
+        return res.status(400).json({ message: err2.message })
       }
       // return res.json(result2)
-      return res.json({"message" : "profile cree"})
+      idMax = result2.rows[0].id
+      
+      const sql3 = "UPDATE userlogin SET id_user_profile = $1 WHERE id = $2";
+      pool.query(sql3, [idMax + 1, res.locals.id_user] , (err3, result3) => {
+        
+        if (err3) {
+          return res.status(400).json({ message: err3.message })
+        }
+        // return res.json(result2)
+        return res.json({"message" : "profile cree"})
+      })
     })
   })
-
 })
 
 
@@ -407,7 +421,6 @@ app.put("/api/user/profile/me", checkTokenMiddleware, checkProfileCreatedMiddlew
     }
     return res.json({"message" : "profile modifier"})
   })
-
 })
 
 async function getProfileId(userId){
