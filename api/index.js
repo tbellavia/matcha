@@ -19,6 +19,8 @@ const {
   validatePassword
 } = require("./common/validation")
 
+
+
 const PORT = 3000
 const SECRET = process.env.SECRET_KEY
 
@@ -92,9 +94,9 @@ app.get("/api/test", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, 
   return res.json({ text: "user valide" })
 })
 
-app.listen(PORT, () => {
-  console.log("Serveur démarré (http://localhost:3000/) !");
-});
+// app.listen(PORT, () => {
+//   console.log("Serveur démarré (http://localhost:3000/) !");
+// });
 
 app.get("/", (req, res) => {
   res.send("Bonjour le monde...1123");
@@ -622,13 +624,14 @@ app.get("/api/user/chat/me/:target", checkTokenMiddleware, checkProfileCreatedMi
     return res.status(400).json({message: ERROR_CHAT})
   }
 
-  sql = "SELECT * FROM message WHERE id_chat = $1 ORDER BY date_envoi DESC OFFSET $2 LIMIT $3"
+  sql = "SELECT * FROM message WHERE id_chat = $1 ORDER BY date_envoi ASC OFFSET $2 LIMIT $3"
   const arg = [idChat, req.query.skip, req.query.limit]
   pool.query(sql, arg , (err, result) => {
     if (err) {
       return res.status(400).json({ message: err.message })
     }
-    return res.json({"chatId": idChat,"result" : result.rows})
+    console.log(result)
+    return res.json({"chatId": idChat, "userId":idProfile,"result" : result.rows})
   })
 })
 
@@ -831,6 +834,35 @@ app.put("/api/user/filtre/me", checkTokenMiddleware, checkProfileCreatedMiddlewa
     return res.json({"message" : "filtre modifier"})
   })
 
+})
+
+
+
+const http = require('http').createServer(app);
+const io = require('socket.io')(http,{cors:{origin:"*"}});
+// const httpServer = require("http").createServer()
+// const io = require("socket.io")
+
+// const io = io('http://localhost:3000')
+
+io.on('connection', (socket)=>{
+  const users = []
+  console.log(`${socket.id} user just connected`)
+  socket.on('message', ({message, name,to}) =>{
+    // console.log(`test  ${to}`)
+    // io.to(to).emit('message', { message})
+    io.emit(to, { message , name})
+  })
+
+  socket.on('disconnect',()=>{
+    console.log('a user disconnected')
+  })
+})
+
+
+
+http.listen(3000, ()=>{
+  console.log('listening on *:3000')
 })
 
 app.get('*', (req, res) => {
