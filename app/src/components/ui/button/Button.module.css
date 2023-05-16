@@ -4,23 +4,10 @@
     font-size: 2em;
 }
 
-.button:hover {
-    transition-duration: .15s;
-    transform: translateY(-5px);
-}
-
-.button:active {
-    transform: scale(100%);
-}
-
 /* Light */
 .button__light__regular {
     background-color: var(--color-light-2);
     color: white;
-}
-
-.button__light__regular:hover {
-    box-shadow: var(--color-light-2) 0 1px 30px;
 }
 
 .button__light__validation {
@@ -28,26 +15,14 @@
     color: var(--color-light-5);
 }
 
-.button__light__validation:hover {
-    box-shadow: var(--color-light-8) 0 1px 30px;
-}
-
 .button__light__action-regular {
     background-color: var(--color-light-2);
     color: var(--color-light-5);
 }
 
-.button__light__action-regular:hover {
-    box-shadow: var(--color-light-2) 0 1px 30px;
-}
-
 .button__light__action-danger {
     background-color: var(--color-light-9);
     color: var(--color-light-5);
-}
-
-.button__light__action-danger:hover {
-    box-shadow: var(--color-light-9) 0 1px 30px;
 }
 
 /* Dark */
@@ -56,38 +31,19 @@
     color: white;
 }
 
-.button__dark__regular:hover {
-    box-shadow: var(--color-light-2) 0 1px 30px;
-}
-
-
 .button__dark__validation {
     background-color: var(--color-dark-2);
     color: var(--color-dark-6);
 }
-
-.button__dark__validation:hover {
-    box-shadow: var(--color-dark-2) 0 1px 30px;
-}
-
 
 .button__dark__action-regular {
     background-color: var(--color-light-2);
     color: var(--color-light-5);
 }
 
-.button__dark__action-regular:hover {
-    box-shadow: var(--color-light-2) 0 1px 30px;
-}
-
-
 .button__dark__action-danger {
     background-color: var(--color-dark-2);
     color: var(--color-dark-6);
-}
-
-.button__dark__action-danger:hover {
-    box-shadow: var(--color-dark-2) 0 1px 30px;
 }
 
 /* Blind */
@@ -96,36 +52,77 @@
     color: white;
 }
 
-.button__blind__regular:hover {
-    box-shadow: var(--color-blind-2) 0 1px 30px;
-}
-
-
 .button__blind__validation {
     background-color: var(--color-blind-8);
     color: var(--color-blind-11);
 }
-
-.button__blind__validation:hover {
-    box-shadow: var(--color-blind-8) 0 1px 30px;
-}
-
 
 .button__blind__action-regular {
     background-color: var(--color-blind-2);
     color: var(--color-blind-11);
 }
 
-.button__blind__action-regular:hover {
-    box-shadow: var(--color-blind-2) 0 1px 30px;
-}
-
-
 .button__blind__action-danger {
     background-color: var(--color-blind-9);
     color: var(--color-blind-11);
 }
 
-.button__blind__action-danger:hover {
-    box-shadow: var(--color-blind-9) 0 1px 30px;
+
+@media (hover: hover) {
+    .button:hover {
+        transition-duration: .15s;
+        transform: translateY(-5px);
+    }
+
+    .button:active {
+        transform: scale(100%);
+    }
+
+    .button__light__regular:hover {
+        box-shadow: var(--color-light-2) 0 1px 30px;
+    }
+
+    .button__light__validation:hover {
+        box-shadow: var(--color-light-8) 0 1px 30px;
+    }
+
+    .button__light__action-regular:hover {
+        box-shadow: var(--color-light-2) 0 1px 30px;
+    }
+
+    .button__light__action-danger:hover {
+        box-shadow: var(--color-light-9) 0 1px 30px;
+    }
+
+    .button__dark__regular:hover {
+        box-shadow: var(--color-light-2) 0 1px 30px;
+    }
+
+    .button__dark__validation:hover {
+        box-shadow: var(--color-dark-2) 0 1px 30px;
+    }
+
+    .button__dark__action-regular:hover {
+        box-shadow: var(--color-light-2) 0 1px 30px;
+    }
+
+    .button__dark__action-danger:hover {
+        box-shadow: var(--color-dark-2) 0 1px 30px;
+    }
+
+    .button__blind__regular:hover {
+        box-shadow: var(--color-blind-2) 0 1px 30px;
+    }
+
+    .button__blind__validation:hover {
+        box-shadow: var(--color-blind-8) 0 1px 30px;
+    }
+
+    .button__blind__action-regular:hover {
+        box-shadow: var(--color-blind-2) 0 1px 30px;
+    }
+
+    .button__blind__action-danger:hover {
+        box-shadow: var(--color-blind-9) 0 1px 30px;
+    }
 }
