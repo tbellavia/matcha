@@ -3,7 +3,12 @@ const router = express.Router();
 const nodemailer = require("nodemailer");
 const pool = require("../db/db");
 const jwt = require("jsonwebtoken")
-
+const {
+    ERROR_MAIL,
+    ERROR_PASSWORD,
+    ERROR_INVALID_LOGIN,
+    ERROR_USER_ALREADY_EXIST
+  } = require("../common/messages")
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
