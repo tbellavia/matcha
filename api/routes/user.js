@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const nodemailer = require("nodemailer");
+const pool = require("../db/db");
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
