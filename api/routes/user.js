@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const nodemailer = require("nodemailer");
 const pool = require("../db/db");
+const jwt = require("jsonwebtoken")
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");

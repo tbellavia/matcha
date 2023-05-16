@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken")
+
 const extractBearerToken = headerValue => {
   if (typeof headerValue !== 'string') {
     return false
