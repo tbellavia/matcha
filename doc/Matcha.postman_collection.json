@@ -1,0 +1,758 @@
+{
+	"info": {
+		"_postman_id": "7e1a506e-4846-465a-8789-b363fedf849e",
+		"name": "Matcha",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18642780",
+		"_collection_link": "https://bold-equinox-784066.postman.co/workspace/matcha~0f80129b-6c66-4b15-a29f-bfcc240e99cd/collection/18642780-7e1a506e-4846-465a-8789-b363fedf849e?action=share&creator=18642780&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "profile",
+			"item": [
+				{
+					"name": "/api/user/profile/me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoyMSwiaWF0IjoxNjc4NjI1OTU0LCJleHAiOjE2Nzg2MzY3NTR9.Gc3QbKxuMlVetlKbmeUQB0JRR8bhGoUSdvvk3XlwuR4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"first_name\":\"Abcd\", \n\"last_name\": \"Bellavia\", \n\"genre\" : 2, \n\"preference\" : 4, \n\"biograpy\": \"salut\", \n\"tags\": 12, \n\"loc\" : \"1234 1234\", \n\"rating\":89, \n\"photo1\":\"\", \n\"photo2\":\"\", \n\"photo3\":\"\", \n\"photo4\":\"\", \n\"photo5\":\"\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/profile/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"profile",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/profile/me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxOSwiaWF0IjoxNjc4MzgzODI2LCJleHAiOjE2NzgzOTQ2MjZ9._lSniTfKiyIzFyJwu24CpdMkZhtz3RNob6lEiEPfiMc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"first_name\":\"Tonhi\", \n\"last_name\": \"Bellavia\", \n\"genre\" : 2, \n\"preference\" : 4, \n\"biograpy\": \"coucou\", \n\"tags\": 12, \n\"loc\" : \"1234 1234\", \n\"rating\":89, \n\"photo1\":\"\", \n\"photo2\":\"\", \n\"photo3\":\"\", \n\"photo4\":\"\", \n\"photo5\":\"\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/profile/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"profile",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/profile/me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxOSwiaWF0IjoxNjc4Mzg4NzM3LCJleHAiOjE2NzgzOTk1Mzd9.NU_HEjJMWZzPzCMsgKIV0krExCgLD4pbagS6cL1oehg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/user/profile/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"profile",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/profile/:target",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxOSwiaWF0IjoxNjc4NTY5MDQxLCJleHAiOjE2Nzg1Nzk4NDF9.he3sxeimTtdMLpDTmgZCBsL-xkrOkI4Gq_j5vUy2q2g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/user/profile/:target",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"profile",
+								":target"
+							],
+							"variable": [
+								{
+									"key": "target",
+									"value": "52"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxLCJpYXQiOjE2ODAxMTY2NTAsImV4cCI6MTY4MDEyNzQ1MH0.IQZdUyVYFrFqQTAI4XLgjtAEIrvB0mtZdXdQG8FkyY4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/user/profile?limit=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"profile"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "test",
+			"item": [
+				{
+					"name": "Test auth",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "blocked",
+			"item": [
+				{
+					"name": "/api/user/blocked/me/:target",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjo1LCJpYXQiOjE2ODAyNzIzOTAsImV4cCI6MTY4MDI4MzE5MH0.9SP8_HpjZdgpTXL8IUtaSoK1GX0E_XMzJWYAPUL-ZWs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/user/blocked/me/:target",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"blocked",
+								"me",
+								":target"
+							],
+							"variable": [
+								{
+									"key": "target",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "chat",
+			"item": [
+				{
+					"name": "api/user/chat/message/me/:target",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoyLCJpYXQiOjE2ODAyNjIyMjMsImV4cCI6MTY4MDI3MzAyM30.dhTxGKnxLaFEC_TQjYmuR2Zcwzxkww_XBRZ384N4CgU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"salut\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/chat/message/me/:target",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"chat",
+								"message",
+								"me",
+								":target"
+							],
+							"variable": [
+								{
+									"key": "target",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/chat/me/:target?limit=<int>&skip=<int>",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxLCJpYXQiOjE2Nzk5MTc5OTIsImV4cCI6MTY3OTkyODc5Mn0.ZSv5rOseMRMpfl-BUX1zhRjP4gtEj73jD8cTgx2HepQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/user/chat/me/:target?limit=10&skip=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"chat",
+								"me",
+								":target"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								}
+							],
+							"variable": [
+								{
+									"key": "target",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/chat/me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxLCJpYXQiOjE2ODAxNjYzMTYsImV4cCI6MTY4MDE3NzExNn0.UI1tNGxlRAh_olW0QC_rnZhC5yoi-SA0k4RmOCMcc7A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/user/chat/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"chat",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/chat/me/:target",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxLCJpYXQiOjE2ODAyNjgwODIsImV4cCI6MTY4MDI3ODg4Mn0.0OL_mndjwsYirjiUSngTTBldKCRI7_1RyEqqFXnUfE0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/user/chat/me/:target",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"chat",
+								"me",
+								":target"
+							],
+							"variable": [
+								{
+									"key": "target",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "connexion",
+			"item": [
+				{
+					"name": "validation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/user/validation/:stringValidation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"validation",
+								":stringValidation"
+							],
+							"variable": [
+								{
+									"key": "stringValidation",
+									"value": "H2O3CxiD5wMhX6RWdMrW95bxXrQkeoF3aTb2Lkxz4y005QYbmTnWODucQvi2GhyiEhpWyNOki0GcNOpMQxkuZ1vVQwtRWhxKLRvW3hbLOPuSrJmIsjKjdRPHEzYiX"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signup",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"usermail\": \"abcd@test\",\n    \"passWord\": \"pwd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"signup"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"auth": {
+							"type": "apikey"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"usermail\": \"test5@test5\",\n    \"passWord\": \"pwd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoyLCJpYXQiOjE2ODAyNjIyMjMsImV4cCI6MTY4MDI3MzAyM30.dhTxGKnxLaFEC_TQjYmuR2Zcwzxkww_XBRZ384N4CgU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"me"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "filtre",
+			"item": [
+				{
+					"name": "http://localhost:3000/api/user/filtre/me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjo1LCJpYXQiOjE2ODAyNzIzOTAsImV4cCI6MTY4MDI4MzE5MH0.9SP8_HpjZdgpTXL8IUtaSoK1GX0E_XMzJWYAPUL-ZWs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ageMin\":     30,\n    \"ageMax\":     40,\n    \"distMax\":    100,\n    \"preference\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/filtre/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"filtre",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "like",
+			"item": [
+				{
+					"name": "/api/user/like/me/:target",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxOSwiaWF0IjoxNjc4NjUyMDMwLCJleHAiOjE2Nzg2NjI4MzB9._bTmN3_SEV4beKYJUDPyw_qd1u99atrfNxuMJUVMF7Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/user/like/me/:target",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"like",
+								"me",
+								":target"
+							],
+							"variable": [
+								{
+									"key": "target",
+									"value": "54"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/unlike/me/:target",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxOSwiaWF0IjoxNjc4NTY5MDQxLCJleHAiOjE2Nzg1Nzk4NDF9.he3sxeimTtdMLpDTmgZCBsL-xkrOkI4Gq_j5vUy2q2g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/user/unlike/me/:target",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"unlike",
+								"me",
+								":target"
+							],
+							"variable": [
+								{
+									"key": "target",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
