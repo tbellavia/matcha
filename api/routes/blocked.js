@@ -1,28 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db/db");
+const { getProfileId } = require("../common/route_utils");
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
-
-async function getProfileId(userId) {
-    const sql = "SELECT userprofile.id FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
-    try {
-        const res = await pool.query(sql, [userId]);
-        if (res.rowCount < 1) {
-
-            return null
-        }
-        const id = res.rows[0].id
-        console.log(res.rows[0].id)
-
-        return id;
-    } catch (err) {
-        console.log(err.message)
-        return null
-    }
-}
 
 router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biograpy = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
