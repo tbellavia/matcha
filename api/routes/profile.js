@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db/db");
-
+const { getPrefTabToInt, getSaveNewTags, getPhotos } = require("../common/route_utils");
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
@@ -55,49 +55,6 @@ router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, (req
     })
 
 })
-
-function getGenreStringToInt(genre) {
-    const tabGenre = ["homme", "femme", "non binaire"]
-
-    for (var i = 0, lth = tabGenre.length; i < lth; i++) {
-        if (genre == tabGenre[i]) {
-            return (1 << i)
-        }
-    }
-    return (1 << i)
-}
-
-function getPrefTabToInt(TabPref) {
-    let countPref = 0
-
-    for (var i = 0, lth = TabPref.length; i < lth; i++) {
-        constPref &= getGenreStringToInt(TabPref[i])
-    }
-    if (countPref == 0) {
-        return (1 << 0)
-    }
-    return countPref
-}
-
-function getSaveNewTags(newTags) {
-    const sql = "INSERT INTO tag (tag) VALUES ($1)";
-
-    for (var i = 0, lth = newTags.length; i < lth; i++) {
-        pool.query(sql, newTags[i], (err, result) => {
-            if (err) {
-                return res.status(400).json({ message: err.message })
-            }
-        })
-    }
-    return res.json({ "message": "nouveaux tags enregistrer" })
-}
-
-function getPhotos(tabPhoto) {
-    for (var i = tabPhoto.length; i < 5; i++) {
-        tabPhoto.push(null)
-    }
-    return tabPhoto
-}
 
 router.post("/me", checkTokenMiddleware, (req, res) => {
     console.log(req.body.birth);
