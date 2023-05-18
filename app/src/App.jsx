@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
@@ -13,40 +13,34 @@ import MailValidation from "./pages/mailValidation/MailValidation";
 import TestPage from "./pages/test/TestPage";
 import CreateProfile from "./pages/create-profile/CreateProfile";
 import Profile from "./pages/profile/Profile";
-import Chat from "./pages/chat/Chat"
-
-const router = createBrowserRouter([
-  { 
-    path: "/",
-    children: [
-      { index: true, element: <Home/> },
-      { path: "login", element: <Login/> },
-      { path: "signup", element: <Signup/> },
-      { path: "mailValidation", element: <MailValidation/>},
-      { path: "feed", element: <TestPage title="/feed"/> },
-      { 
-        path: "profile",
-        children: [
-          { index: true, element: <Profile/> },
-          { path: ":id", element: <TestPage title="/profile/:id"/> },
-          { path: "create", element: <CreateProfile/> },
-        ] 
-      },
-      { 
-        path: "chat",
-        children: [
-          { index: true, element: <TestPage title="/chat"/> },
-          { path: ":id", element: <Chat title="/chat/:id"/> },
-        ]
-      },
-      { path: "test", element: <Test/> },
-    ],
-  },
-  { path: "*", element: <Error404 /> }
-]);
+import Chat from "./pages/chat/Chat";
+import { AppContextProvider } from "./store/AppContext";
 
 function App() {
-  return <RouterProvider router={router}/>;
+  return (
+    <BrowserRouter>
+      <AppContextProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="mailValidation" element={<MailValidation />} />
+          <Route path="feed" element={<TestPage title="/feed" />} />
+          <Route path="profile">
+            <Route index element={<Profile />} />
+            <Route path=":id" element={<TestPage title="/profile/:id" />} />
+            <Route path="create" element={<CreateProfile />} />
+          </Route>
+          <Route path="chat">
+            <Route index element={<TestPage title="/chat" />}/>
+            <Route path=":id" element={<Chat title="/chat/:id" />} />
+          </Route>
+          <Route path="test" element={<Test />} />
+          <Route path="*" element={<Error404 />} />
+        </Routes>
+      </AppContextProvider>
+    </BrowserRouter>
+  )
 }
 
 export default App;
