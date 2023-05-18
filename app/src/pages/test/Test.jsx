@@ -1,6 +1,6 @@
-import styles from "./Test.module.css";
 import GenericPage from "../page/GenericPage";
-import LocationInput from "../../components/ui/location/LocationInput";
+import styles from "./Test.module.css";
+import AppDropdown from "../../components/ui/drawer-menu/AppDropdown";
 
 function Test() {
     const style = {
@@ -10,23 +10,15 @@ function Test() {
         padding: "100px"
     }
 
-    const onClickHandler = () => {
-        console.log("Clicked!");
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                console.log("Success!");
-                console.log(position);
-            },
-            (error) => {
-                console.log("Error getting geolocation!");
-                console.log(error);
-            }
-        );
+    const notifs = {
+        views: 1,
+        messages: 2,
+        likes: 3
     }
 
     return (
         <GenericPage className={styles.test} style={style}>
-            <LocationInput/>
+            <AppDropdown notifs={notifs}/>
         </GenericPage>
     );
 }
