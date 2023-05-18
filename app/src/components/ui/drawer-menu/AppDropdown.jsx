@@ -2,7 +2,7 @@ import { AccountCircle, Chat, Favorite, History, Logout, RemoveRedEye, Settings,
 import Dropdown from "./Dropdown";
 import { Box, keyframes } from "@mui/material";
 import { useContext, useState } from "react";
-import SettingsModal from "./SettingsModal";
+import SettingsModal from "./modals/SettingsModal";
 import AppContext from "../../../store/AppContext";
 
 // TODO: Manage notifications in context

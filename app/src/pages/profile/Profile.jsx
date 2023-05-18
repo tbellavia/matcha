@@ -10,6 +10,9 @@ import Bio from "../../components/ui/bio/Bio";
 import { useTheme } from "../../hooks/use-theme";
 import maleImg from "../../assets/image/male.jpeg";
 import femaleImg from "../../assets/image/female.jpeg";
+import Dropdown from "../../components/ui/drawer-menu/Dropdown";
+import { Box } from "@mui/material";
+import AppDroddown from "../../components/ui/drawer-menu/AppDropdown";
 
 function Profile() {
     const theme = useTheme();
@@ -31,8 +34,9 @@ function Profile() {
                         </div>
                     </div>
                     <div className={styles['nav__right-container']}>
-                        <IconButton label="FILTRES"/>
-                        <IconButton label="CHAT" />
+                        <AppDroddown/>
+                        {/* <IconButton label="FILTRES"/>
+                        <IconButton label="CHAT" /> */}
                     </div>
                 </nav>
 

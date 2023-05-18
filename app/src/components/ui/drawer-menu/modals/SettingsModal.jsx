@@ -3,7 +3,7 @@ import Modal from '@mui/material/Modal';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useContext } from "react";
-import AppContext from "../../../store/AppContext";
+import AppContext from "../../../../store/AppContext";
 import { Box } from '@mui/material';
 
 export default function SettingsModal({
