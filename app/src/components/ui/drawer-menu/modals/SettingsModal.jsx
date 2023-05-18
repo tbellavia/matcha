@@ -53,7 +53,7 @@ export default function SettingsModal({
             >
                 <ToggleButton value="light">light</ToggleButton>
                 <ToggleButton value="dark">dark</ToggleButton>
-                <ToggleButton value="blind">blind</ToggleButton>
+                <ToggleButton value="blind">colorblind</ToggleButton>
             </ToggleButtonGroup>
         </Box>
     </Modal>
