@@ -47,6 +47,9 @@ export default function SettingsModal({
                 exclusive
                 onChange={handleChange}
                 aria-label="Themes"
+                fullWidth
+                size='small'
+                sx={{ py: 2 }}
             >
                 <ToggleButton value="light">light</ToggleButton>
                 <ToggleButton value="dark">dark</ToggleButton>
