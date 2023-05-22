@@ -2,7 +2,7 @@ import { AccountCircle, Chat, Favorite, History, Logout, RemoveRedEye, Settings,
 import Dropdown from "./Dropdown";
 import { Box, keyframes } from "@mui/material";
 import { useContext, useState } from "react";
-import SettingsModal from "./modals/SettingsModal";
+import SettingsModal from "./modals/Settings/SettingsModal";
 import AppContext from "../../../store/AppContext";
 
 // TODO: Manage notifications in context
@@ -20,7 +20,7 @@ import AppContext from "../../../store/AppContext";
 export default function AppDroddown({
     notifs = {}
 }) {
-    const { theme } = useContext(AppContext);
+    const ctx = useContext(AppContext);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
 
@@ -71,7 +71,9 @@ export default function AppDroddown({
                 notifs: 0
             },
             "Déconnexion": {
-                onClick: () => { },
+                onClick: () => { 
+                    ctx.logout()
+                },
                 icon: <Logout sx={{ color: iconColor }} />,
                 notifs: 0
             }
@@ -89,7 +91,7 @@ export default function AppDroddown({
         <Box sx={{
             width: 60,
             height: 60,
-            bgcolor: iconContainerBg[theme],
+            bgcolor: iconContainerBg[ctx.theme],
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
