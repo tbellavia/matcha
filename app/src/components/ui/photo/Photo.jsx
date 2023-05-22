@@ -2,7 +2,8 @@ import styles from "./Photo.module.css";
 
 const sizes = ['little', 'medium', 'large'];
 
-function Photo({ data, size = 'medium' }){
+function Photo({ data, size = 'medium', onClick=()=>{}}){
+
     if (!sizes.includes(size))
         throw new Error(`Photo: invalid size '${size}'`);
 
@@ -10,7 +11,7 @@ function Photo({ data, size = 'medium' }){
     const classes = `${styles.photo} ${taille}`;
 
     return (
-        <img className={classes} src = {data}/>
+        <img className={classes} src = {data} onClick={onClick}/>
     );
 }
 

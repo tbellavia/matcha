@@ -1,4 +1,8 @@
 const jwt = require("jsonwebtoken")
+const {
+  ERROR_BAD_TOKEN,
+  ERROR_NEED_TOKEN
+} = require("../common/messages")
 
 const extractBearerToken = headerValue => {
   if (typeof headerValue !== 'string') {

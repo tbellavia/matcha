@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db/db");
-const { getChatId, createNewChat } = require("../common/route_utils");
+const {
+    ERROR_BAD_TOKEN
+  } = require("../common/messages")
+const { getChatId, createNewChat, getProfileId } = require("../common/route_utils");
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
@@ -49,7 +52,7 @@ router.get("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, a
         if (err) {
             return res.status(400).json({ message: err.message })
         }
-        return res.json({ "chatId": idChat, "result": result.rows })
+        return res.json({"chatId": idChat, "userId":idProfile,"result" : result.rows})
     })
 })
 

@@ -26,7 +26,10 @@ CREATE TABLE UserProfile (
     photo5 TEXT,
     ageMin INT DEFAULT 18,
     ageMax INT DEFAULT 150,
-    distMax INT DEFAULT 1000
+    distMax INT DEFAULT 1000,
+    minRating FLOAT DEFAULT 0,
+    filtertags TEXT DEFAULT "",
+    tri INT DEFAULT 0
 );
 
 CREATE TABLE Tag (
@@ -67,6 +70,12 @@ CREATE TABLE Message (
     mess TEXT,
     userWrite INT
 );
+
+CREATE TABLE views (
+    id serial PRIMARY KEY NOT NULL,
+    id_user1 INT,
+    id_user2 INT
+)
 
 INSERT INTO UserLogin
 (
@@ -127,6 +136,37 @@ VALUES (1,4,TRUE,FALSE),
 (5,6,FALSE,FALSE),
 (7,10,TRUE,NULL),
 (7,8,NULL,TRUE);
+
+INSERT INTO views(
+    id_user1,
+    id_user2
+)
+VALUES (1,4),
+(1,6),
+(1,8),
+(1,10),
+(2,10),
+(2,4),
+(2,3),
+(4,5),
+(5,10),
+(5,9),
+(5,6),
+(7,10),
+(7,8),
+(4,1),
+(6,1),
+(8,1),
+(10,1),
+(10,2),
+(4,2),
+(3,2),
+(5,4),
+(10,5),
+(9,5),
+(6,5),
+(10,7),
+(8,7);
 
 INSERT INTO chat(
     id_user1,

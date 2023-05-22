@@ -15,6 +15,8 @@ import CreateProfile from "./pages/create-profile/CreateProfile";
 import Profile from "./pages/profile/Profile";
 import Chat from "./pages/chat/Chat";
 import { AppContextProvider } from "./store/AppContext";
+import Chat from "./pages/chat/Chat"
+import AllChat from "./pages/allChat/AllChat";
 
 function App() {
   return (
@@ -32,8 +34,8 @@ function App() {
             <Route path="create" element={<CreateProfile />} />
           </Route>
           <Route path="chat">
-            <Route index element={<TestPage title="/chat" />}/>
-            <Route path=":id" element={<Chat title="/chat/:id" />} />
+            <Route index element={ <AllChat title="/chat"/> }/>
+            <Route path=":id" element={ <Chat title="/chat/:id"/>  } />
           </Route>
           <Route path="test" element={<Test />} />
           <Route path="*" element={<Error404 />} />
