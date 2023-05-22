@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db/db");
+const {
+    ERROR_BAD_TOKEN
+  } = require("../common/messages")
 const { getChatId, createNewChat, getProfileId } = require("../common/route_utils");
 
 // Middleware

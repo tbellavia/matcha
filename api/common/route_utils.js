@@ -1,3 +1,6 @@
+
+const pool = require("../db/db");
+
 async function getProfileId(userId) {
     const sql = "SELECT userprofile.id FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
     try {
@@ -95,6 +98,29 @@ function getPhotos(tabPhoto) {
     return tabPhoto
 }
 
+function saveNewTags(tags){
+    const sql = "SELECT tag FROM tag"
+    pool.query(sql, [], (err, res) => {
+        if (err) {
+            return false
+        }
+        
+        tagExisting = res.rows.map((row) => row.tag)
+        newTags = tags.filter(elem => !tagExisting.includes(elem))
+
+        newTags.forEach(newElem => {
+            const sql2 = 'INSERT INTO tag (tag) VALUES ($1)'
+            pool.query(sql2, [newElem], (err2, res2) => {
+                if(err2){
+                    return false
+                }
+                console.log(`${newElem} ajouter a la table tag`)
+            })
+        })
+        return true
+    })
+}
+
 
 module.exports = {
     getProfileId,
@@ -103,4 +129,6 @@ module.exports = {
     getPrefTabToInt,
     getSaveNewTags,
     getPhotos,
+    getGenreStringToInt,
+    saveNewTags
 }
