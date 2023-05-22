@@ -15,8 +15,9 @@ function ChatMessage({me, allChat}){
 
     return(
         <div className={styles.chatMessage} ref={chatRef} >
+            
             {allChat.map((elem, index) =>
-            <Message me={me == elem.user} key={index}>{elem.message}</Message>
+                <Message me={me === elem.user} key={index}>{elem.message}</Message>
             )}
         </div>
     )

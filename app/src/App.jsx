@@ -14,6 +14,7 @@ import TestPage from "./pages/test/TestPage";
 import CreateProfile from "./pages/create-profile/CreateProfile";
 import Profile from "./pages/profile/Profile";
 import Chat from "./pages/chat/Chat"
+import AllChat from "./pages/allChat/AllChat";
 
 const router = createBrowserRouter([
   { 
@@ -35,7 +36,7 @@ const router = createBrowserRouter([
       { 
         path: "chat",
         children: [
-          { index: true, element: <TestPage title="/chat"/> },
+          { index: true, element: <AllChat title="/chat"/> },
           { path: ":id", element: <Chat title="/chat/:id"/> },
         ]
       },
