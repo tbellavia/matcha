@@ -15,7 +15,6 @@ import CreateProfile from "./pages/create-profile/CreateProfile";
 import Profile from "./pages/profile/Profile";
 import Chat from "./pages/chat/Chat";
 import { AppContextProvider } from "./store/AppContext";
-import Chat from "./pages/chat/Chat"
 import AllChat from "./pages/allChat/AllChat";
 
 function App() {
