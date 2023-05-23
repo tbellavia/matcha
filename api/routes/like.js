@@ -5,6 +5,27 @@ const pool = require("../db/db");
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
+const { getProfileId } = require("../common/route_utils");
+
+router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
+    idProfile = await getProfileId(res.locals.id_user)
+    if (idProfile == undefined) {
+        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+    }
+
+    sql = "SELECT p.id, p.first_name, p.photo1 \
+        FROM userprofile p \
+        INNER JOIN LikeTable l ON (l.user1 = p.id OR l.user2 = p.id) \
+        WHERE ((l.user2 = $1 AND l.user1Like = TRUE) OR (l.user1 = $1 AND l.user2Like = TRUE)) AND p.id != $1"
+    const arg = [idProfile]
+    pool.query(sql, arg, (err, result) => {
+        if (err) {
+            return res.status(400).json({ message: err.message })
+        }
+        return res.json({ "result": result.rows })
+    })
+    })
+
 
 router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     const idProfile = await getProfileId(res.locals.id_user)
