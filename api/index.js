@@ -33,7 +33,7 @@ app.use("/api/test", testRouter);
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, { cors: { origin: "*" } });
 
-require("./socket/message")(io);
+const { emitProfileView } = require("./socket/message")(io);
 
 app.get('*', (req, res) => {
   return res.status(404).json({ message: 'Page not found' })

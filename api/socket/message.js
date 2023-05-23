@@ -2,6 +2,7 @@ module.exports = function(io) {
     io.on('connection', (socket) => {
       const users = []
       console.log(`${socket.id} user just connected`)
+
       socket.on('message', ({ message, name, to }) => {
         io.emit(to, { message, name })
       })
@@ -10,4 +11,12 @@ module.exports = function(io) {
         console.log('a user disconnected')
       })
     })
+
+    function emitProfileView(to) {
+      io.emit(to, { message: "profile view" })
+    }
+
+    return {
+      emitProfileView
+    }
 }
