@@ -8,6 +8,7 @@ const likeRouter = require("./routes/like");
 const unlikeRouter = require("./routes/unlike");
 const profileRouter = require("./routes/profile");
 const blockedRouter = require("./routes/blocked");
+const viewsRouter = require("./routes/views");
 const testRouter = require("./routes/test");
 
 require('dotenv').config()
@@ -28,12 +29,13 @@ app.use("/api/user/like", likeRouter);
 app.use("/api/user/unlike", unlikeRouter);
 app.use("/api/user/profile", profileRouter);
 app.use("/api/user/blocked", blockedRouter);
+app.use("/api/user/views", viewsRouter);
 app.use("/api/test", testRouter);
 
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, { cors: { origin: "*" } });
 
-require("./socket/message")(io);
+require("./socket/message").init(io);
 
 app.get('*', (req, res) => {
   return res.status(404).json({ message: 'Page not found' })
