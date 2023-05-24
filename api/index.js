@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const userRouter = require("./routes/user");
 const chatRouter = require("./routes/chat");
 const filterRouter = require("./routes/filter");
@@ -20,6 +21,7 @@ app.use(cors())
 app.use(morgan('tiny'))
 app.use(express.json({ limit: '100mb' }))
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser())
 
 // Routes
 app.use("/api/user", userRouter);

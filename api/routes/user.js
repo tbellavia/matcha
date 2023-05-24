@@ -3,6 +3,7 @@ const router = express.Router();
 const nodemailer = require("nodemailer");
 const pool = require("../db/db");
 const jwt = require("jsonwebtoken")
+const ms = require("ms");
 const {
     ERROR_MAIL,
     ERROR_PASSWORD,
@@ -92,33 +93,6 @@ router.get("/validation/:stringValidation", (req, res) => {
     })
 })
 
-router.post('/login', (req, res) => {
-    // Pas d'information à traiter
-
-    if (!req.body.usermail || !req.body.passWord) {
-        return res.status(400).json({ message: ERROR_INVALID_LOGIN })
-    }
-
-    const sql = "SELECT id, id_user_profile FROM userlogin WHERE email = $1 AND passw = $2 AND active = TRUE"
-
-    pool.query(sql, [req.body.usermail, req.body.passWord], (err, result) => {
-        console.log(process.env.POSTGRES_HOST)
-        console.log(err);
-        if (err || result.rowCount == 0) {
-
-            return res.status(400).json({ message: ERROR_INVALID_LOGIN })
-        }
-        console.log(`ID user profile : ${result.rows[0].id}`);
-        const token = jwt.sign({
-            profile_created: !(result.rows[0].id_user_profile === null),
-            id_user: result.rows[0].id
-        }, process.env.SECRET_KEY, { expiresIn: '3 hours' })
-
-        return res.json({ access_token: token })
-    })
-
-})
-
 router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     idProfile = await getProfileId(res.locals.id_user)
 
@@ -163,6 +137,46 @@ router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async 
     })
 
     return res.json({ text: "user delete" })
+})
+
+// AUTH
+
+router.post('/login', (req, res) => {
+    // Pas d'information à traiter
+    if (!req.body.usermail || !req.body.passWord) {
+        return res.status(400).json({ message: ERROR_INVALID_LOGIN })
+    }
+
+    const sql = "SELECT id, id_user_profile FROM userlogin WHERE email = $1 AND passw = $2 AND active = TRUE"
+
+    pool.query(sql, [req.body.usermail, req.body.passWord], (err, result) => {
+        if (err || result.rowCount == 0) {
+            return res.status(400).json({ message: ERROR_INVALID_LOGIN })
+        }
+
+        const user = {
+            profile_created: !(result.rows[0].id_user_profile === null),
+            id_user: result.rows[0].id
+        }
+
+        // Generate access token
+        const accessToken = jwt.sign({ user }, process.env.SECRET_KEY, { 
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRATION 
+        })
+
+        // Store access token in HTTP-Only token
+        res.cookie('accessToken', accessToken, {
+            httpOnly: true,
+            maxAge: ms(process.env.ACCESS_TOKEN_EXPIRATION)
+        })
+
+        return res.json({ message: "Logged in successfully" });
+    })
+})
+
+router.post("/logout", (req, res) => {
+    res.clearCookie('accessToken');
+    res.json({ message: "Logged out successfully" });
 })
 
 module.exports = router;
