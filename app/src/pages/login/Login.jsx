@@ -1,4 +1,4 @@
-import React, { useRef, useState , useContext } from "react";
+import React, { useRef, useState } from "react";
 import Background from "../../components/ui/background/Background";
 import GenericPage from "../page/GenericPage";
 import Input from "../../components/ui/input/Input";
@@ -7,16 +7,7 @@ import Alert from "../../components/ui/alert/Alert";
 import { validateEmail } from "../../common/validation";
 import { ERROR_MAIL, ERROR_PASSWORD } from "../../common/messages";
 import useErrorManager from "../../hooks/use-error-manager";
-import axios from "axios";
-import AppContext from "../../store/AppContext";
-import jwt_decode from "jwt-decode";
-import { useNavigate } from "react-router-dom";
-
-function hasCreatedProfile(token) {
-    const decoded = jwt_decode(token);
-    console.log(decoded);
-    return decoded.profile_created;
-}
+import useLogin from "../../hooks/use-login";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -24,8 +15,7 @@ function Login() {
     const errManager = useErrorManager();
     const emailRef = useRef();
     const passwordRef = useRef();
-    const ctx = useContext(AppContext);
-    const navigate = useNavigate();
+    const login = useLogin();
 
     const onMailHandler = (value) => {
         setEmail(value);
@@ -59,18 +49,7 @@ function Login() {
         }
         else {
             try {
-                const response = await axios.post("http://localhost:3000/api/user/login", {
-                    usermail: email,
-                    passWord: password,
-                });
-                const token = response.data.access_token;
-                
-                if (hasCreatedProfile(token)) {
-                    navigate("/feed");
-                } else {
-                    navigate("/profile/create");
-                }
-                ctx.setToken(response.data.access_token);
+                await login(email, password);
             } catch (e) {
                 errManager.addNetworkError(e.response.data.message);
                 emailRef.current.focus();

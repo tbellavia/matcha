@@ -154,13 +154,13 @@ router.post('/login', (req, res) => {
             return res.status(400).json({ message: ERROR_INVALID_LOGIN })
         }
 
-        const user = {
+        const payload = {
             profile_created: !(result.rows[0].id_user_profile === null),
             id_user: result.rows[0].id
         }
 
         // Generate access token
-        const accessToken = jwt.sign({ user }, process.env.SECRET_KEY, { 
+        const accessToken = jwt.sign({}, process.env.SECRET_KEY, { 
             expiresIn: process.env.ACCESS_TOKEN_EXPIRATION 
         })
 
@@ -170,7 +170,7 @@ router.post('/login', (req, res) => {
             maxAge: ms(process.env.ACCESS_TOKEN_EXPIRATION)
         })
 
-        return res.json({ message: "Logged in successfully" });
+        return res.json(payload);
     })
 })
 
