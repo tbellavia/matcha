@@ -1,3 +1,7 @@
+:root {
+    --profile-width: 600px;
+}
+
 .profile {
     display: flex;
     flex-direction: column;
@@ -15,9 +19,7 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
-    position: relative;
-    top: calc(var(--photo-medium-size) / -2);
-    width: 600px;
+    width: var(--profile-width);
 }
 
 /* Navigation */
@@ -61,6 +63,7 @@
 
 .name-label {
     font-size: var(--profile-h2-size);
+    text-transform: uppercase;
 }
 
 /* Nav label color */
