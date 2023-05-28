@@ -65,12 +65,12 @@ function Login() {
                 });
                 const token = response.data.access_token;
                 
+                ctx.setToken(response.data.access_token);
                 if (hasCreatedProfile(token)) {
                     navigate("/feed");
                 } else {
                     navigate("/profile/create");
                 }
-                ctx.setToken(response.data.access_token);
             } catch (e) {
                 errManager.addNetworkError(e.response.data.message);
                 emailRef.current.focus();
