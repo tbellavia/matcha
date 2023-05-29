@@ -2,10 +2,11 @@ import { useContext } from "react";
 import styles from "./Header.module.css";
 import AppContext from "../../../store/AppContext";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 const variants = ['center', 'left', 'right'];
 
-function Header({ value = "MATCHA", variant = "center" }) {
+function Header({ value = "MATCHA", variant = "center", children }) {
     const { theme } = useContext(AppContext);
     const themeClass = styles[`header__${theme}`];
     const navigage = useNavigate();
@@ -19,14 +20,21 @@ function Header({ value = "MATCHA", variant = "center" }) {
     const onTitleClick = () => {
         navigage("/");
     }
-    
+
     return (
-        <header className={`${styles.header} ${themeClass}`}>
-            <div className={`${styles["header__line"]} ${leftLineStyle}`}>
+        <React.Fragment>
+            <header className={`${styles.header} ${themeClass}`}>
+                <div className={`${styles["header__line"]} ${leftLineStyle}`}></div>
+                <h1 onClick={onTitleClick}>{value}</h1>
+                <div className={`${styles["header__line"]} ${rightLineStyle}`}></div>
+                <div className={styles["subheader-right"]}>
+                    {children}
+                </div>
+            </header>
+            <div className={styles["subheader-bottom"]}>
+                {children}
             </div>
-            <h1 onClick={onTitleClick}>{value}</h1>
-            <div className={`${styles["header__line"]} ${rightLineStyle}`}></div>
-        </header>
+        </React.Fragment>
     );
 }
 
