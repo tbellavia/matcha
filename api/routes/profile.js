@@ -40,9 +40,7 @@ router.get("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res
 router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async (req, res) => {
 
     const profileId = await getProfileId(res.locals.id_user)
-    if(await isUserBlock(profileId, req.params.target)){
-        return res.json({"type":"blocked","result":[]})
-    }
+
 
     const type = await isAlreadyAnswered(profileId, req.params.target)
     const sql = "SELECT * , (DATE_PART('days', NOW() - birth) / 365) AS age , 0 AS distance, \
@@ -50,6 +48,11 @@ router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async
         (COALESCE((SELECT COUNT(*) FROM views v WHERE v.id_user2 = $1), 1))) AS rating \
         FROM userprofile WHERE id = $1"
     pool.query(sql, [profileId], async (err, result) => {
+        if(await isUserBlock(profileId, req.params.target)){
+            return res.json({"type":"blocked","result":[],
+            "me":{"photo":result.rows[0].photo1,
+                "first_name":result.rows[0].first_name, "last_name": result.rows[0].last_name}})
+        }
         if (result.rowCount == 0 || err) {
             return res.status(400).json({ message: err.message })
         }
