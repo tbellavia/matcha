@@ -53,7 +53,7 @@ router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async
             "me":{"photo":result.rows[0].photo1,
                 "first_name":result.rows[0].first_name, "last_name": result.rows[0].last_name}})
         }
-        if (result.rowCount == 0 || err) {
+        if (err) {
             return res.status(400).json({ message: err.message })
         }
         if(profileId == req.params.target){
@@ -73,6 +73,9 @@ router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async
         pool.query(sql3, [req.params.target,result.rows[0].latitude,result.rows[0].longitude], async (err3, result3) => {
             if (err3) {
                 return res.status(400).json({ message: err3.message })
+            }
+            else if (result3.rowCount == 0){
+                return res.status(400).json({ message: "profile inexistant" })
             }
             // result3.rows[0].rating = await rating(req.params.target)
             if(result3.rows[0].tags){
