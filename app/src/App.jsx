@@ -16,6 +16,7 @@ import Profile from "./pages/profile/Profile";
 import Chat from "./pages/chat/Chat";
 import { AppContextProvider } from "./store/AppContext";
 import AllChat from "./pages/allChat/AllChat";
+import ProtectedRoute from "./components/ui/protected-route/ProtectedRoute";
 
 function App() {
   return (
@@ -25,17 +26,50 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
-          <Route path="mailValidation" element={<MailValidation />} />
-          <Route path="feed" element={<TestPage title="/feed" />} />
+          <Route path="mailValidation" element={
+            <ProtectedRoute>
+              <MailValidation />
+            </ProtectedRoute>
+          } />
+          <Route path="feed" element={
+            <ProtectedRoute>
+              <TestPage title="/feed" />
+            </ProtectedRoute>
+          } />
+
           <Route path="profile">
-            <Route index element={<Profile />} />
-            <Route path=":id" element={<TestPage title="/profile/:id" />} />
-            <Route path="create" element={<CreateProfile />} />
+            <Route index element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            } />
+
+            <Route path=":id" element={
+              <ProtectedRoute>
+                <TestPage title="/profile/:id" />
+              </ProtectedRoute>
+            } />
+
+            <Route path="create" element={
+              <ProtectedRoute>
+                <CreateProfile />
+              </ProtectedRoute>
+            } />
           </Route>
+
           <Route path="chat">
-            <Route index element={ <AllChat title="/chat"/> }/>
-            <Route path=":id" element={ <Chat title="/chat/:id"/>  } />
+            <Route index element={
+              <ProtectedRoute>
+                <AllChat title="/chat" />
+              </ProtectedRoute>
+            } />
+            <Route path=":id" element={
+              <ProtectedRoute>
+                <Chat title="/chat/:id" />
+              </ProtectedRoute>
+            } />
           </Route>
+
           <Route path="test" element={<Test />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
