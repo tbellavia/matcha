@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from "react";
 import Theme from "../palette/theme";
 import { changeBackground } from "../utils/theme";
 import { useNavigate } from "react-router-dom";
+import { getItemOrDefault } from "../utils/storage";
 
 const AppContext = createContext({
     // Theme
@@ -18,7 +19,7 @@ export const AppContextProvider = (props) => {
     const ctx = useContext(AppContext);
     const [theme, setTheme] = useState(Theme.getStoredThemeOrDefault());
     const [userID, setUserID] = useState(localStorage.getItem("userID"));
-    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") || false);
+    const [isLoggedIn, setIsLoggedIn] = useState(getItemOrDefault("isLoggedIn"));
     const navigate = useNavigate();
 
     const onThemeSet = (theme) => {
@@ -33,7 +34,7 @@ export const AppContextProvider = (props) => {
 
     const onIsLoggedInChange = (loggedIn) => {
         setIsLoggedIn(loggedIn);
-        localStorage.setItem("loggedIn", loggedIn);
+        localStorage.setItem("isLoggedIn", loggedIn);
     }
 
     const logout = () => {
@@ -41,7 +42,7 @@ export const AppContextProvider = (props) => {
         setUserID(null);
 
         localStorage.removeItem("userID");
-        localStorage.removeItem("loggedIn");
+        localStorage.removeItem("isLoggedIn");
         navigate("/login");
     }
 
