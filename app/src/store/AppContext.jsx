@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import Theme from "../palette/theme";
 import { changeBackground } from "../utils/theme";
 import { useNavigate } from "react-router-dom";
@@ -54,6 +54,8 @@ export const AppContextProvider = (props) => {
             setTheme: onThemeSet,
 
             // User infos
+            userID,
+            isLoggedIn,
             setUserID: onUserIdChange,
             setIsLoggedIn: onIsLoggedInChange,
 
