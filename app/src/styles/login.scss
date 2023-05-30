@@ -1,0 +1,11 @@
+@use 'variables/screen_sizes';
+
+.login-form {
+    width: 300px;
+}
+
+@media only screen and (max-width: screen_sizes.$screen_sm) {
+    .login-form {
+        width: 70vw;
+    }
+}

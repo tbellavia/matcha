@@ -11,6 +11,7 @@ import axios from "axios";
 import AppContext from "../../store/AppContext";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import "../../styles/login.scss";
 
 function hasCreatedProfile(token) {
     const decoded = jwt_decode(token);
@@ -91,7 +92,7 @@ function Login() {
     return (
         <GenericPage>
             <Background paddingTop={2} title="connexion">
-                <Form onSubmit={onSubmitHandler} label="valider">
+                <Form className="login-form" onSubmit={onSubmitHandler} label="valider">
                     <Input
                         label="mail"
                         type="email"

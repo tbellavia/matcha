@@ -9,6 +9,7 @@ import { validateEmail, validatePassword } from "../../common/validation";
 import { ERROR_MAIL, ERROR_PASSWORD, ERROR_VALIDATION_PASSWORD } from "../../common/messages";
 import Alert from "../../components/ui/alert/Alert";
 import axios from "axios";
+import '../../styles/login.scss';
 
 function Signup() {
     const emailRef = useRef();
@@ -98,7 +99,7 @@ function Signup() {
     return (
         <GenericPage>
             <Background paddingTop={1} title="inscription">
-                <Form label="valider" onSubmit={onSubmitHandler}>
+                <Form className="login-form" label="valider" onSubmit={onSubmitHandler}>
                     <Input
                         label="mail"
                         type="email"
