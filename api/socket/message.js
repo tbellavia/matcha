@@ -14,6 +14,10 @@ function emitProfileMatch(to, from) {
   socketIO.emit(`match${from}`,{"from":to});
 }
 
+function emitProfileMessage(to, from) {
+  socketIO.emit(`message${to}`,{from});
+}
+
 function emitProfileUnlike(to, from) {
   socketIO.emit(`unlike${to}`,{from});
 }
@@ -39,5 +43,6 @@ module.exports = {
   emitProfileView,
   emitProfileLike,
   emitProfileMatch,
-  emitProfileUnlike
+  emitProfileUnlike,
+  emitProfileMessage
 }
