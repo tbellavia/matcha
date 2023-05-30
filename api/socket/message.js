@@ -1,7 +1,21 @@
 let socketIO;
 
-function emitProfileView(to) {
-  socketIO.emit("ping");
+function emitProfileView(to, from) {
+  console.log(`view${to} envoyer`)
+  socketIO.emit(`view${to}`,{from});
+}
+
+function emitProfileLike(to, from) {
+  socketIO.emit(`like${to}`,{from});
+}
+
+function emitProfileMatch(to, from) {
+  socketIO.emit(`match${to}`,{from});
+  socketIO.emit(`match${from}`,{"from":to});
+}
+
+function emitProfileUnlike(to, from) {
+  socketIO.emit(`unlike${to}`,{from});
 }
 
 module.exports = {
@@ -23,4 +37,7 @@ module.exports = {
   },
   // Utils function
   emitProfileView,
+  emitProfileLike,
+  emitProfileMatch,
+  emitProfileUnlike
 }
