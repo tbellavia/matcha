@@ -1,7 +1,6 @@
 import GenericPage from "../page/GenericPage";
-import styles from "./Profile.module.css";
+import styles from "./Profile.module.scss";
 import Button from "../../components/ui/button/Button";
-
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import AppContext from "../../store/AppContext";
