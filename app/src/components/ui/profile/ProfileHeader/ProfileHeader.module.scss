@@ -52,3 +52,9 @@
 .name-bottom__dark {
     color: var(--color-dark-8);
 }
+
+@media screen and (max-width: 600px) {
+    .nav__left-container {
+        display: none;
+    }
+}
