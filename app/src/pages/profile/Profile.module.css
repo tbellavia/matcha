@@ -22,49 +22,6 @@
     width: var(--profile-width);
 }
 
-/* Navigation */
-.nav {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.nav__left-container {
-    display: flex;
-    gap: 7px;
-    align-items: center;
-}
-
-/* Name top label */
-.name-top__light {
-    color: var(--color-light-5);
-}
-
-.name-top__blind {
-    color: var(--color-blind-5);
-}
-
-.name-top__dark {
-    color: var(--color-dark-6);
-}
-
-/* Name bottom label */
-.name-bottom__light {
-    color: var(--color-light-8);
-}
-
-.name-bottom__blind {
-    color: var(--color-blind-8);
-}
-
-.name-bottom__dark {
-    color: var(--color-dark-8);
-}
-
-.name-label {
-    font-size: var(--profile-h2-size);
-    text-transform: uppercase;
-}
 
 /* Nav label color */
 .nav-color__light,
@@ -76,10 +33,9 @@
     color: white;
 }
 
-.nav__right-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.name-label {
+    font-size: var(--profile-h2-size);
+    text-transform: uppercase;
 }
 
 /* Main infos */

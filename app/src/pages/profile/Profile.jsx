@@ -1,5 +1,4 @@
 import GenericPage from "../page/GenericPage";
-import Header from "../../components/ui/header/Header";
 import styles from "./Profile.module.css";
 import Button from "../../components/ui/button/Button";
 
@@ -16,7 +15,7 @@ function Profile() {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/api/user/profile/19", {
+                const response = await axios.get("http://localhost:3000/api/user/profile/me", {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 setProfileInfos(response?.data);
@@ -28,13 +27,9 @@ function Profile() {
         fetch();
     }, [token])
 
-    console.log(profileInfos);
-
     return (
         <GenericPage className={styles.profile}>
-            <Header variant="left">
-                <ProfileHeader />
-            </Header>
+            <ProfileHeader />
 
             <main className={styles['profile-container']}>
                 <ProfileInfos profileInfos={profileInfos} />
