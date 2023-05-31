@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from "./ProfileHeader.module.scss";
-import { base64ToFile } from "../../common/utils";
-import AppDroddown from "../../components/ui/drawer-menu/AppDropdown";
-import Photo from "../../components/ui/photo/Photo";
-import Header from '../../components/ui/header/Header';
-import AppContext from '../../store/AppContext';
-import useFetch from '../../hooks/use-fetch';
+import { base64ToFile } from "../../../../common/utils";
+import AppDroddown from "../../drawer-menu/AppDropdown";
+import Photo from "../../photo/Photo";
+import Header from '../../header/Header';
+import AppContext from '../../../../store/AppContext';
+import useFetch from '../../../../hooks/use-fetch';
 
 
 const ProfileHeader = ({ menuOnly = false }) => {

@@ -6,7 +6,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import AppContext from "../../store/AppContext";
 import ProfileInfos from "./ProfileInfos";
-import ProfileHeader from "./ProfileHeader";
+import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 
 function Profile() {
     const { token } = useContext(AppContext);
