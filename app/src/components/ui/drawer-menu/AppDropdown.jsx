@@ -1,9 +1,11 @@
 import { AccountCircle, Chat, Favorite, History, Logout, RemoveRedEye, Settings, Tune } from "@mui/icons-material";
 import Dropdown from "./Dropdown";
 import { Box, keyframes } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useState , useEffect} from "react";
 import SettingsModal from "./modals/Settings/SettingsModal";
 import AppContext from "../../../store/AppContext";
+import socket from "../../../socket";
+import soundFile from '../../../assets/son/message.mp3';
 
 // TODO: Manage notifications in context
 /**
@@ -30,6 +32,22 @@ export default function AppDroddown({
 
     // Check if there are notifications
     const notify = ["likes", "messages", "views"].some(k => notifs[k] && notifs[k] !== 0)
+
+    useEffect(() => {
+
+        function messageEnter({from}){
+            const audio = new Audio(soundFile);
+            audio.play();
+          console.log(`views ${from}`)
+        }
+        socket.connect()
+        socket.on("view15", messageEnter)
+    
+        return () => {
+          socket.off("view15", messageEnter)
+          socket.disconnect();
+        }
+      },[])
 
     const appDropddownItems = [
         {

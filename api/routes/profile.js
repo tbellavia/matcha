@@ -1,7 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db/db");
-const { getPrefTabToInt, getSaveNewTags, getPhotos, getGenreStringToInt , saveNewTags} = require("../common/route_utils");
+const { getPrefTabToInt, 
+        getSaveNewTags, 
+        getPhotos, 
+        getGenreStringToInt , 
+        saveNewTags, 
+        isAlreadyAnswered, 
+        isUserBlock,
+        getProfileId,rating} = require("../common/route_utils");
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
@@ -30,40 +37,54 @@ router.get("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res
 
 })
 
-router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
+router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async (req, res) => {
 
-    const sql = "SELECT userprofile.id FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
-    pool.query(sql, [res.locals.id_user], (err, result) => {
+    const profileId = await getProfileId(res.locals.id_user)
 
+
+    const type = await isAlreadyAnswered(profileId, req.params.target)
+    const sql = "SELECT * , (DATE_PART('days', NOW() - birth) / 365) AS age , 0 AS distance, \
+        (((COALESCE((SELECT COUNT(*) FROM liketable l WHERE ((l.user1 = $1 AND l.user2like = TRUE) OR (l.user2 = $1 AND l.user1like = TRUE))), 0) * 1.0)) / \
+        (COALESCE((SELECT COUNT(*) FROM views v WHERE v.id_user2 = $1), 1))) AS rating \
+        FROM userprofile WHERE id = $1"
+    pool.query(sql, [profileId], async (err, result) => {
+        if(await isUserBlock(profileId, req.params.target)){
+            return res.json({"type":"blocked","result":[],
+            "me":{"photo":result.rows[0].photo1,
+                "first_name":result.rows[0].first_name, "last_name": result.rows[0].last_name}})
+        }
         if (err) {
             return res.status(400).json({ message: err.message })
         }
-        const idProfile = result.rows[0].id
-
-        const sql2 = "SELECT id FROM liketable WHERE ((user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)) AND (user1like = 'TRUE' AND user2like = 'TRUE')"
-
-        pool.query(sql2, [idProfile, req.params.target], (err2, result2) => {
-
-            if (err2) {
-                return res.status(400).json({ message: err2.message })
+        if(profileId == req.params.target){
+            if(result.rows[0].tags){
+                result.rows[0].tags = result.rows[0].tags.split(",")}
+            return res.json({"type":"me", "result":result.rows[0]})
+        }
+        const sql3 = "SELECT * , (DATE_PART('days', NOW() - birth) / 365) AS age, \
+            6371 * 2 * ASIN(SQRT( \
+            POWER(SIN((latitude - $2) * PI() / 180 / 2), 2) + \
+            COS($2 * PI() / 180) * COS(latitude * PI() / 180) * \
+            POWER(SIN((longitude - $3) * PI() / 180 / 2), 2) \
+            )) AS distance ,\
+            (((COALESCE((SELECT COUNT(*) FROM liketable l WHERE ((l.user1 = $1 AND l.user2like = TRUE) OR (l.user2 = $1 AND l.user1like = TRUE))), 0) * 1.0)) / \
+            (COALESCE((SELECT COUNT(*) FROM views v WHERE v.id_user2 = $1), 1))) AS rating \
+            FROM userprofile WHERE id = $1"
+        pool.query(sql3, [req.params.target,result.rows[0].latitude,result.rows[0].longitude], async (err3, result3) => {
+            if (err3) {
+                return res.status(400).json({ message: err3.message })
             }
-            else if (result.rowCount < 1) {
-                return res.json({ "erreur": 'pas de match avec cette personne' })
+            else if (result3.rowCount == 0){
+                return res.status(400).json({ message: "profile inexistant" })
             }
-
-            const sql3 = "SELECT * FROM userprofile WHERE id = $1"
-            pool.query(sql3, [req.params.target], (err3, result3) => {
-
-                if (err) {
-                    return res.status(400).json({ message: err3.message })
-                }
-
-                return res.json(result3.rows[0])
-            })
-
+            // result3.rows[0].rating = await rating(req.params.target)
+            if(result3.rows[0].tags){
+                result3.rows[0].tags = result3.rows[0].tags.split(",")}
+            return res.json({"type":type,"result":result3.rows[0],
+                "me":{"photo":result.rows[0].photo1,
+                    "first_name":result.rows[0].first_name, "last_name": result.rows[0].last_name}})
         })
     })
-
 })
 
 router.post("/me", checkTokenMiddleware, (req, res) => {

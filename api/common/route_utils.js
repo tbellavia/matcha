@@ -19,6 +19,57 @@ async function getProfileId(userId) {
     }
 }
 
+async function isUserBlock(user1, user2) {
+    const sql = "SELECT * FROM blocked WHERE ((user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1))"
+    try {
+        const res = await pool.query(sql, [user1, user2]);
+        if (res.rowCount > 0) {
+            return true
+        }
+        return false;
+    } catch (err) {
+        console.log(err.message)
+        return true
+    }
+}
+
+async function isAlreadyAnswered(user1, user2){
+    const sql = "SELECT * FROM liketable \
+    WHERE ((user1 = $1 AND user2 = $2 AND (user1Like IS NOT NULL)) OR (user1 = $2 AND user2 = $1 AND (user2Like IS NOT NULL)))"
+
+    try {
+        const res = await pool.query(sql, [user1, user2]);
+        if (res.rowCount < 1) {
+            return "undefined"
+        }
+        else if (res.rows[0].user1like == true && res.rows[0].user2like == true){
+            return "match"
+        }
+        return "alreadyAnswered";
+    } catch (err) {
+        console.log(err.message)
+        return false
+    }    
+}
+
+async function rating(user){
+    const sql = "  SELECT u.id, \
+    (SELECT COALESCE(COUNT(*),0) FROM liketable WHERE ((user1 = u.id AND user2like = TRUE) OR (user2 = u.id AND user1like = TRUE)) ) AS countlike,\
+    (SELECT COALESCE(COUNT(*),1) FROM views WHERE id_user2 = u.id) AS countviews\
+  FROM userprofile u\
+  WHERE u.id = $1"
+    try {
+        const res = await pool.query(sql, [user]);
+        if (res.rowCount < 1) {
+            return 0
+        }
+        return ((res.rows[0].countlike * 1.0) / res.rows[0].countviews);
+    } catch (err) {
+        console.log(err.message)
+        return 0
+    }   
+}
+
 async function getChatId(user1, user2) {
     const sql = "SELECT id FROM chat WHERE (id_user1 = $1 AND id_user2 = $2) OR (id_user1 = $2 AND id_user2 = $1)"
 
@@ -130,5 +181,8 @@ module.exports = {
     getSaveNewTags,
     getPhotos,
     getGenreStringToInt,
-    saveNewTags
+    saveNewTags,
+    isUserBlock,
+    isAlreadyAnswered,
+    rating
 }
