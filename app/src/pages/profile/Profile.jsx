@@ -1,37 +1,32 @@
 import GenericPage from "../page/GenericPage";
 import styles from "./Profile.module.scss";
 import Button from "../../components/ui/button/Button";
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import AppContext from "../../store/AppContext";
+import { useEffect, useState } from "react";
 import ProfileInfos from "./ProfileInfos";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
+import useFetch from "../../hooks/use-fetch";
 
 function Profile() {
-    const { token } = useContext(AppContext);
-    const [profileInfos, setProfileInfos] = useState({});
+    const fetch = useFetch();
+    const [infos, setInfos] = useState({});
 
     useEffect(() => {
-        const fetch = async () => {
+        (async function() {
             try {
-                const response = await axios.get("http://localhost:3000/api/user/profile/me", {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                setProfileInfos(response?.data);
+                const response = await fetch("/api/user/profile/me");
+                setInfos(response?.data);
             } catch (e) {
                 console.log("Error:", e);
             }
-        }
-
-        fetch();
-    }, [token])
+        })()
+    })
 
     return (
         <GenericPage className={styles.profile}>
-            <ProfileHeader />
+            <ProfileHeader menuOnly={true}/>
 
             <main className={styles['profile-container']}>
-                <ProfileInfos profileInfos={profileInfos} />
+                <ProfileInfos profileInfos={infos} />
 
                 <div className={styles['button-container']}>
                     <Button type="submit" variant="regular" className={styles['button']}>NOP</Button>
