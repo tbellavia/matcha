@@ -7,7 +7,14 @@ import Header from '../../header/Header';
 import AppContext from '../../../../store/AppContext';
 import useFetch from '../../../../hooks/use-fetch';
 
-
+/**
+ * ProfileHeader
+ * 
+ * ProfileHeader component is a subheader responsible of showing to the user
+ * its own informations.
+ * In some cases, we only want to show the menu, if it is the case, the `menuOnly'
+ * property allow to specify if the user part must be shown or not.
+ */
 const ProfileHeader = ({ menuOnly = false }) => {
     const { token, theme } = useContext(AppContext);
     const myNameTopStyle = styles[`name-top__${theme}`];
@@ -16,16 +23,19 @@ const ProfileHeader = ({ menuOnly = false }) => {
     const [infos, setInfos] = useState({});
 
     useEffect(() => {
-        (async function(){
-            try {
-                const response = await fetch("/api/user/profile/me");
-                setInfos(response?.data);
-            } catch (e) {
-                // TODO: Manage error
-                console.log("Error:", e);
-            }
-        })()
-    }, [token, fetch]);
+        // TODO: Store those infos in localStorage ?
+        if (!menuOnly) {
+            (async function(){
+                try {
+                    const response = await fetch("/api/user/profile/me");
+                    setInfos(response?.data);
+                } catch (e) {
+                    // TODO: Manage error
+                    console.log("Error:", e);
+                }
+            })()
+        }
+    }, [token, fetch, menuOnly]);
 
     return (
         <Header variant='left'>
