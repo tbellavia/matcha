@@ -65,3 +65,7 @@ export function getMinAge() {
 export async function fileToBase64(file) {
     return Buffer.from(await file.arrayBuffer()).toString('base64');
 }
+
+export function base64ToFile(base64){
+    return `data:image/jpeg;base64,${base64}`
+}
