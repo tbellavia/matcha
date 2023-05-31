@@ -10,6 +10,10 @@ stop:
 reload:
 	docker-compose up -d --force-recreate
 
+.PHONY: rebuild
+rebuild:
+	docker-compose build
+
 .PHONY: force-reload
 force-reload:
 	docker system prune -a
