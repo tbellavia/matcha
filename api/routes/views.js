@@ -48,6 +48,7 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                 if (err3) {
                     return res.status(400).json({ message: err3.message })
                 }
+                console.log(idProfile)
                 emitProfileView(req.params.target, idProfile)
                 return res.json({ "message": "view ajouté" })
             })

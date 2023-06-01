@@ -5,7 +5,8 @@ import { useContext, useState , useEffect} from "react";
 import SettingsModal from "./modals/Settings/SettingsModal";
 import AppContext from "../../../store/AppContext";
 import socket from "../../../socket";
-import soundFile from '../../../assets/son/message.mp3';
+import soundFile from '../../../assets/son/son1.mp3';
+import axios from "axios";
 
 // TODO: Manage notifications in context
 /**
@@ -25,7 +26,12 @@ export default function AppDroddown({
     const ctx = useContext(AppContext);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
+    const [idProfile, setIdProfile] = useState(false);
+    console.log(ctx.notifs.views)
+    const [sizeViews, setSizeViews] = useState(Object.keys(ctx.notifs.views).length)
+    const [sizeLikes, setSizeLikes] = useState(Object.keys(ctx.notifs.likes).length)
 
+    // const [test, setTest] = useState(0)
     const onSettingsClickHandler = () => {
         setOpen(true);
     }
@@ -33,21 +39,52 @@ export default function AppDroddown({
     // Check if there are notifications
     const notify = ["likes", "messages", "views"].some(k => notifs[k] && notifs[k] !== 0)
 
+    const getIdProfile = async() => {
+        const config = {
+            headers: {
+              Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+            },
+          };
+        const res = await axios.get('http://localhost:3000/api/user/profile/getId/me',config)
+        setIdProfile(res.data.id)
+    }
+
+    useEffect(()=>{
+        getIdProfile()
+    })
+
     useEffect(() => {
 
-        function messageEnter({from}){
+        function viewEnter({from}){
             const audio = new Audio(soundFile);
             audio.play();
-          console.log(`views ${from}`)
+            notifs['views'] = (notifs['views']?notifs['views']+1:1) 
+            console.log(notifs.views)
+            console.log(`views ${from}`)
+            ctx.setNotifs({"views":{...ctx.notifs.views, from : true},"messages":{...ctx.notifs.messages},"likes":{...ctx.notifs.likes}})
+            setSizeViews(sizeViews+1)
+        }
+
+        function likeEnter({from}){
+            const audio = new Audio(soundFile);
+            audio.play();
+            notifs['likes'] = (notifs['likes']?notifs['likes']+1:1) 
+            console.log(notifs.likes)
+            console.log(`likes ${from}`)
+            ctx.setNotifs({"likes":{...ctx.notifs.likes, from : true},"messages":{...ctx.notifs.messages},"likes":{...ctx.notifs.likes}})
+            setSizeLikes(sizeLikes+1)
         }
         socket.connect()
-        socket.on("view15", messageEnter)
-    
+
+        socket.on(`view${idProfile}`, viewEnter)
+        socket.on(`likes${idProfile}`,likeEnter)
+
         return () => {
-          socket.off("view15", messageEnter)
+          socket.off(`likes${idProfile}`)
+          socket.off(`view${idProfile}`)
           socket.disconnect();
         }
-      },[])
+      },[idProfile])
 
     const appDropddownItems = [
         {
@@ -59,7 +96,7 @@ export default function AppDroddown({
             "Vues": {
                 onClick: () => { },
                 icon: <RemoveRedEye sx={{ color: iconColor }} />,
-                notifs: notifs.views
+                notifs: sizeViews
             },
             "Likes": {
                 onClick: () => { },

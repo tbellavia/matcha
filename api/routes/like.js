@@ -6,6 +6,7 @@ const pool = require("../db/db");
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
 const { getProfileId } = require("../common/route_utils");
+const { emitProfileMatch, emitProfileLike } = require("../socket/message");
 
 router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     idProfile = await getProfileId(res.locals.id_user)
@@ -47,7 +48,8 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                 if (err3) {
                     return res.status(400).json({ message: err3.message })
                 }
-                return res.json({ "message": "like ajouté" })
+            emitProfileLike(req.params.target, idProfile)
+            return res.json({ "message": "like ajouté" })
             })
         }
         else {
@@ -61,6 +63,7 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                 })
                 if (result2.rows[0].user2like == true) {
                     if (await creatNewChat(idProfile, req.params.target)) {
+                        emitProfileMatch(req.params.target, idProfile)
                         res.json({ "message": "match nouvelle conversation ajouté" })
                     }
                 }
@@ -78,10 +81,12 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
 
                     if (await creatNewChat(idProfile, req.params.target)) {
 
+                        emitProfileMatch(req.params.target, idProfile)
                         res.json({ "message": "match nouvelle conversation ajouté" })
                     }
                 }
             }
+            emitProfileLike(req.params.target, idProfile)
             return res.json({ "message": "like ajouté" })
         }
     })

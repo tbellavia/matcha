@@ -29,6 +29,9 @@ CREATE TABLE UserProfile (
     distMax INT DEFAULT 1000,
     minRating FLOAT DEFAULT 0,
     filtertags TEXT DEFAULT '',
+    notifsviews TEXT DEFAULT '{}',
+    notifslikes TEXT DEFAULT '{}',
+    notifsmessages TEXT DEFAULT '{}',
     tri INT DEFAULT 0
 );
 
