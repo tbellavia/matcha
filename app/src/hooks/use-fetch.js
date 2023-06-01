@@ -11,7 +11,7 @@ export default function useFetch(unauthorizedFallback = "/login"){
         headers: { 'Authorization' : `Bearer ${token}` }
     });
 
-    return async (uri, method, data) => {
+    return async (uri, method = "GET", data = {}) => {
         try {
             return await client.request({
                 url: uri,
@@ -21,7 +21,7 @@ export default function useFetch(unauthorizedFallback = "/login"){
         }
         catch (e){
             if(e.response && e.response.status === 401){
-                return navigate("/login");
+                return navigate(unauthorizedFallback);
             }
             throw e;
         }

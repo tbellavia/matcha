@@ -1,9 +1,11 @@
 import React from 'react';
-import styles from "./Profile.module.css";
+// import styles from "./Profile.module.css";
+import styles from "./ProfileInfos.module.scss";
 import Tags from '../../components/ui/tags/Tags';
 import Bio from '../../components/ui/bio/Bio';
 import Carousel from '../../components/ui/photo/Carousel';
 import { useTheme } from '../../hooks/use-theme';
+
 
 const ProfileInfos = ({profileInfos}) => {
     const theme = useTheme();
