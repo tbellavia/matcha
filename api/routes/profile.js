@@ -51,7 +51,7 @@ router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async
     const type = await isAlreadyAnswered(profileId, req.params.target)
     const sql = "SELECT * , (DATE_PART('days', NOW() - birth) / 365) AS age , 0 AS distance, \
         (((COALESCE((SELECT COUNT(*) FROM liketable l WHERE ((l.user1 = $1 AND l.user2like = TRUE) OR (l.user2 = $1 AND l.user1like = TRUE))), 0) * 1.0)) / \
-        (COALESCE((SELECT COUNT(*) FROM views v WHERE v.id_user2 = $1), 1))) AS rating \
+        (COALESCE((SELECT COUNT(*) FROM views v WHERE v.id_user2 = $1), 1)+0.0000001)) AS rating \
         FROM userprofile WHERE id = $1"
     pool.query(sql, [profileId], async (err, result) => {
         if(await isUserBlock(profileId, req.params.target)){
@@ -74,7 +74,7 @@ router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async
             POWER(SIN((longitude - $3) * PI() / 180 / 2), 2) \
             )) AS distance ,\
             (((COALESCE((SELECT COUNT(*) FROM liketable l WHERE ((l.user1 = $1 AND l.user2like = TRUE) OR (l.user2 = $1 AND l.user1like = TRUE))), 0) * 1.0)) / \
-            (COALESCE((SELECT COUNT(*) FROM views v WHERE v.id_user2 = $1), 1))) AS rating \
+            (COALESCE((SELECT COUNT(*) FROM views v WHERE v.id_user2 = $1), 1)+0.0000001)) AS rating \
             FROM userprofile WHERE id = $1"
         pool.query(sql3, [req.params.target,result.rows[0].latitude,result.rows[0].longitude], async (err3, result3) => {
             if (err3) {
