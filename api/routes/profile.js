@@ -37,6 +37,12 @@ router.get("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res
 
 })
 
+router.get("/getId/me", checkTokenMiddleware, checkProfileCreatedMiddleware,async (req, res) => {
+
+    const profileId = await getProfileId(res.locals.id_user)
+    return res.json({"id":profileId})
+})
+
 router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async (req, res) => {
 
     const profileId = await getProfileId(res.locals.id_user)
@@ -81,7 +87,7 @@ router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async
             if(result3.rows[0].tags){
                 result3.rows[0].tags = result3.rows[0].tags.split(",")}
             return res.json({"type":type,"result":result3.rows[0],
-                "me":{"photo":result.rows[0].photo1,
+                "me":{"id":result.rows[0].id,"photo":result.rows[0].photo1,
                     "first_name":result.rows[0].first_name, "last_name": result.rows[0].last_name}})
         })
     })
@@ -129,7 +135,7 @@ router.post("/me", checkTokenMiddleware, (req, res) => {
             idMax = result2.rows[0].id
 
             const sql3 = "UPDATE userlogin SET id_user_profile = $1 WHERE id = $2";
-            pool.query(sql3, [idMax + 1, res.locals.id_user], (err3, result3) => {
+            pool.query(sql3, [idMax, res.locals.id_user], (err3, result3) => {
 
                 if (err3) {
                     return res.status(400).json({ message: err3.message })
