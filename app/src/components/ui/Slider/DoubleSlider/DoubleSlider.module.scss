@@ -1,0 +1,26 @@
+.double-slider {
+    label {
+        text-transform: uppercase;
+    }
+
+    div {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    div > span {
+        font-size: 1.2rem;
+    }
+}
+
+$themes: "light", "blind", "dark";
+
+@each $theme in $themes {
+    .label-#{$theme} {
+        @if ($theme == "dark") {
+            color: white;
+        } @else {
+            color: black;
+        }
+    }
+}
