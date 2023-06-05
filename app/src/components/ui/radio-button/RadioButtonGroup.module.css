@@ -11,7 +11,13 @@
 
 .radio-container {
     display: flex;
-    flex-direction: column;
     gap: 10px;
+}
 
+.vertical {
+    flex-direction: column;
+}
+
+.horizontal {
+    flex-direction: row;
 }

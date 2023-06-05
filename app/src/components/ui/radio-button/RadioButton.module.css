@@ -1,3 +1,7 @@
+.radio {
+    width: 100%;
+}
+
 .radio input[type="radio"]+label {
     display: flex;
     justify-content: center;
@@ -8,7 +12,6 @@
     user-select: none;
     border-radius: 10px;
     font-size: var(--input-font-size);
-    width: 100%;
 }
 
 .radio input[type="radio"]:not(:checked), 
