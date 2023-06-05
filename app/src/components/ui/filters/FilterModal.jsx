@@ -60,6 +60,7 @@ const FilterModal = () => {
                             label="popularité"
                             value={popularity}
                             onChange={setPopularity}
+                            step={0.1}
                             min={MIN_POPULARITY}
                             max={MAX_POPULARITY}
                         />
