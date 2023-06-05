@@ -1,6 +1,6 @@
 .button {
     height: 50px;
-    width: 220px;
+    min-width: 220px;
     font-size: 2em;
 }
 
