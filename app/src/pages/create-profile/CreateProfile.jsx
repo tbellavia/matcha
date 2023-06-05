@@ -321,8 +321,14 @@ function CreateProfile() {
                 }
 
                 {/* Button */}
-                <div className={styles['create-profile__button-container']}>
-                    <Button variant="validation" onClick={onClickHandler}>valider</Button>
+                <div className={styles['create-profile__button_container']}>
+                    <Button 
+                        variant="validation" 
+                        onClick={onClickHandler}
+                        className={styles['submit-button']}
+                    >
+                            valider
+                    </Button>
                 </div>
             </section>
         </PageHeader>

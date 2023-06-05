@@ -79,6 +79,10 @@
         flex-direction: column;
         gap: 10px;
     }
+
+    .submit-button {
+        width: 100%;
+    }
 }
 
 /* TEST BOX */
