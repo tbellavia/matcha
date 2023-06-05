@@ -1,7 +1,9 @@
 .button {
-    height: 50px;
+    height: 40px;
+    text-align: center;
     min-width: 220px;
-    font-size: 2em;
+    font-size: 1.6em;
+    text-transform: uppercase;
 }
 
 /* Light */

@@ -21,7 +21,7 @@ function Button({ onClick, type, variant, className, disabled = false, children 
             onClick={onClick}
             disabled={disabled}
         >
-            {children.toUpperCase()}
+            {children}
         </button>
     );
 }
