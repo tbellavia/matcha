@@ -1,3 +1,7 @@
+:root {
+    --header-horizontal-margin: 20px;
+}
+
 .header {
     height: 138px;
     width: 100%;
@@ -18,9 +22,39 @@
     height: 7px;
 }
 
+/* Sub-Header */
+
+.subheader-right {
+    display: none;
+}
+
+.subheader-bottom {
+    height: var(--photo-medium-size);
+    width: var(--profile-width);
+    position: relative;
+    top: calc(var(--photo-medium-size) / -2);
+}
+
 @media screen and (max-width: 600px) {
-    .header {
+    .header>h1 {
+        margin-left: var(--header-horizontal-margin);
+    }
+
+    .subheader-right {
+        margin-right: var(--header-horizontal-margin);
+        display: unset;
+    }
+
+    .subheader-bottom {
         display: none;
+    }
+
+    .header__line {
+        display: none;
+    }
+
+    .header {
+        justify-content: space-between;
     }
 }
 

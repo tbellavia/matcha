@@ -24,11 +24,14 @@ CREATE TABLE UserProfile (
     photo3 TEXT,
     photo4 TEXT,
     photo5 TEXT,
-    ageMin INT DEFAULT 18,
-    ageMax INT DEFAULT 150,
-    distMax INT DEFAULT 1000,
+    agemin INT DEFAULT 18,
+    agemax INT DEFAULT 150,
+    distmax INT DEFAULT 1000,
     minRating FLOAT DEFAULT 0,
-    filtertags TEXT DEFAULT "",
+    filtertags TEXT DEFAULT '',
+    notifsviews TEXT DEFAULT '{}',
+    notifslikes TEXT DEFAULT '{}',
+    notifsmessages TEXT DEFAULT '{}',
     tri INT DEFAULT 0
 );
 
@@ -75,11 +78,10 @@ CREATE TABLE views (
     id serial PRIMARY KEY NOT NULL,
     id_user1 INT,
     id_user2 INT
-)
+);
 
-INSERT INTO UserLogin
-(
-   email,
+INSERT INTO UserLogin(
+    email,
     passw,
     active,
     id_user_profile
@@ -95,8 +97,7 @@ VALUES ('test1@test1.com','pwd',TRUE,1),
 ('test9@test9.com','pwd',TRUE,9),
 ('test10@test10.com','pwd',TRUE,10);
 
-INSERT INTO UserProfile
-(
+INSERT INTO UserProfile(
     first_name,
     last_name,
     birth,

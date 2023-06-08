@@ -1,9 +1,11 @@
 import Button from "../button/Button";
 import styles from "./Form.module.css";
 
-function Form({ label, onSubmit, disabled = false, children }) {
+function Form({ className, label, onSubmit, disabled = false, children }) {
+    const formClasses = `${styles.form} ${className}`;
+
     return (
-        <form className={styles.form} onSubmit={onSubmit}>
+        <form className={formClasses} onSubmit={onSubmit}>
             {children}
             <Button 
                 type="submit"

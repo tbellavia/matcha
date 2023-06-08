@@ -1,0 +1,50 @@
+/* Main infos */
+.profile-main-infos {
+    display: flex;
+    flex-direction: column;
+    padding-top: 15px;
+    width: 100%;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.profile-main-infos-top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-left-infos > h2 {
+    line-height: 1.7rem;
+}
+
+.profile-right-infos > h3 {
+    font-size: var(--profile-h3-size);
+    text-align: right;
+}
+
+.profile-right-infos > h4 {
+    font-size: var(--profile-h4-size);
+    text-align: right;
+}
+
+
+.name-label {
+    font-size: var(--profile-h2-size);
+    text-transform: uppercase;
+}
+
+/* Nav label color */
+.nav-color__light,
+.nav-color__blind {
+    color: black;
+}
+
+.nav-color__dark {
+    color: white;
+}
+
+@media screen and (max-width: 600px) {
+    .profile-main-infos {
+        flex-direction: column-reverse;
+    }
+}

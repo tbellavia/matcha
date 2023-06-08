@@ -6,7 +6,7 @@ const pool = require("../db/db");
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
 const { getProfileId } = require("../common/route_utils");
-
+const {emitProfileView} = require("../socket/message")
 
 router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     idProfile = await getProfileId(res.locals.id_user)
@@ -48,6 +48,8 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                 if (err3) {
                     return res.status(400).json({ message: err3.message })
                 }
+                console.log(idProfile)
+                emitProfileView(req.params.target, idProfile)
                 return res.json({ "message": "view ajouté" })
             })
         }

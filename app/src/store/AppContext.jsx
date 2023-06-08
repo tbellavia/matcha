@@ -16,13 +16,17 @@ export const AppContextProvider = (props) => {
     const ctx = useContext(AppContext);
     const [theme, setTheme] = useState(Theme.getStoredThemeOrDefault());
     const [token, setToken] = useState(localStorage.getItem("token"));
+    const [notifs, setNotifs] = useState({ views: {}, messages: {}, likes: {} });
     const navigate = useNavigate();
 
+    // Theme
     const onThemeSet = (theme) => {
         setTheme(theme);
         Theme.saveThemeInLocalStorage(theme);
     }
+    changeBackground(Theme.getStoredThemeOrDefault());
 
+    // Auth
     const onTokenSet = (token) => {
         setToken(token);
         localStorage.setItem("token", token);
@@ -34,7 +38,6 @@ export const AppContextProvider = (props) => {
         navigate("/login");
     }
 
-    changeBackground(Theme.getStoredThemeOrDefault());
     return (
         <AppContext.Provider value={{
             ...ctx,
@@ -44,7 +47,10 @@ export const AppContextProvider = (props) => {
             // Token
             token,
             setToken: onTokenSet,
-            logout
+            logout,
+            // Notifs
+            notifs,
+            setNotifs,
         }}>
             {props.children}
         </AppContext.Provider >

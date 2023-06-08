@@ -1,35 +1,90 @@
 import { AccountCircle, Chat, Favorite, History, Logout, RemoveRedEye, Settings, Tune } from "@mui/icons-material";
 import Dropdown from "./Dropdown";
 import { Box, keyframes } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useState , useEffect} from "react";
 import SettingsModal from "./modals/Settings/SettingsModal";
 import AppContext from "../../../store/AppContext";
+import socket from "../../../socket";
+import soundFile from '../../../assets/son/son1.mp3';
+import axios from "axios";
 
-// TODO: Manage notifications in context
-/**
- * AppDroddown
- * 
- * AppDropdown represent the upper menu and manage the notification display.
- * 
- * @param {Object}  notifs Object containing at most 'views' 'likes' and 'messages' keys, the value is
- * the number of notifications, example : { views: 1, likes: 1, messages: 1 }
- * All keys has one notification, if one key has 0 notification, no notification badge will be shown.
- * 
- * @returns 
- */
-export default function AppDroddown({
-    notifs = {}
-}) {
+
+export default function AppDroddown() {
     const ctx = useContext(AppContext);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
+    const [idProfile, setIdProfile] = useState(false);
+    const [notifs, setNotifs] = useState({"likes":{}, "messages":{}, "views":{}})
+    // console.log(ctx.notifs.views)
+    const [sizeViews, setSizeViews] = useState(0)
+    const [sizeLikes, setSizeLikes] = useState(0)
+    const [sizeMessages, setMessages] = useState(0)
 
+    // const [test, setTest] = useState(0)
     const onSettingsClickHandler = () => {
         setOpen(true);
     }
 
     // Check if there are notifications
-    const notify = ["likes", "messages", "views"].some(k => notifs[k] && notifs[k] !== 0)
+    const notify = sizeViews + sizeLikes + sizeMessages
+    console.log(notify)
+    // const notify = 
+
+    const getIdProfile = async() => {
+        const config = {
+            headers: {
+              Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+            },
+          };
+        const res = await axios.get('http://localhost:3000/api/user/profile/getId/me',config)
+        const notifRes = await axios.get('http://localhost:3000/api/user/notifs',config)
+        // console.log(notifRes.data.likes)
+        setNotifs(notifRes.data)
+        // console.log(notifRes.data.views)
+        setSizeViews(Object.keys(notifRes.data.views).length)
+        setSizeLikes(Object.keys(notifRes.data.likes).length)
+        setMessages(Object.keys(notifRes.data.messages).length)
+        setIdProfile(res.data.id)
+
+    }
+
+    useEffect(()=>{
+        getIdProfile()
+    })
+
+    useEffect(() => {
+
+        function viewEnter({from}){
+            const audio = new Audio(soundFile);
+            audio.play();
+            notifs['views'] = (notifs['views']?notifs['views']+1:1) 
+            console.log(notifs.views)
+            console.log(`views ${from}`)
+            ctx.setNotifs({"views":{...ctx.notifs.views, from : true},"messages":{...ctx.notifs.messages},"likes":{...ctx.notifs.likes}})
+            setSizeViews(sizeViews+1)
+        }
+
+        function likeEnter({from}){
+            const audio = new Audio(soundFile);
+            audio.play();
+            notifs['likes'] = (notifs['likes']?notifs['likes']+1:1) 
+            console.log(notifs.likes)
+            console.log(`likes ${from}`)
+            ctx.setNotifs({"likes":{...ctx.notifs.likes},"messages":{...ctx.notifs.messages},"views":{...ctx.notifs.views}})
+            setSizeLikes(sizeLikes+1)
+        }
+            // ctx.setNotifs({"likes":{...ctx.notifs.likes},"messages":{...ctx.notifs.messages, from : (ctx.notifs.messages[from]?ctx.notifs.messages[from]+1:1)},"likes":{...ctx.notifs.likes}})
+        socket.connect()
+
+        socket.on(`view${idProfile}`, viewEnter)
+        socket.on(`likes${idProfile}`,likeEnter)
+
+        return () => {
+          socket.off(`likes${idProfile}`)
+          socket.off(`view${idProfile}`)
+          socket.disconnect();
+        }
+      },[idProfile])
 
     const appDropddownItems = [
         {
@@ -41,17 +96,17 @@ export default function AppDroddown({
             "Vues": {
                 onClick: () => { },
                 icon: <RemoveRedEye sx={{ color: iconColor }} />,
-                notifs: notifs.views
+                notifs: sizeViews
             },
             "Likes": {
                 onClick: () => { },
                 icon: <Favorite sx={{ color: iconColor }} />,
-                notifs: notifs.likes
+                notifs: sizeLikes
             },
             "Messages": {
                 onClick: () => { console.log("Message") },
                 icon: <Chat sx={{ color: iconColor }} />,
-                notifs: notifs.messages
+                notifs: sizeMessages
             },
             "Historique": {
                 onClick: () => { },

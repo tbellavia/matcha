@@ -6,6 +6,7 @@ async function getProfileId(userId) {
     try {
         const res = await pool.query(sql, [userId]);
         if (res.rowCount < 1) {
+            
 
             return null
         }
@@ -17,6 +18,57 @@ async function getProfileId(userId) {
         console.log(err.message)
         return null
     }
+}
+
+async function isUserBlock(user1, user2) {
+    const sql = "SELECT * FROM blocked WHERE ((user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1))"
+    try {
+        const res = await pool.query(sql, [user1, user2]);
+        if (res.rowCount > 0) {
+            return true
+        }
+        return false;
+    } catch (err) {
+        console.log(err.message)
+        return true
+    }
+}
+
+async function isAlreadyAnswered(user1, user2){
+    const sql = "SELECT * FROM liketable \
+    WHERE ((user1 = $1 AND user2 = $2 AND (user1Like IS NOT NULL)) OR (user1 = $2 AND user2 = $1 AND (user2Like IS NOT NULL)))"
+
+    try {
+        const res = await pool.query(sql, [user1, user2]);
+        if (res.rowCount < 1) {
+            return "undefined"
+        }
+        else if (res.rows[0].user1like == true && res.rows[0].user2like == true){
+            return "match"
+        }
+        return "alreadyAnswered";
+    } catch (err) {
+        console.log(err.message)
+        return false
+    }    
+}
+
+async function rating(user){
+    const sql = "  SELECT u.id, \
+    (SELECT COALESCE(COUNT(*),0) FROM liketable WHERE ((user1 = u.id AND user2like = TRUE) OR (user2 = u.id AND user1like = TRUE)) ) AS countlike,\
+    (SELECT COALESCE(COUNT(*),1) FROM views WHERE id_user2 = u.id) AS countviews\
+  FROM userprofile u\
+  WHERE u.id = $1"
+    try {
+        const res = await pool.query(sql, [user]);
+        if (res.rowCount < 1) {
+            return 0
+        }
+        return ((res.rows[0].countlike * 1.0) / res.rows[0].countviews);
+    } catch (err) {
+        console.log(err.message)
+        return 0
+    }   
 }
 
 async function getChatId(user1, user2) {
@@ -121,6 +173,82 @@ function saveNewTags(tags){
     })
 }
 
+function addNotifViews(from,to){
+    console.log(from)
+    idProfile = from
+    if (idProfile == undefined) {
+        return
+    }
+    sql = "SELECT notifsviews \
+    FROM userprofile \
+    WHERE id = $1"
+    const arg = [to]
+    pool.query(sql, arg, (err, result) => {
+        if (err) {
+            return res.status(400).json({ message: err.message })
+        }
+        let views = JSON.parse(result.rows[0].notifsviews)
+
+        views[from.toString()] = true
+
+        sql2 = "UPDATE userprofile SET notifsviews= $2 WHERE id = $1"
+        const arg2 = [to,JSON.stringify(views)]
+        pool.query(sql2, arg2, (err2, result2) => {
+            if (err2) {
+                return res.status(400).json({ message: err.message })
+            }
+            return res.json({ "views": "views ajouté"})
+        })
+    })
+}
+
+function addNotifLike(from, to){
+    sql = "SELECT notifslikes \
+    FROM userprofile \
+    WHERE id = $1"
+    const arg = [to]
+    pool.query(sql, arg, (err, result) => {
+        if (err) {
+            return res.status(400).json({ message: err.message })
+        }
+        let likes = JSON.parse(result.rows[0].notifslikes)
+
+        likes[from] = true
+
+        sql2 = "UPDATE userprofile SET notifslikes= $2 WHERE id = $1"
+        const arg2 = [to,JSON.stringify(likes)]
+        pool.query(sql2, arg2, (err2, result2) => {
+            if (err2) {
+                return res.status(400).json({ message: err.message })
+            }
+            return res.json({ "likes": "likes ajouté"})
+        })
+    })
+}
+
+function addNotifMessages(from, to){
+    sql = "SELECT notifsmessages \
+    FROM userprofile \
+    WHERE id = $1"
+    const arg = [to]
+    pool.query(sql, arg, (err, result) => {
+        if (err) {
+            return res.status(400).json({ message: err.message })
+        }
+        let message = JSON.parse(result.rows[0].notifsmessages)
+
+        message[from] = message[from]?message[from]+1:1
+
+        sql2 = "UPDATE userprofile SET notifsmessages= $2 WHERE id = $1"
+        const arg2 = [to,JSON.stringify(message)]
+        pool.query(sql2, arg2, (err2, result2) => {
+            if (err2) {
+                return res.status(400).json({ message: err.message })
+            }
+            return res.json({ "message": "message ajouté"})
+        })
+    })
+}
 
 module.exports = {
     getProfileId,
@@ -130,5 +258,11 @@ module.exports = {
     getSaveNewTags,
     getPhotos,
     getGenreStringToInt,
-    saveNewTags
+    saveNewTags,
+    isUserBlock,
+    isAlreadyAnswered,
+    rating,
+    addNotifViews,
+    addNotifLike,
+    addNotifMessages
 }

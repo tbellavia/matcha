@@ -10,6 +10,8 @@ const profileRouter = require("./routes/profile");
 const blockedRouter = require("./routes/blocked");
 const viewsRouter = require("./routes/views");
 const testRouter = require("./routes/test");
+const notifsRouter = require("./routes/notifs");
+
 
 require('dotenv').config()
 
@@ -31,6 +33,7 @@ app.use("/api/user/profile", profileRouter);
 app.use("/api/user/blocked", blockedRouter);
 app.use("/api/user/views", viewsRouter);
 app.use("/api/test", testRouter);
+app.use("/api/user/notifs", notifsRouter);
 
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, { cors: { origin: "*" } });
