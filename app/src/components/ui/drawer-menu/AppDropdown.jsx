@@ -8,28 +8,20 @@ import socket from "../../../socket";
 import soundFile from '../../../assets/son/son1.mp3';
 import axios from "axios";
 
-// TODO: Manage notifications in context
-/**
- * AppDroddown
- * 
- * AppDropdown represent the upper menu and manage the notification display.
- * 
- * @param {Object}  notifs Object containing at most 'views' 'likes' and 'messages' keys, the value is
- * the number of notifications, example : { views: 1, likes: 1, messages: 1 }
- * All keys has one notification, if one key has 0 notification, no notification badge will be shown.
- * 
- * @returns 
- */
-export default function AppDroddown({
-    notifs = {}
-}) {
+
+export default function AppDroddown() {
     const ctx = useContext(AppContext);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
     const [idProfile, setIdProfile] = useState(false);
-    console.log(ctx.notifs.views)
-    const [sizeViews, setSizeViews] = useState(Object.keys(ctx.notifs.views).length)
-    const [sizeLikes, setSizeLikes] = useState(Object.keys(ctx.notifs.likes).length)
+    // console.log(ctx.notifs)
+    // const [sizeViews, setSizeViews] = useState(Object.keys(ctx.notifs.views).length)
+    // const [sizeLikes, setSizeLikes] = useState(Object.keys(ctx.notifs.likes).length)
+    // const [notifs, setNotifs] = useState({"likes":{}, "messages":{}, "views":{}})
+    // console.log(ctx.notifs.views)
+    const [sizeViews, setSizeViews] = useState(0)
+    const [sizeLikes, setSizeLikes] = useState(0)
+    const [sizeMessages, setSizeMessages] = useState(0)
 
     // const [test, setTest] = useState(0)
     const onSettingsClickHandler = () => {
@@ -37,7 +29,9 @@ export default function AppDroddown({
     }
 
     // Check if there are notifications
-    const notify = ["likes", "messages", "views"].some(k => notifs[k] && notifs[k] !== 0)
+    const notify = sizeViews + sizeLikes + sizeMessages
+    // console.log(notify)
+    // const notify = 
 
     const getIdProfile = async() => {
         const config = {
@@ -46,7 +40,15 @@ export default function AppDroddown({
             },
           };
         const res = await axios.get('http://localhost:3000/api/user/profile/getId/me',config)
+        const notifRes = await axios.get('http://localhost:3000/api/user/notifs',config)
+        // console.log(notifRes.data.likes)
+        ctx.setNotifs(notifRes.data)
+        // console.log(notifRes.data.views)
+        setSizeViews(Object.entries(notifRes.data.views).filter(([key, value]) => value === true).length)
+        setSizeLikes(Object.entries(notifRes.data.likes).filter(([key, value]) => value === true).length)
+        setSizeMessages(Object.entries(notifRes.data.messages).filter(([key, value]) => value > 0).length)
         setIdProfile(res.data.id)
+
     }
 
     useEffect(()=>{
@@ -58,8 +60,8 @@ export default function AppDroddown({
         function viewEnter({from}){
             const audio = new Audio(soundFile);
             audio.play();
-            notifs['views'] = (notifs['views']?notifs['views']+1:1) 
-            console.log(notifs.views)
+            // ctx.notifs['views'] = (ctx.notifs['views']?ctx.notifs['views']+1:1) 
+            console.log(ctx.notifs.views)
             console.log(`views ${from}`)
             ctx.setNotifs({"views":{...ctx.notifs.views, from : true},"messages":{...ctx.notifs.messages},"likes":{...ctx.notifs.likes}})
             setSizeViews(sizeViews+1)
@@ -68,23 +70,38 @@ export default function AppDroddown({
         function likeEnter({from}){
             const audio = new Audio(soundFile);
             audio.play();
-            notifs['likes'] = (notifs['likes']?notifs['likes']+1:1) 
-            console.log(notifs.likes)
+            // ctx.notifs['likes'] = (ctx.notifs['likes']?ctx.notifs['likes']+1:1) 
+            console.log(ctx.notifs.likes)
             console.log(`likes ${from}`)
-            ctx.setNotifs({"likes":{...ctx.notifs.likes, from : true},"messages":{...ctx.notifs.messages},"likes":{...ctx.notifs.likes}})
+            ctx.setNotifs({"likes":{...ctx.notifs.likes, from : true},"messages":{...ctx.notifs.messages},"views":{...ctx.notifs.views}})
             setSizeLikes(sizeLikes+1)
         }
+
+        function messagesEnter({from}){
+            const audio = new Audio(soundFile);
+            audio.play();
+            // ctx.notifs['likes'] = (ctx.notifs['likes']?ctx.notifs['likes']+1:1) 
+            console.log(ctx.notifs.likes)
+            console.log(`message ${from}`)
+            ctx.setNotifs({"likes":{...ctx.notifs.likes},"messages":{...ctx.notifs.messages, from : (ctx.notifs.messages[from]?ctx.notifs['messages'][from]+1:1) },"views":{...ctx.notifs.views}})
+            setSizeMessages(sizeMessages+1)
+        }
+            // ctx.setNotifs({"likes":{...ctx.notifs.likes},"messages":{...ctx.notifs.messages, from : (ctx.notifs.messages[from]?ctx.notifs.messages[from]+1:1)},"likes":{...ctx.notifs.likes}})
         socket.connect()
 
         socket.on(`view${idProfile}`, viewEnter)
         socket.on(`likes${idProfile}`,likeEnter)
+        socket.on(`messages${idProfile}`, messagesEnter)
+        socket.on(`match${idProfile}`,messagesEnter)
 
         return () => {
           socket.off(`likes${idProfile}`)
           socket.off(`view${idProfile}`)
+          socket.on(`messages${idProfile}`)
+          socket.on(`match${idProfile}`)
           socket.disconnect();
         }
-      },[idProfile])
+      },[idProfile]) 
 
     const appDropddownItems = [
         {
@@ -101,12 +118,12 @@ export default function AppDroddown({
             "Likes": {
                 onClick: () => { },
                 icon: <Favorite sx={{ color: iconColor }} />,
-                notifs: notifs.likes
+                notifs: sizeLikes
             },
             "Messages": {
                 onClick: () => { console.log("Message") },
                 icon: <Chat sx={{ color: iconColor }} />,
-                notifs: notifs.messages
+                notifs: sizeMessages
             },
             "Historique": {
                 onClick: () => { },
