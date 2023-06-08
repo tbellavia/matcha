@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../db/db");
 const {
-    ERROR_BAD_TOKEN
+    ERROR_BAD_TOKEN,
+    ERROR_CHAT
   } = require("../common/messages")
 const { getChatId, createNewChat, getProfileId } = require("../common/route_utils");
 
@@ -20,7 +21,7 @@ router.post("/message/me/:target", checkTokenMiddleware, checkProfileCreatedMidd
     }
 
     idChat = await getChatId(idProfile, req.params.target)
-    if (idProfile == null) {
+    if (idChat == null) {
         return res.status(400).json({ message: ERROR_CHAT })
     }
 

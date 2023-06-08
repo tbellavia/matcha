@@ -136,11 +136,11 @@ function getSaveNewTags(newTags) {
     for (var i = 0, lth = newTags.length; i < lth; i++) {
         pool.query(sql, newTags[i], (err, result) => {
             if (err) {
-                return res.status(400).json({ message: err.message })
+                return { message: err.message }
             }
         })
     }
-    return res.json({ "message": "nouveaux tags enregistrer" })
+    return { "message": "nouveaux tags enregistrer" }
 }
 
 function getPhotos(tabPhoto) {
@@ -185,7 +185,7 @@ function addNotifViews(from,to){
     const arg = [to]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return { message: err.message }
         }
         let views = JSON.parse(result.rows[0].notifsviews)
 
@@ -195,9 +195,10 @@ function addNotifViews(from,to){
         const arg2 = [to,JSON.stringify(views)]
         pool.query(sql2, arg2, (err2, result2) => {
             if (err2) {
-                return res.status(400).json({ message: err.message })
+                return { message: err.message }
             }
-            return res.json({ "views": "views ajouté"})
+            return { "views": "views ajouté"}
+            // return res.json({ "views": "views ajouté"})
         })
     })
 }
@@ -209,7 +210,7 @@ function addNotifLike(from, to){
     const arg = [to]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return { message: err.message }
         }
         let likes = JSON.parse(result.rows[0].notifslikes)
 
@@ -219,9 +220,9 @@ function addNotifLike(from, to){
         const arg2 = [to,JSON.stringify(likes)]
         pool.query(sql2, arg2, (err2, result2) => {
             if (err2) {
-                return res.status(400).json({ message: err.message })
+                return { message: err.message }
             }
-            return res.json({ "likes": "likes ajouté"})
+            return { "likes": "likes ajouté"}
         })
     })
 }
@@ -233,7 +234,7 @@ function addNotifMessages(from, to){
     const arg = [to]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return { message: err.message }
         }
         let message = JSON.parse(result.rows[0].notifsmessages)
 
@@ -243,9 +244,9 @@ function addNotifMessages(from, to){
         const arg2 = [to,JSON.stringify(message)]
         pool.query(sql2, arg2, (err2, result2) => {
             if (err2) {
-                return res.status(400).json({ message: err.message })
+                return { message: err.message }
             }
-            return res.json({ "message": "message ajouté"})
+            return { "message": "message ajouté"}
         })
     })
 }
