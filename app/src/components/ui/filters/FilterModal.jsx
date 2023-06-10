@@ -1,3 +1,4 @@
+import { ClickAwayListener } from "@mui/material";
 import AppContext from "../../../store/AppContext";
 import DoubleSlider from "../Slider/DoubleSlider/DoubleSlider";
 import SlingleSlider from "../Slider/SingleSlider/SlingleSlider";
@@ -16,7 +17,10 @@ const MIN_POPULARITY = 0.1;
 const MAX_POPULARITY = 1;
 const SORT_CHOICES = ["distance", "âge", "popularité"];
 
-const FilterModal = () => {
+const FilterModal = ({
+    open = false,
+    onClose = () => { },
+}) => {
     const { theme } = useContext(AppContext);
     const bgcolorClass = styles[`modal-surface__${theme}`];
 
@@ -24,62 +28,75 @@ const FilterModal = () => {
     const [distance, setDistance] = useState(MIN_DIST);
     const [popularity, setPopularity] = useState(MAX_POPULARITY);
     const [sort, setSort] = useState(SORT_CHOICES[0]);
+    const [tags, setTags] = useState([]);
+
+    const onCloseHandler = () => onClose({ ages, distance, tags, popularity, sort });
 
     return (
-        <div className={styles.modal}>
-            <div className={`${styles['modal-surface']} ${bgcolorClass}`}>
-                <h1>Filtres</h1>
+        <React.Fragment>
+            {open &&
+                <div className={styles.modal}>
+                    <ClickAwayListener onClickAway={onCloseHandler}>
+                        <div className={`${styles['modal-surface']} ${bgcolorClass}`}>
+                            <h1>Filtres</h1>
 
-                <div className={styles['modal-content']}>
-                    <div className={styles["modal-input"]}>
-                        <CheckboxGroup label="préférences" values={["homme", "femme", "non binaire"]}></CheckboxGroup>
-                    </div>
-                    <div className={styles["modal-input"]}>
-                        <DoubleSlider
-                            label="âge"
-                            value={ages}
-                            onChange={setAges}
-                            min={MIN_AGE}
-                            max={MAX_AGE}
-                            suffix="ans"
-                        />
-                    </div>
-                    <div className={styles["modal-input"]}>
-                        <SlingleSlider
-                            label="distance"
-                            value={distance}
-                            onChange={setDistance}
-                            min={MIN_DIST}
-                            max={MAX_DIST}
-                            suffix="km"
-                        />
-                    </div>
-                    <div className={styles["modal-input"]}>
-                        <InputTagList initial={["beer", "pong"]}/>
-                    </div>
-                    <div className={styles["modal-input"]}>
-                        <SlingleSlider
-                            label="popularité"
-                            value={popularity}
-                            onChange={setPopularity}
-                            step={0.1}
-                            min={MIN_POPULARITY}
-                            max={MAX_POPULARITY}
-                        />
-                    </div>
-                    <div className={styles["modal-input"]}>
-                        <RadioButtonGroup
-                            label="tri"
-                            initial="distance"
-                            values={SORT_CHOICES}
-                            onChange={setSort}
-                            direction="horizontal"
-                        />
-                    </div>
-                    <Button variant="action-danger">Valider</Button>
+                            <div className={styles['modal-content']}>
+                                <div className={styles["modal-input"]}>
+                                    <CheckboxGroup label="préférences" values={["homme", "femme", "non binaire"]}></CheckboxGroup>
+                                </div>
+                                <div className={styles["modal-input"]}>
+                                    <DoubleSlider
+                                        label="âge"
+                                        value={ages}
+                                        onChange={setAges}
+                                        min={MIN_AGE}
+                                        max={MAX_AGE}
+                                        suffix="ans"
+                                    />
+                                </div>
+                                <div className={styles["modal-input"]}>
+                                    <SlingleSlider
+                                        label="distance"
+                                        value={distance}
+                                        onChange={setDistance}
+                                        min={MIN_DIST}
+                                        max={MAX_DIST}
+                                        suffix="km"
+                                    />
+                                </div>
+                                <div className={styles["modal-input"]}>
+                                    <InputTagList 
+                                        initial={tags} 
+                                        suggest={["beer", "pong"]}
+                                        onChange={setTags}
+                                    />
+                                </div>
+                                <div className={styles["modal-input"]}>
+                                    <SlingleSlider
+                                        label="popularité"
+                                        value={popularity}
+                                        onChange={setPopularity}
+                                        step={0.1}
+                                        min={MIN_POPULARITY}
+                                        max={MAX_POPULARITY}
+                                    />
+                                </div>
+                                <div className={styles["modal-input"]}>
+                                    <RadioButtonGroup
+                                        label="tri"
+                                        initial="distance"
+                                        values={SORT_CHOICES}
+                                        onChange={setSort}
+                                        direction="horizontal"
+                                    />
+                                </div>
+                                <Button variant="action-danger" onClick={onCloseHandler}>Valider</Button>
+                            </div>
+                        </div>
+                    </ClickAwayListener>
                 </div>
-            </div>
-        </div>
+            }
+        </React.Fragment>
     )
 }
 
