@@ -6,6 +6,7 @@ async function getProfileId(userId) {
     try {
         const res = await pool.query(sql, [userId]);
         if (res.rowCount < 1) {
+            
 
             return null
         }
@@ -135,11 +136,11 @@ function getSaveNewTags(newTags) {
     for (var i = 0, lth = newTags.length; i < lth; i++) {
         pool.query(sql, newTags[i], (err, result) => {
             if (err) {
-                return res.status(400).json({ message: err.message })
+                return { message: err.message }
             }
         })
     }
-    return res.json({ "message": "nouveaux tags enregistrer" })
+    return { "message": "nouveaux tags enregistrer" }
 }
 
 function getPhotos(tabPhoto) {
@@ -172,6 +173,83 @@ function saveNewTags(tags){
     })
 }
 
+function addNotifViews(from,to){
+    console.log(from)
+    idProfile = from
+    if (idProfile == undefined) {
+        return
+    }
+    sql = "SELECT notifsviews \
+    FROM userprofile \
+    WHERE id = $1"
+    const arg = [to]
+    pool.query(sql, arg, (err, result) => {
+        if (err) {
+            return { message: err.message }
+        }
+        let views = JSON.parse(result.rows[0].notifsviews)
+
+        views[from.toString()] = true
+
+        sql2 = "UPDATE userprofile SET notifsviews= $2 WHERE id = $1"
+        const arg2 = [to,JSON.stringify(views)]
+        pool.query(sql2, arg2, (err2, result2) => {
+            if (err2) {
+                return { message: err.message }
+            }
+            return { "views": "views ajouté"}
+            // return res.json({ "views": "views ajouté"})
+        })
+    })
+}
+
+function addNotifLike(from, to){
+    sql = "SELECT notifslikes \
+    FROM userprofile \
+    WHERE id = $1"
+    const arg = [to]
+    pool.query(sql, arg, (err, result) => {
+        if (err) {
+            return { message: err.message }
+        }
+        let likes = JSON.parse(result.rows[0].notifslikes)
+
+        likes[from] = true
+
+        sql2 = "UPDATE userprofile SET notifslikes= $2 WHERE id = $1"
+        const arg2 = [to,JSON.stringify(likes)]
+        pool.query(sql2, arg2, (err2, result2) => {
+            if (err2) {
+                return { message: err.message }
+            }
+            return { "likes": "likes ajouté"}
+        })
+    })
+}
+
+function addNotifMessages(from, to){
+    sql = "SELECT notifsmessages \
+    FROM userprofile \
+    WHERE id = $1"
+    const arg = [to]
+    pool.query(sql, arg, (err, result) => {
+        if (err) {
+            return { message: err.message }
+        }
+        let message = JSON.parse(result.rows[0].notifsmessages)
+
+        message[from] = message[from]?message[from]+1:1
+
+        sql2 = "UPDATE userprofile SET notifsmessages= $2 WHERE id = $1"
+        const arg2 = [to,JSON.stringify(message)]
+        pool.query(sql2, arg2, (err2, result2) => {
+            if (err2) {
+                return { message: err.message }
+            }
+            return { "message": "message ajouté"}
+        })
+    })
+}
 
 module.exports = {
     getProfileId,
@@ -184,5 +262,8 @@ module.exports = {
     saveNewTags,
     isUserBlock,
     isAlreadyAnswered,
-    rating
+    rating,
+    addNotifViews,
+    addNotifLike,
+    addNotifMessages
 }

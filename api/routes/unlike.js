@@ -5,6 +5,7 @@ const pool = require("../db/db");
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
+const { emitProfileUnlike } = require("../socket/message");
 
 router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
     const sql = "SELECT userprofile.id FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
@@ -33,6 +34,7 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                     if (err3) {
                         return res.status(400).json({ message: err3.message })
                     }
+                    emitProfileUnlike(req.params.target, idProfile)
                     return res.json({ "message": "unlike ajouté" })
                 })
             }
@@ -58,6 +60,7 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
 
                     })
                 }
+                emitProfileUnlike(req.params.target, idProfile)
                 return res.json({ "message": "unlike ajouté" })
             }
         })
