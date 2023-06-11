@@ -5,6 +5,7 @@ import Autocomplete from "./Autocomplete";
 import Label from "../label/Label";
 import useUniqueId from "../../../hooks/use-unique-id";
 import useUpdateEffect from "../../../hooks/use-update-effect";
+import { removeEmptyString } from "../../../common/utils";
 
 function InputTagList({
     initial,
@@ -13,7 +14,7 @@ function InputTagList({
     onBlur = () => {}
 }) {
     const [suggestedTags, setSuggestedTags] = useState(suggest);
-    const [tagList, setTagList] = useState(initial);
+    const [tagList, setTagList] = useState(removeEmptyString(initial));
     const [suggestAlreadyUse, setAlreadyUse] = useState([])
     const [newTag, setNewTag] = useState("");
     const [tagsId] = useUniqueId("tags")

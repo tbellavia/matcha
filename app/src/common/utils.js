@@ -69,3 +69,7 @@ export async function fileToBase64(file) {
 export function base64ToFile(base64){
     return `data:image/jpeg;base64,${base64}`
 }
+
+export function removeEmptyString(arr) {
+    return arr.filter(item => item.length > 0);
+}
