@@ -1,4 +1,5 @@
 import { Buffer } from "buffer";
+import _ from "lodash";
 
 /**
  * Check if two arrays are equal.
@@ -72,4 +73,16 @@ export function base64ToFile(base64){
 
 export function removeEmptyString(arr) {
     return arr.filter(item => item.length > 0);
+}
+
+export function encodePreferences(preferences) {
+    if (!_.isArray(preferences)){
+        throw new TypeError("preferences must be of type array");
+    }
+    const genders = {"homme": 1, "femme": 2, "non-binaire": 4};
+    let result = 0;
+
+    for (const preference of preferences)
+        result += genders[preference]
+    return result;
 }

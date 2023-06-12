@@ -1,4 +1,4 @@
-import { isEqualArray, isSameArray } from "../common/utils";
+import { encodePreferences, isEqualArray, isSameArray } from "../common/utils";
 
 describe("compare equal array correctly", () => {
     it("returns true with equal array", () => {
@@ -54,4 +54,31 @@ describe("compare same array correctly", () => {
             expect(isSameArray(a, b)).toBeFalsy();
         })
     });
+});
+
+// TODO: Encode preferences with : HOMME = 1, FEMME = 2, NON-BINAIRE = 4
+describe("encode preferences correctly", () => {
+    it.each([
+        [[], 0],
+        [["homme"], 1],
+        [["femme"], 2],
+        [["non-binaire"], 4],
+        [["homme", "femme"], 3],
+        [["femme", "homme"], 3],
+        [["homme", "non-binaire"], 5],
+        [["non-binaire", "homme"], 5],
+        [["femme", "non-binaire"], 6],
+        [["non-binaire", "femme"], 6],
+        [["homme", "femme", "non-binaire"], 7],
+        [["femme", "homme", "non-binaire"], 7],
+        [["femme", "non-binaire", "homme"], 7],
+        [["non-binaire", "femme", "homme"], 7],
+        [["non-binaire", "homme", "femme"], 7],
+    ])("passing %p should returns %p", (preferences, expected) => {
+        expect(encodePreferences(preferences)).toEqual(expected);
+    })
+
+    it("should throw exception if preferences is not an array", () => {
+        expect(() => encodePreferences("not an array")).toThrow(TypeError)
+    })
 });
