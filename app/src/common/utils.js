@@ -75,6 +75,10 @@ export function removeEmptyString(arr) {
     return arr.filter(item => item.length > 0);
 }
 
+/**
+ * Encode gender preferences on integer.
+ * homme = 1, femme = 2, non-binaire = 4
+ */
 export function encodePreferences(preferences) {
     if (!_.isArray(preferences)){
         throw new TypeError("preferences must be of type array");
@@ -85,4 +89,14 @@ export function encodePreferences(preferences) {
     for (const preference of preferences)
         result += genders[preference]
     return result;
+}
+
+export function extractPreferences(preferences) {
+    const extractedPreferences = [];
+
+    Object.entries(preferences).forEach(([gender, active]) => {
+        if (active)
+            extractedPreferences.push(gender);
+    })
+    return extractedPreferences;
 }

@@ -1,4 +1,4 @@
-import { encodePreferences, isEqualArray, isSameArray } from "../common/utils";
+import { encodePreferences, extractPreferences, isEqualArray, isSameArray } from "../common/utils";
 
 describe("compare equal array correctly", () => {
     it("returns true with equal array", () => {
@@ -56,7 +56,6 @@ describe("compare same array correctly", () => {
     });
 });
 
-// TODO: Encode preferences with : HOMME = 1, FEMME = 2, NON-BINAIRE = 4
 describe("encode preferences correctly", () => {
     it.each([
         [[], 0],
@@ -82,3 +81,22 @@ describe("encode preferences correctly", () => {
         expect(() => encodePreferences("not an array")).toThrow(TypeError)
     })
 });
+
+describe("extract preferences correctly", () => {
+    it.each([
+        [{}, []],
+        [{"homme": true}, ["homme"]],
+        [{"femme": true}, ["femme"]],
+        [{"non-binaire": true}, ["non-binaire"]],
+        [{"homme": true, "femme": true}, ["homme", "femme"]],
+        [{"homme": false, "femme": true}, ["femme"]],
+        [{"homme": true, "femme": false}, ["homme"]],
+        [{"homme": true, "femme": false, "non-binaire": false}, ["homme"]],
+        [{"homme": false, "femme": true, "non-binaire": false}, ["femme"]],
+        [{"homme": false, "femme": false, "non-binaire": true}, ["non-binaire"]],
+        [{"homme": true, "femme": true, "non-binaire": true}, ["homme", "femme", "non-binaire"]],
+        [{"homme": false, "femme": false, "non-binaire": false}, []],
+    ])("passing %p should returns an array with only elements whose values are true %p", (preferences, expected) => {
+        expect(extractPreferences(preferences)).toEqual(expect.arrayContaining(expected));
+    })
+})
