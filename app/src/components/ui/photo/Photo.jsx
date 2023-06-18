@@ -1,6 +1,6 @@
 import styles from "./Photo.module.css";
 
-const sizes = ['little', 'medium', 'large'];
+const sizes = ['little', 'medium', 'feedSize', 'large'];
 
 function Photo({ data, size = 'medium', onClick=()=>{}}){
 

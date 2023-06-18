@@ -11,6 +11,7 @@ const blockedRouter = require("./routes/blocked");
 const viewsRouter = require("./routes/views");
 const testRouter = require("./routes/test");
 const notifsRouter = require("./routes/notifs");
+const connexionRouter = require("./routes/connexion");
 
 
 require('dotenv').config()
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use("/api/user", userRouter);
+app.use("/api/user/connexion", connexionRouter);
 app.use("/api/user/chat", chatRouter);
 app.use("/api/user/filtre", filterRouter);
 app.use("/api/user/like", likeRouter);

@@ -1,0 +1,20 @@
+.allChatPage {
+    width: 650px;
+    height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    justify-content: space-evenly;
+    scroll-behavior: smooth;
+}
+
+.allChatPage::-webkit-scrollbar
+{
+	width: 0px;
+}
+
+.page{
+    display: flex;
+    justify-content: center;
+
+}

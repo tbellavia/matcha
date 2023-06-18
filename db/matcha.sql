@@ -32,7 +32,8 @@ CREATE TABLE UserProfile (
     notifsviews TEXT DEFAULT '{}',
     notifslikes TEXT DEFAULT '{}',
     notifsmessages TEXT DEFAULT '{}',
-    tri INT DEFAULT 0
+    tri INT DEFAULT 0,
+    lastConnection DATE
 );
 
 CREATE TABLE Tag (

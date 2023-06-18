@@ -60,8 +60,19 @@ function Chat (){
     setUserId(res.userId)
   }
 
+  const delNotif = async() =>{
+    const config = {
+      headers: {
+        Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+      },
+    };
+    const res = await axios.put(`http://localhost:3000/api/user/notifs/del/messages/${to}`,{},config);
+  }
+
+
   useEffect(()=>{
     getOldChat()
+    delNotif()
   },[])
 
   useEffect(() => {
@@ -82,6 +93,7 @@ function Chat (){
   return (
 
       <GenericPage className={styles.page}>
+        
         <div className={styles.chatPage}>
         <ChatMessage me={userId}  allChat={AllChat}/>
         <form onSubmit={onMessageSubmit}>
