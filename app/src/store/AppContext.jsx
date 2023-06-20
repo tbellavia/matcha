@@ -33,6 +33,7 @@ export const AppContextProvider = (props) => {
     }
 
     const logout = () => {
+        
         setToken(null);
         localStorage.removeItem("token");
         navigate("/login");

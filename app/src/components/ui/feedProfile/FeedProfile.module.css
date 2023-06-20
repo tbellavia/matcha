@@ -1,0 +1,66 @@
+.oneProfile{
+    position: relative;
+    height: auto;
+    width: auto;
+}
+
+.photoBack{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.name{
+    position: absolute;
+    width: calc(100% - 15px);
+    text-transform: uppercase;
+    font-size: 50px;
+    background-color: white;
+    z-index: 1;
+    bottom: 5px;
+    left: 0;
+    opacity:0.75;
+    padding-left: 15px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.rondtrue{
+    position: absolute;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    font-size: small;
+    background-color:var(--color-blind-8) !important;
+    color:#fff; 
+    top: 0px;
+    right: 0px;
+    text-align:center; 
+    border-radius:50%;
+    }
+
+.connecttrue{
+        position: absolute;
+        z-index: 1;
+        width: 20px;
+        height: 20px;
+        font-size: small;
+        background-color: green;
+        color:#fff; 
+        top: 10px;
+        left: 10px;
+        text-align:center; 
+        border-radius:50%;
+        }
+
+.connectfalse{
+    position: absolute;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    font-size: small;
+    color:gray; 
+    top: 10px;
+    left: 10px;
+    text-align:center; 
+    }

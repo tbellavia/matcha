@@ -2,6 +2,11 @@ const { addNotifViews, addNotifLike , addNotifMessages} = require("../common/rou
 
 let socketIO;
 
+function emitConnexion(profileId, status){
+  socketIO.emit(`newConnexion`,{profileId, status});
+}
+
+
 function emitProfileView(to, from) {
   socketIO.emit(`view${to}`,{from});
   addNotifViews(from, to)
@@ -50,5 +55,7 @@ module.exports = {
   emitProfileLike,
   emitProfileMatch,
   emitProfileUnlike,
-  emitProfileMessage
+  emitProfileMessage,
+  // emitSession,
+  emitConnexion
 }

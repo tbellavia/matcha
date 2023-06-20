@@ -143,7 +143,13 @@ export default function AppDroddown() {
                 notifs: 0
             },
             "Déconnexion": {
-                onClick: () => { 
+                onClick: async() => {
+                    const config = {
+                        headers: {
+                          Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+                        },
+                      };
+                    await axios.put(`http://localhost:3000/api/user/connexion/me/off`,{},config);
                     ctx.logout()
                 },
                 icon: <Logout sx={{ color: iconColor }} />,

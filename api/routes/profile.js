@@ -251,17 +251,17 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) 
         AND (6371 * 2 * ASIN(SQRT(POWER(SIN((subq.latitude - $5) * PI() / 180 / 2), 2) + \
         COS($5 * PI() / 180) * COS(subq.latitude * PI() / 180) * \
         POWER(SIN((subq.longitude - $6) * PI() / 180 / 2), 2) ))) < $7  \
-        AND (COALESCE(likes.likes_count + likes2.likes2_count, 0) / COALESCE(views.views_count, 1)) >= $9 \
+        AND ((COALESCE(likes.likes_count + likes2.likes2_count, 0) * 1.0) / COALESCE(views.views_count, 1)) >= $9 \
         ORDER BY ${tri}  LIMIT $8`
 
         // const sql2 = "SELECT  FROM userprofile "
         // const sql2 =  "SELECT p.* FROM userprofile p WHERE NOT EXISTS (SELECT 1 FROM liketable l WHERE ($1 = l.user1 AND l.user2 = p.id) OR ($1 = l.user2 AND l.user1 = p.id)) AND $1 != p.id "
         // const sql2 =  "SELECT p.* FROM userprofile p INNER JOIN liketable l ON p.id = l.user1 OR p.id = l.user2 WHERE ($1 = l.user1 OR $1 = l.user2) AND $1 != p.id"
-        const arg2 = [result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax, req.query.limit, result.rows[0].minrating]
+        const arg2 = [result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax, req.query.limit,result.rows[0].minrating]
         pool.query(sql2, arg2, (err2, result2) => {
             // pool.query(sql2, [] , (err2, result2) => {
             if (err2) {
-                return res.status(400).json({ message: err2.message })
+                return res.status(400).json({error:[result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax, req.query.limit, result.rows[0].minrating], message: err2.message })
             }
             if(result.rows[0].filtertags){
                 const lstTags = result.rows[0].filtertags.split(",")

@@ -11,6 +11,7 @@ import ChatMessage from "../../components/ui/chatMessage/ChatMessage";
 import styles from "./AllChat.module.css"
 import Header from "../../components/ui/header/Header";
 import ChatProfile from "../../components/ui/chatProfile/ChatProfile";
+import AppDropdown from "../../components/ui/drawer-menu/AppDropdown";
 
 function AllChat (){
   const [AllChatProfile, setAllChatProfile] = useState([])
@@ -43,6 +44,7 @@ function AllChat (){
   return (
 
       <GenericPage className={styles.page}>
+        <AppDropdown/>
         <div className={styles.allChatPage}>
           {AllChatProfile.map((elem, index) =>
               <ChatProfile key={index} chatProfile={elem}/>

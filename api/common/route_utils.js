@@ -237,7 +237,7 @@ function addNotifMessages(from, to){
             return { message: err.message }
         }
         let message = JSON.parse(result.rows[0].notifsmessages)
-
+        console.log(result.rows[0])
         message[from] = message[from]?message[from]+1:1
 
         sql2 = "UPDATE userprofile SET notifsmessages= $2 WHERE id = $1"

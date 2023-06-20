@@ -16,6 +16,10 @@ import Profile from "./pages/profile/Profile";
 import Chat from "./pages/chat/Chat";
 import { AppContextProvider } from "./store/AppContext";
 import AllChat from "./pages/allChat/AllChat";
+import Feed from "./pages/feed/Feed";
+import FeedLikes from "./pages/feedLikes/FeedLikes";
+import FeedViews from "./pages/feedViews/FeedViews";
+import FeedHistorics from "./pages/feedHistorics/FeedHistorics";
 
 function App() {
   return (
@@ -26,7 +30,10 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="mailValidation" element={<MailValidation />} />
-          <Route path="feed" element={<TestPage title="/feed" />} />
+          <Route path="feed" element={<Feed/>} />
+          <Route path="feedLikes" element={<FeedLikes/>} />
+          <Route path="feedViews" element={<FeedViews/>} />
+          <Route path="feedHistorics" element={<FeedHistorics/>} />
           <Route path="profile">
             <Route index element={<Profile />} />
             <Route path=":id" element={<TestPage title="/profile/:id" />} />
