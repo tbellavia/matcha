@@ -15,8 +15,16 @@ router.put("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, async (re
 
     const sql = "UPDATE userprofile SET agemin = $1, agemax = $2, distmax = $3, preference = $4,\
      minrating = $6, filtertags = $7, tri = $8 WHERE id = $5";
-    const arg = [req.body.ageMin, req.body.ageMax, req.body.distMax, req.body.preference, 
-        idProfile, req.body.minrating, req.body.filtertags.toString(), req.body.tri]
+    const arg = [
+        req.body.agemin,
+        req.body.agemax,
+        req.body.distmax,
+        req.body.preference,
+        idProfile,
+        req.body.minrating,
+        req.body.filtertags.toString(),
+        req.body.tri
+    ]
     pool.query(sql, arg, (err, result) => {
         if (err) {
             return res.status(400).json({ message: err.message })
