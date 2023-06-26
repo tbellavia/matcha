@@ -74,8 +74,13 @@ Filtre :
     - PUT       /api/user/filtre/me
         - Body
         {
-            ageMin:     INT
-            ageMax:     INT
-            distMax:    INT
-            preference: INT
+            agemin: int, 
+            agemax: int, 
+            distmax: int, 
+            preference: int(min=0,max=7),
+            minrating: int(min=0,max=1),
+            filtertags: [string],
+            tri: int
         }
+    - GET      /api/user/filtre/me
+
