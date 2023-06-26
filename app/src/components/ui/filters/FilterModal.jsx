@@ -7,42 +7,93 @@ import CheckboxGroup from "../checkbox/CheckboxGroup";
 import RadioButtonGroup from "../radio-button/RadioButtonGroup";
 import InputTagList from "../tags/InputTagList";
 import styles from "./FilterModal.module.scss";
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import useFetch from "../../../hooks/use-fetch";
+import { encodePreferences, extractPreferences } from "../../../common/utils";
 
 const MIN_AGE = 18;
 const MAX_AGE = 90;
-const MIN_DIST = 5;
-const MAX_DIST = 500;
+const MIN_DIST = 10;
+const MAX_DIST = 1000;
 const MIN_POPULARITY = 0.1;
 const MAX_POPULARITY = 1;
 const SORT_CHOICES = ["distance", "âge", "popularité"];
 
 const FilterModal = ({
     open = false,
-    onClose = () => { },
+    onClose = (p) => { },
 }) => {
     const { theme } = useContext(AppContext);
-    const bgcolorClass = styles[`modal-surface__${theme}`];
-
+    const colorClass = styles[`modal-surface__${theme}`];
+    const [preferences, setPreferences] = useState([]);
     const [ages, setAges] = useState([MIN_AGE, MAX_AGE]);
     const [distance, setDistance] = useState(MIN_DIST);
+    const [tags, setTags] = useState([]);
     const [popularity, setPopularity] = useState(MAX_POPULARITY);
     const [sort, setSort] = useState(SORT_CHOICES[0]);
-    const [tags, setTags] = useState([]);
+    const fetch = useRef(useFetch());
 
-    const onCloseHandler = () => onClose({ ages, distance, tags, popularity, sort });
+    const onCloseHandler = () => {
+        onClose({ ages, distance, tags, popularity, sort })
+    };
+
+    const onSubmitClickedHandler = () => {
+        onClose({ ages, distance, tags, popularity, sort })
+
+        const [agemin, agemax] = ages;
+
+        fetch.current("/api/user/filtre/me", "PUT", {
+            agemin,
+            agemax,
+            distmax: distance,
+            preference: encodePreferences(extractPreferences(preferences)),
+            minrating: popularity,
+            filtertags: tags,
+            tri: SORT_CHOICES.indexOf(sort)
+        });
+    };
+
+    useEffect(() => {
+        console.log("hello")
+        const fetchFilter = async () => {
+            try {
+                const response = await fetch.current("/api/user/filtre/me");
+                const filter = response?.data?.filter;
+
+                if (!filter){
+                    return;
+                }
+                console.log(filter);
+                setAges([filter.agemin, filter.agemax]);
+                setDistance(filter.distmax);
+                setTags(filter.filtertags);
+                setPopularity(filter.minrating);
+                setSort(SORT_CHOICES[filter.tri]);
+            } catch (e) {
+                // TODO: Manage error
+                console.log(e);
+            }
+        };
+        fetchFilter();
+    }, []);
 
     return (
         <React.Fragment>
             {open &&
                 <div className={styles.modal}>
                     <ClickAwayListener onClickAway={onCloseHandler}>
-                        <div className={`${styles['modal-surface']} ${bgcolorClass}`}>
+                        <div className={`${styles['modal-surface']} ${colorClass}`}>
                             <h1>Filtres</h1>
 
                             <div className={styles['modal-content']}>
                                 <div className={styles["modal-input"]}>
-                                    <CheckboxGroup label="préférences" values={["homme", "femme", "non binaire"]}></CheckboxGroup>
+                                    <CheckboxGroup 
+                                        label="préférences" 
+                                        values={["homme", "femme", "non-binaire"]}
+                                        onChange={setPreferences}
+                                    >
+                                        
+                                    </CheckboxGroup>
                                 </div>
                                 <div className={styles["modal-input"]}>
                                     <DoubleSlider
@@ -61,6 +112,7 @@ const FilterModal = ({
                                         onChange={setDistance}
                                         min={MIN_DIST}
                                         max={MAX_DIST}
+                                        step={50}
                                         suffix="km"
                                     />
                                 </div>
@@ -84,13 +136,13 @@ const FilterModal = ({
                                 <div className={styles["modal-input"]}>
                                     <RadioButtonGroup
                                         label="tri"
-                                        initial="distance"
+                                        initial={sort}
                                         values={SORT_CHOICES}
                                         onChange={setSort}
                                         direction="horizontal"
                                     />
                                 </div>
-                                <Button variant="action-danger" onClick={onCloseHandler}>Valider</Button>
+                                <Button variant="action-danger" onClick={onSubmitClickedHandler}>Valider</Button>
                             </div>
                         </div>
                     </ClickAwayListener>
