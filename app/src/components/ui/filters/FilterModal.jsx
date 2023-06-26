@@ -54,7 +54,6 @@ const FilterModal = ({
     };
 
     useEffect(() => {
-        console.log("hello")
         const fetchFilter = async () => {
             try {
                 const response = await fetch.current("/api/user/filtre/me");
