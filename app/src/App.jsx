@@ -20,6 +20,7 @@ import Feed from "./pages/feed/Feed";
 import FeedLikes from "./pages/feedLikes/FeedLikes";
 import FeedViews from "./pages/feedViews/FeedViews";
 import FeedHistorics from "./pages/feedHistorics/FeedHistorics";
+import GenericProfile from "./pages/profile/GenericProfile";
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
           <Route path="feedHistorics" element={<FeedHistorics/>} />
           <Route path="profile">
             <Route index element={<Profile />} />
-            <Route path=":id" element={<TestPage title="/profile/:id" />} />
+            <Route path=":id" element={<GenericProfile />}/>
             <Route path="create" element={<CreateProfile />} />
           </Route>
           <Route path="chat">
