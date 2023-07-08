@@ -25,7 +25,7 @@ const ProfileInfos = ({profileInfos}) => {
 
                     <div className={styles['profile-right-infos']}>
                         <h3>{Math.floor(age)} ans</h3>
-                        <h4>{distance} KM</h4>
+                        <h4>{Math.floor(distance)} KM</h4>
                     </div>
                 </div>
                 <div className={styles['profile-main-infos-bottom']}>
