@@ -13,6 +13,7 @@ import ButtonGroupFinally from "./components/button-groups/ButtonGroupFinally";
 const PROFILE_ME = "me";
 const PROFILE_ALREADY_ANSWERED = "alreadyAnswered";
 const PROFILE_MATCH = "match";
+const PROFILE_BLOCKED = "blocked";
 
 
 function GenericProfile() {
@@ -24,6 +25,7 @@ function GenericProfile() {
     const isMe = profileType === PROFILE_ME;
     const isMatch = profileType === PROFILE_MATCH;
     const isAlreadyAnswered = profileType === PROFILE_ALREADY_ANSWERED;
+    const isBlocked = profileType === PROFILE_BLOCKED;
 
     useEffect(() => {
         async function fetchProfile() {
@@ -36,21 +38,25 @@ function GenericProfile() {
         fetchProfile().then()
     }, [])
 
-    return (<GenericPage className={styles.profile}>
-        <ProfileHeader menuOnly={isMe}/>
+    return (
+        <GenericPage className={styles.profile}>
+            <ProfileHeader menuOnly={isMe}/>
 
-        <main className={styles['profile-container']}>
-            <ProfileInfos profileInfos={infos}/>
+            {!isBlocked &&
+                <main className={styles['profile-container']}>
+                    <ProfileInfos profileInfos={infos}/>
 
-            <div className={styles['button-container']}>
-                {isMe && <ButtonGroupMe/>}
-                {isMatch && <ButtonGroupMatch/>}
-                {!isMe && !isMatch && !isAlreadyAnswered &&
-                    <ButtonGroupFinally/>
-                }
-            </div>
-        </main>
-    </GenericPage>)
+                    <div className={styles['button-container']}>
+                        {isMe && <ButtonGroupMe/>}
+                        {isMatch && <ButtonGroupMatch/>}
+                        {!isMe && !isMatch && !isAlreadyAnswered &&
+                            <ButtonGroupFinally/>
+                        }
+                    </div>
+                </main>
+            }
+        </GenericPage>
+    )
 }
 
 function useProfile() {
