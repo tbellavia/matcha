@@ -11,9 +11,8 @@ const ProfileInfos = ({profileInfos}) => {
     const navLabelColor = styles[`nav-color__${theme}`];
 
     const {
-        tags, biograpy, photo1, distance, photo3, photo2, photo4, photo5, age, last_name, first_name
+        tags = [], biograpy, photo1, distance, photo3, photo2, photo4, photo5, age, last_name, first_name
     } = profileInfos;
-
 
     return (<React.Fragment>
             <div className={`${styles['profile-main-infos']} ${navLabelColor}`}>
@@ -40,7 +39,7 @@ const ProfileInfos = ({profileInfos}) => {
 
             <div className={styles['tags-container']}>
                 {/* TODO: Remove brackets when back returns array */}
-                <Tags tags={[tags]}/>
+                <Tags tags={tags}/>
             </div>
         </React.Fragment>)
 }
