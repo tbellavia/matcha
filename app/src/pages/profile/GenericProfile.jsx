@@ -23,6 +23,7 @@ function GenericProfile() {
 
     const isMe = profileType === PROFILE_ME;
     const isMatch = profileType === PROFILE_MATCH;
+    const isAlreadyAnswered = profileType === PROFILE_ALREADY_ANSWERED;
 
     useEffect(() => {
         async function fetchProfile() {
@@ -44,7 +45,9 @@ function GenericProfile() {
             <div className={styles['button-container']}>
                 {isMe && <ButtonGroupMe/>}
                 {isMatch && <ButtonGroupMatch/>}
-                {!isMe && !isMatch && <ButtonGroupFinally/>}
+                {!isMe && !isMatch && !isAlreadyAnswered &&
+                    <ButtonGroupFinally/>
+                }
             </div>
         </main>
     </GenericPage>)
