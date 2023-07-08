@@ -53,7 +53,7 @@ export default function AppDroddown() {
 
     useEffect(()=>{
         getIdProfile()
-    })
+    }, [])
 
     useEffect(() => {
 
