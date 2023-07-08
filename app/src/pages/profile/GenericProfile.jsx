@@ -4,45 +4,62 @@ import useFetch from "../../hooks/use-fetch";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 import styles from "./Profile.module.scss";
 import GenericPage from "../page/GenericPage";
-import Button from "../../components/ui/button/Button";
 import ProfileInfos from "./components/ProfileInfos";
+import ButtonGroupMe from "./components/button-groups/ButtonGroupMe";
+import ButtonGroupMatch from "./components/button-groups/ButtonGroupMatch";
+import ButtonGroupFinally from "./components/button-groups/ButtonGroupFinally";
 
 
-function GenericProfile({}) {
-    const { id } = useParams();
+const PROFILE_ME = "me";
+const PROFILE_ALREADY_ANSWERED = "alreadyAnswered";
+const PROFILE_MATCH = "match";
+
+
+function GenericProfile() {
+    const {id} = useParams();
     const [infos, setInfos] = useState({})
     const [profileType, setProfileType] = useState();
-    const fetch = useFetch();
+    const profile = useProfile();
+
+    const isMe = profileType === PROFILE_ME;
+    const isMatch = profileType === PROFILE_MATCH;
 
     useEffect(() => {
         async function fetchProfile() {
-            const uri = `/api/user/profile/${id}`;
-            const response = await fetch(uri);
+            const result = await profile.fetch(id);
 
-            console.log(response?.data);
-
-            setProfileType(response.data.type);
-            setInfos(response.data.result);
+            setInfos(result.result);
+            setProfileType(result.type);
         }
-        fetchProfile();
-    }, []);
 
-    const isMe = profileType == "me";
+        fetchProfile().then()
+    }, [])
 
-    return (
-        <GenericPage>
-            <ProfileHeader menuOnly={isMe}/>
+    return (<GenericPage className={styles.profile}>
+        <ProfileHeader menuOnly={isMe}/>
 
-            <main className={styles['profile-container']}>
-                <ProfileInfos profileInfos={infos} />
+        <main className={styles['profile-container']}>
+            <ProfileInfos profileInfos={infos}/>
 
-                <div className={styles['button-container']}>
-                    <Button type="submit" variant="regular" className={styles['button']}>NOP</Button>
-                    <Button type="submit" variant="action-danger" className={styles['button']}>OKAY</Button>
-                </div>
-            </main>
-        </GenericPage>
-    )
+            <div className={styles['button-container']}>
+                {isMe && <ButtonGroupMe/>}
+                {isMatch && <ButtonGroupMatch/>}
+                {!isMe && !isMatch && <ButtonGroupFinally/>}
+            </div>
+        </main>
+    </GenericPage>)
+}
+
+function useProfile() {
+    const fetcher = useFetch();
+
+    return {
+        fetch: async function (id) {
+            const response = await fetcher(`/api/user/profile/${id}`);
+
+            return response?.data;
+        }
+    }
 }
 
 export default GenericProfile;
