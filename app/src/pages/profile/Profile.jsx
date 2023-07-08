@@ -1,8 +1,8 @@
 import GenericPage from "../page/GenericPage";
 import styles from "./Profile.module.scss";
 import Button from "../../components/ui/button/Button";
-import { useEffect, useState } from "react";
-import ProfileInfos from "./ProfileInfos";
+import { useContext, useEffect, useState } from "react";
+import ProfileInfos from "./components/ProfileInfos";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 import useFetch from "../../hooks/use-fetch";
 

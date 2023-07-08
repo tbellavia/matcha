@@ -1,11 +1,11 @@
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import useFetch from "../../hooks/use-fetch";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 import styles from "./Profile.module.scss";
 import GenericPage from "../page/GenericPage";
 import Button from "../../components/ui/button/Button";
-import ProfileInfos from "./ProfileInfos";
+import ProfileInfos from "./components/ProfileInfos";
 
 
 function GenericProfile({}) {
