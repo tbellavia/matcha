@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom"
 import { useContext } from "react";
 import AppContext from "../store/AppContext";
 
+const baseURL = "http://localhost:3000";
 export default function useFetch(unauthorizedFallback = "/login"){
     const { token } = useContext(AppContext);
     const navigate = useNavigate();
     const client = axios.create({
-        baseURL: "http://localhost:3000",
+        baseURL: baseURL,
         headers: { 'Authorization' : `Bearer ${token}` }
     });
 
