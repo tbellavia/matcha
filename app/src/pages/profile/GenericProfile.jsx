@@ -50,7 +50,7 @@ function GenericProfile() {
                         {isMe && <ButtonGroupMe/>}
                         {isMatch && <ButtonGroupMatch/>}
                         {!isMe && !isMatch && !isAlreadyAnswered &&
-                            <ButtonGroupFinally/>
+                            <ButtonGroupFinally profileID={id}/>
                         }
                     </div>
                 </main>
