@@ -5,21 +5,30 @@ import { useContext, useEffect, useState } from "react";
 import ProfileInfos from "./components/ProfileInfos";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 import useFetch from "../../hooks/use-fetch";
+import jwtDecode from "jwt-decode";
+import AppContext from "../../store/AppContext";
+
+const getUserId = (token) => jwtDecode(token).id_user;
 
 function Profile() {
+    const { token } = useContext(AppContext);
     const fetch = useFetch();
     const [infos, setInfos] = useState({});
+
 
     useEffect(() => {
         (async function() {
             try {
-                const response = await fetch("/api/user/profile/me");
+                const response = await fetch(`/api/user/profile/11`);
+                // console.log(response);
                 setInfos(response?.data);
             } catch (e) {
                 console.log("Error:", e);
             }
         })()
     })
+
+    // console.log(infos);
 
     return (
         <GenericPage className={styles.profile}>
