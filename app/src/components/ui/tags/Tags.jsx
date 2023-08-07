@@ -3,7 +3,9 @@ import styles from "./InputTagList.module.css";
 import Tag from "./Tag";
 
 function Tags({tags}) {
-
+    if (!tags) {
+        tags = [];
+    }
     return (
         <div className={styles["input-tag-list"]}>
             <div className={styles["tag-label-container"]}>
