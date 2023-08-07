@@ -45,7 +45,7 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                     const sql4 = "UPDATE liketable SET user1like = 'FALSE' WHERE id = $1"
                     pool.query(sql4, [idLike], (err4, result4) => {
 
-                        if (err3) {
+                        if (err4) {
                             return res.status(400).json({ message: err4.message })
                         }
                     })
@@ -54,7 +54,7 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                     const sql4 = "UPDATE liketable SET user2like = 'FALSE' WHERE id = $1"
                     pool.query(sql4, [idLike], (err4, result4) => {
 
-                        if (err3) {
+                        if (err4) {
                             return res.status(400).json({ message: err4.message })
                         }
 

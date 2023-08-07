@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db/db");
-const { getProfileId } = require("../common/route_utils");
+const { getProfileId, getChatId} = require("../common/route_utils");
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
