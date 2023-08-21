@@ -10,7 +10,6 @@ const { emitProfileUnlike } = require("../socket/message");
 router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
     const sql = "SELECT userprofile.id FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
     pool.query(sql, [res.locals.id_user], (err, result) => {
-
         if (err) {
             return res.status(400).json({ message: err.message })
         }
