@@ -9,8 +9,8 @@ export default function Login() {
                     Connexion
                 </Typography>
 
-                <TextField size="small" label="email" type="email" id="email"/>
-                <TextField size="small" label="mot de passe" type="password" id="password"/>
+                <TextField size="small" label="email" type="email" required/>
+                <TextField size="small" label="mot de passe" type="password" required/>
 
                 <Stack spacing={1}>
                     <Button type="submit" variant="contained">valider</Button>
