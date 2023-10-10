@@ -1,13 +1,9 @@
-import {Box, Button, Container, Typography} from "@mui/material";
+import {Box, Button, Container} from "@mui/material";
+import Centered from "../../components/centered/Centered";
 
 export default function Home() {
     return (
-        <Container sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "90vh",
-        }}>
+        <Centered>
             <Box sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -21,6 +17,6 @@ export default function Home() {
                     Inscription
                 </Button>
             </Box>
-        </Container>
+        </Centered>
     )
 }
