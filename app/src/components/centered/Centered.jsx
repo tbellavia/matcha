@@ -6,7 +6,7 @@ export default function Centered(props) {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "90vh",
+            height: "80vh",
         }}>
             {props.children}
         </Container>
