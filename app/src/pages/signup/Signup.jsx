@@ -3,6 +3,8 @@ import Centered from "../../components/centered/Centered";
 import {useForm} from "react-hook-form";
 import {formValidateConfirmationPassword, formValidateEmail, formValidatePassword} from "../../common/validation";
 import {AutoHideAlert} from "../../components/auto-hide-alert/AutoHideAlert";
+import {useMemo} from "react";
+import APIAuth from "../../services/auth";
 
 
 function getFirstError(errors) {
@@ -21,10 +23,12 @@ export default function Signup() {
         handleSubmit,
         formState: {errors},
     } = useForm();
+    const api = useMemo(() => new APIAuth(), []);
     const error = getFirstError(errors);
 
-    const onSubmit = data => {
-        console.log(errors);
+    const onSubmit = async data => {
+        console.log(data);
+        await api.signup(data.email, data.password);
     }
 
     return (
