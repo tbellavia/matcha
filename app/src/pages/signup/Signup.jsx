@@ -1,21 +1,31 @@
-import {Alert, Button, Snackbar, Stack, TextField, Typography} from "@mui/material";
+import {Button, Stack, TextField, Typography} from "@mui/material";
 import Centered from "../../components/centered/Centered";
 import {useForm} from "react-hook-form";
-import { validatePassword, validateEmail } from "../../common/validation";
+import {formValidateConfirmationPassword, formValidateEmail, formValidatePassword} from "../../common/validation";
+import {AutoHideAlert} from "../../components/auto-hide-alert/AutoHideAlert";
+
+
+function getFirstError(errors) {
+    let errorsKeys = Object.keys(errors);
+
+    if (errorsKeys.length !== 0) {
+        return errors[errorsKeys[0]].message;
+    }
+    return false;
+}
 
 export default function Signup() {
     const {
         register,
         watch,
         handleSubmit,
-        formState: { errors },
+        formState: {errors},
     } = useForm();
+    const error = getFirstError(errors);
 
     const onSubmit = data => {
-        console.log(data)
+        console.log(errors);
     }
-
-    console.log(watch("email"));
 
     return (
         <Centered>
@@ -29,41 +39,39 @@ export default function Signup() {
                             size="small"
                             label="email"
                             type="email"
-                            required
-                            {...register("email", { 
-                                required: true, 
-                                validate: validateEmail,
+
+                            {...register("email", {
+                                required: true,
+                                validate: formValidateEmail,
                             })}
                         />
                         <TextField
                             size="small"
                             label="mot de passe"
                             type="password"
-                            required
 
-                            {...register("password", { 
-                                required: true, 
-                                validate: validatePassword,
-                                deps: ["confirmation"]
+                            {...register("password", {
+                                required: true,
+                                validate: formValidatePassword
                             })}
                         />
                         <TextField
                             size="small"
                             label="confirmation du mot de passe"
                             type="password"
-                            required
 
-                            {...register("confirmation", { 
-                                required: true, 
-                                validate: (value) => {
-                                    return value === watch('password') ? true : "le mot de passe de confirmation ne correspond pas au mot de passe"
-                                },
+                            {...register("confirmation", {
+                                required: true,
+                                validate: (value) =>
+                                    formValidateConfirmationPassword(watch("password"), value),
+                                deps: ["password"]
                             })}
                         />
                         <Button type="submit" variant="contained">valider</Button>
                     </Stack>
                 </form>
             </Stack>
+            {error && <AutoHideAlert duration={5000} message={error}/>}
         </Centered>
     )
 }
