@@ -7,14 +7,12 @@ export default class APIAuth extends API {
     }
 
     async signup(mail, password) {
-        const response = await axios.post(
+        await axios.post(
             `${this.url}/signup`,
             {
                 usermail: mail,
                 passWord: password
             }
         );
-
-        console.log(response);
     }
 }

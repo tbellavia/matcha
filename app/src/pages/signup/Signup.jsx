@@ -1,10 +1,11 @@
-import {Alert, Button, Snackbar, Stack, TextField, Typography} from "@mui/material";
+import {Button, Stack, TextField, Typography} from "@mui/material";
 import Centered from "../../components/centered/Centered";
 import {useForm} from "react-hook-form";
 import {formValidateConfirmationPassword, formValidateEmail, formValidatePassword} from "../../common/validation";
 import {AutoHideAlert} from "../../components/auto-hide-alert/AutoHideAlert";
 import {useMemo} from "react";
 import APIAuth from "../../services/auth";
+import {useNavigate} from "react-router-dom";
 
 
 function getFirstError(errors) {
@@ -25,10 +26,11 @@ export default function Signup() {
     } = useForm();
     const api = useMemo(() => new APIAuth(), []);
     const error = getFirstError(errors);
+    const navigate = useNavigate();
 
     const onSubmit = async data => {
-        console.log(data);
         await api.signup(data.email, data.password);
+        navigate("/");
     }
 
     return (
