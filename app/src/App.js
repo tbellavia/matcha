@@ -7,7 +7,11 @@ import CreateProfile from "./pages/profile/create/CreateProfile";
 import {QueryClient, QueryClientProvider} from "react-query";
 import Validation from "./pages/validation/Validation";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: { retry: 1 }
+    }
+});
 
 function App() {
     return (
