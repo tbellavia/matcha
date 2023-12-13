@@ -6,6 +6,7 @@ import {AutoHideAlert} from "../../components/auto-hide-alert/AutoHideAlert";
 import {useMemo} from "react";
 import APIAuth from "../../services/auth";
 import {useNavigate} from "react-router-dom";
+import {useQuery} from "react-query";
 
 
 function getFirstError(errors) {
@@ -23,15 +24,26 @@ export default function Signup() {
         watch,
         handleSubmit,
         formState: {errors},
+        getValues,
     } = useForm();
     const api = useMemo(() => new APIAuth(), []);
     const error = getFirstError(errors);
     const navigate = useNavigate();
 
-    const onSubmit = async data => {
-        await api.signup(data.email, data.password);
-        navigate("/");
-    }
+    const { refetch } = useQuery({
+        queryFn: async () => {
+            const email = getValues("email");
+            const password = getValues("password");
+
+            await api.signup(email, password);
+        },
+        onSuccess() {
+            navigate("/validation");
+        },
+        enabled: false,
+    })
+
+    const onSubmit = async () => { await refetch(); }
 
     return (
         <Centered>

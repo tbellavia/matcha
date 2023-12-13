@@ -4,17 +4,24 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
 import CreateProfile from "./pages/profile/create/CreateProfile";
+import {QueryClient, QueryClientProvider} from "react-query";
+import Validation from "./pages/validation/Validation";
+
+const queryClient = new QueryClient();
 
 function App() {
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/signup" element={<Signup/>}/>
-                <Route path="/profile/create" element={<CreateProfile/>}/>
-            </Routes>
-        </BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/signup" element={<Signup/>}/>
+                    <Route path="/profile/create" element={<CreateProfile/>}/>
+                    <Route path="/validation" element={<Validation/>}/>
+                </Routes>
+            </BrowserRouter>
+        </QueryClientProvider>
     );
 }
 
