@@ -22,3 +22,6 @@ force-reload:
 .PHONY: react-dev
 react-dev:
 	cd app ; npm run start:local
+
+open-db:
+	docker exec -it db psql -U matcha
