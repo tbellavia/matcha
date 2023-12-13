@@ -1,0 +1,14 @@
+.paper {
+    padding: 24px;
+    border-radius: 7px;
+}
+
+.box {
+    border: 2px solid #CC8AED;
+    border-radius: 50%;
+    height: 45px;
+    width: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
