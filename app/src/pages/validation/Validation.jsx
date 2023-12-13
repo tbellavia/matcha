@@ -13,7 +13,7 @@ export default function Validation() {
 
     return (
         <Centered>
-            <Paper elevation={3} className={styles.paper} variant="outlined">
+            <Paper className={styles.paper} variant="outlined">
                 <Stack spacing={2} sx={{ display: "flex", alignItems: "center" }}>
                     <Box className={styles.box}>
                         <EmailIcon color="primary"/>

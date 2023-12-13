@@ -7,16 +7,7 @@ import {useMemo} from "react";
 import APIAuth from "../../services/auth";
 import {useNavigate} from "react-router-dom";
 import {useQuery} from "react-query";
-
-
-function getFirstError(errors) {
-    let errorsKeys = Object.keys(errors);
-
-    if (errorsKeys.length !== 0) {
-        return errors[errorsKeys[0]].message;
-    }
-    return false;
-}
+import {getFirstError} from "../../utils/utils";
 
 export default function Signup() {
     const {
@@ -57,6 +48,7 @@ export default function Signup() {
                             size="small"
                             label="email"
                             type="email"
+                            required
 
                             {...register("email", {
                                 required: true,
@@ -67,6 +59,7 @@ export default function Signup() {
                             size="small"
                             label="mot de passe"
                             type="password"
+                            required
 
                             {...register("password", {
                                 required: true,
@@ -77,6 +70,7 @@ export default function Signup() {
                             size="small"
                             label="confirmation du mot de passe"
                             type="password"
+                            required
 
                             {...register("confirmation", {
                                 required: true,
