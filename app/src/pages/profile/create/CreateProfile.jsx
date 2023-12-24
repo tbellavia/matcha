@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../../../components/header/Header";
-import { Autocomplete, Box, Checkbox, Container, FormControlLabel, FormLabel, Radio, RadioGroup, Stack, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Checkbox, Container, FormControlLabel, FormLabel, Radio, RadioGroup, Stack, TextField } from "@mui/material";
 import styles from "./CreateProfile.module.scss";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -74,9 +74,19 @@ export default function CreateProfile() {
             </FormControl>
           </InputGroup>
 
-          <InputGroup>
-            <TagsAutocomplete />
-          </InputGroup>
+          <TagsAutocomplete />
+
+          <TextField
+            label="Description"
+            placeholder="Décrivez vous en quelques phrases"
+            multiline
+            // TODO: Show max length
+            inputProps={{ maxLength: 400 }}
+          />
+
+          <Button variant="outlined" sx={{ marginBottom: "20px" }}>
+            Valider
+          </Button>
         </Stack>
       </Container>
     </React.Fragment>
