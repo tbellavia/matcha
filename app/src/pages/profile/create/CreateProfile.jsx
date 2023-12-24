@@ -7,6 +7,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { cities } from "../../../utils/cities";
 import ImageUpload from "../components/ImageUpload";
 import FormControl from "@mui/material/FormControl";
+import TagsAutocomplete from "../components/TagsAutocomplete";
 
 export default function CreateProfile() {
   return (
@@ -73,6 +74,9 @@ export default function CreateProfile() {
             </FormControl>
           </InputGroup>
 
+          <InputGroup>
+            <TagsAutocomplete />
+          </InputGroup>
         </Stack>
       </Container>
     </React.Fragment>
@@ -83,7 +87,7 @@ function InputGroup({ children }) {
   return (
     <Stack
       direction={{ sm: "row", xs: "column" }}
-      fullWidth
+      width="100%"
       justifyContent="space-between"
       gap={2}
     >
