@@ -15,18 +15,23 @@ import {
     TextField
 } from "@mui/material";
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {cities} from "../../../utils/cities";
 import ImageUpload from "../components/ImageUpload";
 import FormControl from "@mui/material/FormControl";
 import TagsAutocomplete from "../components/TagsAutocomplete";
 import {Controller, useForm} from "react-hook-form";
-import {formValidateImages, formValidateLength, formValidateTags} from "../../../common/validation";
+import {
+    formValidateBirthdate,
+    formValidateImages,
+    formValidateLength,
+    formValidateTags
+} from "../../../common/validation";
 import dayjs from "dayjs";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 
 const MIN_DESC_SIZE = 10;
 const MAX_DESC_SIZE = 300;
-const MIN_DATE = dayjs().subtract(18, 'year');
+const MAX_DATE = dayjs().subtract(18, 'year');
 
 export default function CreateProfile() {
     const {
@@ -44,11 +49,10 @@ export default function CreateProfile() {
             "description": "",
             "gender": "female",
             "images": [],
+            "birthdate": MAX_DATE,
         }
     });
     const error = getFirstError(errors);
-
-    console.log(errors)
 
     const getPosition = () => {
         navigator.geolocation.getCurrentPosition(
@@ -81,11 +85,20 @@ export default function CreateProfile() {
                 return cities[value]
             },
         })
-        register("preferences", {required: true, value: {}})
+        register("preferences", {
+            required: true,
+            value: {}
+        })
         register("images", {
             required: true,
             validate(images) {
                 return formValidateImages(images)
+            }
+        })
+        register("birthdate", {
+            required: true,
+            validate(birthdate) {
+                return formValidateBirthdate(birthdate);
             }
         })
     });
@@ -99,7 +112,6 @@ export default function CreateProfile() {
     }
 
     const onPreferencesChange = (event) => {
-        console.log("Name:", event.target.name)
         setValue("preferences", {
             ...watch("preferences"),
             [event.target.name]: event.target.checked,
@@ -107,8 +119,11 @@ export default function CreateProfile() {
     }
 
     const onImageChange = (images) => {
-        console.log(images);
         setValue("images", images);
+    }
+
+    const onBirthDateChange = (birthdate) => {
+        setValue("birthdate", birthdate);
     }
 
     return (
@@ -147,22 +162,16 @@ export default function CreateProfile() {
                         </InputGroup>
 
                         <InputGroup>
-                            <Controller
-                                control={control}
-                                name="birthdate"
-                                render={({onChange, value}) => (
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DesktopDatePicker
-                                            label="Date de naissance"
-                                            value={value}
-                                            onChange={onChange}
-                                            slotProps={{textField: {size: "small"}}}
-                                            sx={{width: "100%"}}
-                                            minDate={MIN_DATE}
-                                        />
-                                    </LocalizationProvider>
-                                )}
-                            />
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DesktopDatePicker
+                                    label="Date de naissance"
+                                    value={watch('birthdate')}
+                                    onChange={onBirthDateChange}
+                                    slotProps={{textField: {size: "small"}}}
+                                    sx={{width: "100%"}}
+                                    maxDate={MAX_DATE}
+                                />
+                            </LocalizationProvider>
 
                             <Autocomplete
                                 options={Object.keys(cities)}
