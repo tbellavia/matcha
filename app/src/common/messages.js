@@ -7,3 +7,6 @@ export const ERROR_NEED_TOKEN = "Session inexistante";
 export const ERROR_BAD_TOKEN = "Session expirée"
 export const ERROR_PROFILE = "Vous n'avez pas compilé votre profile"
 export const ERROR_CHAT = "Cette conversation n'existe pas"
+export const ERROR_TAGS_LENGTH = "Vous devez choisir entre 1 et 10 tags"
+export const ERROR_LOCATION_DOES_NOT_EXIST = "La localisation que vous avez renseigné n'existe pas"
+export const ERROR_INSUFFICIENT_IMAGES = "Vous devez choisir entre 3 et 5 images";
