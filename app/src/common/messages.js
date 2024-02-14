@@ -10,3 +10,4 @@ export const ERROR_CHAT = "Cette conversation n'existe pas"
 export const ERROR_TAGS_LENGTH = "Vous devez choisir entre 1 et 10 tags"
 export const ERROR_LOCATION_DOES_NOT_EXIST = "La localisation que vous avez renseigné n'existe pas"
 export const ERROR_INSUFFICIENT_IMAGES = "Vous devez choisir entre 3 et 5 images";
+export const ERROR_INVALID_AGE = "Vous devez avoir au moins 18 ans";
