@@ -13,7 +13,13 @@ export default function ImageUpload({
     const file = event.target.files[0];
 
     if (images.length + 1 <= max) {
-      setImages(prevImages => [...prevImages, file]);
+      setImages(prevImages => {
+        const newImages = [...prevImages, file];
+
+        onChange(newImages);
+
+        return newImages;
+      });
     }
   }
 
