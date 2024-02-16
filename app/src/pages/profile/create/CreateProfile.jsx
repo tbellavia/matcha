@@ -1,6 +1,6 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {AutoHideAlert} from "../../../components/auto-hide-alert/AutoHideAlert";
-import {getFirstError} from "../../../utils/utils";
+import {getFirstError, getUserLocation, getUserLocationFromLocalStorage} from "../../../utils/utils";
 import Header from "../../../components/header/Header";
 import {
     Autocomplete,
@@ -9,6 +9,7 @@ import {
     Container,
     FormControlLabel,
     FormLabel,
+    IconButton,
     Radio,
     RadioGroup,
     Stack,
@@ -28,6 +29,7 @@ import {
 } from "../../../common/validation";
 import dayjs from "dayjs";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {MyLocation} from "@mui/icons-material";
 
 const MIN_DESC_SIZE = 10;
 const MAX_DESC_SIZE = 300;
@@ -52,22 +54,9 @@ export default function CreateProfile() {
             "birthdate": MAX_DATE,
         }
     });
+    getUserLocation();
     const error = getFirstError(errors);
-
-    const getPosition = () => {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const normalizedPosition = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                }
-                setValue("location", normalizedPosition);
-            },
-            (error) => {
-                console.log(error)
-            }
-        )
-    }
+    let [locationLabel, setLocationLabel] = useState("");
 
     const onSubmit = () => {
         console.log("On Submit")
@@ -82,6 +71,9 @@ export default function CreateProfile() {
         register("location", {
             required: true,
             setValueAs(value) {
+                if (value.hasOwnProperty("lat") && value.hasOwnProperty("lng")) {
+                    return value;
+                }
                 return cities[value]
             },
         })
@@ -126,6 +118,14 @@ export default function CreateProfile() {
         setValue("birthdate", birthdate);
     }
 
+    const onAutoLocationClicked = () => {
+        const location = getUserLocationFromLocalStorage();
+
+        console.log(location)
+        setValue("location", location);
+        setLocationLabel("ma position");
+    }
+
     return (
         <React.Fragment>
             <Header position="center"/>
@@ -138,7 +138,6 @@ export default function CreateProfile() {
                 display: "flex",
                 flexDirection: "column"
             }}>
-                <Button variant="outlined" onClick={getPosition}>Get position</Button>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Stack gap={3}>
                         <Stack
@@ -151,6 +150,7 @@ export default function CreateProfile() {
                             <ImageUpload onChange={onImageChange}/>
                         </Stack>
 
+                        {/* First name & Last name */}
                         <InputGroup>
                             <TextField label="Prénom" variant="outlined" size="small"
                                        fullWidth {...register("firstname", {
@@ -161,6 +161,7 @@ export default function CreateProfile() {
                             })} />
                         </InputGroup>
 
+                        {/* Birthdate and localisation */}
                         <InputGroup>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DesktopDatePicker
@@ -173,15 +174,24 @@ export default function CreateProfile() {
                                 />
                             </LocalizationProvider>
 
+                            {/*
+                                If user accept automatic location, it is registered in local storage and further
+                                retrieval is made in local storage.
+                            */}
                             <Autocomplete
                                 options={Object.keys(cities)}
                                 renderInput={(params) => <TextField {...params} label="Localisation"/>}
                                 size="small"
                                 fullWidth
+                                value={locationLabel}
                                 onChange={(_, city) => onLocationChange(city)}
                             />
+                            <IconButton onClick={onAutoLocationClicked}>
+                                <MyLocation/>
+                            </IconButton>
                         </InputGroup>
 
+                        {/* Gender and preferences */}
                         <InputGroup>
                             <FormControl fullWidth>
                                 <FormLabel id="gender-choice">Genre</FormLabel>
@@ -227,8 +237,10 @@ export default function CreateProfile() {
                             </FormControl>
                         </InputGroup>
 
+                        {/* Tags */}
                         <TagsAutocomplete onChange={onTagsChange}/>
 
+                        {/* Description */}
                         <TextField
                             label="Description"
                             placeholder="Décrivez vous en quelques phrases"
