@@ -30,14 +30,6 @@ export default class APIAuth extends API {
         this.setToken(token);
     }
 
-    setToken(token) {
-        localStorage.setItem("token", token);
-    }
-
-    getToken() {
-        return localStorage.getItem("token");
-    }
-
     hasCreatedProfile() {
         const decoded = jwtDecode(this.getToken());
 
