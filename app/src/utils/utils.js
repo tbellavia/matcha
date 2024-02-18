@@ -35,3 +35,26 @@ export function getUserLocationFromLocalStorage() {
     }
     return null;
 }
+
+export function encodePreferences(preferences) {
+    const genders = {"male": 1, "female": 2, "non-binary": 4};
+    let result = 0;
+
+    const filteredPreferences = Object
+        .entries(preferences)
+        .filter(([_, value]) => value)
+        .map(([key, _]) => key);
+
+    for (const preference of filteredPreferences)
+        result += genders[preference]
+    return result;
+}
+
+export function encodeGender(gender) {
+    const genders = {
+        "male": 1,
+        "female": 2,
+        "non-binary": 4,
+    }
+    return genders[gender];
+}
