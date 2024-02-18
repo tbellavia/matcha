@@ -8,7 +8,8 @@ class S3Storage {
       credentials: {
         accessKeyId: accessKey,
         secretAccessKey: secretKey,
-      }
+      },
+      region: "fr-par",
     });
     this.baseConfig = {
       ACL: "public-read",
