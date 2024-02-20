@@ -25,7 +25,6 @@ const checkTokenMiddleware = (req, res, next) => {
     if (err) {
       res.status(401).json({ message: ERROR_BAD_TOKEN })
     } else {
-      console.log(decodedToken);
       res.locals.id_user = decodedToken.id_user;
       res.locals.profile_created = decodedToken.profile_created;
       return next();
