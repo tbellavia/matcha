@@ -1,6 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo} from "react";
 import {AutoHideAlert} from "../../../components/auto-hide-alert/AutoHideAlert";
-import {getFirstError, getUserLocation, getUserLocationFromLocalStorage} from "../../../utils/utils";
+import {
+    encodeGender,
+    encodePreferences,
+    getFirstError,
+    getUserLocation,
+    getUserLocationFromLocalStorage
+} from "../../../utils/utils";
 import Header from "../../../components/header/Header";
 import {
     Autocomplete,
@@ -30,6 +36,10 @@ import {
 import dayjs from "dayjs";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {MyLocation} from "@mui/icons-material";
+import {useQuery} from "react-query";
+import APIUser from "../../../services/user";
+import {useNavigate} from "react-router-dom";
+
 
 const MIN_DESC_SIZE = 10;
 const MAX_DESC_SIZE = 300;
@@ -56,12 +66,36 @@ export default function CreateProfile() {
     });
     getUserLocation();
     const error = getFirstError(errors);
-    let [locationLabel, setLocationLabel] = useState("");
+    const api = useMemo(() => new APIUser(), []);
+    const navigate = useNavigate();
+    const {refetch} = useQuery({
+        async queryFn() {
+            const infos = getValues();
 
-    const onSubmit = () => {
-        console.log("On Submit")
-        console.log("=================")
-        console.log(getValues());
+            await api.createProfile(
+                infos.images,
+                infos.firstname,
+                infos.lastname,
+                infos.birthdate,
+                infos.location,
+                encodeGender(infos.gender),
+                // Transform to array
+                encodePreferences(infos.preferences),
+                infos.tags,
+                infos.description,
+            );
+        },
+        onSuccess() {
+            navigate("/feed");
+        },
+        onError(err) {
+            navigate("/error");
+        },
+        enabled: false,
+    })
+
+    const onSubmit = async () => {
+        await refetch();
     }
 
     useEffect(() => {
@@ -79,7 +113,7 @@ export default function CreateProfile() {
         })
         register("preferences", {
             required: true,
-            value: {}
+            value: {},
         })
         register("images", {
             required: true,
@@ -121,9 +155,7 @@ export default function CreateProfile() {
     const onAutoLocationClicked = () => {
         const location = getUserLocationFromLocalStorage();
 
-        console.log(location)
         setValue("location", location);
-        setLocationLabel("ma position");
     }
 
     return (
@@ -183,7 +215,6 @@ export default function CreateProfile() {
                                 renderInput={(params) => <TextField {...params} label="Localisation"/>}
                                 size="small"
                                 fullWidth
-                                value={locationLabel}
                                 onChange={(_, city) => onLocationChange(city)}
                             />
                             <IconButton onClick={onAutoLocationClicked}>

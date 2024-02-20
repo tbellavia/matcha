@@ -8,7 +8,7 @@ export default class APIUser extends API {
     }
 
     async createProfile(
-        images,
+        photos,
         firstname,
         lastname,
         birthdate,
@@ -30,11 +30,22 @@ export default class APIUser extends API {
                 preference: preferences,
                 tags: tags,
                 biograpy: description,
-                photos: images,
             },
             {
                 headers: this.injectToken(),
             }
         )
+        await this._uploadPhotos(photos);
+    }
+
+    async _uploadPhotos(photos){
+        const formData = new FormData();
+
+        photos.forEach(photo => formData.append("photos", photo));
+        await axios.post(
+            `${this.url}/image/upload/me`,
+            formData,
+            { headers: this.injectToken() }
+        );
     }
 }
