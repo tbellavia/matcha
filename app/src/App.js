@@ -1,42 +1,65 @@
 import './App.css';
 import Home from "./pages/home/Home";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
 import CreateProfile from "./pages/profile/create/CreateProfile";
 import {QueryClient, QueryClientProvider} from "react-query";
 import Validation from "./pages/validation/Validation";
 import Test from './pages/test/Test';
-import RedirectHasCreatedProfile from "./components/redirects/RedirectHasCreatedProfile";
+import EditProfile, {loadProfile} from "./pages/profile/edit/EditProfile";
+import Blank from "./pages/blank/Base";
 
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: { retry: false }
-  }
+    defaultOptions: {
+        queries: {retry: false}
+    }
 });
 
+const router = createBrowserRouter(
+    [
+        {
+            path: "/",
+            element: <Home/>
+        },
+        {
+            path: "/login",
+            element: <Login/>
+        },
+        {
+            path: "/signup",
+            element: <Signup/>
+        },
+        {
+            path: "/profile/edit",
+            loader: loadProfile,
+            element: <EditProfile/>
+        },
+        {
+            path: "/profile/create",
+            element: <CreateProfile/>
+        },
+        {
+            path: "/feed",
+            element: <Blank name="feed"/>,
+        },
+        {
+            path: "/validation",
+            element: <Validation/>
+        },
+        {
+            path: "/test",
+            element: <Test/>
+        },
+    ]
+);
+
 function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route
-              path="/profile/create"
-              element={
-                <RedirectHasCreatedProfile fallback="/feed">
-                  <CreateProfile />
-                </RedirectHasCreatedProfile>
-              }
-          />
-          <Route path="/validation" element={<Validation />} />
-          <Route path="/test" element={<Test />} />
-        </Routes>
-      </BrowserRouter>
-    </QueryClientProvider>
-  );
+    return (
+        <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router}/>
+        </QueryClientProvider>
+    );
 }
 
 export default App;
