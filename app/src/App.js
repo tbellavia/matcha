@@ -7,6 +7,7 @@ import CreateProfile from "./pages/profile/create/CreateProfile";
 import {QueryClient, QueryClientProvider} from "react-query";
 import Validation from "./pages/validation/Validation";
 import Test from './pages/test/Test';
+import RedirectHasCreatedProfile from "./components/redirects/RedirectHasCreatedProfile";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,7 +23,14 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/profile/create" element={<CreateProfile />} />
+          <Route
+              path="/profile/create"
+              element={
+                <RedirectHasCreatedProfile fallback="/feed">
+                  <CreateProfile />
+                </RedirectHasCreatedProfile>
+              }
+          />
           <Route path="/validation" element={<Validation />} />
           <Route path="/test" element={<Test />} />
         </Routes>

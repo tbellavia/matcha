@@ -1,3 +1,5 @@
+import {jwtDecode} from "jwt-decode";
+
 export default class API {
     constructor() {
         this.url = "http://localhost:3000/api/user";
@@ -16,5 +18,9 @@ export default class API {
             ...headers,
             "Authorization": `bearer ${this.getToken()}`,
         }
+    }
+
+    getDecodedToken() {
+        return jwtDecode(this.getToken());
     }
 }

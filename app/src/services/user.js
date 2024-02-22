@@ -2,6 +2,8 @@ import API from "./api";
 import axios from "axios";
 
 export default class APIUser extends API {
+    function
+
     constructor() {
         super();
         this.url += "/profile"
@@ -38,14 +40,26 @@ export default class APIUser extends API {
         await this._uploadPhotos(photos);
     }
 
-    async _uploadPhotos(photos){
+    async _uploadPhotos(photos) {
         const formData = new FormData();
 
         photos.forEach(photo => formData.append("photos", photo));
         await axios.post(
             `${this.url}/image/upload/me`,
             formData,
-            { headers: this.injectToken() }
+            {headers: this.injectToken()}
         );
+    }
+
+    getUserId() {
+        const infos = this.getDecodedToken();
+
+        return infos.id_user;
+    }
+
+    hasCreatedProfile() {
+        const infos = this.getDecodedToken();
+
+        return infos.profile_created;
     }
 }
