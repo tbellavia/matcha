@@ -26,6 +26,7 @@ export default class APIUser extends API {
                 first_name: firstname,
                 last_name: lastname,
                 birthdate: birthdate,
+                birth: birthdate.format("YYYY-MM-DD"),
                 latitude: location.lat,
                 longitude: location.lng,
                 genre: gender,
