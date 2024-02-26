@@ -7,6 +7,7 @@ import {
     getUserLocation,
     getUserLocationFromLocalStorage
 } from "../../../utils/utils";
+import {encodePreferences, getFirstError, getUserLocation, getUserLocationFromLocalStorage} from "../../../utils/utils";
 import Header from "../../../components/header/Header";
 import {
     Autocomplete,
@@ -78,7 +79,7 @@ export default function CreateProfile() {
                 infos.lastname,
                 infos.birthdate,
                 infos.location,
-                encodeGender(infos.gender),
+                infos.gender,
                 // Transform to array
                 encodePreferences(infos.preferences),
                 infos.tags,
