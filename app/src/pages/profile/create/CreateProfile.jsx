@@ -1,12 +1,5 @@
 import React, {useEffect, useMemo} from "react";
 import {AutoHideAlert} from "../../../components/auto-hide-alert/AutoHideAlert";
-import {
-    encodeGender,
-    encodePreferences,
-    getFirstError,
-    getUserLocation,
-    getUserLocationFromLocalStorage
-} from "../../../utils/utils";
 import {encodePreferences, getFirstError, getUserLocation, getUserLocationFromLocalStorage} from "../../../utils/utils";
 import Header from "../../../components/header/Header";
 import {
@@ -40,6 +33,7 @@ import {MyLocation} from "@mui/icons-material";
 import {useQuery} from "react-query";
 import APIUser from "../../../services/user";
 import {useNavigate} from "react-router-dom";
+import InputGroup from "../components/InputGroup";
 
 
 const MIN_DESC_SIZE = 10;
@@ -298,15 +292,3 @@ export default function CreateProfile() {
     )
 }
 
-function InputGroup({children}) {
-    return (
-        <Stack
-            direction={{sm: "row", xs: "column"}}
-            width="100%"
-            justifyContent="space-between"
-            gap={2}
-        >
-            {children}
-        </Stack>
-    )
-}
