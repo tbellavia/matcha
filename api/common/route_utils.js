@@ -138,11 +138,10 @@ function getSaveNewTags(newTags) {
   return { "message": "nouveaux tags enregistrer" }
 }
 
-function getPhotos(tabPhoto) {
-  for (var i = tabPhoto.length; i < 5; i++) {
-    tabPhoto.push(null)
-  }
-  return tabPhoto
+function getPhotos(photos) {
+  const remaining = new Array(5 - photos.length).fill(null);
+
+  return [...photos, ...remaining];
 }
 
 function saveNewTags(tags) {
