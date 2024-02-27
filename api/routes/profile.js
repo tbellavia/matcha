@@ -129,7 +129,7 @@ router.post("/me", checkTokenMiddleware, (req, res) => {
   pool.query(createProfileQuery, arg, (err, _) => {
     saveNewTags(req.body.tags)
     if (err) {
-      console.log(err)
+      logger.error(err.message);
       return res.status(400).json({ message: err.message })
     }
 
@@ -160,7 +160,11 @@ router.post("/image/upload/me",
   uploadImagesToS3Middleware,
   async (req, res) => {
     const profileID = await getProfileId(res.locals.id_user);
-    const photos = getPhotos(req.photos);
+    // Merge photos from body + req
+    // req.photos -> file sent by the client
+    // req.body.photos -> alreay existing s3 links
+    const mergedPhotos = [...req.photos, ...req.body.photos];
+    const photos = getPhotos(mergedPhotos);
 
     const uploadPhotosQuery = `
 UPDATE userprofile
@@ -170,7 +174,7 @@ WHERE id = $6
 
     pool.query(uploadPhotosQuery, [...photos, profileID], (err, _) => {
       if (err) {
-        logger.error(`/image/upload/me error: ${err}`);
+        logger.error(`/image/upload/me error: ${err.message}`);
         return res.status(400).json({ message: "err bad request" });
       }
       logger.info(`upload image for user id ${profileID}`);

@@ -32,6 +32,16 @@ const checkImagesMiddleware = (req, res, next) => {
       }
     })
 
+    // This happens when only one value is passed in body, we need to convert it to an array
+    if (typeof (req.body.photos) === "string") {
+      req.body.photos = [req.body.photos];
+    }
+
+    // Total length is the length of files sent by the client + already existing links
+    if ((photos.length + req.body.photos.length) > MAX_IMAGES) {
+      errors.push("Too many files");
+    }
+
     if (errors.length > 0) {
       return res.status(400).json({ errors: errors });
     }
