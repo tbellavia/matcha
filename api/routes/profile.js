@@ -160,11 +160,7 @@ router.post("/image/upload/me",
   uploadImagesToS3Middleware,
   async (req, res) => {
     const profileID = await getProfileId(res.locals.id_user);
-    // Merge photos from body + req
-    // req.photos -> file sent by the client
-    // req.body.photos -> alreay existing s3 links
-    const mergedPhotos = [...req.photos, ...req.body.photos];
-    const photos = getPhotos(mergedPhotos);
+    const photos = getPhotos(req.photos);
 
     const uploadPhotosQuery = `
 UPDATE userprofile
@@ -174,8 +170,8 @@ WHERE id = $6
 
     pool.query(uploadPhotosQuery, [...photos, profileID], (err, _) => {
       if (err) {
-        logger.error(`/image/upload/me error: ${err.message}`);
-        return res.status(400).json({ message: "err bad request" });
+        logger.error(`POST /image/upload/me: ${err.message}`);
+        return res.status(400).json({ message: "bad request" });
       }
       logger.info(`upload image for user id ${profileID}`);
       return res.json({ message: "image uploaded successfully" });
@@ -183,23 +179,77 @@ WHERE id = $6
   })
 
 
-router.put("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
-  // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biograpy = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
-  const genre = getGenreStringToInt(req.body.genre)
-  const pref = getPrefTabToInt(req.body.preference)
-  getSaveNewTags(req.body.newTags)
-  const photos = getPhotos(req.body.photos)
-  const sql = "UPDATE userprofile SET first_name = $1, last_name = $2, genre = $3, preference = $4, biograpy = $5, tags = $6, latitude = $7, longitude = $8, photo1 = $9, photo2 = $10, photo3 = $11, photo4 = $12, photo5 = $13 FROM userlogin WHERE userprofile.id = userlogin.id_user_profile AND userlogin.id = $14";
-  const arg = [req.body.first_name, req.body.last_name, genre, pref,
-  req.body.biograpy, req.body.tags, req.body.latitude, req.body.longitude,
-  photos[0], photos[1], photos[2], photos[3], photos[4], res.locals.id_user]
-  pool.query(sql, arg, (err, result) => {
-    if (err) {
-      return res.status(400).json({ message: err.message })
-    }
-    return res.json({ "message": "profile modifier" })
+router.put("/image/upload/me",
+  checkTokenMiddleware,
+  checkImagesMiddleware,
+  uploadImagesToS3Middleware,
+  async (req, res) => {
+    const profileID = await getProfileId(res.locals.id_user);
+    // Merge photos from body + req
+    // req.photos -> file sent by the client
+    // req.body.photos -> alreay existing s3 links
+    const mergedPhotos = [...req.photos, ...req.body.photos];
+    const photos = getPhotos(mergedPhotos);
+
+    const updatePhotosQuery = `
+UPDATE userprofile
+SET photo1 = $1, photo2 = $2, photo3 = $3, photo4 = $4, photo5 = $5
+WHERE id = $6
+`;
+    pool.query(updatePhotosQuery, [...photos, profileID], (err, _) => {
+      if (err) {
+        logger.error("PUT /image/upload/me: ${err.message}")
+        return res.status(400).json({ message: "bad request" });
+      }
+      logger.info(`udate image for user id ${profileID}`);
+      return res.json({ message: "image uploaded successfully" });
+    });
+  }
+)
+
+router.put("/me",
+  checkTokenMiddleware,
+  checkProfileCreatedMiddleware,
+  checkImagesMiddleware,
+  uploadImagesToS3Middleware,
+  (req, res) => {
+    // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biograpy = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
+    const genre = getGenreStringToInt(req.body.genre);
+    const pref = getPrefTabToInt(req.body.preference);
+    getSaveNewTags(req.body.newTags);
+    const photos = getPhotos(req.body.photos);
+    const updateProfileQuery = `
+UPDATE userprofile
+SET first_name = $1, last_name = $2, genre = $3, preference = $4, biograpy = $5, tags = $6, latitude = $7, longitude = $8, photo1 = $9, photo2 = $10, photo3 = $11, photo4 = $12, photo5 = $13
+FROM userlogin
+WHERE userprofile.id = userlogin.id_user_profile AND userlogin.id = $14
+`;
+
+    const args = [
+      req.body.first_name,
+      req.body.last_name,
+      genre,
+      pref,
+      req.body.biograpy,
+      req.body.tags,
+      req.body.latitude,
+      req.body.longitude,
+      photos[0],
+      photos[1],
+      photos[2],
+      photos[3],
+      photos[4],
+      res.locals.id_user
+    ];
+
+    logger.info(`updating user ${res.locals.id_user}`);
+    pool.query(updateProfileQuery, args, (err, _) => {
+      if (err) {
+        return res.status(400).json({ message: err.message });
+      }
+      return res.json({ "message": "profile modified successfully" });
+    })
   })
-})
 
 router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
   const sql = "SELECT userprofile.filtertags ,userprofile.tri , userprofile.minrating, userprofile.id , userprofile.latitude , userprofile.longitude , userprofile.distmax , userprofile.preference, userprofile.agemin, userprofile.agemax FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
