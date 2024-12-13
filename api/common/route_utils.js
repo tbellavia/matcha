@@ -120,9 +120,10 @@ function getGenreStringToInt(genre) {
 
 function getPrefTabToInt(TabPref) {
     let countPref = 0
-
-    for (var i = 0, lth = TabPref.length; i < lth; i++) {
-        constPref &= getGenreStringToInt(TabPref[i])
+    for (var genre in TabPref) {
+        if (TabPref[genre]){
+            countPref |= getGenreStringToInt(genre)
+        }
     }
     if (countPref == 0) {
         return (1 << 0)
