@@ -16,7 +16,9 @@ const { checkTokenMiddleware } = require("../middleware/check-token-middleware")
 const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
 
 const transporter = nodemailer.createTransport({
-    service: 'Outlook',
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
     auth: {
         user: process.env.MAIL,
         pass: process.env.MAIL_PASSWORD
@@ -25,7 +27,7 @@ const transporter = nodemailer.createTransport({
 
 router.post('/signup', (req, res) => {
     // Pas d'information à traiter
-
+    console.log( process.env.MAIL)
     if (!req.body.usermail || !req.body.passWord) {
         return res.status(400).json({ message: ERROR_INVALID_LOGIN })
     }
@@ -52,7 +54,7 @@ router.post('/signup', (req, res) => {
                 return res.json({ text: err.message })
             }
 
-            const recipients = ["mainhivvt@gmail.com", "com.bellavi@tutanota.com"];
+            const recipients = ["mainhivvt@gmail.com"];
 
             recipients.forEach(recipient => {
                 const mailOptions = {
