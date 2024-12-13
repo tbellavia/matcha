@@ -118,7 +118,15 @@ router.post('/login', (req, res) => {
 
         return res.json({ access_token: token })
     })
+})
 
+router.post('/updatetokenvalidprofile', checkTokenMiddleware, async (req, res) => {
+    console.log(`token update`);
+    const token = jwt.sign({
+        profile_created: true,
+        id_user: res.locals.id_user
+    }, process.env.SECRET_KEY, { expiresIn: '3 hours' })
+    return res.json({ access_token: token })
 })
 
 router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {

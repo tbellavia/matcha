@@ -1,4 +1,6 @@
 import { useReducer } from "react";
+import React, { useRef, useState , useContext } from "react";
+import AppContext from "../../store/AppContext";
 import PageHeader from "../../components/ui/page/PageHeader";
 import styles from "./CreateProfile.module.css";
 import AddPhoto from "../../components/ui/photo/AddPhoto";
@@ -24,6 +26,7 @@ import Alert from "../../components/ui/alert/Alert";
 import { fileToBase64 } from "../../common/utils";
 import useFetch from "../../hooks/use-fetch";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function createInitialState(value, fieldname) {
     return { valid: null, value, fieldname };
@@ -104,6 +107,7 @@ function CreateProfile() {
     const fields = [photos, firstname, lastname, birthDate, location, genre, preferences, tags, biography];
     const fetcher = useFetch();
     const navigate = useNavigate();
+    const ctx = useContext(AppContext);
 
     /* Photos */
     const onPhotosChange = (value) => {
@@ -226,6 +230,13 @@ function CreateProfile() {
                 longitude: location.value.lng,
                 photos: await Promise.all(photos.value.map(fileToBase64)),
             });
+            const config = {
+                headers: {
+                  Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+                },
+              };
+            const response = await axios.post("http://localhost:3000/api/user/updatetokenvalidprofile", {}, config);
+            ctx.setToken(response.data.access_token);
             navigate("/feed");
         } catch (e) {
             // TODO: show proper error from back
