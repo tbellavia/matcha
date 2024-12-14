@@ -14,7 +14,7 @@ CREATE TABLE UserProfile (
     birth DATE,
     genre INT,
     preference INT,
-    biograpy TEXT,
+    biography TEXT,
     tags TEXT,
     latitude FLOAT,
     longitude FLOAT,
@@ -104,7 +104,7 @@ INSERT INTO UserProfile(
     birth,
     genre,
     preference,
-    biograpy,
+    biography,
     latitude,
     longitude
 )
