@@ -8,7 +8,6 @@ import ProfileInfos from "./components/ProfileInfos";
 import ButtonGroupMe from "./components/button-groups/ButtonGroupMe";
 import ButtonGroupMatch from "./components/button-groups/ButtonGroupMatch";
 import ButtonGroupFinally from "./components/button-groups/ButtonGroupFinally";
-import ThemeSelector from "../../components/ui/theme/ThemeSelector"
 
 const PROFILE_ME = "me";
 const PROFILE_ALREADY_ANSWERED = "alreadyAnswered";

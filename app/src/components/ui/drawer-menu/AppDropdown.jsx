@@ -7,6 +7,7 @@ import AppContext from "../../../store/AppContext";
 import socket from "../../../socket";
 import soundFile from '../../../assets/son/son1.mp3';
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 export default function AppDroddown() {
@@ -22,6 +23,27 @@ export default function AppDroddown() {
     const [sizeViews, setSizeViews] = useState(0)
     const [sizeLikes, setSizeLikes] = useState(0)
     const [sizeMessages, setSizeMessages] = useState(0)
+    const navigate = useNavigate()
+
+    const onClickHandlerMessages = () => {
+        
+    }
+
+    const onClickHandlerLikes = () => {
+        navigate(`/chat`)
+    }
+
+    const onClickHandlerHistorique = () => {
+        navigate(`/chat`)
+    }
+
+    const onClickHandlerVues = () => {
+        navigate(`/chat`)
+    }
+
+    const onClickHandlerProfiles = () => {
+        navigate(`/feed`)
+    }
 
     // const [test, setTest] = useState(0)
     const onSettingsClickHandler = () => {
@@ -106,27 +128,27 @@ export default function AppDroddown() {
     const appDropddownItems = [
         {
             "Profiles": {
-                onClick: () => { },
+                onClick: () => {navigate(`/feed`)},
                 icon: <AccountCircle sx={{ color: iconColor }} />,
                 notifs: 0
             },
             "Vues": {
-                onClick: () => { },
+                onClick: () => {navigate(`/feedViews`)},
                 icon: <RemoveRedEye sx={{ color: iconColor }} />,
                 notifs: sizeViews
             },
             "Likes": {
-                onClick: () => { },
+                onClick: () => { navigate(`/feedLikes`)},
                 icon: <Favorite sx={{ color: iconColor }} />,
                 notifs: sizeLikes
             },
             "Messages": {
-                onClick: () => { console.log("Message") },
+                onClick: () => {navigate(`/chat`)},
                 icon: <Chat sx={{ color: iconColor }} />,
                 notifs: sizeMessages
             },
             "Historique": {
-                onClick: () => { },
+                onClick: () => {navigate(`/feedHistorics`)},
                 icon: <History sx={{ color: iconColor }} />,
                 notifs: 0
             },
