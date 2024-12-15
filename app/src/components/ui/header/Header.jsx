@@ -18,7 +18,7 @@ function Header({ value = "MATCHA", variant = "center", children }) {
     const rightLineStyle = styles[`${variant}__right-line`];
 
     const onTitleClick = () => {
-        navigage("/");
+        navigage("/feed");
     }
 
     return (

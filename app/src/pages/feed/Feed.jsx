@@ -13,6 +13,7 @@ import Header from "../../components/ui/header/Header";
 import ChatProfile from "../../components/ui/chatProfile/ChatProfile";
 import AppDropdown from "../../components/ui/drawer-menu/AppDropdown";
 import FeedProfile from "../../components/ui/feedProfile/FeedProfile";
+import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 
 function Feed (){
   const [AllProfile, setAllProfile] = useState([])
@@ -72,7 +73,10 @@ function Feed (){
   return (
 
       <GenericPage className={styles.page}>
-        <AppDropdown/>
+        <ProfileHeader menuOnly={false}/>
+
+        {/* <AppDropdown/> */}
+        
         <div className={styles.allChatPage}>
           {AllProfile.map((elem, index) =>
               <FeedProfile key={index} profile={elem} isConnected={allConnexion[elem.iduser]}/>

@@ -8,10 +8,11 @@ import { useState , useEffect} from "react";
 import Button from "../../components/ui/button/Button";
 import socket from "../../socket";
 import ChatMessage from "../../components/ui/chatMessage/ChatMessage";
-import styles from "./AllChat.module.css"
+import styles from "./AllChat.module.scss"
 import Header from "../../components/ui/header/Header";
 import ChatProfile from "../../components/ui/chatProfile/ChatProfile";
 import AppDropdown from "../../components/ui/drawer-menu/AppDropdown";
+import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 
 function AllChat (){
   const [AllChatProfile, setAllChatProfile] = useState([])
@@ -44,7 +45,9 @@ function AllChat (){
   return (
 
       <GenericPage className={styles.page}>
-        <AppDropdown/>
+        {/* <AppDropdown/> */}
+        <ProfileHeader menuOnly={false}/>
+
         <div className={styles.allChatPage}>
           {AllChatProfile.map((elem, index) =>
               <ChatProfile key={index} chatProfile={elem}/>

@@ -35,7 +35,7 @@ function ChatProfile({chatProfile}){
     
         <div className={`${styles[`chatProfile__${ctx.theme}`]} ${styles.chatProfile}`}>
             
-            <Photo size='little' data={base64ToFile(chatProfile.photo)} onClick={onClickHandlerProfile}/>
+            <Photo size='medium' data={base64ToFile(chatProfile.photo)} onClick={onClickHandlerProfile}/>
             <div className={styles.divInfo} onClick={onClickHandlerChat}>
                 <div className={styles.divNameDate}>
                     <span className={styles.spanName}>{chatProfile.name}</span>

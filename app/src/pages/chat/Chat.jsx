@@ -10,6 +10,7 @@ import socket from "../../socket";
 import ChatMessage from "../../components/ui/chatMessage/ChatMessage";
 import styles from "./Chat.module.css"
 import Header from "../../components/ui/header/Header";
+import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 
 function Chat (){
   const [message, setMessage] = useState("")
@@ -93,6 +94,7 @@ function Chat (){
   return (
 
       <GenericPage className={styles.page}>
+        <ProfileHeader menuOnly={false}/>
         
         <div className={styles.chatPage}>
         <ChatMessage me={userId}  allChat={AllChat}/>
