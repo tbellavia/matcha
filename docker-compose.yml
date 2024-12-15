@@ -54,7 +54,7 @@ services:
       - .env
     volumes:
       - data:/var/lib/postgresql/data
-      - ./db/matcha.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./db/500profiles.sql:/docker-entrypoint-initdb.d/create_tables.sql
     networks:
       - backend
 
