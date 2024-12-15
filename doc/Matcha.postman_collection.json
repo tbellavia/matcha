@@ -27,7 +27,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"first_name\":\"Abcd\", \n\"last_name\": \"Bellavia\", \n\"genre\" : 2, \n\"preference\" : 4, \n\"biograpy\": \"salut\", \n\"tags\": 12, \n\"loc\" : \"1234 1234\", \n\"rating\":89, \n\"photo1\":\"\", \n\"photo2\":\"\", \n\"photo3\":\"\", \n\"photo4\":\"\", \n\"photo5\":\"\"}",
+							"raw": "{\"first_name\":\"Abcd\", \n\"last_name\": \"Bellavia\", \n\"genre\" : 2, \n\"preference\" : 4, \n\"biography\": \"salut\", \n\"tags\": 12, \n\"loc\" : \"1234 1234\", \n\"rating\":89, \n\"photo1\":\"\", \n\"photo2\":\"\", \n\"photo3\":\"\", \n\"photo4\":\"\", \n\"photo5\":\"\"}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -68,7 +68,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"first_name\":\"Tonhi\", \n\"last_name\": \"Bellavia\", \n\"genre\" : 2, \n\"preference\" : 4, \n\"biograpy\": \"coucou\", \n\"tags\": 12, \n\"loc\" : \"1234 1234\", \n\"rating\":89, \n\"photo1\":\"\", \n\"photo2\":\"\", \n\"photo3\":\"\", \n\"photo4\":\"\", \n\"photo5\":\"\"}",
+							"raw": "{\"first_name\":\"Tonhi\", \n\"last_name\": \"Bellavia\", \n\"genre\" : 2, \n\"preference\" : 4, \n\"biography\": \"coucou\", \n\"tags\": 12, \n\"loc\" : \"1234 1234\", \n\"rating\":89, \n\"photo1\":\"\", \n\"photo2\":\"\", \n\"photo3\":\"\", \n\"photo4\":\"\", \n\"photo5\":\"\"}",
 							"options": {
 								"raw": {
 									"language": "json"

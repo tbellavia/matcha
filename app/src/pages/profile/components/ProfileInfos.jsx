@@ -11,7 +11,7 @@ const ProfileInfos = ({profileInfos}) => {
     const navLabelColor = styles[`nav-color__${theme}`];
 
     const {
-        tags = [], biograpy, photo1, distance, photo3, photo2, photo4, photo5, age, last_name, first_name
+        tags = [], biography, photo1, distance, photo3, photo2, photo4, photo5, age, last_name, first_name
     } = profileInfos;
 
     return (<React.Fragment>
@@ -34,7 +34,7 @@ const ProfileInfos = ({profileInfos}) => {
 
 
             <div className={styles['bio-container']}>
-                <Bio value={biograpy} disabled/>
+                <Bio value={biography} disabled/>
             </div>
 
             <div className={styles['tags-container']}>

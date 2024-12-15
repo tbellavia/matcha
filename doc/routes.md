@@ -25,7 +25,7 @@ UserProfile :
             birthdate:  str
             genre:      str => "homme", "femme", ...
             preference: [string] => ["homme", "femme"]
-            biograpy:   string(500)
+            biography:   string(500)
             tags:       [string] => ["beer", "baseball", ...]
             latitude:   float
             longitude:  float
@@ -39,7 +39,7 @@ UserProfile :
             birthdate:  str
             genre:      string => "homme", "femme"
             preference: [string] => ["homme", "femme"]
-            biograpy:   string(500)
+            biography:   string(500)
             tags:       [string] => ["beer", "baseball", ...]
             latitude:   float
             longitude:  float

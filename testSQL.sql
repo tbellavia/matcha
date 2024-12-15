@@ -12,7 +12,7 @@ CREATE TABLE UserProfile (
     last_name VARCHAR(100),
     genre INT,
     preference INT,
-    biograpy TEXT,
+    biography TEXT,
     tags INT,
     loc CHAR(1000),
     rating INT,

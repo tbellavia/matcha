@@ -67,7 +67,7 @@ Pas de boutons.
         "birth": "1999-08-15T00:00:00.000Z",
         "genre": 2,
         "preference": 3,
-        "biograpy": "salut",
+        "biography": "salut",
         "tags": [
             "beer",
             "football",

@@ -224,7 +224,7 @@ function CreateProfile() {
                 birth: birthDate.value,
                 genre: genre.value,
                 preference: preferences.value,
-                biograpy: biography.value,
+                biography: biography.value,
                 tags: tags.value,
                 latitude: location.value.lat,
                 longitude: location.value.lng,

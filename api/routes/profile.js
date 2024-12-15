@@ -100,14 +100,14 @@ router.post("/me", checkTokenMiddleware, (req, res) => {
     const pref = getPrefTabToInt(req.body.preference)
     
     const photos = getPhotos(req.body.photos)
-    const sql = "INSERT INTO userprofile (first_name, last_name, birth, genre, preference, biograpy, tags, latitude, longitude, photo1, photo2, photo3, photo4, photo5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) ";
+    const sql = "INSERT INTO userprofile (first_name, last_name, birth, genre, preference, biography, tags, latitude, longitude, photo1, photo2, photo3, photo4, photo5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) ";
     const arg = [
         req.body.first_name,
         req.body.last_name,
         req.body.birth,
         genre,
         pref,
-        req.body.biograpy,
+        req.body.biography,
         req.body.tags.toString(),
         req.body.latitude,
         req.body.longitude,
@@ -149,14 +149,14 @@ router.post("/me", checkTokenMiddleware, (req, res) => {
 
 
 router.put("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
-    // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biograpy = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
+    // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biography = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
     const genre = getGenreStringToInt(req.body.genre)
     const pref = getPrefTabToInt(req.body.preference)
     getSaveNewTags(req.body.newTags)
     const photos = getPhotos(req.body.photos)
-    const sql = "UPDATE userprofile SET first_name = $1, last_name = $2, genre = $3, preference = $4, biograpy = $5, tags = $6, latitude = $7, longitude = $8, photo1 = $9, photo2 = $10, photo3 = $11, photo4 = $12, photo5 = $13 FROM userlogin WHERE userprofile.id = userlogin.id_user_profile AND userlogin.id = $14";
+    const sql = "UPDATE userprofile SET first_name = $1, last_name = $2, genre = $3, preference = $4, biography = $5, tags = $6, latitude = $7, longitude = $8, photo1 = $9, photo2 = $10, photo3 = $11, photo4 = $12, photo5 = $13 FROM userlogin WHERE userprofile.id = userlogin.id_user_profile AND userlogin.id = $14";
     const arg = [req.body.first_name, req.body.last_name, genre, pref,
-    req.body.biograpy, req.body.tags, req.body.latitude, req.body.longitude,
+    req.body.biography, req.body.tags, req.body.latitude, req.body.longitude,
     photos[0], photos[1], photos[2], photos[3], photos[4], res.locals.id_user]
     pool.query(sql, arg, (err, result) => {
         if (err) {
