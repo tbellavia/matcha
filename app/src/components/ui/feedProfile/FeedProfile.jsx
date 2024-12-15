@@ -7,32 +7,17 @@ import { useContext } from "react";
 import AppContext from "../../../store/AppContext";
 import { base64ToFile } from "../../../common/utils";
 import socket from "../../../socket";
+import useFetch from "../../../hooks/use-fetch";
 
 function FeedProfile({profile, notification, isConnected}){
     const navigate = useNavigate()
-    // const ctx = useContext(AppContext)
-
-    // useEffect(() => {
-
-    //     function sessionEnter({infos}){
-    //         console.log(`session ${profile.iduser} ${infos}`)
-    //         setSession(infos)
-    //     }
-        
-    //     socket.connect()
-    //     socket.on(`session${profile.iduser}`, sessionEnter)
-
-    //     return () => {
-    //       socket.off(`session${profile.iduser}`)
-    //       socket.disconnect();
-    //     }
-    //   },[]) 
-
-    
-    
-
-    const onClickHandlerProfile = () => {
-        navigate(`/profile/${profile.iduser}`);
+    const fetcher = useFetch()
+    const onClickHandlerProfile = async () => {
+        try {
+            await fetcher(`/api/user/views/me/${profile.iduser}`, "POST");
+            navigate(`/profile/${profile.iduser}`);
+        } catch (e) {
+       }
     }
 
     const notif = () => {
