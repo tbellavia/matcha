@@ -13,6 +13,7 @@ import Header from "../../components/ui/header/Header";
 import ChatProfile from "../../components/ui/chatProfile/ChatProfile";
 import AppDropdown from "../../components/ui/drawer-menu/AppDropdown";
 import FeedProfile from "../../components/ui/feedProfile/FeedProfile";
+import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 
 function FeedViews (){
   const [AllProfile, setAllProfile] = useState([])
@@ -75,7 +76,7 @@ function FeedViews (){
   return (
 
       <GenericPage className={styles.page}>
-        <AppDropdown/>
+        <ProfileHeader menuOnly={false}/>
         <div className={styles.allChatPage}>
           {AllProfile.map((elem, index) =>
               <FeedProfile key={index} profile={elem} notification={notifs[elem.iduser.toString()]} isConnected={allConnexion[elem.iduser]}/>
