@@ -14,6 +14,7 @@ const {makeRandString} = require("../common/random")
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
+const crypto = require('crypto');
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -25,9 +26,8 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-router.post('/signup', (req, res) => {
+router.post('/signup', async (req, res) => {
     // Pas d'information à traiter
-    console.log( process.env.MAIL)
     if (!req.body.usermail || !req.body.passWord) {
         return res.status(400).json({ message: ERROR_INVALID_LOGIN })
     }
@@ -38,7 +38,8 @@ router.post('/signup', (req, res) => {
         return res.status(400).json({ message: ERROR_PASSWORD })
     }
     const sql = "SELECT email FROM userlogin WHERE email = $1"
-
+    const hashedPassword = crypto.createHash('sha256').update(req.body.passWord).digest('hex');
+    console.log(hashedPassword)
     pool.query(sql, [req.body.usermail], (err, result) => {
 
         if (result.rowCount > 0) {
@@ -47,7 +48,7 @@ router.post('/signup', (req, res) => {
 
         randString = makeRandString(125)
         const sql = "INSERT INTO userlogin (email, passw, active, id_user_profile,mailvalidation) VALUES ($1, $2, $3, $4, $5)";
-        const log = [req.body.usermail, req.body.passWord, false, null, randString]
+        const log = [req.body.usermail, hashedPassword, false, null, randString]
         pool.query(sql, log, (err, result) => {
 
             if (err) {
@@ -94,7 +95,7 @@ router.get("/validation/:stringValidation", (req, res) => {
     })
 })
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
     // Pas d'information à traiter
 
     if (!req.body.usermail || !req.body.passWord) {
@@ -102,8 +103,10 @@ router.post('/login', (req, res) => {
     }
 
     const sql = "SELECT id, id_user_profile FROM userlogin WHERE email = $1 AND passw = $2 AND active = TRUE"
+    const hashedPassword = crypto.createHash('sha256').update(req.body.passWord).digest('hex');
+    console.log(hashedPassword)
 
-    pool.query(sql, [req.body.usermail, req.body.passWord], (err, result) => {
+    pool.query(sql, [req.body.usermail, hashedPassword], (err, result) => {
         console.log(process.env.POSTGRES_HOST)
         console.log(err);
         if (err || result.rowCount == 0) {
