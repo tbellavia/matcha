@@ -5,12 +5,11 @@ import Bio from '../../../components/ui/bio/Bio';
 import Carousel from '../../../components/ui/photo/Carousel';
 import {useTheme} from '../../../hooks/use-theme';
 
-const rating = ['rating0-20', 'rating20-40','rating40-60','rating60-80','rating80-100']
+const ratingColor = ['rating0-20', 'rating20-40','rating40-60','rating60-80','rating80-100']
 
 const ProfileInfos = ({profileInfos}) => {
     const theme = useTheme();
     const navLabelColor = styles[`nav-color__${theme}`];
-
     const {
         tags = [], rating,biography, photo1, distance, photo3, photo2, photo4, photo5, age, last_name, first_name
     } = profileInfos;
@@ -19,9 +18,9 @@ const ProfileInfos = ({profileInfos}) => {
             <div className={`${styles['profile-main-infos']} ${navLabelColor}`}>
                 <div className={styles['profile-main-infos-top']}>
                     <div className={styles['profile-left-infos']}>
-                        <div className={styles[rating[Math.floor(rating * 5)]]}/>
                         <h2 className={styles['name-label']}>{first_name}</h2>
                         <h2 className={styles['name-label']}>{last_name}</h2>
+                        <div className={styles[`${ratingColor?.[Math.floor(rating * 5)] || 'rating40-60'}__${theme || 'light'}`]}></div>
                     </div>
 
                     <div className={styles['profile-right-infos']}>
