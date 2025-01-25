@@ -123,6 +123,58 @@ router.post('/login', async (req, res) => {
     })
 })
 
+router.post("/updatePassword", async (req, res) => {
+    const sql = "UPDATE userlogin SET passw=$2, newpassword=NULL WHERE newpassword=$1";
+    const hashedPassword = crypto.createHash('sha256').update(req.body.passWord).digest('hex');
+
+    const arg = [req.body.idNewPassWord, hashedPassword]
+    pool.query(sql, arg, (err, result) => {
+        if (result.rowCount == 0) {
+            return res.json({ isPwUpdate : false })
+        }
+        return res.json({ isPwUpdate : true })
+    })
+})
+
+router.post('/newPassword', async (req, res) => {
+
+    if (!req.body.usermail) {
+        return res.status(400).json({ message: ERROR_INVALID_LOGIN })
+    }
+    
+    randString = makeRandString(125)
+    const sql = "UPDATE userlogin SET newPassWord = $2 WHERE email = $1"
+    const log = [req.body.usermail, randString]
+    pool.query(sql, log, (err, result) => {
+        if (result.rowCount == 0) {
+            return res.json({ isMailSent: false })
+        }
+
+        const recipients = ["mainhivvt@gmail.com"];
+
+        recipients.forEach(recipient => {
+            const mailOptions = {
+                from: process.env.MAIL,
+                to: recipient,
+                subject: "Matcha changement de mot de passe",
+                text: "Lien de changement de mot de pass : http://localhost:9000/updatePassword/" + randString
+            }
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error)
+                    return res.json({ isMailSent: false })
+                } else {
+                    console.log("e-mail envoyé" + info.response)
+                    return res.json({ isMailSent: true })
+                }
+            })
+        })
+
+        return res.json({ isMailSent: true })
+    });
+})
+
 router.post('/updatetokenvalidprofile', checkTokenMiddleware, async (req, res) => {
     console.log(`token update`);
     const token = jwt.sign({

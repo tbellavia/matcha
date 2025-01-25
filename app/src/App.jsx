@@ -21,6 +21,7 @@ import FeedLikes from "./pages/feedLikes/FeedLikes";
 import FeedViews from "./pages/feedViews/FeedViews";
 import FeedHistorics from "./pages/feedHistorics/FeedHistorics";
 import GenericProfile from "./pages/profile/GenericProfile";
+import UpdatePassword from "./pages/updatePassword/UpdatePassword";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="feedLikes" element={<FeedLikes/>} />
           <Route path="feedViews" element={<FeedViews/>} />
           <Route path="feedHistorics" element={<FeedHistorics/>} />
+          <Route path="updatePassword/:id" element={<UpdatePassword/>} />
           <Route path="profile">
             <Route index element={<Profile />} />
             <Route path=":id" element={<GenericProfile />}/>
