@@ -1,17 +1,18 @@
 import GenericPage from "../page/GenericPage";
 import styles from "./Profile.module.scss";
 import Button from "../../components/ui/button/Button";
-import { useContext, useEffect, useState } from "react";
+//import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ProfileInfos from "./components/ProfileInfos";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 import useFetch from "../../hooks/use-fetch";
-import jwtDecode from "jwt-decode";
-import AppContext from "../../store/AppContext";
+//import jwtDecode from "jwt-decode";
+//import AppContext from "../../store/AppContext";
 
-const getUserId = (token) => jwtDecode(token).id_user;
+// const getUserId = (token) => jwtDecode(token).id_user;
 
 function Profile() {
-    const { token } = useContext(AppContext);
+    //const { token } = useContext(AppContext);
     const fetch = useFetch();
     const [infos, setInfos] = useState({});
 

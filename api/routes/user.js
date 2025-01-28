@@ -230,4 +230,62 @@ router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async 
     return res.json({ text: "user delete" })
 })
 
+// router.get("/updateMail", async (req, res) => {
+router.get("/updateMail/:stringValidation", async (req, res) => {
+    console.log("here")
+    const sql = "UPDATE userlogin SET email=newemail, newemail=NULL, hashForNewMail=NULL WHERE hashForNewMail=$1";
+    
+    const arg = [req.params.stringValidation]
+    pool.query(sql, arg, (err, result) => {
+
+        if (err) {
+            return res.status(400).json({ message: err.message })
+        }
+        return res.json({ text: "mail valide" })
+    })
+})
+
+router.post('/defNewMail',  checkTokenMiddleware, async (req, res) => {
+    idUser =res.locals.id_user
+    console.log("here")
+
+    if (!req.body.newMail) {
+
+        return res.status(400).json({ message: ERROR_INVALID_LOGIN })
+    }
+    
+    randString = makeRandString(125)
+    const sql = "UPDATE userlogin SET newemail=$2, hashForNewMail=$3 WHERE id_user_profile = $1"
+    const log = [idUser, req.body.newMail, randString]
+    pool.query(sql, log, (err, result) => {
+        if (result.rowCount == 0) {
+            return res.json({ isMailSent: false })
+        }
+
+        const recipients = ["mainhivvt@gmail.com"];
+
+        recipients.forEach(recipient => {
+            const mailOptions = {
+                from: process.env.MAIL,
+                to: recipient,
+                subject: "Matcha changement de mail",
+                text: "Lien de changement de mot de pass : http://localhost:3000/api/user/updateMail/" + randString
+            }
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error)
+                    return res.json({ isMailSent: false })
+                } else {
+                    console.log("e-mail envoyé" + info.response)
+                    return res.json({ isMailSent: true })
+                }
+            })
+        })
+
+        return res.json({ isMailSent: true })
+    });
+})
+
+
 module.exports = router;
