@@ -4,7 +4,7 @@ const pool = require("../db/db");
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
-const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
+const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
 const { getProfileId } = require("../common/route_utils");
 const {emitProfileView} = require("../socket/message");
 const { ERROR_BAD_TOKEN } = require("../common/messages");

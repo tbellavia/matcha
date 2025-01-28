@@ -13,7 +13,7 @@ const {validateEmail, validatePassword} = require("../common/validation")
 const {makeRandString} = require("../common/random")
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
-const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
+const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
 const crypto = require('crypto');
 
 const transporter = nodemailer.createTransport({

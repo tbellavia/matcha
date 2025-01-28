@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import React, { useRef, useState , useContext } from "react";
+import React, { useContext , useEffect } from "react";
 import AppContext from "../../store/AppContext";
 import PageHeader from "../../components/ui/page/PageHeader";
 import styles from "./CreateProfile.module.css";
@@ -27,6 +27,8 @@ import { fileToBase64 } from "../../common/utils";
 import useFetch from "../../hooks/use-fetch";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+
 
 function createInitialState(value, fieldname) {
     return { valid: null, value, fieldname };
@@ -93,6 +95,12 @@ const genres = ["homme", "femme", "non binaire"];
 // TODO: remove hard coded suggests
 const dummySuggests = ["beer", "baseball", "football", "yoga", "healthy"];
 
+function hasCreatedProfile(token) {
+    const decoded = jwt_decode(token);
+    console.log(decoded);
+    return decoded.profile_created;
+}
+
 function CreateProfile() {
     const [photos, dispatchPhotos] = useReducer(photosReducer, createInitialState([], "PHOTOS"));
     const [firstname, dispatchFirstname] = useReducer(firstnameReducer, createInitialState("", "FIRSTNAME"));
@@ -108,6 +116,13 @@ function CreateProfile() {
     const fetcher = useFetch();
     const navigate = useNavigate();
     const ctx = useContext(AppContext);
+
+    useEffect(() => {
+        if (hasCreatedProfile(ctx.token)) {
+            navigate("/feed");
+        }
+    }, []);
+
 
     /* Photos */
     const onPhotosChange = (value) => {

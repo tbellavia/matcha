@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router()
 const pool = require("../db/db");
 const {checkTokenMiddleware} = require("../middleware/check-token-middleware");
-const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
+const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
 const {getProfileId} = require("../common/route_utils");
 
 router.post(

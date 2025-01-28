@@ -10,7 +10,6 @@ import "./App.css";
 import Test from "./pages/test/Test";
 import Error404 from "./pages/error404/Error404";
 import MailValidation from "./pages/mailValidation/MailValidation";
-import TestPage from "./pages/test/TestPage";
 import CreateProfile from "./pages/create-profile/CreateProfile";
 import Profile from "./pages/profile/Profile";
 import Chat from "./pages/chat/Chat";
@@ -22,6 +21,7 @@ import FeedViews from "./pages/feedViews/FeedViews";
 import FeedHistorics from "./pages/feedHistorics/FeedHistorics";
 import GenericProfile from "./pages/profile/GenericProfile";
 import UpdatePassword from "./pages/updatePassword/UpdatePassword";
+// import UpdateProfile from "./pages/update-profile/UpdateProfile";
 
 function App() {
   return (
@@ -41,6 +41,7 @@ function App() {
             <Route index element={<Profile />} />
             <Route path=":id" element={<GenericProfile />}/>
             <Route path="create" element={<CreateProfile />} />
+            {/* <Route path="update" element={<UpdateProfile />} /> */}
           </Route>
           <Route path="chat">
             <Route index element={ <AllChat title="/chat"/> }/>

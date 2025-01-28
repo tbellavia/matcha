@@ -12,7 +12,7 @@ const { getPrefTabToInt,
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
-const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
+const {checkProfileCreatedMiddleware, checkProfileNotCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
 
 router.get("/tags", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
     const sql = "SELECT tag FROM tag"
@@ -93,7 +93,7 @@ router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async
     })
 })
 
-router.post("/me", checkTokenMiddleware, (req, res) => {
+router.post("/me",checkTokenMiddleware, checkProfileNotCreatedMiddleware, (req, res) => {
     console.log(req.body.birth);
     let idMax = 0
     const genre = getGenreStringToInt(req.body.genre)
