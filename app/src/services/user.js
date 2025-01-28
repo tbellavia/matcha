@@ -9,6 +9,13 @@ export default class APIUser extends API {
         this.url += "/profile"
     }
 
+    async getProfile() {
+        return await axios.get(
+            `${this.url}/me`,
+            {headers: this.injectToken()},
+        );
+    }
+
     async createProfile(
         photos,
         firstname,
@@ -20,12 +27,22 @@ export default class APIUser extends API {
         tags,
         description
     ) {
+        // console.log({
+        //     first_name: firstname,
+        //     last_name: lastname,
+        //     birth: birthdate.format("YYYY-MM-DD"),
+        //     latitude: location.lat,
+        //     longitude: location.lng,
+        //     genre: gender,
+        //     preference: preferences,
+        //     tags: tags,
+        //     biograpy: description,
+        // })
         await axios.post(
             `${this.url}/me`,
             {
                 first_name: firstname,
                 last_name: lastname,
-                birthdate: birthdate,
                 birth: birthdate.format("YYYY-MM-DD"),
                 latitude: location.lat,
                 longitude: location.lng,
@@ -41,9 +58,41 @@ export default class APIUser extends API {
         await this._uploadPhotos(photos);
     }
 
+    async updateProfile(
+        photos,
+        firstname,
+        lastname,
+        birthdate,
+        location,
+        gender,
+        preferences,
+        tags,
+        description
+    ) {
+        await axios.put(`${this.url}/me`,
+            {
+                first_name: firstname,
+                last_name: lastname,
+                birth: birthdate.format("YYYY-MM-DD"),
+                latitude: location.lat,
+                longitude: location.lng,
+                genre: gender,
+                preference: preferences,
+                tags: tags,
+                biograpy: description,
+            },
+            {
+                headers: this.injectToken(),
+            }
+            );
+        await this._uploadPhotos(photos);
+    }
+
     async _uploadPhotos(photos) {
         const formData = new FormData();
 
+        console.log("UPDATE PHOTOS");
+        console.log(photos);
         photos.forEach(photo => formData.append("photos", photo));
         await axios.post(
             `${this.url}/image/upload/me`,

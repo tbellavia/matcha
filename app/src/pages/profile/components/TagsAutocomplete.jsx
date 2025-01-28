@@ -1,14 +1,14 @@
-import { Autocomplete, TextField, Chip } from "@mui/material";
+import {Autocomplete, Chip, TextField} from "@mui/material";
 import React from "react";
 
-export default function TagsAutocomplete({ onChange }) {
+export default function TagsAutocomplete({ onChange, defaultValue = [] }) {
   return (
     <Autocomplete
       multiple
       id="tags-filled"
       fullWidth
       options={items.map(option => option)}
-      defaultValue={[]}
+      defaultValue={defaultValue}
       onChange={(_, data) => onChange(data)}
       renderTags={(value, getTagProps) => {
         return value.map((option, index) => (
@@ -28,6 +28,7 @@ export default function TagsAutocomplete({ onChange }) {
   )
 }
 
+// TODO: change default tags
 const items = [
   "bouffe",
   "manger",
