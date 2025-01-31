@@ -8,7 +8,7 @@ function RadioButton({ name, value, checked = false }) {
 
     return (
         <div className={`${styles.radio} ${themeStyle}`}>
-            <input id={value} type="radio" name={name} value={value} defaultChecked={checked}/>
+            <input id={value} type="radio" name={name} value={value} checked={checked}/>
             <label htmlFor={value}>{ value }</label>
         </div>
     );

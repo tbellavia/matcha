@@ -7,7 +7,8 @@ import Icon from "../icons/Icon";
 
 function LocationInput({ 
     onSubmit = () => { },
-    onBlur = () => { }
+    onBlur = () => { },
+    placeholder="Paris, Île-de-France"
 }) {
     const [city, setCity] = useState("");
     const [suggestedCities] = useState(Object.keys(cities));
@@ -46,7 +47,7 @@ function LocationInput({
                     value={city}
                     onChange={setCity}
                     onSubmit={onSubmitHandler}
-                    placeholder="Paris, Île-de-France"
+                    placeholder={placeholder}
                     onBlur={onBlurHandler}
                 />
             </div>

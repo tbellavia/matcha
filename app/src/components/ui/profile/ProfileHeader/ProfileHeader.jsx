@@ -29,6 +29,7 @@ const ProfileHeader = ({ menuOnly = false }) => {
                 try {
                     const response = await fetch("/api/user/profile/me");
                     setInfos(response?.data);
+                    // console.log(infos)
                 } catch (e) {
                     // TODO: Manage error
                     console.log("Error:", e);

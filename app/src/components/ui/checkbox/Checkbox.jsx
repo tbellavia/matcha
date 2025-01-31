@@ -6,6 +6,7 @@ import useUniqueId from "../../../hooks/use-unique-id";
 function Checkbox({ 
     name,
     value,
+    checked=false,
     onChange = () => {},
 }) 
 {
@@ -23,6 +24,7 @@ function Checkbox({
                 type="checkbox"
                 id={uniqueName}
                 value={value}
+                checked={checked}
                 onChange={onChangeHandler}
             />
             <label htmlFor={uniqueName}>{name}</label>

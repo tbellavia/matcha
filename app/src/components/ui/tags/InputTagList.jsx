@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./InputTagList.module.css";
 import Tag from "./Tag";
 import Autocomplete from "./Autocomplete";
@@ -8,19 +8,30 @@ import useUpdateEffect from "../../../hooks/use-update-effect";
 import { removeEmptyString } from "../../../common/utils";
 
 function InputTagList({
-    initial,
-    suggest, 
+    initial = [],
+    suggest = [], 
     onChange = () => {},
     onBlur = () => {}
 }) {
     const [suggestedTags, setSuggestedTags] = useState(suggest);
     const [tagList, setTagList] = useState(removeEmptyString(initial));
-    const [suggestAlreadyUse, setAlreadyUse] = useState([])
+    const [suggestAlreadyUse, setAlreadyUse] = useState(removeEmptyString(initial));
     const [newTag, setNewTag] = useState("");
     const [tagsId] = useUniqueId("tags")
 
+    useEffect(() => {
+        if (initial && Array.isArray(initial)) {
+            const cleanedInitial = removeEmptyString(initial);
+            if (JSON.stringify(cleanedInitial) !== JSON.stringify(tagList)) {
+                setTagList(cleanedInitial);
+                setAlreadyUse(cleanedInitial);
+            }
+        }
+    }, [initial]);
+
 
     useUpdateEffect(() => {
+        console.log("tags init :",tagList)
         onChange(tagList);
         onBlur();
     }, [tagList])

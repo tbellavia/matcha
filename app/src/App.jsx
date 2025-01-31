@@ -21,6 +21,7 @@ import FeedViews from "./pages/feedViews/FeedViews";
 import FeedHistorics from "./pages/feedHistorics/FeedHistorics";
 import GenericProfile from "./pages/profile/GenericProfile";
 import UpdatePassword from "./pages/updatePassword/UpdatePassword";
+import EditProfile from "./pages/edit-profile/EditProfile";
 // import UpdateProfile from "./pages/update-profile/UpdateProfile";
 
 function App() {
@@ -41,7 +42,7 @@ function App() {
             <Route index element={<Profile />} />
             <Route path=":id" element={<GenericProfile />}/>
             <Route path="create" element={<CreateProfile />} />
-            {/* <Route path="update" element={<UpdateProfile />} /> */}
+            <Route path="edit" element={<EditProfile />} />
           </Route>
           <Route path="chat">
             <Route index element={ <AllChat title="/chat"/> }/>
