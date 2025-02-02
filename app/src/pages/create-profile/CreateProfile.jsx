@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import React, { useContext , useEffect } from "react";
 import AppContext from "../../store/AppContext";
 import PageHeader from "../../components/ui/page/PageHeader";
@@ -28,6 +28,7 @@ import useFetch from "../../hooks/use-fetch";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { useMemo } from "react";
 
 
 function createInitialState(value, fieldname) {
@@ -116,6 +117,8 @@ function CreateProfile() {
     const fetcher = useFetch();
     const navigate = useNavigate();
     const ctx = useContext(AppContext);
+    const [allTags, setAllTags] = useState([]);
+    const initialPhotos = useMemo(() => [], []);
 
     useEffect(() => {
         if (hasCreatedProfile(ctx.token)) {
@@ -123,6 +126,23 @@ function CreateProfile() {
         }
     }, []);
 
+    useEffect(() => {
+        async function fetchData() {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête
+                },
+            };
+            try {
+                const res = await axios.get('http://localhost:3000/api/user/profile/tags', config);
+                setAllTags(res.data)
+
+            } catch (error) {
+                console.error("Erreur lors de la récupération :", error);
+            }
+        }
+        fetchData();
+    }, []);
 
     /* Photos */
     const onPhotosChange = (value) => {
@@ -267,6 +287,7 @@ function CreateProfile() {
                     <AddPhoto
                         onChange={onPhotosChange}
                         onBlur={onPhotosValidate}
+                        init={initialPhotos}
                     />
                 </div>
 
@@ -313,6 +334,7 @@ function CreateProfile() {
                     <div className={styles['create-profile__input-group']}>
                         <CheckboxGroup
                             label="Préférences"
+                            initial={{}}
                             values={genres}
                             onChange={onPreferencesChange}
                             onBlur={onPreferencesValidate}
@@ -324,7 +346,7 @@ function CreateProfile() {
                 <div className={styles['create-profile__tags-container']}>
                     <InputTagList
                         initial={tags.value}
-                        suggest={dummySuggests}
+                        suggest={allTags}
                         onChange={onTagsChange}
                         onBlur={onTagsValidate}
                     />

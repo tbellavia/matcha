@@ -17,12 +17,23 @@ function CheckboxGroup({
     onBlur = () => { },
 }) 
 {
+    const initializeChecked = () => {
+        return Object.keys(initial).length === 0
+            ? values.reduce((acc, val) => ({ ...acc, [val]: false }), {})
+            : initial;
+    };
     // const [checked, setChecked] = useState(values.reduce((acc, val) => ({ ...acc, [val]: false }), {}));
 
-    const [checked, setChecked] = useState(Object.keys(initial).length == 0 ? values.reduce((acc, val) => ({ ...acc, [val]: false }), {}) : initial);
-
+    const [checked, setChecked] = useState(initializeChecked());
+    const [init, setInit] = useState(initializeChecked())
+ 
     useUpdateEffect(() => {
-        setChecked(Object.keys(initial).length == 0 ? values.reduce((acc, val) => ({ ...acc, [val]: false }), {}) : initial)
+        const newChecked = initializeChecked();
+        if (JSON.stringify(newChecked) !== JSON.stringify(init)) {
+            setChecked(newChecked)
+            setInit(newChecked)
+        }
+        console.log("update")
     }, [initial]);
 
     useUpdateEffect(() => {

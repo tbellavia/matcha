@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import React, { useContext , useEffect } from "react";
 import AppContext from "../../store/AppContext";
 import PageHeader from "../../components/ui/page/PageHeader";
@@ -28,6 +28,9 @@ import useFetch from "../../hooks/use-fetch";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import GenericPage from "../page/GenericPage";
+import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
+import AppDroddown from "../../components/ui/drawer-menu/AppDropdown";
 
 function base64ToFile(base64String, filename) {
 
@@ -187,15 +190,6 @@ function EditProfile() {
     // const [infos, setInfos] = useState({});
     const ctx = useContext(AppContext);
 
-    // const [tmpPhotos, setTmpPhotos] = useState([]);
-    // const [tmpFirstname, setTmpFirstname] = useState("");
-    // const [lastname, dispatchLastname] = useReducer(lastnameReducer, createInitialState("", "LASTNAME"));
-    // const [birthDate, dispatchBirthDate] = useReducer(dateReducer, createInitialState("", "BIRTH_DATE"));
-    // const [location, dispatchLocation] = useReducer(locationReducer, createInitialState("", "LOCATION"));
-    // const [genre, dispatchGenre] = useReducer(genreReducer, { valid: true, value: "homme", fieldname: "GENRE" });
-    // const [preferences, dispatchPreference] = useReducer(preferencesReducer, createInitialState("", "PREFERENCES"));
-    // const [tags, dispatchTags] = useReducer(tagsReducer, createInitialState([], "TAGS"));
-    // const [biography, dispatchBiography] = useReducer(biographyReducer, createInitialState("", "BIOGRAPHY"));
     const navigate = useNavigate();
 
     // const [photos, dispatchPhotos] = useReducer(photosReducer, createInitialState([], "PHOTOS"));
@@ -209,7 +203,7 @@ function EditProfile() {
     const [tags, dispatchTags] = useReducer(tagsReducer, createInitialState([], "TAGS"));
     const [biography, dispatchBiography] = useReducer(biographyReducer, createInitialState("", "BIOGRAPHY"));
     const [error, dispatchError] = useReducer(errorReducer, null);
-
+    const [allTags, setAllTags] = useState([])
     // const initialPhotos = [
     //     new File([""], "photo1.png", { type: "image/png" }),
     //     new File([""], "photo2.png", { type: "image/png" }),
@@ -264,22 +258,11 @@ function EditProfile() {
                     type: "UPDATE_AND_VALIDATE", 
                     value: mapPrefToLabel(res.data.preference),  
                 })
-                console.log("test : ",{lat : res.data.latitude, lng: res.data.longitude})
+                // console.log("test : ",{lat : res.data.latitude, lng: res.data.longitude})
                 dispatchLocation({
                     type: "UPDATE_AND_VALIDATE", 
                     value: {lat : res.data.latitude, lng: res.data.longitude},  
                 })
-                // console.log("files photo : "+photos[0])
-                // dispatchPhotos({
-                //         type: "UPDATE_AND_VALIDATE", 
-                //         value: [
-                //             new File([""], "photo1.png", { type: "image/png" }),
-                //             new File([""], "photo2.png", { type: "image/png" }),
-                //         ],  
-                //     })
-                
-                // const file = base64ToFile("data:image/jpeg;base64," + res.data.photo1, "photo.png");
-                // console.log("Generated File:", file);
                 dispatchPhotos({
                     type: "UPDATE_AND_VALIDATE", 
                     value: [res.data.photo1!=null  ? base64ToFile("data:image/jpeg;base64,"+res.data.photo1, "photo1.png") : null,
@@ -289,6 +272,11 @@ function EditProfile() {
                         res.data.photo5!=null ? base64ToFile("data:image/jpeg;base64,"+res.data.photo5, "photo5.png"): null,
                     ].filter(photo => photo !== null),  
                 })
+                const res2 = await axios.get('http://localhost:3000/api/user/profile/tags', config);
+                // setAllTags(["test"])
+                setAllTags(res2.data)
+                // console.log("list des tags : ",res2.data)
+
             } catch (error) {
                 console.error("Erreur lors de la récupération :", error);
             }
@@ -297,12 +285,12 @@ function EditProfile() {
     }, []);
 
     useEffect(() => {
-        console.log("loc : ",photos.value)
+        // console.log("loc : ",photos.value)
     }, [photos.value]);
 
     /* Photos */
     const onPhotosChange = (value) => {
-        console.log("Photos : "+value)
+        // console.log("Photos : "+value)
         dispatchPhotos({ type: "UPDATE", value });
         dispatchError({ type: "CLEAR" });
     }
@@ -333,8 +321,8 @@ function EditProfile() {
 
     /* Birth Date */
     const onBirthDateChange = (value) => {
-        console.log("------------------------------------")
-        console.log(birthDate.value)
+        // console.log("------------------------------------")
+        // console.log(birthDate.value)
         dispatchBirthDate({ type: "UPDATE_AND_VALIDATE", value });
         dispatchError({ type: "CLEAR" });
     }
@@ -444,7 +432,7 @@ function EditProfile() {
                 photos: await Promise.all(photos.value.map(fileToBase64)),
                 newTags: [],
             }, config);
-            console.log(response)
+            // console.log(response)
             navigate("/feed");
         } catch (e) {
             // TODO: show proper error from back
@@ -453,7 +441,10 @@ function EditProfile() {
     };
 
     return (
-        <PageHeader className={styles['create-profile']}>
+        <GenericPage className={styles.profile}>
+
+        <ProfileHeader menuOnly={true}/>
+
             <section className={styles['create-profile__form']}>
                 {/* Profile picture */}
                 <div className={styles['create-profile__image-container']}>
@@ -529,7 +520,8 @@ function EditProfile() {
                 <div className={styles['create-profile__tags-container']}>
                     <InputTagList
                         initial={tags.value}
-                        suggest={dummySuggests}
+                        suggest={allTags}
+                        // suggest={allTags}
                         onChange={onTagsChange}
                         onBlur={onTagsValidate}
                     />
@@ -562,7 +554,7 @@ function EditProfile() {
                     </Button>
                 </div>
             </section>
-        </PageHeader>
+        </GenericPage>
     );
 }
 

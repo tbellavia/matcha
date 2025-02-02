@@ -14,7 +14,7 @@ const { getPrefTabToInt,
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const {checkProfileCreatedMiddleware, checkProfileNotCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
 
-router.get("/tags", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
+router.get("/tags", checkTokenMiddleware, (req, res) => {
     const sql = "SELECT tag FROM tag"
     pool.query(sql, [], (err, result) => {
         if (err) {
@@ -23,6 +23,23 @@ router.get("/tags", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, r
         return res.json(result.rows.map((row) => row.tag))
     })
 
+})
+
+router.post("/tag",checkTokenMiddleware, (req, res) => {
+    console.log(req.body.newTag);
+    
+    const sql = "INSERT INTO tag (tag) VALUES ($1) ";
+    const arg = [
+        req.body.newTag
+    ]
+    
+    pool.query(sql, arg, (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(400).json({ message: err.message })
+        }
+        return res.json({ "message": "nouveau tag cree" })
+    })
 })
 
 router.get("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
