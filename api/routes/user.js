@@ -15,6 +15,7 @@ const {makeRandString} = require("../common/random")
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
 const crypto = require('crypto');
+const { getProfileId } = require("../common/route_utils");
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -185,6 +186,7 @@ router.post('/updatetokenvalidprofile', checkTokenMiddleware, async (req, res) =
 })
 
 router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
+    
     idProfile = await getProfileId(res.locals.id_user)
 
     const sql = "DELETE FROM message USING chat WHERE  (chat.id_user1 = $1 OR chat.id_user2 = $1) AND chat.id = message.id_chat"
@@ -219,7 +221,7 @@ router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async 
         }
     })
 
-    const sql5 = "DELETE FROM userlogin WHERE userprofile.id_user_profile = $1"
+    const sql5 = "DELETE FROM userlogin WHERE userlogin.id_user_profile = $1"
     pool.query(sql5, [idProfile], (err5, result5) => {
 
         if (err5) {

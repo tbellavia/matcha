@@ -6,6 +6,7 @@ import Photo from "../../photo/Photo";
 import Header from '../../header/Header';
 import AppContext from '../../../../store/AppContext';
 import useFetch from '../../../../hooks/use-fetch';
+import { useNavigate } from "react-router-dom";
 
 /**
  * ProfileHeader
@@ -21,6 +22,7 @@ const ProfileHeader = ({ menuOnly = false }) => {
     const myNameBottomStyle = styles[`name-bottom__${theme}`];
     const fetch = useFetch();
     const [infos, setInfos] = useState({});
+    const navigate = useNavigate()
 
     useEffect(() => {
         // TODO: Store those infos in localStorage ?
@@ -36,14 +38,18 @@ const ProfileHeader = ({ menuOnly = false }) => {
                 }
             })()
         }
-    }, [token, fetch, menuOnly]);
+    }, [token, menuOnly]);
+
+    const onClickProfile = () => {    
+        navigate(`/profile/${infos.id}`);
+    }
 
     return (
         <Header variant='left'>
             <nav className={styles.nav}>
                 {!menuOnly &&
                     <div className={styles['nav__left-container']}>
-                        <Photo data={base64ToFile(infos.photo1)} size="medium" />
+                        <Photo data={base64ToFile(infos.photo1)}  size="medium" onClick={onClickProfile} />
                         <div>
                             <h2 className={`${styles['name-label']} ${myNameTopStyle}`}>{infos.first_name}</h2>
                             <h2 className={`${styles['name-label']} ${myNameBottomStyle}`}>{infos.last_name}</h2>

@@ -16,13 +16,15 @@ function ButtonGroupMe() {
 
     }
 
+
     const onDelProfilClicked = async() => {
-        const config = {
+        await axios.delete(`http://localhost:3000/api/user/me`,{
             headers: {
-              Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
-            },
-          };
-        await axios.put(`http://localhost:3000/api/user/connexion/me/off`,{},config);
+                Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+              },
+            data: {
+            }
+          });
         ctx.logout()
     }
 
