@@ -41,16 +41,17 @@ const FilterModal = ({
         onClose({ ages, distance, tags, popularity, sort, preferences })
 
         const [agemin, agemax] = ages;
-
+        const pref = encodePreferences(extractPreferences(preferences))
         fetch.current("/api/user/filtre/me", "PUT", {
             agemin,
             agemax,
             distmax: distance,
-            preference: encodePreferences(extractPreferences(preferences)),
+            preference: pref,
             minrating: popularity,
             filtertags: tags,
             tri: SORT_CHOICES.indexOf(sort)
         });
+        setPreferences(decodePreferences(pref))
     };
 
     useEffect(() => {
