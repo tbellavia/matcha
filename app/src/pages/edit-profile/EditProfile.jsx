@@ -402,24 +402,11 @@ function EditProfile() {
             return dispatchError({ type: invalidField.fieldname });
         }
         try {
-            // await fetcher("/api/user/profile/me", "post", {
-            //     first_name: firstname.value,
-            //     last_name: lastname.value,
-            //     birth: birthDate.value,
-            //     genre: genre.value,
-            //     preference: preferences.value,
-            //     biography: biography.value,
-            //     tags: tags.value,
-            //     latitude: location.value.lat,
-            //     longitude: location.value.lng,
-            //     photos: await Promise.all(photos.value.map(fileToBase64)),
-            // });
             const config = {
                 headers: {
                   Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
                 },
               };
-            //   console.log(tags.value.join(','))
             const response = await axios.put("http://localhost:3000/api/user/profile/me", {first_name: firstname.value,
                 last_name: lastname.value,
                 birth: birthDate.value,
@@ -432,10 +419,8 @@ function EditProfile() {
                 photos: await Promise.all(photos.value.map(fileToBase64)),
                 newTags: [],
             }, config);
-            // console.log(response)
             navigate("/feed");
         } catch (e) {
-            // TODO: show proper error from back
             dispatchError({ type: "NETWORK", value: e.message });
         }
     };

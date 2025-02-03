@@ -15,7 +15,6 @@ function CheckboxGroup({
     initial = {},
     onChange = () => { },
     onBlur = () => { },
-    init = {},
 }) 
 {
     const initializeChecked = () => {

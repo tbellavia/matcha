@@ -91,7 +91,7 @@ const FilterModal = ({
                                         label="préférences" 
                                         values={["homme", "femme", "non-binaire"]}
                                         onChange={setPreferences}
-                                        init = {preferences}
+                                        initial = {preferences}
                                     >
                                         
                                     </CheckboxGroup>
