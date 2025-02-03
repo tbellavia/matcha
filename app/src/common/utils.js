@@ -88,6 +88,21 @@ export function encodePreferences(preferences) {
 
     for (const preference of preferences)
         result += genders[preference]
+    return result > 0 ? result : 7;
+}
+
+export function decodePreferences(preferences) {
+    // if (!_.isArray(preferences)){
+    //     throw new TypeError("preferences must be of type array");
+    // }
+    const result = {"homme": false, "femme": false, "non-binaire": false};
+
+    if (preferences & 1)
+        result["homme"] = true;
+    if (preferences & 1 << 1)
+        result["femme"] = true;
+    if (preferences & 1 << 2)
+        result["non-binaire"] = true;
     return result;
 }
 

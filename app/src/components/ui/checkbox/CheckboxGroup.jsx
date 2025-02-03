@@ -14,9 +14,10 @@ function CheckboxGroup({
     values, 
     onChange = () => { },
     onBlur = () => { },
+    init = {},
 }) 
 {
-    const [checked, setChecked] = useState(values.reduce((acc, val) => ({ ...acc, [val]: false }), {}));
+    const [checked, setChecked] = useState(values.reduce((acc, val) => ({ ...acc, [val]: init[val] }), {}));
 
     useUpdateEffect(() => {
         onChange(checked)
@@ -27,7 +28,7 @@ function CheckboxGroup({
     }
 
     const checkboxes = values.map(val => {
-        return <Checkbox key={val} name={val} value={val} onChange={onCheckboxChangeHandler}/>
+        return <Checkbox key={val} name={val} value={val} check={init[val]} onChange={onCheckboxChangeHandler}/>
     });
 
     const onBlurHandler = () => {

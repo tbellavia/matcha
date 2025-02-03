@@ -9,13 +9,13 @@ import InputTagList from "../tags/InputTagList";
 import styles from "./FilterModal.module.scss";
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import useFetch from "../../../hooks/use-fetch";
-import { encodePreferences, extractPreferences } from "../../../common/utils";
+import { encodePreferences, extractPreferences, decodePreferences } from "../../../common/utils";
 
 const MIN_AGE = 18;
 const MAX_AGE = 90;
 const MIN_DIST = 10;
 const MAX_DIST = 1000;
-const MIN_POPULARITY = 0.1;
+const MIN_POPULARITY = 0;
 const MAX_POPULARITY = 1;
 const SORT_CHOICES = ["distance", "âge", "popularité"];
 
@@ -34,11 +34,11 @@ const FilterModal = ({
     const fetch = useRef(useFetch());
 
     const onCloseHandler = () => {
-        onClose({ ages, distance, tags, popularity, sort })
+        onClose({ ages, distance, tags, popularity, sort, preferences })
     };
 
     const onSubmitClickedHandler = () => {
-        onClose({ ages, distance, tags, popularity, sort })
+        onClose({ ages, distance, tags, popularity, sort, preferences })
 
         const [agemin, agemax] = ages;
 
@@ -68,6 +68,7 @@ const FilterModal = ({
                 setTags(filter.filtertags);
                 setPopularity(filter.minrating);
                 setSort(SORT_CHOICES[filter.tri]);
+                setPreferences(decodePreferences(filter.preference));
             } catch (e) {
                 // TODO: Manage error
                 console.log(e);
@@ -90,6 +91,7 @@ const FilterModal = ({
                                         label="préférences" 
                                         values={["homme", "femme", "non-binaire"]}
                                         onChange={setPreferences}
+                                        init = {preferences}
                                     >
                                         
                                     </CheckboxGroup>
@@ -106,7 +108,7 @@ const FilterModal = ({
                                 </div>
                                 <div className={styles["modal-input"]}>
                                     <SlingleSlider
-                                        label="distance"
+                                        label="distance maximale"
                                         value={distance}
                                         onChange={setDistance}
                                         min={MIN_DIST}

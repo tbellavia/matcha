@@ -20,6 +20,15 @@ function Feed (){
   const ctx = useContext(AppContext)
   const [allConnexion, setAllConnexion] = useState({})
   
+  const filterCommonTags = (myTags, otherTags, minCommon) => {
+    if (myTags.length == 0 || minCommon === 0) {
+      return true;
+    }
+    // console.log(otherTags)
+    const commonTags = myTags.map(word => word).filter(word => otherTags.some(tag => tag.toLowerCase() === word));
+    return commonTags.length >= minCommon;
+  }
+
   const getAllProfileForFeed = async() =>{
     const config = {
       headers: {
@@ -27,11 +36,22 @@ function Feed (){
       },
     };
     const res = await axios.get(`http://localhost:3000/api/user/profile`,config).then((response) => response.data);
+    const tags = await axios.get(`http://localhost:3000/api/user/profile/me`,config).then((response) => response.data);
+    console.log("getAllProfileForFeed");
     console.log(res)
-    setAllProfile(res.result.map(elem => {
+    const myTags = tags.tags.toLowerCase().split(',')
+    const myFilterTags = tags.filtertags.length ? tags.filtertags?.toLowerCase().split(',') : [];
+    console.log(myTags)
+    console.log(myFilterTags)
+    console.log(myFilterTags.length)
+    setAllProfile(res.result
+      .filter(elem => filterCommonTags(myTags, elem.tags.split(','), 0)) // AJOUTER 3eme argument { NOMBRE DE TAG EN COMMUN MINIMUM}
+      .filter(elem => filterCommonTags(myFilterTags, elem.tags.split(','), myFilterTags.length))
+      .map(elem => {
       return({iduser : elem.id, 
         name:elem.first_name,
-        photo:elem.photo1})
+        photo:elem.photo1,
+        tags:elem.tags})
       
     }))
   }
@@ -44,6 +64,7 @@ function Feed (){
     };
     const res = await axios.get(`http://localhost:3000/api/user/connexion`,config).then((response) => response.data);
     await axios.put(`http://localhost:3000/api/user/connexion/me/on`,{},config);
+    console.log("getUserConnexion");
     console.log(res)
     
     setAllConnexion(res)
@@ -81,6 +102,7 @@ function Feed (){
           {AllProfile.map((elem, index) =>
               <FeedProfile key={index} profile={elem} isConnected={allConnexion[elem.iduser]}/>
           )}
+          {!AllProfile.length && <h1>Y'a personne ici, t'as le seum hein ?</h1>}
         </div>
       </GenericPage>
     );
