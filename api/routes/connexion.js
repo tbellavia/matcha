@@ -9,7 +9,7 @@ const { getChatId, createNewChat, getProfileId } = require("../common/route_util
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
-const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
+const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
 const { emitConnexion } = require("../socket/message");
 let userConnected = {}
 

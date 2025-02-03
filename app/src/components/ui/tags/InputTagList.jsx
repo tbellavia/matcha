@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import styles from "./InputTagList.module.css";
 import Tag from "./Tag";
 import Autocomplete from "./Autocomplete";
@@ -6,31 +6,66 @@ import Label from "../label/Label";
 import useUniqueId from "../../../hooks/use-unique-id";
 import useUpdateEffect from "../../../hooks/use-update-effect";
 import { removeEmptyString } from "../../../common/utils";
+import AppContext from "../../../store/AppContext";
+import axios from "axios";
 
 function InputTagList({
-    initial,
-    suggest, 
+    initial = [],
+    suggest = [], 
     onChange = () => {},
     onBlur = () => {}
 }) {
     const [suggestedTags, setSuggestedTags] = useState(suggest);
     const [tagList, setTagList] = useState(removeEmptyString(initial));
-    const [suggestAlreadyUse, setAlreadyUse] = useState([])
+    const [suggestAlreadyUse, setAlreadyUse] = useState(removeEmptyString(initial));
     const [newTag, setNewTag] = useState("");
     const [tagsId] = useUniqueId("tags")
+    const ctx = useContext(AppContext);
+
+
+    useEffect(() => {
+        console.log(suggest)
+        setSuggestedTags(suggest.filter(tag => initial.indexOf(tag) === -1))
+        setAlreadyUse(removeEmptyString(initial))
+    }, [suggest]);
+
+
+    useEffect(() => {
+        if (initial && Array.isArray(initial)) {
+            const cleanedInitial = removeEmptyString(initial);
+            if (JSON.stringify(cleanedInitial) !== JSON.stringify(tagList)) {
+                setTagList(cleanedInitial);
+                setAlreadyUse(cleanedInitial);
+            }
+        }
+    }, [initial]);
 
 
     useUpdateEffect(() => {
+        console.log("tags init :",tagList)
         onChange(tagList);
         onBlur();
     }, [tagList])
 
-    const valideValue = value => {
+    const valideValue = async value => {
         if(tagList.indexOf(value) === -1){
-            setTagList([...tagList,value])}   
+            setTagList([...tagList,value])
+            if (suggestedTags.indexOf(value) === -1){
+                const config = {
+                    headers: {
+                      Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+                    },
+                  };
+                //   console.log(tags.value.join(','))
+                const response = await axios.post("http://localhost:3000/api/user/profile/tag", {newTag: newTag,}, config);
+                console.log("response : ",response)
+            }
+        }   
         if(suggestedTags.indexOf(value) !== -1){
             setSuggestedTags(prevSuggestedTags => prevSuggestedTags.filter(tag => tag !== value));
             setAlreadyUse([...suggestAlreadyUse, value])}
+
+
         setNewTag("")
     }
 

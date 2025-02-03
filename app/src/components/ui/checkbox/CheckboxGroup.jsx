@@ -12,12 +12,30 @@ import Label from "../label/Label";
 function CheckboxGroup({
     label, 
     values, 
+    initial = {},
     onChange = () => { },
     onBlur = () => { },
     init = {},
 }) 
 {
-    const [checked, setChecked] = useState(values.reduce((acc, val) => ({ ...acc, [val]: init[val] }), {}));
+    const initializeChecked = () => {
+        return Object.keys(initial).length === 0
+            ? values.reduce((acc, val) => ({ ...acc, [val]: false }), {})
+            : initial;
+    };
+    // const [checked, setChecked] = useState(values.reduce((acc, val) => ({ ...acc, [val]: false }), {}));
+
+    const [checked, setChecked] = useState(initializeChecked());
+    const [init, setInit] = useState(initializeChecked())
+ 
+    useUpdateEffect(() => {
+        const newChecked = initializeChecked();
+        if (JSON.stringify(newChecked) !== JSON.stringify(init)) {
+            setChecked(newChecked)
+            setInit(newChecked)
+        }
+        console.log("update")
+    }, [initial]);
 
     useUpdateEffect(() => {
         onChange(checked)
@@ -28,7 +46,7 @@ function CheckboxGroup({
     }
 
     const checkboxes = values.map(val => {
-        return <Checkbox key={val} name={val} value={val} check={init[val]} onChange={onCheckboxChangeHandler}/>
+        return <Checkbox key={val} name={val} value={val} checked={checked[val]} onChange={onCheckboxChangeHandler}/>
     });
 
     const onBlurHandler = () => {

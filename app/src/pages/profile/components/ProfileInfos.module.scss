@@ -48,3 +48,126 @@
         flex-direction: column-reverse;
     }
 }
+
+.rating0-20__light{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-light-6);
+}
+
+
+.rating20-40__light{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-light-7);
+}
+
+.rating40-60__light{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-light-8);
+}
+
+.rating60-80__light{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-light-9);
+}
+
+.rating80-100__light{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-light-10);
+}
+
+.rating0-20__blind{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-blind-6);
+}
+
+
+.rating20-40__blind{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-blind-7);
+}
+
+.rating40-60__blind{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-blind-8);
+}
+
+.rating60-80__blind{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-blind-9);
+}
+
+.rating80-100__blind{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-blind-10);
+}
+
+.rating0-20__dark{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-dark-3);
+}
+
+
+.rating20-40__dark{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-dark-5);
+}
+
+.rating40-60__dark{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-dark-4);
+}
+
+.rating60-80__dark{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-dark-2);
+}
+
+.rating80-100__dark{
+    border-radius: 50px;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+    background-color: var(--color-dark-1);
+}

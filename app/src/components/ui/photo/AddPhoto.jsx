@@ -1,17 +1,24 @@
 import styles from "./AddPhoto.module.css";
 import style from "./Photo.module.css";
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import React from "react";
 import Icon from "../icons/Icon";
 import { authorizedImageExtensionsString } from "../../../common/validation";
 
 function AddPhoto({ 
     onChange = () => { },
-    onBlur = () => { }
+    onBlur = () => { },
+    init = []
 }) {
     const classes = `${styles.addPhoto}`
     // const classe = `${style.photo}`
-    const [selectedFile, setSelectedFile] = useState([])
+    const [selectedFile, setSelectedFile] = useState(init)
+
+    useEffect(() => {
+        console.log("init",init)
+        setSelectedFile(init)
+    }, [init]);
+
 
     const onChangeHandle = ((e) => {
         const newSelectedFiles = [...selectedFile, e.target.files[0]];

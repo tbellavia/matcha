@@ -1,17 +1,10 @@
 import GenericPage from "../page/GenericPage";
-import { useParams } from 'react-router-dom';
 import axios from "axios";
 import AppContext from "../../store/AppContext";
 import { useContext } from "react";
-import { io } from 'socket.io-client';
 import { useState , useEffect} from "react";
-import Button from "../../components/ui/button/Button";
 import socket from "../../socket";
-import ChatMessage from "../../components/ui/chatMessage/ChatMessage";
 import styles from "./FeedViews.module.css"
-import Header from "../../components/ui/header/Header";
-import ChatProfile from "../../components/ui/chatProfile/ChatProfile";
-import AppDropdown from "../../components/ui/drawer-menu/AppDropdown";
 import FeedProfile from "../../components/ui/feedProfile/FeedProfile";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 

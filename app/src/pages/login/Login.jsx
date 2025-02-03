@@ -79,6 +79,21 @@ function Login() {
         }
     }
 
+    const sendOtp = async() => {
+        if (email) {
+            const response = await axios.post("http://localhost:3000/api/user/newPassword", {
+                usermail: email
+            });
+
+            if(response.data.isMailSent == true){
+                alert("Un mail pour réinitialiser votre mot de passe vous a été envoyé.")
+            }else{
+                alert("Une erreur bloque la réinitialisation de votre mot de passe")
+            }
+        } else {
+            alert("Veuillez entrer votre email");
+        }} 
+
     let errorAlert;
 
     if (errManager.hasErrors()) {
@@ -109,8 +124,12 @@ function Login() {
                         onBlur={onPassWordValidate}
                         ref={passwordRef}
                     />
+                    <a href="#" onClick={() => sendOtp()}>
+                        Forgot Password
+                    </a>
                     {errorAlert}
                 </Form>
+                
             </Background>
         </GenericPage>
     );

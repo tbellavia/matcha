@@ -35,7 +35,7 @@ function GenericProfile() {
         }
 
         fetchProfile().then()
-    }, [])
+    }, [id])
 
     return (
         <GenericPage className={styles.profile}>

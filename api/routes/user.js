@@ -13,7 +13,9 @@ const {validateEmail, validatePassword} = require("../common/validation")
 const {makeRandString} = require("../common/random")
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
-const checkProfileCreatedMiddleware = require("../middleware/check-profile-created-middleware");
+const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
+const crypto = require('crypto');
+const { getProfileId } = require("../common/route_utils");
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -25,9 +27,8 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-router.post('/signup', (req, res) => {
+router.post('/signup', async (req, res) => {
     // Pas d'information à traiter
-    console.log( process.env.MAIL)
     if (!req.body.usermail || !req.body.passWord) {
         return res.status(400).json({ message: ERROR_INVALID_LOGIN })
     }
@@ -38,7 +39,8 @@ router.post('/signup', (req, res) => {
         return res.status(400).json({ message: ERROR_PASSWORD })
     }
     const sql = "SELECT email FROM userlogin WHERE email = $1"
-
+    const hashedPassword = crypto.createHash('sha256').update(req.body.passWord).digest('hex');
+    console.log(hashedPassword)
     pool.query(sql, [req.body.usermail], (err, result) => {
 
         if (result.rowCount > 0) {
@@ -47,7 +49,7 @@ router.post('/signup', (req, res) => {
 
         randString = makeRandString(125)
         const sql = "INSERT INTO userlogin (email, passw, active, id_user_profile,mailvalidation) VALUES ($1, $2, $3, $4, $5)";
-        const log = [req.body.usermail, req.body.passWord, false, null, randString]
+        const log = [req.body.usermail, hashedPassword, false, null, randString]
         pool.query(sql, log, (err, result) => {
 
             if (err) {
@@ -94,7 +96,7 @@ router.get("/validation/:stringValidation", (req, res) => {
     })
 })
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
     // Pas d'information à traiter
 
     if (!req.body.usermail || !req.body.passWord) {
@@ -102,8 +104,10 @@ router.post('/login', (req, res) => {
     }
 
     const sql = "SELECT id, id_user_profile FROM userlogin WHERE email = $1 AND passw = $2 AND active = TRUE"
+    const hashedPassword = crypto.createHash('sha256').update(req.body.passWord).digest('hex');
+    console.log(hashedPassword)
 
-    pool.query(sql, [req.body.usermail, req.body.passWord], (err, result) => {
+    pool.query(sql, [req.body.usermail, hashedPassword], (err, result) => {
         console.log(process.env.POSTGRES_HOST)
         console.log(err);
         if (err || result.rowCount == 0) {
@@ -120,6 +124,58 @@ router.post('/login', (req, res) => {
     })
 })
 
+router.post("/updatePassword", async (req, res) => {
+    const sql = "UPDATE userlogin SET passw=$2, newpassword=NULL WHERE newpassword=$1";
+    const hashedPassword = crypto.createHash('sha256').update(req.body.passWord).digest('hex');
+
+    const arg = [req.body.idNewPassWord, hashedPassword]
+    pool.query(sql, arg, (err, result) => {
+        if (result.rowCount == 0) {
+            return res.json({ isPwUpdate : false })
+        }
+        return res.json({ isPwUpdate : true })
+    })
+})
+
+router.post('/newPassword', async (req, res) => {
+
+    if (!req.body.usermail) {
+        return res.status(400).json({ message: ERROR_INVALID_LOGIN })
+    }
+    
+    randString = makeRandString(125)
+    const sql = "UPDATE userlogin SET newPassWord = $2 WHERE email = $1"
+    const log = [req.body.usermail, randString]
+    pool.query(sql, log, (err, result) => {
+        if (result.rowCount == 0) {
+            return res.json({ isMailSent: false })
+        }
+
+        const recipients = ["mainhivvt@gmail.com"];
+
+        recipients.forEach(recipient => {
+            const mailOptions = {
+                from: process.env.MAIL,
+                to: recipient,
+                subject: "Matcha changement de mot de passe",
+                text: "Lien de changement de mot de pass : http://localhost:9000/updatePassword/" + randString
+            }
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error)
+                    return res.json({ isMailSent: false })
+                } else {
+                    console.log("e-mail envoyé" + info.response)
+                    return res.json({ isMailSent: true })
+                }
+            })
+        })
+
+        return res.json({ isMailSent: true })
+    });
+})
+
 router.post('/updatetokenvalidprofile', checkTokenMiddleware, async (req, res) => {
     console.log(`token update`);
     const token = jwt.sign({
@@ -130,6 +186,7 @@ router.post('/updatetokenvalidprofile', checkTokenMiddleware, async (req, res) =
 })
 
 router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
+    
     idProfile = await getProfileId(res.locals.id_user)
 
     const sql = "DELETE FROM message USING chat WHERE  (chat.id_user1 = $1 OR chat.id_user2 = $1) AND chat.id = message.id_chat"
@@ -164,7 +221,7 @@ router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async 
         }
     })
 
-    const sql5 = "DELETE FROM userlogin WHERE userprofile.id_user_profile = $1"
+    const sql5 = "DELETE FROM userlogin WHERE userlogin.id_user_profile = $1"
     pool.query(sql5, [idProfile], (err5, result5) => {
 
         if (err5) {
@@ -174,5 +231,63 @@ router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async 
 
     return res.json({ text: "user delete" })
 })
+
+// router.get("/updateMail", async (req, res) => {
+router.get("/updateMail/:stringValidation", async (req, res) => {
+    console.log("here")
+    const sql = "UPDATE userlogin SET email=newemail, newemail=NULL, hashForNewMail=NULL WHERE hashForNewMail=$1";
+    
+    const arg = [req.params.stringValidation]
+    pool.query(sql, arg, (err, result) => {
+
+        if (err) {
+            return res.status(400).json({ message: err.message })
+        }
+        return res.json({ text: "mail valide" })
+    })
+})
+
+router.post('/defNewMail',  checkTokenMiddleware, async (req, res) => {
+    idUser =res.locals.id_user
+    console.log("here")
+
+    if (!req.body.newMail) {
+
+        return res.status(400).json({ message: ERROR_INVALID_LOGIN })
+    }
+    
+    randString = makeRandString(125)
+    const sql = "UPDATE userlogin SET newemail=$2, hashForNewMail=$3 WHERE id_user_profile = $1"
+    const log = [idUser, req.body.newMail, randString]
+    pool.query(sql, log, (err, result) => {
+        if (result.rowCount == 0) {
+            return res.json({ isMailSent: false })
+        }
+
+        const recipients = ["mainhivvt@gmail.com"];
+
+        recipients.forEach(recipient => {
+            const mailOptions = {
+                from: process.env.MAIL,
+                to: recipient,
+                subject: "Matcha changement de mail",
+                text: "Lien de changement de mot de pass : http://localhost:3000/api/user/updateMail/" + randString
+            }
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error)
+                    return res.json({ isMailSent: false })
+                } else {
+                    console.log("e-mail envoyé" + info.response)
+                    return res.json({ isMailSent: true })
+                }
+            })
+        })
+
+        return res.json({ isMailSent: true })
+    });
+})
+
 
 module.exports = router;
