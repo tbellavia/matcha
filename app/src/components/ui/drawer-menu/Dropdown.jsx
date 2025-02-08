@@ -44,6 +44,7 @@ export default function Dropdown({
     setState(prev => !prev);
   };
 
+
   const listItems = []
 
   // Generate dropdown with the items description array

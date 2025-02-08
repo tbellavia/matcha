@@ -16,7 +16,7 @@ function ButtonGroupFinally({profileID}) {
         } catch (e) {
         }
     }
-
+    
     const onOkayClicked = async () => {
         // TODO: Manage error
         try {

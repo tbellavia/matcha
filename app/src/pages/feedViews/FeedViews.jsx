@@ -74,7 +74,8 @@ function FeedViews (){
           {AllProfile.map((elem, index) =>
               <FeedProfile key={index} profile={elem} notification={notifs[elem.iduser.toString()]} isConnected={allConnexion[elem.iduser]}/>
           )}
-        </div>
+          {!AllProfile.length && <h1>Y'a personne ici, t'as le seum hein ?</h1>}
+          </div>
       </GenericPage>
     );
 }

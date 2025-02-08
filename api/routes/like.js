@@ -49,6 +49,7 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                     return res.status(400).json({ message: err3.message })
                 }
             emitProfileLike(req.params.target, idProfile)
+            console.log("profile liker")
             return res.json({ "message": "like ajouté" })
             })
         }

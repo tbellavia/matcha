@@ -79,7 +79,8 @@ function FeedHistorics (){
           {AllProfile.map((elem, index) =>
               <FeedProfile key={index} profile={elem} isConnected={allConnexion[elem.iduser]}/>
           )}
-        </div>
+          {!AllProfile.length && <h1>Y'a personne ici, t'as le seum hein ?</h1>}
+          </div>
       </GenericPage>
     );
 }

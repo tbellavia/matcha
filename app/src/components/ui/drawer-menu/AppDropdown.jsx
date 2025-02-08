@@ -1,7 +1,7 @@
 import { AccountCircle, Chat, Favorite, History, Logout, RemoveRedEye, Settings, Tune } from "@mui/icons-material";
 import Dropdown from "./Dropdown";
 import { Box, keyframes } from "@mui/material";
-import { useContext, useState , useEffect} from "react";
+import { useContext, useState , useEffect, useMemo} from "react";
 import SettingsModal from "./modals/Settings/SettingsModal";
 import AppContext from "../../../store/AppContext";
 import socket from "../../../socket";
@@ -15,43 +15,23 @@ export default function AppDroddown() {
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
     const [idProfile, setIdProfile] = useState(false);
-    // console.log(ctx.notifs)
-    // const [sizeViews, setSizeViews] = useState(Object.keys(ctx.notifs.views).length)
-    // const [sizeLikes, setSizeLikes] = useState(Object.keys(ctx.notifs.likes).length)
-    // const [notifs, setNotifs] = useState({"likes":{}, "messages":{}, "views":{}})
-    // console.log(ctx.notifs.views)
     const [sizeViews, setSizeViews] = useState(0)
     const [sizeLikes, setSizeLikes] = useState(0)
     const [sizeMessages, setSizeMessages] = useState(0)
     const navigate = useNavigate()
-
-    const onClickHandlerMessages = () => {
-        
-    }
-
-    const onClickHandlerLikes = () => {
-        navigate(`/chat`)
-    }
-
-    const onClickHandlerHistorique = () => {
-        navigate(`/chat`)
-    }
-
-    const onClickHandlerVues = () => {
-        navigate(`/chat`)
-    }
-
-    const onClickHandlerProfiles = () => {
-        navigate(`/feed`)
-    }
-
+ 
     // const [test, setTest] = useState(0)
     const onSettingsClickHandler = () => {
         setOpen(true);
     }
 
     // Check if there are notifications
-    const notify = sizeViews + sizeLikes + sizeMessages
+    const [notify, setNotify] = useState(sizeViews + sizeLikes + sizeMessages)
+
+    useEffect(()=>{
+        setNotify(sizeViews + sizeLikes + sizeMessages)
+    }, [sizeViews, sizeLikes, sizeMessages])
+    
     // console.log(notify)
     // const notify = 
 
@@ -86,7 +66,7 @@ export default function AppDroddown() {
             console.log(ctx.notifs.views)
             console.log(`views ${from}`)
             ctx.setNotifs({"views":{...ctx.notifs.views, from : true},"messages":{...ctx.notifs.messages},"likes":{...ctx.notifs.likes}})
-            setSizeViews(sizeViews+1)
+            setSizeViews(prev => prev + 1)
         }
 
         function likeEnter({from}){
@@ -96,7 +76,7 @@ export default function AppDroddown() {
             console.log(ctx.notifs.likes)
             console.log(`likes ${from}`)
             ctx.setNotifs({"likes":{...ctx.notifs.likes, from : true},"messages":{...ctx.notifs.messages},"views":{...ctx.notifs.views}})
-            setSizeLikes(sizeLikes+1)
+            setSizeLikes(prev => prev + 1)
         }
 
         function messagesEnter({from}){
@@ -106,26 +86,26 @@ export default function AppDroddown() {
             console.log(ctx.notifs.likes)
             console.log(`message ${from}`)
             ctx.setNotifs({"likes":{...ctx.notifs.likes},"messages":{...ctx.notifs.messages, from : (ctx.notifs.messages[from]?ctx.notifs['messages'][from]+1:1) },"views":{...ctx.notifs.views}})
-            setSizeMessages(sizeMessages+1)
+            setSizeMessages(prev => prev + 1)
         }
             // ctx.setNotifs({"likes":{...ctx.notifs.likes},"messages":{...ctx.notifs.messages, from : (ctx.notifs.messages[from]?ctx.notifs.messages[from]+1:1)},"likes":{...ctx.notifs.likes}})
         socket.connect()
 
         socket.on(`view${idProfile}`, viewEnter)
-        socket.on(`likes${idProfile}`,likeEnter)
+        socket.on(`like${idProfile}`,likeEnter)
         socket.on(`messages${idProfile}`, messagesEnter)
         socket.on(`match${idProfile}`,messagesEnter)
 
         return () => {
           socket.off(`likes${idProfile}`)
           socket.off(`view${idProfile}`)
-          socket.on(`messages${idProfile}`)
-          socket.on(`match${idProfile}`)
+          socket.off(`messages${idProfile}`)
+          socket.off(`match${idProfile}`)
           socket.disconnect();
         }
       },[idProfile]) 
-
-    const appDropddownItems = [
+    
+    const appDropddownItems = useMemo(()=>[
         {
             "Profiles": {
                 onClick: () => {navigate(`/feed`)},
@@ -178,7 +158,7 @@ export default function AppDroddown() {
                 notifs: 0
             }
         }
-    ]
+    ], [sizeViews, sizeLikes, sizeMessages]);
 
     const notifyBadgeSize = 17;
     const iconContainerBg = {
