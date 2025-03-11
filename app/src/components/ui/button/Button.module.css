@@ -74,6 +74,7 @@
     .button:hover {
         transition-duration: .15s;
         transform: translateY(-5px);
+        cursor: pointer;
     }
 
     .button:active {

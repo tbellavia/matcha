@@ -14,6 +14,7 @@ import ChatProfile from "../../components/ui/chatProfile/ChatProfile";
 import AppDropdown from "../../components/ui/drawer-menu/AppDropdown";
 import FeedProfile from "../../components/ui/feedProfile/FeedProfile";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
+import FilterModal from "../../components/ui/filters/FilterModal";
 
 function Feed (){
   const [AllProfile, setAllProfile] = useState([])
@@ -91,18 +92,33 @@ function Feed (){
         }
       },[]) 
 
+
+    // Filter Modal
+
+    const [open, setOpen] = useState(false);
+
+    const onModalOpen = () => setOpen(true);
+    const onModalClose = (params) => {
+        console.log("Params: ", params);
+        setOpen(false);
+    }
+
+
   return (
 
       <GenericPage className={styles.page}>
         <ProfileHeader menuOnly={false}/>
 
         {/* <AppDropdown/> */}
-        
+
+          <Button onClick={onModalOpen}>Filters</Button>
+          <FilterModal open={open} onClose={onModalClose}/>
+
         <div className={styles.allChatPage}>
           {AllProfile.map((elem, index) =>
               <FeedProfile key={index} profile={elem} isConnected={allConnexion[elem.iduser]}/>
           )}
-          {!AllProfile.length && <h1>Y'a personne ici, t'as le seum hein ?</h1>}
+          {!AllProfile.length && <h1>Oh non, personne ne te convient :(</h1>}
         </div>
       </GenericPage>
     );
