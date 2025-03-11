@@ -20,7 +20,9 @@ function Feed (){
   const [AllProfile, setAllProfile] = useState([])
   const ctx = useContext(AppContext)
   const [allConnexion, setAllConnexion] = useState({})
-  
+  const [filterParams, setFilterParams] = useState([])
+  const [myTags, setMyTags] = useState([])
+
   const filterCommonTags = (myTags, otherTags, minCommon) => {
     if (myTags.length == 0 || minCommon === 0) {
       return true;
@@ -40,13 +42,13 @@ function Feed (){
     const tags = await axios.get(`http://localhost:3000/api/user/profile/me`,config).then((response) => response.data);
     console.log("getAllProfileForFeed");
     console.log(res)
-    const myTags = tags.tags.toLowerCase().split(',')
+    setMyTags(tags.tags.toLowerCase().split(','))
     const myFilterTags = tags.filtertags.length ? tags.filtertags?.toLowerCase().split(',') : [];
-    console.log(myTags)
-    console.log(myFilterTags)
-    console.log(myFilterTags.length)
+    // console.log(myTags)
+    // console.log(myFilterTags)
+    // console.log(myFilterTags.length)
     setAllProfile(res.result
-      .filter(elem => filterCommonTags(myTags, elem.tags.split(','), 0)) // AJOUTER 3eme argument { NOMBRE DE TAG EN COMMUN MINIMUM}
+      .filter(elem => filterCommonTags(myTags, elem.tags.split(','), 0)) // TODO : Keep this one ? or Only fiteredTags ?
       .filter(elem => filterCommonTags(myFilterTags, elem.tags.split(','), myFilterTags.length))
       .map(elem => {
       return({iduser : elem.id, 
@@ -74,7 +76,7 @@ function Feed (){
   useEffect(()=>{
     getAllProfileForFeed()
     getUserConnexion()
-  },[])
+  },[filterParams])
 
   useEffect(() => {
 
@@ -100,6 +102,7 @@ function Feed (){
     const onModalOpen = () => setOpen(true);
     const onModalClose = (params) => {
         console.log("Params: ", params);
+        setFilterParams(params)
         setOpen(false);
     }
 
@@ -111,8 +114,8 @@ function Feed (){
 
         {/* <AppDropdown/> */}
 
-          <Button onClick={onModalOpen}>Filters</Button>
-          <FilterModal open={open} onClose={onModalClose}/>
+          <Button onClick={onModalOpen}>Filtres</Button>
+          <FilterModal open={open} onClose={onModalClose} myTags={myTags}/>
 
         <div className={styles.allChatPage}>
           {AllProfile.map((elem, index) =>

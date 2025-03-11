@@ -10,6 +10,7 @@ import styles from "./FilterModal.module.scss";
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import useFetch from "../../../hooks/use-fetch";
 import { encodePreferences, extractPreferences, decodePreferences } from "../../../common/utils";
+import axios from "axios";
 
 const MIN_AGE = 18;
 const MAX_AGE = 90;
@@ -22,6 +23,7 @@ const SORT_CHOICES = ["distance", "âge", "popularité"];
 const FilterModal = ({
     open = false,
     onClose = (p) => { },
+    myTags = [],
 }) => {
     const { theme } = useContext(AppContext);
     const colorClass = styles[`modal-surface__${theme}`];
@@ -32,7 +34,8 @@ const FilterModal = ({
     const [popularity, setPopularity] = useState(MAX_POPULARITY);
     const [sort, setSort] = useState(SORT_CHOICES[0]);
     const fetch = useRef(useFetch());
-
+    const ctx = useContext(AppContext);
+    const [allTags, setAllTags] = useState([]);
     const onCloseHandler = () => {
         onClose({ ages, distance, tags, popularity, sort, preferences })
     };
@@ -78,6 +81,23 @@ const FilterModal = ({
         fetchFilter();
     }, []);
 
+    useEffect(() => {
+            async function fetchData() {
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête
+                    },
+                };
+                try {
+                    const res = await axios.get('http://localhost:3000/api/user/profile/tags', config);
+                    setAllTags([...new Set([...myTags, ...res.data])]) // TODO : add onChange or readOnly with checked value in form
+                } catch (error) {
+                    console.error("Erreur lors de la récupération :", error);
+                }
+            }
+            fetchData();
+        }, [myTags]);
+
     return (
         <React.Fragment>
             {open &&
@@ -121,7 +141,7 @@ const FilterModal = ({
                                 <div className={styles["modal-input"]}>
                                     <InputTagList 
                                         initial={tags} 
-                                        suggest={["beer", "pong"]}
+                                        suggest={allTags}
                                         onChange={setTags}
                                     />
                                 </div>

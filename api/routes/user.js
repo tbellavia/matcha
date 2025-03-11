@@ -56,7 +56,7 @@ router.post('/signup', async (req, res) => {
                 return res.json({ text: err.message })
             }
 
-            const recipients = ["mainhivvt@gmail.com"];
+            const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"];
 
             recipients.forEach(recipient => {
                 const mailOptions = {
@@ -151,7 +151,7 @@ router.post('/newPassword', async (req, res) => {
             return res.json({ isMailSent: false })
         }
 
-        const recipients = ["mainhivvt@gmail.com"];
+        const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"];
 
         recipients.forEach(recipient => {
             const mailOptions = {
@@ -264,7 +264,7 @@ router.post('/defNewMail',  checkTokenMiddleware, async (req, res) => {
             return res.json({ isMailSent: false })
         }
 
-        const recipients = ["mainhivvt@gmail.com"];
+        const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"];
 
         recipients.forEach(recipient => {
             const mailOptions = {
