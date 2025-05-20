@@ -24,8 +24,8 @@ function emitProfileMatch(to, from) {
   addNotifMessages(to, from)
 }
 
-function emitProfileMessage(to, from) {
-  socketIO.emit(`messages${to}`,{from});
+function emitProfileMessage(to, from, message) {
+  socketIO.emit(`messages${to}`,{from, message});
   addNotifMessages(from, to)
 }
 

@@ -32,7 +32,7 @@ router.post("/message/me/:target", checkTokenMiddleware, checkProfileCreatedMidd
         if (err) {
             return res.status(400).json({ message: err.message })
         }
-        emitProfileMessage(req.params.target, idProfile)
+        emitProfileMessage(req.params.target, idProfile, req.body.message)
         return res.json({ "message": "message ajouter" })
     })
 

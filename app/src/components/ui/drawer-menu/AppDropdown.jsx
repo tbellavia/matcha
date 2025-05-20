@@ -10,7 +10,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 
-export default function AppDroddown() {
+export default function AppDroddown({ipMessage = -1}) {
+    console.log(ipMessage)
     const ctx = useContext(AppContext);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
@@ -57,6 +58,15 @@ export default function AppDroddown() {
         getIdProfile()
     }, [])
 
+    const delNotif = async() =>{
+        const config = {
+          headers: {
+            Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+          },
+        };
+        const res = await axios.put(`http://localhost:3000/api/user/notifs/del/messages/${ipMessage}`,{},config);
+      }
+
     useEffect(() => {
 
         function viewEnter({from}){
@@ -85,8 +95,14 @@ export default function AppDroddown() {
             // ctx.notifs['likes'] = (ctx.notifs['likes']?ctx.notifs['likes']+1:1) 
             console.log(ctx.notifs.likes)
             console.log(`message ${from}`)
-            ctx.setNotifs({"likes":{...ctx.notifs.likes},"messages":{...ctx.notifs.messages, from : (ctx.notifs.messages[from]?ctx.notifs['messages'][from]+1:1) },"views":{...ctx.notifs.views}})
-            setSizeMessages(prev => prev + 1)
+            if (from != ipMessage){
+                ctx.setNotifs({"likes":{...ctx.notifs.likes},"messages":{...ctx.notifs.messages, from : (ctx.notifs.messages[from]?ctx.notifs['messages'][from]+1:1) },"views":{...ctx.notifs.views}})
+                setSizeMessages(prev => prev + 1)
+            }
+            else{
+                delNotif();
+            }
+           
         }
             // ctx.setNotifs({"likes":{...ctx.notifs.likes},"messages":{...ctx.notifs.messages, from : (ctx.notifs.messages[from]?ctx.notifs.messages[from]+1:1)},"likes":{...ctx.notifs.likes}})
         socket.connect()

@@ -94,7 +94,7 @@ function Chat (){
   return (
 
       <GenericPage className={styles.page}>
-        <ProfileHeader menuOnly={false}/>
+        <ProfileHeader menuOnly={false} ipMessage={to} />
         
         <div className={styles.chatPage}>
         <ChatMessage me={userId}  allChat={AllChat}/>

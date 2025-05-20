@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
  * In some cases, we only want to show the menu, if it is the case, the `menuOnly'
  * property allow to specify if the user part must be shown or not.
  */
-const ProfileHeader = ({ menuOnly = false }) => {
+const ProfileHeader = ({ menuOnly = false, ipMessage = -1}) => {
     const { token, theme } = useContext(AppContext);
     const myNameTopStyle = styles[`name-top__${theme}`];
     const myNameBottomStyle = styles[`name-bottom__${theme}`];
@@ -57,7 +57,7 @@ const ProfileHeader = ({ menuOnly = false }) => {
                     </div>
                 }
                 <div className={styles['nav__right-container']}>
-                    <AppDroddown />
+                    <AppDroddown ipMessage={ipMessage}/>
                 </div>
             </nav>
         </Header>
