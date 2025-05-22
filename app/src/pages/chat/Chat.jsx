@@ -11,6 +11,7 @@ import ChatMessage from "../../components/ui/chatMessage/ChatMessage";
 import styles from "./Chat.module.css"
 import Header from "../../components/ui/header/Header";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
+import HeaderChat from "../../components/ui/profile/HeaderChat/HeaderChat";
 
 function Chat (){
   const [message, setMessage] = useState("")
@@ -95,7 +96,7 @@ function Chat (){
 
       <GenericPage className={styles.page}>
         <ProfileHeader menuOnly={false} ipMessage={to} />
-        
+        <HeaderChat profileId={to}/>
         <div className={styles.chatPage}>
         <ChatMessage me={userId}  allChat={AllChat}/>
         <form onSubmit={onMessageSubmit}>

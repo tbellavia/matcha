@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function AppDroddown({ipMessage = -1}) {
-    console.log(ipMessage)
+    // console.log(ipMessage)
     const ctx = useContext(AppContext);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);

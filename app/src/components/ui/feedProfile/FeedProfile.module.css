@@ -1,7 +1,8 @@
 .oneProfile{
     position: relative;
-    height: auto;
     width: auto;
+    height: min-content;
+
 }
 
 .photoBack{

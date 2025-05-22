@@ -50,8 +50,8 @@ router.get("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, a
         return res.status(400).json({ message: ERROR_CHAT })
     }
 
-    sql = "SELECT * FROM message WHERE id_chat = $1 ORDER BY date_envoi ASC OFFSET $2 LIMIT $3"
-    const arg = [idChat, req.query.skip, req.query.limit]
+    sql = "SELECT * FROM message WHERE id_chat = $1 ORDER BY date_envoi ASC"
+    const arg = [idChat]
     pool.query(sql, arg, (err, result) => {
         if (err) {
             return res.status(400).json({ message: err.message })
