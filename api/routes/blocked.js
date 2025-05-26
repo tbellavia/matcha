@@ -9,17 +9,17 @@ const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-cre
 
 router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biography = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
-    idProfile = await getProfileId(res.locals.id_user)
+    const idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
         return res.status(400).json({ message: ERROR_BAD_TOKEN })
     }
 
-    idChat = await getChatId(idProfile, req.params.target)
+    const idChat = await getChatId(idProfile, req.params.target)
     if (idChat == null) {
         return res.status(400).json({ message: ERROR_CHAT })
     }
 
-    sql = "DELETE FROM message WHERE message.id_chat = $1"
+    const sql = "DELETE FROM message WHERE message.id_chat = $1"
     const arg = [idChat]
     pool.query(sql, arg, (err, result) => {
         if (err) {
@@ -27,7 +27,7 @@ router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, 
         }
     })
 
-    sql2 = "DELETE FROM chat WHERE chat.id = $1"
+    const sql2 = "DELETE FROM chat WHERE chat.id = $1"
     const arg2 = [idChat]
     pool.query(sql2, arg2, (err2, result2) => {
         if (err2) {
@@ -35,7 +35,7 @@ router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, 
         }
     })
 
-    sql3 = "UPDATE liketable SET user1like = 'FALSE', user2like = 'FALSE' WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)"
+    const sql3 = "UPDATE liketable SET user1like = 'FALSE', user2like = 'FALSE' WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)"
     const arg3 = [idProfile, req.params.target]
     pool.query(sql3, arg3, (err3, result3) => {
         if (err3) {

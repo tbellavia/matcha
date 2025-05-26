@@ -6,6 +6,7 @@ const pool = require("../db/db");
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
 const { emitProfileUnlike } = require("../socket/message");
+const { getChatId } = require("../common/route_utils");
 
 router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
     const sql = "SELECT userprofile.id FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
@@ -21,7 +22,7 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
         const sql2 = "SELECT id, user1like, user2like, user1 FROM liketable WHERE ((user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1))"
 
 
-        pool.query(sql2, [idProfile, req.params.target], (err2, result2) => {
+        pool.query(sql2, [idProfile, req.params.target], async (err2, result2) => {
 
             if (err2) {
                 return res.status(400).json({ message: err2.message })
@@ -60,6 +61,27 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                     })
                 }
                 emitProfileUnlike(req.params.target, idProfile)
+
+                const idChat = await getChatId(idProfile, req.params.target)
+                if (idChat == null) {
+                    return res.status(400).json({ message: ERROR_CHAT })
+                }
+            
+                const sql5 = "DELETE FROM message WHERE message.id_chat = $1"
+                const arg = [idChat]
+                pool.query(sql5, arg, (err5, result) => {
+                    if (err5) {
+                        return res.status(400).json({ message: err.message })
+                    }
+                })
+            
+                const sql6 = "DELETE FROM chat WHERE chat.id = $1"
+                const arg2 = [idChat]
+                pool.query(sql6, arg2, (err6, result2) => {
+                    if (err6) {
+                        return res.status(400).json({ message: err2.message })
+                    }
+                })
                 return res.json({ "message": "unlike ajouté" })
             }
         })
