@@ -98,15 +98,15 @@ function Chat (){
         <ProfileHeader menuOnly={false} ipMessage={to} />
         <HeaderChat profileId={to}/>
         <div className={styles.chatPage}>
-        <ChatMessage me={userId}  allChat={AllChat}/>
-        <form onSubmit={onMessageSubmit}>
-            <input type="text" className={styles.inputChat} value={message} onChange={onMessageHeandler}/>
-            <button 
-                type="submit"
-                className={styles.buttonChat}>
-              {'>'}
-            </button>
-        </form>
+          <ChatMessage me={userId}  allChat={AllChat}/>
+          <form onSubmit={onMessageSubmit}>
+              <input type="text" className={styles.inputChat} value={message} onChange={onMessageHeandler}/>
+              <button 
+                  type="submit"
+                  className={styles.buttonChat}>
+                {'>'}
+              </button>
+          </form>
         </div>
       </GenericPage>
     );
