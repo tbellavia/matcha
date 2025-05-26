@@ -37,6 +37,8 @@ function AddPhoto({
             setSelectedFile(array);
         }
         images.splice(index, 1)
+        onChange(array);
+        onBlur(array);
     })
 
     const onBlurHandle = () => {
