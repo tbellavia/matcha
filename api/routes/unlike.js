@@ -6,7 +6,7 @@ const pool = require("../db/db");
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
 const { emitProfileUnlike } = require("../socket/message");
-const { getChatId } = require("../common/route_utils");
+const { getChatId, delNotifMessages } = require("../common/route_utils");
 
 router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
     const sql = "SELECT userprofile.id FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
@@ -82,6 +82,10 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                         return res.status(400).json({ message: err2.message })
                     }
                 })
+
+                delNotifMessages(idProfile,req.params.target)
+                delNotifMessages(req.params.target,idProfile)
+
                 return res.json({ "message": "unlike ajouté" })
             }
         })

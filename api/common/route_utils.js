@@ -252,6 +252,31 @@ function addNotifMessages(from, to){
     })
 }
 
+function delNotifMessages(from, to){
+    sql = "SELECT notifsmessages \
+    FROM userprofile \
+    WHERE id = $1"
+    const arg = [to]
+    pool.query(sql, arg, (err, result) => {
+        if (err) {
+            return { message: err.message }
+        }
+        let message = JSON.parse(result.rows[0].notifsmessages)
+        console.log(result.rows[0])
+        if(from in message){
+            delete message[from]
+        }
+        sql2 = "UPDATE userprofile SET notifsmessages= $2 WHERE id = $1"
+        const arg2 = [to,JSON.stringify(message)]
+        pool.query(sql2, arg2, (err2, result2) => {
+            if (err2) {
+                return { message: err.message }
+            }
+            return { "message": "message ajouté"}
+        })
+    })
+}
+
 module.exports = {
     getProfileId,
     creatNewChat,
@@ -266,5 +291,6 @@ module.exports = {
     rating,
     addNotifViews,
     addNotifLike,
-    addNotifMessages
+    addNotifMessages,
+    delNotifMessages
 }
