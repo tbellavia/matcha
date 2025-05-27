@@ -1,6 +1,7 @@
 from faker import Faker
 import random
 import base64
+import unidecode
 
 pathPortraitH = "../../Downloads/lqPortraitHomme/"
 pathPortraitF = "../../Downloads/lqPortraitFemme/"
@@ -57,7 +58,7 @@ with open("db/profiles.sql","a") as file_profile:
             photo2 = getAnImage64encode(pathActivitee, random.randint(1,453))
             photo3 = getAnImage64encode(pathActivitee, random.randint(1,453))
             
-            string_login = f"(\'{first_name}_{last_name}@matcha.com\',\'pwd\',TRUE,{i}),"
+            string_login = f"(\'{unidecode(unidecode(first_name,"utf-8"))}_{unidecode(unidecode(last_name))}@matcha.com\',\'a7ed6ec53d42f4d4e0ced000eb0e5d7613313576291c8386225947fbd0b58c66\',TRUE,{i}),"
             print(string_login, file=file_login)
 
             string_profile = f"(\'{first_name}\',\'{last_name}\',\'{birth}\',{genre},{preference},\'{biography}\',\'{tags}\',{latitude},{longitude},{rating},\'{photo1}\',\'{photo2}\',\'{photo3}\'),"
