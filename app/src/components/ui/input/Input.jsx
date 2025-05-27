@@ -21,6 +21,7 @@ const Input = React.forwardRef(({
     const inputRef = useRef();
     const inputColor = styles[`input__input__${theme}`];
     const name = label.replace(/ /g, "_");
+    const id = `input-${name}`;
     
     useImperativeHandle(ref, () => {
         return { 
@@ -32,8 +33,9 @@ const Input = React.forwardRef(({
     
     return (
         <div className={styles.input}>
-            <Label label={label} htmlFor={name} className={styles['input__label']}/>
+            <Label label={label} htmlFor={id} className={styles['input__label']}/>
             <input 
+                id = {id}
                 className={`${styles['input__input']} ${inputColor} round`}
                 name={name} 
                 type={type}

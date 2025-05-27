@@ -42,7 +42,7 @@ function HeaderChat({profileId = -1}) {
 
     return (
         <div className={`${styles[`chatProfile__${ctx.theme}`]} ${styles.chatProfile}`}>
-            <Photo size='medium' data={base64ToFile(infos.photo1)} onClick={onClickHandlerProfile}/>
+            {infos.photo && <Photo size='medium' data={base64ToFile(infos.photo1)} onClick={onClickHandlerProfile}/>}
             <div className={styles.divInfo} onClick={onClickHandlerChat}>
                 <div className={styles.divNameDate}>
                     <span className={styles.spanName}>{infos.first_name} {infos.last_name}</span>

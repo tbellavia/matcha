@@ -42,7 +42,7 @@ function FeedProfile({profile, notification, isConnected}){
     return(
     
         <div className={styles.oneProfile} onClick={onClickHandlerProfile}>
-            <Photo size='feedSize' className={styles.photoBack} data={base64ToFile(profile.photo)}/>
+            {profile.photo && <Photo size='feedSize' className={styles.photoBack} data={base64ToFile(profile.photo)}/>}
             {notif()}
             {connected()}
             <div className={styles.name}>{profile.name}</div>

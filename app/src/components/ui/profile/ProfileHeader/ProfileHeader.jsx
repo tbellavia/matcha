@@ -49,7 +49,7 @@ const ProfileHeader = ({ menuOnly = false, ipMessage = -1}) => {
             <nav className={styles.nav}>
                 {!menuOnly &&
                     <div className={styles['nav__left-container']}>
-                        <Photo data={base64ToFile(infos.photo1)}  size="medium" onClick={onClickProfile} />
+                        {infos.photo1 && <Photo data={base64ToFile(infos.photo1)}  size="medium" onClick={onClickProfile} />}
                         <div>
                             <h2 className={`${styles['name-label']} ${myNameTopStyle}`}>{infos.first_name}</h2>
                             <h2 className={`${styles['name-label']} ${myNameBottomStyle}`}>{infos.last_name}</h2>
