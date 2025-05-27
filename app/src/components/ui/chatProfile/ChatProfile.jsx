@@ -15,7 +15,7 @@ function ChatProfile({chatProfile}){
     const [curentNotif, setCurentNotif] = useState(0);
     const [curentMessage, setCurentMessage] = useState(chatProfile.message)
     const ctx = useContext(AppContext)
-
+    console.log("message : ",chatProfile.message)
     const getIdProfile = async() => {
         const config = {
             headers: {
@@ -71,6 +71,7 @@ function ChatProfile({chatProfile}){
                 console.log("new message", message)
                 setCurentNotif(prev => prev + 1)
                 setCurentMessage(message)
+
                 // curentNotif += 1;
                 
             }
@@ -98,10 +99,15 @@ function ChatProfile({chatProfile}){
                     <span className={styles.spanDate}>{chatProfile.date}</span>
                 </div>
                     <div className={`${styles[`divMessage__${ctx.theme}`]} ${styles.divMessage}`}>
-                        <span className={styles.spanMessage}>{curentMessage}</span>
+                        {curentMessage != null && <span className={styles.spanMessage}>{curentMessage}</span>}
+
+                        {/* <span className={styles.spanMessage}>{curentMessage}</span> */}
+                        {curentMessage == null && <span className={styles.spanMessage}>DÉMARRER LA CONVERSATION</span>}
+
                         {/* <div className={styles.rondtrue}>{curentNotif}</div> */}
                         {/* {notif()} */}
                         {curentNotif > 0 && <div className={styles.rondtrue}>{curentNotif}</div>}
+                        {/* {curentNotif == 0 && <div className={styles.rondtrue}>DÉMARRER LA CONVERSATION</div>} */}
                         {/* {curentNotif} */}
                     </div>
             </div>
