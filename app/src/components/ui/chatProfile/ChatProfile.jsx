@@ -8,8 +8,10 @@ import AppContext from "../../../store/AppContext";
 import { base64ToFile } from "../../../common/utils";
 import socket from "../../../socket";
 import axios from "axios";
+import useFetch from "../../../hooks/use-fetch";
 
 function ChatProfile({chatProfile}){
+    const fetcher = useFetch();
     const navigate = useNavigate()
     const [idProfile, setIdProfile] = useState(false);
     const [curentNotif, setCurentNotif] = useState(0);
@@ -49,7 +51,8 @@ function ChatProfile({chatProfile}){
     }
 
     const onClickHandlerDelChat = () => {
-        
+            fetcher(`/api/user/unlike/me/${chatProfile.iduser}`, "POST");
+            window.location.reload();
     }
 
     const notif = () => {
