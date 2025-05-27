@@ -15,7 +15,7 @@ function ChatProfile({chatProfile}){
     const [curentNotif, setCurentNotif] = useState(0);
     const [curentMessage, setCurentMessage] = useState(chatProfile.message)
     const ctx = useContext(AppContext)
-    console.log("message : ",chatProfile.message)
+    console.log("message : ", ctx.theme)
     const getIdProfile = async() => {
         const config = {
             headers: {
@@ -106,7 +106,8 @@ function ChatProfile({chatProfile}){
 
                         {/* <div className={styles.rondtrue}>{curentNotif}</div> */}
                         {/* {notif()} */}
-                        {curentNotif > 0 && <div className={styles.rondtrue}>{curentNotif}</div>}
+                        {/* {curentNotif > 0 && <div className={styles.rondtrue}>{curentNotif}</div>} */}
+                        {curentNotif > 0 && <div className={`${styles[`rondtrue__${ctx.theme}`]}`}>{curentNotif}</div>}
                         {/* {curentNotif == 0 && <div className={styles.rondtrue}>DÉMARRER LA CONVERSATION</div>} */}
                         {/* {curentNotif} */}
                     </div>

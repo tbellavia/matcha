@@ -89,7 +89,7 @@
     font-size: small;
 }
 
-.rondtrue{
+.rondtrue__blind{
     width: 15px;
     height: 15px;
     font-size: medium;
@@ -97,4 +97,24 @@
     color:#fff; 
     text-align:center; 
     border-radius:50%;
-    }
+}
+
+.rondtrue__dark{
+    width: 15px;
+    height: 15px;
+    font-size: medium;
+    background-color:var(--color-dark-13) !important;
+    color:#fff; 
+    text-align:center; 
+    border-radius:50%;
+}
+
+.rondtrue__light{
+    width: 15px;
+    height: 15px;
+    font-size: medium;
+    background-color:var(--color-light-8) !important;
+    color:#fff; 
+    text-align:center; 
+    border-radius:50%;
+}
