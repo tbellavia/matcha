@@ -8,6 +8,10 @@
     background-color: var(--color-light-3) !important;
 }
 
+.inputChatAndButton{
+    margin-top: auto;
+}
+
 .chatPage{
     width: 500px;
     position: absolute;

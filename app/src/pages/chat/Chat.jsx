@@ -99,7 +99,7 @@ function Chat (){
         <HeaderChat profileId={to}/>
         <div className={styles.chatPage}>
           <ChatMessage me={userId}  allChat={AllChat}/>
-          <form onSubmit={onMessageSubmit}>
+          <form className={styles.inputChatAndButton} onSubmit={onMessageSubmit}>
               <input type="text" className={styles.inputChat} value={message} onChange={onMessageHeandler} autoFocus/>
               <button 
                   type="submit"
