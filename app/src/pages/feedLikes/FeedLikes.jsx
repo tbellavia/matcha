@@ -81,7 +81,7 @@ function FeedLikes (){
           {AllProfile.map((elem, index) =>
               <FeedProfile key={index} profile={elem} notification={notifs[elem.iduser.toString()]} isConnected={allConnexion[elem.iduser]}/>
           )}
-          {!AllProfile.length && <h1>Y'a personne ici, t'as le seum hein ?</h1>}
+          {!AllProfile.length && <h1>Pas encore de like ? Ça viendra :)</h1>}
           </div>
       </GenericPage>
     );

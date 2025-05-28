@@ -2,7 +2,7 @@
     width: 100%;
     display: flex;
     margin-top: 5px;
-
+    overflow-wrap: break-word;
 }
 
 .message{

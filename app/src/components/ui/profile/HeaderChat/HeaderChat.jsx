@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import useFetch from "../../../../hooks/use-fetch";
-import styles from "./HeaderChat.css";
+import styles from "./HeaderChat.module.css";
 import { useContext } from "react";
 import AppContext from "../../../../store/AppContext";
 import Photo from "../../photo/Photo";
@@ -43,11 +43,7 @@ function HeaderChat({profileId = -1}) {
     return (
         <div className={`${styles[`chatProfile__${ctx.theme}`]} ${styles.chatProfile}`}>
             {infos.photo && <Photo size='medium' data={base64ToFile(infos.photo1)} onClick={onClickHandlerProfile}/>}
-            <div className={styles.divInfo} onClick={onClickHandlerChat}>
-                <div className={styles.divNameDate}>
-                    <span className={styles.spanName}>{infos.first_name} {infos.last_name}</span>
-                </div>
-            </div>
+            <span className={`${styles[`spanName__${ctx.theme}`]} ${styles.spanName}`}>{`${infos.first_name} ${infos.last_name}`}</span>
         </div>
     )
 }
