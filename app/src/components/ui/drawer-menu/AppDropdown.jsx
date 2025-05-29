@@ -147,11 +147,6 @@ export default function AppDroddown({ipMessage = -1}) {
                 onClick: () => {navigate(`/feedHistorics`)},
                 icon: <History sx={{ color: iconColor }} />,
                 notifs: 0
-            },
-            "Filtres": {
-                onClick: () => { },
-                icon: <Tune sx={{ color: iconColor }} />,
-                notifs: 0
             }
         },
         {
