@@ -27,7 +27,7 @@ function Carousel({ tabPhotos }) {
         )
 
         inputs2.push(
-            <div>
+            <div key={i}>
                 {filteredPhotos[i] && <Photo key={`scroll-${i}`} data={base64ToFile(filteredPhotos[i])} size="large" />}
             </div>
         )
