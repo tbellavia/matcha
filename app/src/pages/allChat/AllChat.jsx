@@ -52,6 +52,7 @@ function AllChat (){
           {AllChatProfile.map((elem, index) =>
               <ChatProfile key={index} chatProfile={elem}/>
           )}
+          {!AllChatProfile.length && <h1>Tu pourras échanger avec d'autres personnes après un match!</h1>}
         </div>
       </GenericPage>
     );
