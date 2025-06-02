@@ -32,18 +32,14 @@ function HeaderChat({profileId = -1}) {
         getAllChatProfile()
       },[profileId])
 
-    const onClickHandlerChat = () => {
-        navigate(`/chat/${infos.id}`);
-    }
-
     const onClickHandlerProfile = () => {
         navigate(`/profile/${infos.id}`);
     }
 
     return (
-        <div className={`${styles[`chatProfile__${ctx.theme}`]} ${styles.chatProfile}`}>
-            {infos.photo && <Photo size='medium' data={base64ToFile(infos.photo1)} onClick={onClickHandlerProfile}/>}
-            <span className={`${styles[`spanName__${ctx.theme}`]} ${styles.spanName}`}>{`${infos.first_name} ${infos.last_name}`}</span>
+        <div className={styles.chatProfile}>
+            {infos.photo1 && <Photo size='medium' data={base64ToFile(infos.photo1)} onClick={onClickHandlerProfile}/>}
+            <span className={`${styles[`spanName__${ctx.theme}`]} ${styles.spanName}`} onClick={onClickHandlerProfile}>{`${infos.first_name} ${infos.last_name}`}</span>
         </div>
     )
 }

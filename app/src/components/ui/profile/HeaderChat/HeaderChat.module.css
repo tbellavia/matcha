@@ -6,20 +6,6 @@
     align-items: center;
 }
 
-.chatProfile__light{
-    border-top: solid var(--color-light-8) !important;
-}
-
-.chatProfile__blind{
-     border-top: solid var(--color-blind-8) !important;
-}
-
-.chatProfile__dark{
-     border-top: solid var(--color-dark-13) !important;
-     color: var(--color-dark-6) !important;
-}
-
-
 .buttonDel{
     width: 30px;
     height: 30px;
