@@ -55,7 +55,10 @@ function CheckboxGroup({
 
     return (
         <div className={styles['checkbox-group']}>
-            <Label htmlFor={label} label={label}/>
+            {/* <Label label={label}/> */}
+            <div className={styles.labelDiv}>
+                {label}
+            </div>
             <div className={styles['checkbox-container']} onBlur={onBlurHandler}>
                 {checkboxes}
             </div>

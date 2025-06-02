@@ -28,6 +28,7 @@ function DateInput ({
             <Label label={label} htmlFor={name} className={styles['input__label']}/>
             <input 
                 className={`${styles['input__input']} ${inputColor} round`}
+                id={name}
                 name={name} 
                 type="date"
                 value={value}

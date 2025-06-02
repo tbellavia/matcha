@@ -21,3 +21,7 @@
 .horizontal {
     flex-direction: row;
 }
+
+.labelDiv {
+    font-size: var(--label-font-size);
+}

@@ -15,3 +15,7 @@
     overflow: auto;
     outline: none;
 }
+
+.labelDiv {
+    font-size: var(--label-font-size);
+}

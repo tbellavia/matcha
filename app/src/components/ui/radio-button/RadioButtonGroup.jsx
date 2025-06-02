@@ -47,7 +47,9 @@ function RadioButtonGroup({
 
     return (
         <div className={styles['radio-group']}>
-            <Label htmlFor={id} label={label}/>
+            <div className={styles.labelDiv}>
+                {label}
+            </div>
             <div 
                 id={id} 
                 className={`${styles['radio-container']} ${styles[direction]}`} 
