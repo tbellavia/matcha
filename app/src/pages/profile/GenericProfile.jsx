@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import useFetch from "../../hooks/use-fetch";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
@@ -27,14 +27,21 @@ function GenericProfile() {
     const isBlocked = profileType === PROFILE_BLOCKED;
 
     useEffect(() => {
-        async function fetchProfile() {
-            const result = await profile.fetch(id);
+        try {
 
-            setInfos(result.result);
-            setProfileType(result.type);
+            async function fetchProfile() {
+                const result = await profile.fetch(id);
+
+                setInfos(result.result);
+                setProfileType(result.type);
+            }
+
+            fetchProfile().then()
+        }
+        catch (err) {
+            return null
         }
 
-        fetchProfile().then()
     }, [id])
 
     return (
@@ -60,12 +67,20 @@ function GenericProfile() {
 
 function useProfile() {
     const fetcher = useFetch();
+    const navigate = useNavigate()
 
     return {
         fetch: async function (id) {
-            const response = await fetcher(`/api/user/profile/${id}`);
+             try {
 
-            return response?.data;
+                const response = await fetcher(`/api/user/profile/${id}`);
+
+                return response?.data;
+             }
+            catch (err) {
+                navigate(`/feed`);
+                return null
+        }
         }
     }
 }
