@@ -43,7 +43,7 @@ function ButtonGroupMe() {
                 variant="action-danger"
                 className={styles["button"]}
                 onClick={onDelProfilClicked}>
-                supprimer
+                supprimer mon profil
             </Button>
         </React.Fragment>
     )

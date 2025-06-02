@@ -114,14 +114,14 @@ function Feed (){
 
         {/* <AppDropdown/> */}
 
-          <Button onClick={onModalOpen}>Filtres</Button>
+          <Button className={`${styles[`filterButton_${ctx.theme}`]} ${styles.filterButton}`} onClick={onModalOpen}>Filtres</Button>
           <FilterModal open={open} onClose={onModalClose} myTags={myTags}/>
 
         <div className={styles.allChatPage}>
           {AllProfile.map((elem, index) =>
               <FeedProfile key={index} profile={elem} isConnected={allConnexion[elem.iduser]}/>
           )}
-          {!AllProfile.length && <h1>Oh non, personne ne te convient :(</h1>}
+          {!AllProfile.length && <h1>Oh non, personne ne te convient :( Essaie d'ajuster tes filtres</h1>}
         </div>
       </GenericPage>
     );
