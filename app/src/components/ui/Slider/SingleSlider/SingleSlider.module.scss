@@ -8,6 +8,10 @@
     }
 }
 
+.labelDiv {
+    font-size: var(--label-font-size);
+}
+
 $themes: "light", "blind", "dark";
 
 @each $theme in $themes {

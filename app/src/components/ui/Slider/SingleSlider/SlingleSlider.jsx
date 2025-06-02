@@ -16,7 +16,9 @@ const SlingleSlider = ({
 
     return (
         <div className={styles['single-slider']}>
-            <Label label={label} />
+            <div className={styles.labelDiv}>
+                {label}
+            </div>
             <div>
                 <Slider onChange={handleSliderChange} {...sliderProps} sx={{ color: `var(--color-${theme}-9)` }}/>
                 <span className={styles[`label-${theme}`]}>

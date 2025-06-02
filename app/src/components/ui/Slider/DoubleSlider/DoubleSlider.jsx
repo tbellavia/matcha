@@ -28,12 +28,15 @@ const DoubleSlider = ({
 
     return (
         <div className={styles['double-slider']}>
-            <Label label={label} />
+            <div className={styles.labelDiv}>
+                {label}
+            </div>
             <Slider 
                 value={value} 
                 onChange={handleSliderChange}
                 min={min}
                 max={max}
+
                 sx={{ color: `var(--color-${theme}-9)` }}
             />
             <div>
