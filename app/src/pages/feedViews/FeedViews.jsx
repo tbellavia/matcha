@@ -56,13 +56,14 @@ function FeedViews (){
             console.log(`session ${profileId} ${status}`)
             setAllConnexion({ ...allConnexion, [profileId]: status })
         }
-        
-        socket.connect()
+
+        if (!socket.connected) {
+         socket.connect();
+        }
         socket.on(`newConnexion`, newConnexionEnter)
 
         return () => {
           socket.off(`newConnexion`)
-          socket.disconnect();
         }
       },[]) 
 

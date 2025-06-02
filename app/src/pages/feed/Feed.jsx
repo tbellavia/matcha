@@ -79,18 +79,27 @@ function Feed (){
   },[filterParams])
 
   useEffect(() => {
+        
 
         function newConnexionEnter({profileId, status}){
             console.log(`session ${profileId} ${status}`)
-            setAllConnexion({ ...allConnexion, [profileId]: status })
+            setAllConnexion(prev =>({ ...prev, [profileId]: status }))
+            console.log("test")
+        }
+        if (!socket.connected) {
+        console.log("socket noco feed")
+
+        if (!socket.connected) {
+         socket.connect();
+        }
+        console.log("socket co feed")
+
         }
         
-        socket.connect()
         socket.on(`newConnexion`, newConnexionEnter)
 
         return () => {
           socket.off(`newConnexion`)
-          socket.disconnect();
         }
       },[]) 
 
