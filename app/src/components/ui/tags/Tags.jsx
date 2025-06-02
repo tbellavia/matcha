@@ -9,7 +9,10 @@ function Tags({tags}) {
     return (
         <div className={styles["input-tag-list"]}>
             <div className={styles["tag-label-container"]}>
-                <Label label="Tags"/>
+                {/* <Label label="Tags"/> */}
+            <div className={styles.labelDiv}>
+                Tags
+            </div>
             </div>
             <div className={styles["tags-container"]}>
                 <ul className={styles["tags"]}>

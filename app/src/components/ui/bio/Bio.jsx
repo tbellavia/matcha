@@ -4,11 +4,10 @@ import styles from "./Bio.module.css";
 function Bio(props) {
     return (
         <div>
-            {/* <Label label="Bio"/> */}
             <div className={styles.labelDiv}>
                 Bio
             </div>
-            <textarea className={styles.bio} {...props}></textarea>
+            <textarea id="bio" className={styles.bio} {...props}></textarea>
         </div>
     )
 }
