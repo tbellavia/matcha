@@ -68,7 +68,12 @@ export default function AppDroddown({ipMessage = -1}) {
       }
 
     useEffect(() => {
+        if (!idProfile) return;
 
+        if (!socket.connected) {
+         socket.connect();
+        }
+        console.log("socket co")
         function viewEnter({from}){
             const audio = new Audio(soundFile);
             audio.play();
@@ -105,7 +110,6 @@ export default function AppDroddown({ipMessage = -1}) {
            
         }
             // ctx.setNotifs({"likes":{...ctx.notifs.likes},"messages":{...ctx.notifs.messages, from : (ctx.notifs.messages[from]?ctx.notifs.messages[from]+1:1)},"likes":{...ctx.notifs.likes}})
-        socket.connect()
 
         socket.on(`view${idProfile}`, viewEnter)
         socket.on(`like${idProfile}`,likeEnter)
@@ -117,7 +121,7 @@ export default function AppDroddown({ipMessage = -1}) {
           socket.off(`view${idProfile}`)
           socket.off(`messages${idProfile}`)
           socket.off(`match${idProfile}`)
-          socket.disconnect();
+        //   socket.disconnect();
         }
       },[idProfile]) 
     

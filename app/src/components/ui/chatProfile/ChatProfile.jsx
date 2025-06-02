@@ -1,5 +1,4 @@
 import styles from "./ChatProfile.module.css"
-import { useRef } from "react";
 import React , { useEffect } from "react";
 import Photo from "../photo/Photo";
 import { useNavigate } from "react-router-dom";
@@ -55,39 +54,24 @@ function ChatProfile({chatProfile}){
             window.location.reload();
     }
 
-    const notif = () => {
-        const curentNotif = ctx.notifs.messages[chatProfile.iduser]
-        if(curentNotif && curentNotif > 0){
-
-    // const notif = ([curentNotif]) => {
-    //     const curentNotif = ctx.notifs.messages[chatProfile.iduser]
-    //     if(curentNotif > 0){
-            return <div className={styles.rondtrue}>{curentNotif}</div>
-        }
-        return
-    }
-
     useEffect(() => {
-        
+        if (!idProfile) return;
+
+        if (!socket.connected) {
+         socket.connect();
+        }
         function messagesEnter({from, message}){
             if (from == chatProfile.iduser){
                 console.log("new message", message)
                 setCurentNotif(prev => prev + 1)
                 setCurentMessage(message)
-
-                // curentNotif += 1;
-                
             }
            
         }
-            // ctx.setNotifs({"likes":{...ctx.notifs.likes},"messages":{...ctx.notifs.messages, from : (ctx.notifs.messages[from]?ctx.notifs.messages[from]+1:1)},"likes":{...ctx.notifs.likes}})
-        socket.connect()
-
         socket.on(`messages${idProfile}`, messagesEnter)
 
         return () => {
           socket.off(`messages${idProfile}`)
-          socket.disconnect();
         }
       },[idProfile]) 
 

@@ -78,17 +78,23 @@ function Chat (){
   },[])
 
   useEffect(() => {
+        if (!chatId) return;
+
+        if (!socket.connected) {
+         socket.connect();
+        }
     console.log(`chatId ${chatId}`)
     function messageEnter({message, name}){
       setAllChat(previous=>[...previous, {user:name, message}])
       console.log(`message recu : ${message} ${name}`)
     }
-    socket.connect()
+
+    // socket.connect()
     socket.on(chatId, messageEnter)
 
     return () => {
       socket.off(chatId, messageEnter)
-      socket.disconnect();
+      // socket.disconnect();
     }
   },[chatId])
 
