@@ -19,3 +19,7 @@
 .labelDiv {
     font-size: var(--label-font-size);
 }
+
+.labelDiv__dark {
+    color: var(--color-dark-6);
+}

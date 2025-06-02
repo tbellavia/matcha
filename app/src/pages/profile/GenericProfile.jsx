@@ -72,9 +72,7 @@ function useProfile() {
     return {
         fetch: async function (id) {
              try {
-
                 const response = await fetcher(`/api/user/profile/${id}`);
-
                 return response?.data;
              }
             catch (err) {

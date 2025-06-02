@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Checkbox from "./Checkbox";
 import styles from "./CheckboxGroup.module.css";
 import useUpdateEffect from "../../../hooks/use-update-effect";
 import Label from "../label/Label";
+import AppContext from "../../../store/AppContext";
 
 /**
  * 
@@ -17,6 +18,8 @@ function CheckboxGroup({
     onBlur = () => { },
 }) 
 {
+    const { theme } = useContext(AppContext);
+    const themeStyle = styles[`labelDiv__${theme}`];
     const initializeChecked = () => {
         return Object.keys(initial).length === 0
             ? values.reduce((acc, val) => ({ ...acc, [val]: false }), {})
@@ -56,7 +59,8 @@ function CheckboxGroup({
     return (
         <div className={styles['checkbox-group']}>
             {/* <Label label={label}/> */}
-            <div className={styles.labelDiv}>
+
+            <div className={`${themeStyle} ${styles.labelDiv}`}>
                 {label}
             </div>
             <div className={styles['checkbox-container']} onBlur={onBlurHandler}>

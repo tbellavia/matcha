@@ -3,7 +3,8 @@ import RadioButton from "./RadioButton"
 import styles from "./RadioButtonGroup.module.css";
 import useUniqueId from "../../../hooks/use-unique-id";
 import Label from "../label/Label";
-
+import { useContext } from "react";
+import AppContext from "../../../store/AppContext";
 const DIRECTIONS = ["vertical", "horizontal"];
 
 function RadioButtonGroup({
@@ -14,11 +15,15 @@ function RadioButtonGroup({
     onChange = () => {},
     onBlur = () => {}
 }) {
+
+
     if (!DIRECTIONS.includes(direction)) {
         throw new Error(`RadioButtonGroup: direction '${direction}' is not valid`);
     }
     const [id] = useUniqueId(label);
     const [selectedValue, setSelectedValue] = useState(initial || values[0]);
+    const { theme } = useContext(AppContext);
+    const themeStyle = styles[`labelDiv__${theme}`];
 
     useEffect(() => {
         if (values.length === 0)
@@ -47,7 +52,9 @@ function RadioButtonGroup({
 
     return (
         <div className={styles['radio-group']}>
-            <div className={styles.labelDiv}>
+
+            <div className={`${themeStyle} ${styles.labelDiv}`}>
+
                 {label}
             </div>
             <div 
