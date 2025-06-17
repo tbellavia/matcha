@@ -92,7 +92,7 @@ const FilterModal = ({
                     const res = await axios.get('http://localhost:3000/api/user/profile/tags', config);
                     setAllTags([...new Set([...myTags, ...res.data])]) // TODO : add onChange or readOnly with checked value in form
                 } catch (error) {
-                    console.error("Erreur lors de la récupération :", error);
+                    console.log("Erreur lors de la récupération :", error);
                 }
             }
             fetchData();
