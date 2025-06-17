@@ -42,15 +42,22 @@ export default function AppDroddown({ipMessage = -1}) {
               Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
             },
           };
-        const res = await axios.get('http://localhost:3000/api/user/profile/getId/me',config)
-        const notifRes = await axios.get('http://localhost:3000/api/user/notifs',config)
-        // console.log(notifRes.data.likes)
-        ctx.setNotifs(notifRes.data)
-        // console.log(notifRes.data.views)
-        setSizeViews(Object.entries(notifRes.data.views).filter(([key, value]) => value === true).length)
-        setSizeLikes(Object.entries(notifRes.data.likes).filter(([key, value]) => value === true).length)
-        setSizeMessages(Object.entries(notifRes.data.messages).filter(([key, value]) => value > 0).length)
-        setIdProfile(res.data.id)
+
+          try{
+            const res = await axios.get('http://localhost:3000/api/user/profile/getId/me',config)
+            const notifRes = await axios.get('http://localhost:3000/api/user/notifs',config)
+                    // console.log(notifRes.data.likes)
+            ctx.setNotifs(notifRes.data)
+            // console.log(notifRes.data.views)
+            setSizeViews(Object.entries(notifRes.data.views).filter(([key, value]) => value === true).length)
+            setSizeLikes(Object.entries(notifRes.data.likes).filter(([key, value]) => value === true).length)
+            setSizeMessages(Object.entries(notifRes.data.messages).filter(([key, value]) => value > 0).length)
+            setIdProfile(res.data.id)
+          }
+          catch(e){
+          }
+
+
 
     }
 
