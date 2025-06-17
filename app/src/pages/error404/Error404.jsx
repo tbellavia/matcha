@@ -7,7 +7,7 @@ function Error404() {
     return (
         <GenericPage>
             <BackgroundGradient paddingTop={4} midPass={2} title="error 404">
-                <MidLink lien='/' title="ici touves l'amour">nous n'avons pas trouvé la page que vous cherchez</MidLink>
+                <MidLink lien='/' title="ici trouve l'amour">nous n'avons pas trouvé la page que vous cherchez</MidLink>
             </BackgroundGradient>
         </GenericPage>
     );
