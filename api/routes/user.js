@@ -29,10 +29,11 @@ const transporter = nodemailer.createTransport({
 
 router.post('/signup', async (req, res) => {
     // Pas d'information à traiter
-    if (!req.body.usermail || !req.body.passWord) {
+    const lowerMail = req.body.usermail.toLowerCase();
+    if (!lowerMail || !req.body.passWord) {
         return res.status(400).json({ message: ERROR_INVALID_LOGIN })
     }
-    if (!validateEmail(req.body.usermail)) {
+    if (!validateEmail(lowerMail)) {
         return res.status(400).json({ message: ERROR_MAIL })
     }
     if (!validatePassword(req.body.passWord)) {
@@ -41,7 +42,7 @@ router.post('/signup', async (req, res) => {
     const sql = "SELECT email FROM userlogin WHERE email = $1"
     const hashedPassword = crypto.createHash('sha256').update(req.body.passWord).digest('hex');
     console.log(hashedPassword)
-    pool.query(sql, [req.body.usermail], (err, result) => {
+    pool.query(sql, [lowerMail], (err, result) => {
 
         if (result.rowCount > 0) {
             return res.status(400).json({ message: ERROR_USER_ALREADY_EXIST })
@@ -49,7 +50,7 @@ router.post('/signup', async (req, res) => {
 
         randString = makeRandString(125)
         const sql = "INSERT INTO userlogin (email, passw, active, id_user_profile,mailvalidation) VALUES ($1, $2, $3, $4, $5)";
-        const log = [req.body.usermail, hashedPassword, false, null, randString]
+        const log = [lowerMail, hashedPassword, false, null, randString]
         pool.query(sql, log, (err, result) => {
 
             if (err) {
@@ -98,8 +99,8 @@ router.get("/validation/:stringValidation", (req, res) => {
 
 router.post('/login', async (req, res) => {
     // Pas d'information à traiter
-
-    if (!req.body.usermail || !req.body.passWord) {
+    const lowerMail = req.body.usermail.toLowerCase();
+    if (!lowerMail || !req.body.passWord) {
         return res.status(400).json({ message: ERROR_INVALID_LOGIN })
     }
 
@@ -107,7 +108,7 @@ router.post('/login', async (req, res) => {
     const hashedPassword = crypto.createHash('sha256').update(req.body.passWord).digest('hex');
     console.log(hashedPassword)
 
-    pool.query(sql, [req.body.usermail, hashedPassword], (err, result) => {
+    pool.query(sql, [lowerMail, hashedPassword], (err, result) => {
         console.log(process.env.POSTGRES_HOST)
         console.log(err);
         if (err || result.rowCount == 0) {
@@ -138,14 +139,14 @@ router.post("/updatePassword", async (req, res) => {
 })
 
 router.post('/newPassword', async (req, res) => {
-
-    if (!req.body.usermail) {
+    const lowerMail = req.body.usermail.toLowerCase();
+    if (!lowerMail) {
         return res.status(400).json({ message: ERROR_INVALID_LOGIN })
     }
     
     randString = makeRandString(125)
     const sql = "UPDATE userlogin SET newPassWord = $2 WHERE email = $1"
-    const log = [req.body.usermail, randString]
+    const log = [lowerMail, randString]
     pool.query(sql, log, (err, result) => {
         if (result.rowCount == 0) {
             return res.json({ isMailSent: false })
