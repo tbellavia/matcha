@@ -3,3 +3,7 @@ export const ERROR_PASSWORD = "Le mot de passe doit contenir au moins 6 caractè
 export const ERROR_VALIDATION_PASSWORD = "La confirmation ne correspond pas au mot de passe";
 export const ERROR_INVALID_LOGIN = "L'email ou le mot de passe est incorrect";
 export const ERROR_USER_ALREADY_EXIST = "L'utilisateur existe déjà";
+export const ERROR_NEED_TOKEN = "Session inexistante";
+export const ERROR_BAD_TOKEN = "Session expirée";
+export const ERROR_PROFILE = "Vous n'avez pas compilé votre profile";
+export const ERROR_CHAT = "Cette conversation n'existe pas";
