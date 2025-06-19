@@ -1,6 +1,6 @@
 const checkProfileCreatedMiddleware = (req, res, next) => {
     console.log(res.locals.profile_created)
-
+    console.log("proofilecccccccccccccccccccvc")
     if (res.locals.profile_created) {
         return next()
     }

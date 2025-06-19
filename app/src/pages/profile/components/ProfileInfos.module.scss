@@ -171,3 +171,29 @@
     width: 100%;
     background-color: var(--color-dark-1);
 }
+
+.connecttrue{
+        // position: absolute;
+        z-index: 1;
+        width: 20px;
+        height: 20px;
+        font-size: small;
+        background-color: green;
+        color:#fff; 
+        top: 10px;
+        left: 10px;
+        text-align:center; 
+        border-radius:50%;
+        }
+
+.connectfalse{
+    // position: absolute;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    font-size: small;
+    color:gray; 
+    top: 10px;
+    left: 10px;
+    text-align:center; 
+    }

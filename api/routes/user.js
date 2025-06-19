@@ -99,6 +99,7 @@ router.get("/validation/:stringValidation", (req, res) => {
 
 router.post('/login', async (req, res) => {
     // Pas d'information à traiter
+
     const lowerMail = req.body.usermail.toLowerCase();
     if (!lowerMail || !req.body.passWord) {
         return res.status(400).json({ message: ERROR_INVALID_LOGIN })
@@ -112,7 +113,6 @@ router.post('/login', async (req, res) => {
         console.log(process.env.POSTGRES_HOST)
         console.log(err);
         if (err || result.rowCount == 0) {
-
             return res.status(400).json({ message: ERROR_INVALID_LOGIN })
         }
         console.log(`ID user profile : ${result.rows[0].id}`);
@@ -120,7 +120,6 @@ router.post('/login', async (req, res) => {
             profile_created: !(result.rows[0].id_user_profile === null),
             id_user: result.rows[0].id
         }, process.env.SECRET_KEY, { expiresIn: '3 hours' })
-
         return res.json({ access_token: token })
     })
 })

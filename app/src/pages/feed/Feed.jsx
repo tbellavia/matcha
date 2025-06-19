@@ -32,26 +32,26 @@ function Feed (){
         Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
       },
     };
-      try {const res = await axios.get(`http://localhost:3000/api/user/profile`,config).then((response) => response.data);
-      const tags = await axios.get(`http://localhost:3000/api/user/profile/me`,config).then((response) => response.data);
-      console.log("getAllProfileForFeed");
-      console.log(res)
-      setMyTags(tags.tags.toLowerCase().split(','))
-      const myFilterTags = tags.filtertags.length ? tags.filtertags?.toLowerCase().split(',') : [];
-      // console.log(myTags)
-      // console.log(myFilterTags)
-      // console.log(myFilterTags.length)
-      setAllProfile(res.result
-        .filter(elem => filterCommonTags(myTags, elem.tags.split(','), 0)) // TODO : Keep this one ? or Only fiteredTags ?
-        .filter(elem => filterCommonTags(myFilterTags, elem.tags.split(','), myFilterTags.length))
-        .map(elem => {
-        return({iduser : elem.id, 
-          name:elem.first_name,
-          photo:elem.photo1,
-          tags:elem.tags})
+      try {
+        const res = await axios.get(`http://localhost:3000/api/user/profile`,config).then((response) => response.data);
+        const tags = await axios.get(`http://localhost:3000/api/user/profile/me`,config).then((response) => response.data);
+        console.log("getAllProfileForFeed");
+        console.log(res)
+        setMyTags(tags.tags.toLowerCase().split(','))
+        const myFilterTags = tags.filtertags.length ? tags.filtertags?.toLowerCase().split(',') : [];
+        setAllProfile(res.result
+          .filter(elem => filterCommonTags(myTags, elem.tags.split(','), 0)) // TODO : Keep this one ? or Only fiteredTags ?
+          .filter(elem => filterCommonTags(myFilterTags, elem.tags.split(','), myFilterTags.length))
+          .map(elem => {
+          return({iduser : elem.id, 
+            name:elem.first_name,
+            photo:elem.photo1,
+            tags:elem.tags})
         
       }))}
       catch(e){
+        console.log("errooooooooooooooooooooooooooooooooooor")
+        console.log(e)
       }
   }
 

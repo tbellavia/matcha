@@ -1,5 +1,5 @@
 import {useNavigate, useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import useFetch from "../../hooks/use-fetch";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 import styles from "./Profile.module.scss";
@@ -8,6 +8,8 @@ import ProfileInfos from "./components/ProfileInfos";
 import ButtonGroupMe from "./components/button-groups/ButtonGroupMe";
 import ButtonGroupMatch from "./components/button-groups/ButtonGroupMatch";
 import ButtonGroupFinally from "./components/button-groups/ButtonGroupFinally";
+import axios from "axios";
+import AppContext from "../../store/AppContext";
 
 const PROFILE_ME = "me";
 const PROFILE_ALREADY_ANSWERED = "alreadyAnswered";
@@ -20,13 +22,35 @@ function GenericProfile() {
     const [infos, setInfos] = useState({})
     const [profileType, setProfileType] = useState();
     const profile = useProfile();
+    const [allConnexion, setAllConnexion] = useState({})
+    const ctx = useContext(AppContext)
 
     const isMe = profileType === PROFILE_ME;
     const isMatch = profileType === PROFILE_MATCH;
     const isAlreadyAnswered = profileType === PROFILE_ALREADY_ANSWERED;
     const isBlocked = profileType === PROFILE_BLOCKED;
 
+    const getUserConnexion= async() =>{
+        const config = {
+        headers: {
+            Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+        },
+        };
+        try{
+        const res = await axios.get(`http://localhost:3000/api/user/connexion`,config).then((response) => response.data);
+        await axios.put(`http://localhost:3000/api/user/connexion/me/on`,{},config);
+        console.log("getUserConnexion");
+        console.log(res)
+        
+        setAllConnexion(res)
+        }catch(e){
+        
+        }
+
+    }
+
     useEffect(() => {
+        getUserConnexion()
         try {
 
             async function fetchProfile() {
@@ -50,7 +74,7 @@ function GenericProfile() {
 
             {!isBlocked &&
                 <main className={styles['profile-container']}>
-                    <ProfileInfos profileInfos={infos}/>
+                    <ProfileInfos profileInfos={infos} isConnected={allConnexion[id]}/>
 
                     <div className={styles['button-container']}>
                         {isMe && <ButtonGroupMe/>}

@@ -27,6 +27,7 @@ export default function useFetch(unauthorizedFallback = "/login"){
                 return navigate(unauthorizedFallback);
             }
             if(e.response && (e.response.data.message === ERROR_BAD_TOKEN  || e.response.data.message === ERROR_NEED_TOKEN)){
+                console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",e.response.data.message)
                 return navigate(unauthorizedFallback);
             }
             throw e;

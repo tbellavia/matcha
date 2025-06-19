@@ -32,7 +32,6 @@ function FeedProfile({profile, notification, isConnected}){
             return <div className={styles.connecttrue}> </div>
         }
         else if(isConnected){
-            // new Date().toISOString().slice(0,16).replace(/-/g, '/').replace(/T/g, ' ')
             return <div className={styles.connectfalse}>{isConnected}</div>
         }
         return
