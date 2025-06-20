@@ -11,11 +11,9 @@ async function getProfileId(userId) {
             return null
         }
         const id = res.rows[0].id
-        console.log(res.rows[0].id)
 
         return id;
     } catch (err) {
-        console.log(err.message)
         return null
     }
 }

@@ -5,7 +5,7 @@ const pool = require("../db/db");
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
-const { getProfileId, creatNewChat } = require("../common/route_utils");
+const { getProfileId, creatNewChat, isUserBlock } = require("../common/route_utils");
 const { emitProfileMatch, emitProfileLike } = require("../socket/message");
 
 router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
@@ -23,7 +23,12 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req,
         if (err) {
             return res.status(400).json({ message: err.message })
         }
-        return res.json({ "result": result.rows })
+        if (result.rows){
+            result.rows = result.rows.filter((row) => !(isUserBlock(row.id)))
+            return res.json({ "result": result.rows })
+        }
+        return res.json({ "result": [] })
+        
     })
     })
 

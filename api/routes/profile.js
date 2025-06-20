@@ -8,7 +8,7 @@ const { getPrefTabToInt,
         saveNewTags, 
         isAlreadyAnswered, 
         isUserBlock,
-        getProfileId,rating} = require("../common/route_utils");
+        getProfileId} = require("../common/route_utils");
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
@@ -184,8 +184,6 @@ router.put("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res
 })
 
 router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
-    console.log("herrrrrrrrrrrrrrrre")
-    console.log("...............................")
     console.log(res)
     const sql = "SELECT userprofile.filtertags ,userprofile.tri , userprofile.minrating, userprofile.id , userprofile.latitude , userprofile.longitude , userprofile.distmax , userprofile.preference, userprofile.agemin, userprofile.agemax FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
     const arg = [res.locals.id_user]

@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import BackgroundGradient from "../../components/ui/background/BackgroundGradient";
 import GenericPage from "../page/GenericPage";
 import MidLink from "../../components/ui/link/MidLink"

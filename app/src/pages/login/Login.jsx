@@ -1,4 +1,4 @@
-import React, { useRef, useState , useContext } from "react";
+import { useRef, useState , useContext } from "react";
 import Background from "../../components/ui/background/Background";
 import GenericPage from "../page/GenericPage";
 import Input from "../../components/ui/input/Input";

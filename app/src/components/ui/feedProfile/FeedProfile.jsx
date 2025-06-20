@@ -1,12 +1,7 @@
 import styles from "./FeedProfile.module.css"
-import { useRef, useState } from "react";
-import React , { useEffect } from "react";
 import Photo from "../photo/Photo";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import AppContext from "../../../store/AppContext";
 import { base64ToFile } from "../../../common/utils";
-import socket from "../../../socket";
 import useFetch from "../../../hooks/use-fetch";
 
 function FeedProfile({profile, notification, isConnected}){

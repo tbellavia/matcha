@@ -5,7 +5,7 @@ const pool = require("../db/db");
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
-const { getProfileId } = require("../common/route_utils");
+const { getProfileId, isUserBlock } = require("../common/route_utils");
 const {emitProfileView} = require("../socket/message");
 const { ERROR_BAD_TOKEN } = require("../common/messages");
 
@@ -23,16 +23,18 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req,
         if (err) {
             return res.status(400).json({ message: err.message })
         }
-        return res.json({ "result": result.rows })
+        if (result.rows){
+            result.rows = result.rows.filter((row) => !(isUserBlock(row.id)))
+            return res.json({ "result": result.rows })
+        }
+        return res.json({ "result": [] })
     })
 })
 
 
 router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     const idProfile = await getProfileId(res.locals.id_user)
-    // console.log("-----------------------requet en cour ",res.locals.id_user)
     if (idProfile == null) {
-        // console.log("-----------------------requet en cour ",req.params.target)
 
         return res.status(400).json({ message: ERROR_BAD_TOKEN })
     }
@@ -76,7 +78,11 @@ router.get("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, async (re
         if (err) {
             return res.status(400).json({ message: err.message })
         }
-        return res.json({ "result": result.rows })
+        if (result.rows){
+            result.rows = result.rows.filter((row) => !(isUserBlock(row.id)))
+            return res.json({ "result": result.rows })
+        }
+        return res.json({ "result": [] })
     })
 })
 

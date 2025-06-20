@@ -1,5 +1,5 @@
 import {useNavigate, useParams} from "react-router-dom";
-import React, {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import useFetch from "../../hooks/use-fetch";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 import styles from "./Profile.module.scss";

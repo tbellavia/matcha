@@ -1,5 +1,5 @@
 import styles from "./ChatProfile.module.css"
-import React , { useEffect } from "react";
+import { useEffect } from "react";
 import Photo from "../photo/Photo";
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";

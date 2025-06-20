@@ -1,7 +1,6 @@
 import { useReducer, useState } from "react";
-import React, { useContext , useEffect } from "react";
+import { useContext , useEffect } from "react";
 import AppContext from "../../store/AppContext";
-import PageHeader from "../../components/ui/page/PageHeader";
 import styles from "./EditProfile.module.css";
 import AddPhoto from "../../components/ui/photo/AddPhoto";
 import Input from "../../components/ui/input/Input";
@@ -30,7 +29,6 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import GenericPage from "../page/GenericPage";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
-import AppDroddown from "../../components/ui/drawer-menu/AppDropdown";
 
 function base64ToFile(base64String, filename) {
 
@@ -187,14 +185,11 @@ function hasCreatedProfile(token) {
 
 function EditProfile() {
 
-    // const [infos, setInfos] = useState({});
     const ctx = useContext(AppContext);
 
     const navigate = useNavigate();
 
-    // const [photos, dispatchPhotos] = useReducer(photosReducer, createInitialState([], "PHOTOS"));
     const [firstname, dispatchFirstname] = useReducer(firstnameReducer, createInitialState("", "FIRSTNAME"));
-    // const [firstname, dispatchFirstname] = useReducer(firstnameReducer, createInitialState(tmpFirstname, "FIRSTNAME"));
     const [lastname, dispatchLastname] = useReducer(lastnameReducer, createInitialState("", "LASTNAME"));
     const [birthDate, dispatchBirthDate] = useReducer(dateReducer, createInitialState("", "BIRTH_DATE"));
     const [location, dispatchLocation] = useReducer(locationReducer, createInitialState("", "LOCATION"));
@@ -204,10 +199,7 @@ function EditProfile() {
     const [biography, dispatchBiography] = useReducer(biographyReducer, createInitialState("", "BIOGRAPHY"));
     const [error, dispatchError] = useReducer(errorReducer, null);
     const [allTags, setAllTags] = useState([])
-    // const initialPhotos = [
-    //     new File([""], "photo1.png", { type: "image/png" }),
-    //     new File([""], "photo2.png", { type: "image/png" }),
-    // ];
+
     const [photos, dispatchPhotos] = useReducer(photosReducer, createInitialState([], "PHOTOS"));
 
     const fields = [photos, firstname, lastname, birthDate, location, genre, preferences, tags, biography];
@@ -258,7 +250,6 @@ function EditProfile() {
                     type: "UPDATE_AND_VALIDATE", 
                     value: mapPrefToLabel(res.data.preference),  
                 })
-                // console.log("test : ",{lat : res.data.latitude, lng: res.data.longitude})
                 dispatchLocation({
                     type: "UPDATE_AND_VALIDATE", 
                     value: {lat : res.data.latitude, lng: res.data.longitude},  
@@ -273,9 +264,7 @@ function EditProfile() {
                     ].filter(photo => photo !== null),  
                 })
                 const res2 = await axios.get('http://localhost:3000/api/user/profile/tags', config);
-                // setAllTags(["test"])
                 setAllTags(res2.data)
-                // console.log("list des tags : ",res2.data)
 
             } catch (error) {
                 console.error("Erreur lors de la récupération :", error);
@@ -290,7 +279,6 @@ function EditProfile() {
 
     /* Photos */
     const onPhotosChange = (value) => {
-        // console.log("Photos : "+value)
         dispatchPhotos({ type: "UPDATE", value });
         dispatchError({ type: "CLEAR" });
     }
@@ -321,8 +309,6 @@ function EditProfile() {
 
     /* Birth Date */
     const onBirthDateChange = (value) => {
-        // console.log("------------------------------------")
-        // console.log(birthDate.value)
         dispatchBirthDate({ type: "UPDATE_AND_VALIDATE", value });
         dispatchError({ type: "CLEAR" });
     }
