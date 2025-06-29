@@ -24,6 +24,7 @@ function GenericProfile() {
     const profile = useProfile();
     const [allConnexion, setAllConnexion] = useState({})
     const ctx = useContext(AppContext)
+    const navigate = useNavigate()
 
     const isMe = profileType === PROFILE_ME;
     const isMatch = profileType === PROFILE_MATCH;
@@ -67,6 +68,11 @@ function GenericProfile() {
         }
 
     }, [id])
+
+    useEffect(() => {
+        if (isBlocked)
+            navigate("/feed");
+    }, [profileType])
 
     return (
         <GenericPage className={styles.profile}>

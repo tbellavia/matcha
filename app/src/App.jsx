@@ -11,7 +11,6 @@ import Test from "./pages/test/Test";
 import Error404 from "./pages/error404/Error404";
 import MailValidation from "./pages/mailValidation/MailValidation";
 import CreateProfile from "./pages/create-profile/CreateProfile";
-import Profile from "./pages/profile/Profile";
 import Chat from "./pages/chat/Chat";
 import { AppContextProvider } from "./store/AppContext";
 import AllChat from "./pages/allChat/AllChat";
@@ -38,12 +37,9 @@ function App() {
           <Route path="feedViews" element={<FeedViews/>} />
           <Route path="feedHistorics" element={<FeedHistorics/>} />
           <Route path="updatePassword/:id" element={<UpdatePassword/>} />
-          <Route path="profile">
-            <Route index element={<Profile />} />
-            <Route path=":id" element={<GenericProfile />}/>
-            <Route path="create" element={<CreateProfile />} />
-            <Route path="edit" element={<EditProfile />} />
-          </Route>
+          <Route path="profile/:id" element={<GenericProfile />}/>
+          <Route path="profile/create" element={<CreateProfile />} />
+          <Route path="profile/edit" element={<EditProfile />} />
           <Route path="chat">
             <Route index element={ <AllChat title="/chat"/> }/>
             <Route path=":id" element={ <Chat title="/chat/:id"/>  } />
