@@ -249,10 +249,15 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) 
         // const sql2 =  "SELECT p.* FROM userprofile p WHERE NOT EXISTS (SELECT 1 FROM liketable l WHERE ($1 = l.user1 AND l.user2 = p.id) OR ($1 = l.user2 AND l.user1 = p.id)) AND $1 != p.id "
         // const sql2 =  "SELECT p.* FROM userprofile p INNER JOIN liketable l ON p.id = l.user1 OR p.id = l.user2 WHERE ($1 = l.user1 OR $1 = l.user2) AND $1 != p.id"
         const arg2 = [result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax, req.query.limit,result.rows[0].minrating, result.rows[0].birth]
-        pool.query(sql2, arg2, (err2, result2) => {
+        pool.query(sql2, arg2, async(err2, result2) => {
             // pool.query(sql2, [] , (err2, result2) => {
             if (err2) {
                 return res.status(400).json({error:[result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax, req.query.limit, result.rows[0].minrating], message: err2.message })
+            }
+            if (result2.rows){
+                const rows = result2.rows;
+                const blockFlags = await Promise.all(rows.map(row => isUserBlock(row.id, idProfile)));
+                result2.rows = rows.filter((_, i) => !blockFlags[i]);
             }
             if(result.rows[0].filtertags){
                 const lstTags = result.rows[0].filtertags.split(",")
@@ -264,6 +269,7 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) 
 
                     return lstTags.every(elem => tags.includes(elem))})})
             }
+            
             return res.json({ "result": result2.rows })
         })
         // return res.json({"result" : result.rows[0].longitude})
