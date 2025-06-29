@@ -16,6 +16,15 @@ function ButtonGroupFinally({profileID}) {
         } catch (e) {
         }
     }
+
+    const onReportClicked = async () => {
+        try {
+            fetcher(`/api/user/blocked/me/report/${profileID}`, "POST");
+            await fetcher(`/api/user/blocked/me/${profileID}`, "POST");
+            navigate("/feed");
+        } catch (e) {
+        }
+    }
     
     const onOkayClicked = async () => {
         // TODO: Manage error
@@ -34,7 +43,15 @@ function ButtonGroupFinally({profileID}) {
                 className={styles["button"]}
                 onClick={onNopClicked}
             >
-                nop
+                nope
+            </Button>
+            <Button
+                type="submit"
+                variant="action-danger"
+                className={styles["button"]}
+                onClick={onReportClicked}
+            >
+                Signaler
             </Button>
             <Button
                 type="submit"

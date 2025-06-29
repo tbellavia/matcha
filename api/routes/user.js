@@ -57,13 +57,13 @@ router.post('/signup', async (req, res) => {
                 return res.json({ text: err.message })
             }
 
-            const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"];
+            const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"]; // TODO mettre mail personne inscrite
 
             recipients.forEach(recipient => {
                 const mailOptions = {
                     from: process.env.MAIL,
                     to: recipient,
-                    subject: "Matcha mail d'otentification",
+                    subject: "Matcha Authentification",
                     text: "Lien d'activation : http://localhost:3000/api/user/validation/" + randString
                 }
     

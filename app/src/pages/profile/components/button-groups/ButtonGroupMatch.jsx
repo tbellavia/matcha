@@ -15,7 +15,8 @@ function ButtonGroupMatch() {
     }
 
     function onMatchReport() {
-        fetcher(`/api/user/blocked/me/${id}`, "POST"); // TODO change with new route that send email then block
+        fetcher(`/api/user/blocked/me/report/${id}`, "POST");
+        fetcher(`/api/user/blocked/me/${id}`, "POST");
         navigate("/feed");
     }
 
