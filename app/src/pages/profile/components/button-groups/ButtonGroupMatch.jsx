@@ -14,6 +14,11 @@ function ButtonGroupMatch() {
         navigate("/feed");
     }
 
+    function onMatchReport() {
+        fetcher(`/api/user/blocked/me/${id}`, "POST"); // TODO change with new route that send email then block
+        navigate("/feed");
+    }
+
     function onMatchBlock() {
         fetcher(`/api/user/blocked/me/${id}`, "POST");
         navigate("/feed");
@@ -28,6 +33,14 @@ function ButtonGroupMatch() {
                 onClick={onMatchDelete}
             >
                 supprimer
+            </Button>
+            <Button
+                type="submit"
+                variant="action-danger"
+                className={styles["button"]}
+                onClick={onMatchReport}
+            >
+                Signaler
             </Button>
             <Button
                 type="submit"

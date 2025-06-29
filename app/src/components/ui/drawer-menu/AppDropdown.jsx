@@ -1,4 +1,4 @@
-import { AccountCircle, Chat, Favorite, History, Logout, RemoveRedEye, Settings, Tune } from "@mui/icons-material";
+import { AccountCircle, Chat, Favorite, History, Logout, RemoveRedEye, Settings, Group, Tune } from "@mui/icons-material";
 import Dropdown from "./Dropdown";
 import { Box, keyframes } from "@mui/material";
 import { useContext, useState , useEffect, useMemo} from "react";
@@ -134,9 +134,14 @@ export default function AppDroddown({ipMessage = -1}) {
     
     const appDropddownItems = useMemo(()=>[
         {
-            "Profiles": {
-                onClick: () => {navigate(`/feed`)},
+            "Mon Profil": {
+                onClick: () => {navigate(`/profile/${idProfile}`)},
                 icon: <AccountCircle sx={{ color: iconColor }} />,
+                notifs: 0
+            },
+            "Feed": {
+                onClick: () => {navigate(`/feed`)},
+                icon: <Group sx={{ color: iconColor }} />,
                 notifs: 0
             },
             "Vues": {
@@ -180,7 +185,7 @@ export default function AppDroddown({ipMessage = -1}) {
                 notifs: 0
             }
         }
-    ], [sizeViews, sizeLikes, sizeMessages]);
+    ], [sizeViews, sizeLikes, sizeMessages, idProfile]);
 
     const notifyBadgeSize = 17;
     const iconContainerBg = {
