@@ -9,7 +9,7 @@ const { getProfileId, creatNewChat, isUserBlock } = require("../common/route_uti
 const { emitProfileMatch, emitProfileLike } = require("../socket/message");
 
 router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
-    idProfile = await getProfileId(res.locals.id_user)
+    const idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
         return res.status(400).json({ message: ERROR_BAD_TOKEN })
     }
@@ -72,6 +72,7 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                 if (result2.rows[0].user2like == true) {
                     if (await creatNewChat(idProfile, req.params.target)) {
                         emitProfileMatch(req.params.target, idProfile)
+                        console.log("nouvelle conversation ajoute")
                         res.json({ "message": "match nouvelle conversation ajouté" })
                     }
                 }
@@ -90,6 +91,7 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                     if (await creatNewChat(idProfile, req.params.target)) {
 
                         emitProfileMatch(req.params.target, idProfile)
+                        console.log("nouvelle conversation ajoute")
                         res.json({ "message": "match nouvelle conversation ajouté" })
                     }
                 }

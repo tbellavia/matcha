@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { base64ToFile } from "../../../common/utils";
 import useFetch from "../../../hooks/use-fetch";
 
-function FeedProfile({profile, notification, isConnected}){
+function FeedProfile({profile, notification, isConnected, color="light"}){
     const navigate = useNavigate()
     const fetcher = useFetch()
     const onClickHandlerProfile = async () => {
@@ -36,7 +36,7 @@ function FeedProfile({profile, notification, isConnected}){
     return(
     
         <div className={styles.oneProfile} onClick={onClickHandlerProfile}>
-            {profile.photo && <Photo size='feedSize' className={styles.photoBack} data={base64ToFile(profile.photo)}/>}
+            {profile.photo && <Photo color={color} size='feedSize' className={styles.photoBack} data={base64ToFile(profile.photo)}/>}
             {notif()}
             {connected()}
             <div className={styles.name}>{profile.name}</div>

@@ -85,7 +85,7 @@ function Login() {
                 usermail: email
             });
 
-            if(response.data.isMailSent == true){
+            if(response.data.isMailSent === true){
                 alert("Un mail pour réinitialiser votre mot de passe vous a été envoyé.")
             }else{
                 alert("Une erreur bloque la réinitialisation de votre mot de passe")

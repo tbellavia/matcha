@@ -1,5 +1,6 @@
 
 const pool = require("../db/db");
+const emitProfileMatch = require("../socket/message");
 
 async function getProfileId(userId) {
     const sql = "SELECT userprofile.id FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
@@ -98,10 +99,11 @@ async function creatNewChat(user1, user2) {
     }
     else {
         const sql = "INSERT INTO chat (id_user1, id_user2) VALUES ($1, $2)"
-        pool.query(sql, [user1, user2], (err, result) => {
+        pool.query(sql, [user1, user2], (err, _result) => {
             if (err) {
                 return false
             }
+            emitProfileMatch(user1, user2)
             return true
         })
     }
@@ -135,7 +137,7 @@ function getSaveNewTags(newTags) {
     const sql = "INSERT INTO tag (tag) VALUES ($1)";
 
     for (var i = 0, lth = newTags.length; i < lth; i++) {
-        pool.query(sql, newTags[i], (err, result) => {
+        pool.query(sql, newTags[i], (err, _result) => {
             if (err) {
                 return { message: err.message }
             }
@@ -163,7 +165,7 @@ function saveNewTags(tags){
 
         newTags.forEach(newElem => {
             const sql2 = 'INSERT INTO tag (tag) VALUES ($1)'
-            pool.query(sql2, [newElem], (err2, res2) => {
+            pool.query(sql2, [newElem], (err2, _res2) => {
                 if(err2){
                     return false
                 }
@@ -185,6 +187,7 @@ function addNotifViews(from,to){
     WHERE id = $1"
     const arg = [to]
     pool.query(sql, arg, (err, result) => {
+        console.log("oui en effet")
         if (err) {
             return { message: err.message }
         }
@@ -192,9 +195,10 @@ function addNotifViews(from,to){
 
         views[from.toString()] = true
 
+        console.log("on est loin la")
         sql2 = "UPDATE userprofile SET notifsviews= $2 WHERE id = $1"
         const arg2 = [to,JSON.stringify(views)]
-        pool.query(sql2, arg2, (err2, result2) => {
+        pool.query(sql2, arg2, (err2, _result2) => {
             if (err2) {
                 return { message: err.message }
             }
@@ -219,7 +223,7 @@ function addNotifLike(from, to){
 
         sql2 = "UPDATE userprofile SET notifslikes= $2 WHERE id = $1"
         const arg2 = [to,JSON.stringify(likes)]
-        pool.query(sql2, arg2, (err2, result2) => {
+        pool.query(sql2, arg2, (err2, _result2) => {
             if (err2) {
                 return { message: err.message }
             }
@@ -243,7 +247,7 @@ function addNotifMessages(from, to){
 
         sql2 = "UPDATE userprofile SET notifsmessages= $2 WHERE id = $1"
         const arg2 = [to,JSON.stringify(message)]
-        pool.query(sql2, arg2, (err2, result2) => {
+        pool.query(sql2, arg2, (err2, _result2) => {
             if (err2) {
                 return { message: err.message }
             }
@@ -268,7 +272,7 @@ function delNotifMessages(from, to){
         }
         sql2 = "UPDATE userprofile SET notifsmessages= $2 WHERE id = $1"
         const arg2 = [to,JSON.stringify(message)]
-        pool.query(sql2, arg2, (err2, result2) => {
+        pool.query(sql2, arg2, (err2, _result2) => {
             if (err2) {
                 return { message: err.message }
             }

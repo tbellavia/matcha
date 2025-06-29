@@ -20,6 +20,7 @@ function FeedLikes (){
   const ctx = useContext(AppContext)
   const [notifs, setNotifs] = useState({})
   const [allConnexion, setAllConnexion] = useState({})
+  const [AllUnlikeProfile, setAllUnlikeProfile]=useState([])
   const getAllProfileForFeed = async() =>{
     const config = {
       headers: {
@@ -33,6 +34,15 @@ function FeedLikes (){
         name:elem.first_name,
         photo:elem.photo1})
       
+    }))
+
+    const resUnlike = await axios.get(`http://localhost:3000/api/user/unlike`,config).then((response) => response.data);
+    console.log(resUnlike)
+    setAllUnlikeProfile(resUnlike.result.map(elem => {
+      return({iduser : elem.id,
+        name:elem.first_name,
+        photo:elem.photo1})
+
     }))
   }
 
@@ -80,10 +90,14 @@ function FeedLikes (){
       <GenericPage className={styles.page}>
         <ProfileHeader menuOnly={false}/>
         <div className={styles.allChatPage}>
+          {!AllUnlikeProfile.length && !AllProfile.length && <h1>Pas encore de like ? Ça viendra :)</h1>}
+
           {AllProfile.map((elem, index) =>
               <FeedProfile key={index} profile={elem} notification={notifs[elem.iduser.toString()]} isConnected={allConnexion[elem.iduser]}/>
           )}
-          {!AllProfile.length && <h1>Pas encore de like ? Ça viendra :)</h1>}
+          {AllUnlikeProfile.map((elem, index) =>
+              <FeedProfile color="bw" key={AllProfile.length+index} profile={elem} notification={notifs[elem.iduser.toString()]} isConnected={allConnexion[elem.iduser]}/>
+          )}
           </div>
       </GenericPage>
     );
