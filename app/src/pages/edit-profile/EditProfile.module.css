@@ -68,7 +68,7 @@
     justify-content: center;
 }
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 600px) {
     .create-profile__form {
         width: 90vw;
     }
@@ -79,6 +79,12 @@
         flex-direction: column;
         gap: 10px;
     }
+
+    /* .create-profile__button_container {
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+    } */
 
     .submit-button {
         width: 100%;

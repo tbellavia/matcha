@@ -17,11 +17,13 @@
 .medium__photo{
     width : var(--photo-medium-size);
     height: var(--photo-medium-size);
+    cursor: pointer;
 }
 
 .feedSize__photo{
     width: 300px;
     height: 300px;
+    cursor: pointer;
 }
 
 .large__photo{

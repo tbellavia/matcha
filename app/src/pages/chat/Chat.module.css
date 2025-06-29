@@ -1,24 +1,37 @@
 .inputChat{
-    width: calc(100% - 50px);
+    height: 25px;
+    flex: 9;
+    max-width: 450px;
+    box-sizing: border-box;
+    font-size: large;
 }
 
 .buttonChat{
-    width: 50px;
+    height: 25px;
+    flex: 1;
+    max-width: 50px;
+    box-sizing: border-box;
     color: aliceblue;
     background-color: var(--color-light-3) !important;
 }
 
 .inputChatAndButton{
     margin-top: auto;
+    margin-bottom: 5px;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
 }
 
 .chatPage{
-    width: 500px;
+    width: 100%;
+    max-width: 500px;
     position: absolute;
     top: 360px;
     bottom: 10px;
     display: flex;
     flex-direction: column;
+    font-size: large;
 }
 
 .page{

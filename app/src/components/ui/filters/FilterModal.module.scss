@@ -36,7 +36,7 @@ $bgcolors:(
     padding: 20px;
     border: 1px solid #888;
     border-radius: 20px;
-    width: 500px;
+    max-width: 500px;
 
     @media screen and (max-width: 400px) {
         width: 85vw;
