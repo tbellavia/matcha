@@ -185,7 +185,7 @@ router.put("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res
 
 router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
     console.log(res)
-    const sql = "SELECT userprofile.filtertags ,userprofile.tri , userprofile.minrating, userprofile.id , userprofile.latitude , userprofile.longitude , userprofile.distmax , userprofile.preference, userprofile.agemin, userprofile.agemax FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
+    const sql = "SELECT userprofile.filtertags, userprofile.birth ,userprofile.tri , userprofile.minrating, userprofile.id , userprofile.latitude , userprofile.longitude , userprofile.distmax , userprofile.preference, userprofile.agemin, userprofile.agemax FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
     const arg = [res.locals.id_user]
     pool.query(sql, arg, (err, result) => {
         if (err) {
@@ -195,11 +195,12 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) 
             return res.json({ "message": "id non trouver" })
         }
         console.log(result.rows[0].tri)
-        const tri = ['distance ASC','age ASC','rating DESC'][result.rows[0].tri]
+        const tri = ['distance ASC','age_sort ASC','rating DESC'][result.rows[0].tri]
 
 
         const sql2 = `SELECT subq.tags, subq.id, subq.photo1, subq.first_name, \
         (DATE_PART('days', NOW() - subq.birth) / 365) AS age, \
+        ABS((DATE_PART('days', NOW() - subq.birth) / 365) - (DATE_PART('days', NOW() - $10) / 365)) AS age_sort, \
         6371 * 2 * ASIN(SQRT( \
         POWER(SIN((subq.latitude - $5) * PI() / 180 / 2), 2) + \
         COS($5 * PI() / 180) * COS(subq.latitude * PI() / 180) * \
@@ -247,7 +248,7 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) 
         // const sql2 = "SELECT  FROM userprofile "
         // const sql2 =  "SELECT p.* FROM userprofile p WHERE NOT EXISTS (SELECT 1 FROM liketable l WHERE ($1 = l.user1 AND l.user2 = p.id) OR ($1 = l.user2 AND l.user1 = p.id)) AND $1 != p.id "
         // const sql2 =  "SELECT p.* FROM userprofile p INNER JOIN liketable l ON p.id = l.user1 OR p.id = l.user2 WHERE ($1 = l.user1 OR $1 = l.user2) AND $1 != p.id"
-        const arg2 = [result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax, req.query.limit,result.rows[0].minrating]
+        const arg2 = [result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax, req.query.limit,result.rows[0].minrating, result.rows[0].birth]
         pool.query(sql2, arg2, (err2, result2) => {
             // pool.query(sql2, [] , (err2, result2) => {
             if (err2) {
