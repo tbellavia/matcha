@@ -19,12 +19,14 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req,
         INNER JOIN LikeTable l ON (l.user1 = p.id OR l.user2 = p.id) \
         WHERE ((l.user2 = $1 AND l.user1Like = TRUE) OR (l.user1 = $1 AND l.user2Like = TRUE)) AND p.id != $1"
     const arg = [idProfile]
-    pool.query(sql, arg, (err, result) => {
+    pool.query(sql, arg, async(err, result) => {
         if (err) {
             return res.status(400).json({ message: err.message })
         }
         if (result.rows){
-            result.rows = result.rows.filter((row) => !(isUserBlock(row.id)))
+            const rows = result.rows;
+            const blockFlags = await Promise.all(rows.map(row => isUserBlock(row.id, idProfile)));
+            result.rows = rows.filter((_, i) => !blockFlags[i]);
             return res.json({ "result": result.rows })
         }
         return res.json({ "result": [] })

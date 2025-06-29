@@ -23,8 +23,10 @@ async function isUserBlock(user1, user2) {
     try {
         const res = await pool.query(sql, [user1, user2]);
         if (res.rowCount > 0) {
+            console.log("is Block true")
             return true
         }
+        console.log("is Block flase")
         return false;
     } catch (err) {
         console.log(err.message)

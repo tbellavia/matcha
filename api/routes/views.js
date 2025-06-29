@@ -19,12 +19,14 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req,
         INNER JOIN views v ON v.id_user1 = p.id \
         WHERE (v.id_user2 = $1 AND p.id != $1)"
     const arg = [idProfile]
-    pool.query(sql, arg, (err, result) => {
+    pool.query(sql, arg, async(err, result) => {
         if (err) {
             return res.status(400).json({ message: err.message })
         }
         if (result.rows){
-            result.rows = result.rows.filter((row) => !(isUserBlock(row.id)))
+            const rows = result.rows;
+            const blockFlags = await Promise.all(rows.map(row => isUserBlock(row.id, idProfile)));
+            result.rows = rows.filter((_, i) => !blockFlags[i]);
             return res.json({ "result": result.rows })
         }
         return res.json({ "result": [] })
@@ -74,12 +76,14 @@ router.get("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, async (re
         INNER JOIN views v ON v.id_user2 = p.id \
         WHERE v.id_user1 = $1 AND p.id != $1"
     const arg = [idProfile]
-    pool.query(sql, arg, (err, result) => {
+    pool.query(sql, arg, async(err, result)=> {
         if (err) {
             return res.status(400).json({ message: err.message })
         }
         if (result.rows){
-            result.rows = result.rows.filter((row) => !(isUserBlock(row.id)))
+            const rows = result.rows;
+            const blockFlags = await Promise.all(rows.map(row => isUserBlock(row.id, idProfile)));
+            result.rows = rows.filter((_, i) => !blockFlags[i]);
             return res.json({ "result": result.rows })
         }
         return res.json({ "result": [] })
