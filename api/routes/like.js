@@ -70,7 +70,9 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                     }
                 })
                 if (result2.rows[0].user2like == true) {
-                    if (await creatNewChat(idProfile, req.params.target)) {
+                    const creat = await creatNewChat(idProfile, req.params.target)
+                    console.log("maaaaaaaaatch 1", creat)
+                    if (creat) {
                         emitProfileMatch(req.params.target, idProfile)
                         console.log("nouvelle conversation ajoute")
                         res.json({ "message": "match nouvelle conversation ajouté" })
@@ -87,8 +89,10 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                 })
 
                 if (result2.rows[0].user1like == true) {
+                    const creat = await creatNewChat(idProfile, req.params.target)
+                    console.log("maaaaaaaaatch 2", creat)
 
-                    if (await creatNewChat(idProfile, req.params.target)) {
+                    if (creat) {
 
                         emitProfileMatch(req.params.target, idProfile)
                         console.log("nouvelle conversation ajoute")

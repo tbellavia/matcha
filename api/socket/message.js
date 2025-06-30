@@ -17,17 +17,20 @@ function emitProfileLike(to, from) {
   addNotifLike(from, to)
 }
 
-function emitProfileMatch(to, from) {
-  socketIO.emit(`match${to}`,{from});
-  socketIO.emit(`match${from}`,{"from":to});
-  addNotifMessages(from, to)
-  addNotifMessages(to, from)
-}
-
 function emitProfileMessage(to, from, message) {
   socketIO.emit(`messages${to}`,{from, message});
   addNotifMessages(from, to)
 }
+
+function emitProfileMatch(to, from) {
+  socketIO.emit(`match${to}`,{from});
+  socketIO.emit(`match${from}`,{"from":to});
+  console.log("maaaaaaaaaaaaaaaaaaaaaaaaatch")
+  emitProfileMessage(from, to, "nouveau match")
+  emitProfileMessage(to, from, "nouveau match")
+}
+
+
 
 function emitProfileUnlike(to, from) {
   socketIO.emit(`unlike${to}`,{from});

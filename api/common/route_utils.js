@@ -1,6 +1,5 @@
 
 const pool = require("../db/db");
-const emitProfileMatch = require("../socket/message");
 
 async function getProfileId(userId) {
     const sql = "SELECT userprofile.id FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
@@ -24,10 +23,8 @@ async function isUserBlock(user1, user2) {
     try {
         const res = await pool.query(sql, [user1, user2]);
         if (res.rowCount > 0) {
-            console.log("is Block true")
             return true
         }
-        console.log("is Block flase")
         return false;
     } catch (err) {
         console.log(err.message)
@@ -103,7 +100,6 @@ async function creatNewChat(user1, user2) {
             if (err) {
                 return false
             }
-            emitProfileMatch(user1, user2)
             return true
         })
     }
@@ -177,7 +173,6 @@ function saveNewTags(tags){
 }
 
 function addNotifViews(from,to){
-    console.log(from)
     idProfile = from
     if (idProfile == undefined) {
         return
@@ -187,15 +182,12 @@ function addNotifViews(from,to){
     WHERE id = $1"
     const arg = [to]
     pool.query(sql, arg, (err, result) => {
-        console.log("oui en effet")
         if (err) {
             return { message: err.message }
         }
         let views = JSON.parse(result.rows[0].notifsviews)
 
         views[from.toString()] = true
-
-        console.log("on est loin la")
         sql2 = "UPDATE userprofile SET notifsviews= $2 WHERE id = $1"
         const arg2 = [to,JSON.stringify(views)]
         pool.query(sql2, arg2, (err2, _result2) => {
@@ -242,7 +234,6 @@ function addNotifMessages(from, to){
             return { message: err.message }
         }
         let message = JSON.parse(result.rows[0].notifsmessages)
-        console.log(result.rows[0])
         message[from] = message[from]?message[from]+1:1
 
         sql2 = "UPDATE userprofile SET notifsmessages= $2 WHERE id = $1"
@@ -266,7 +257,6 @@ function delNotifMessages(from, to){
             return { message: err.message }
         }
         let message = JSON.parse(result.rows[0].notifsmessages)
-        console.log(result.rows[0])
         if(from in message){
             delete message[from]
         }

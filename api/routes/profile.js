@@ -111,7 +111,6 @@ router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async
 })
 
 router.post("/me",checkTokenMiddleware, checkProfileNotCreatedMiddleware, (req, res) => {
-    console.log(req.body.birth);
     let idMax = 0
     const genre = getGenreStringToInt(req.body.genre)
     const pref = getPrefTabToInt(req.body.preference)
@@ -195,7 +194,6 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req,
         if (result.rowCount == 0) { 
             return res.json({ "message": "id non trouver" })
         }
-        console.log(result.rows[0].tri)
         const tri = ['distance ASC','age_sort ASC','rating DESC'][result.rows[0].tri]
 
 

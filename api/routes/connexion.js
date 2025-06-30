@@ -41,11 +41,9 @@ router.put("/me/off", checkTokenMiddleware, checkProfileCreatedMiddleware, async
     // Conversion en chaîne de caractères
     // const dateString = dateLocaleParis.toString();
 
-    console.log(dateLocaleParis);
     if (profileId == undefined) {
         return res.status(400).json({ message: ERROR_BAD_TOKEN })
     }
-    console.log(dateLocaleParis)
     userConnected[profileId] = dateLocaleParis
 
     emitConnexion(profileId, dateLocaleParis)

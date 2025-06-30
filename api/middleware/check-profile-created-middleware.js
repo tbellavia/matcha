@@ -1,5 +1,4 @@
 const checkProfileCreatedMiddleware = (req, res, next) => {
-    console.log(res.locals.profile_created)
     if (res.locals.profile_created) {
         return next()
     }
@@ -7,8 +6,6 @@ const checkProfileCreatedMiddleware = (req, res, next) => {
 }
 
 const checkProfileNotCreatedMiddleware = (req, res, next) => {
-    console.log(res.locals.profile_created)
-
     if (!res.locals.profile_created) {
         return next()
     }
