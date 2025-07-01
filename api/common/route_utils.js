@@ -269,6 +269,34 @@ function delNotifMessages(from, to){
     })
 }
 
+function delNotifToFrom(to, from){
+    console.log("ici 1")
+    const sql = "SELECT notifsviews, notifslikes, notifsmessages FROM userprofile WHERE id=$1"
+    pool.query(sql, [to], (err, res) => {
+        if (err) {
+            return false
+        }
+        console.log("ici 2",res.rows[0])
+        console.log(res.rows[0].notifsviews[String(from)])
+        const notifsviews = JSON.parse(res.rows[0].notifsviews)
+        const notifslikes = JSON.parse(res.rows[0].notifslikes)
+        const notifsmessages = JSON.parse(res.rows[0].notifsmessages)
+        delete notifsviews[String(from)];
+        delete notifslikes[String(from)];
+        delete notifsmessages[String(from)];
+        
+        
+        const sql2 = "UPDATE userprofile SET notifsviews= $2, notifslikes=$3, notifsmessages=$4 WHERE id = $1"
+            pool.query(sql2, [to, notifsviews, notifslikes, notifsmessages], (err2, _res2) => {
+                if(err2){
+                    return false
+                }
+            })
+    })
+    return true
+
+}
+
 module.exports = {
     getProfileId,
     creatNewChat,
@@ -284,5 +312,6 @@ module.exports = {
     addNotifViews,
     addNotifLike,
     addNotifMessages,
-    delNotifMessages
+    delNotifMessages,
+    delNotifToFrom
 }

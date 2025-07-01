@@ -183,7 +183,6 @@ router.put("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res
 })
 
 router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
-    console.log(res)
     const sql = "SELECT userprofile.filtertags, userprofile.birth ,userprofile.tri , userprofile.minrating, userprofile.id , userprofile.latitude , userprofile.longitude , userprofile.distmax , userprofile.preference, userprofile.agemin, userprofile.agemax FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
     const arg = [res.locals.id_user]
     const idProfile = await getProfileId(res.locals.id_user)
