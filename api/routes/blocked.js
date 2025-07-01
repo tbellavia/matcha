@@ -19,6 +19,33 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+async function delNotifToFrom(to, from){
+    console.log("ici 1")
+    const sql = "SELECT notifsviews, notifslikes, notifmessages FROM userprofile WHERE id=$1"
+    pool.query(sql, [to], (err, res) => {
+        if (err) {
+            return
+        }
+        console.log("ici 2")
+
+        console.log(String(from))
+        console.log(res[0].notifsviews[String(from)])
+        delete res[0].notifsviews[String(from)];
+        delete res[0].notifslikes[String(from)];
+        delete res[0].notifsmessages[String(from)];
+        
+        
+        const sql2 = "UPDATE userprofile SET notifsviews= $2, notifslikes=$3, notifsmessages=$4 WHERE id = $1"
+            pool.query(sql2, [to, res[0].notifsviews, res[0].notifslikes, res[0].notifsmessages], (err2, _res2) => {
+                if(err2){
+                    return
+                }
+            })
+
+        return
+    })
+}
+
 router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biography = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
     const idProfile = await getProfileId(res.locals.id_user)
@@ -65,8 +92,11 @@ router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, 
             return res.status(400).json({ message: err4.message })
         }
 
-        return res.json({ "message": "profile blocker" })
     })
+    delNotifToFrom(idProfile, req.params.target)
+    delNotifToFrom(req.params.target, idProfile)
+    console.log("profile blocked")
+    return res.json({ "message": "profile blocker" })
 })
 
 router.post("/me/report/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
