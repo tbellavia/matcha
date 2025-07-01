@@ -8,6 +8,7 @@ import ProfileInfos from "./components/ProfileInfos";
 import ButtonGroupMe from "./components/button-groups/ButtonGroupMe";
 import ButtonGroupMatch from "./components/button-groups/ButtonGroupMatch";
 import ButtonGroupFinally from "./components/button-groups/ButtonGroupFinally";
+import ButtonGroupWaiting from "./components/button-groups/ButtonGroupWaiting";
 import axios from "axios";
 import AppContext from "../../store/AppContext";
 
@@ -88,6 +89,7 @@ function GenericProfile() {
                         {!isMe && !isMatch && !isAlreadyAnswered &&
                             <ButtonGroupFinally profileID={id}/>
                         }
+                        {!isMe && !isMatch && isAlreadyAnswered && <ButtonGroupWaiting profileID={id}/>}
                     </div>
                 </main>
             }
