@@ -41,9 +41,6 @@ function GenericProfile() {
         try{
         const res = await axios.get(`http://localhost:3000/api/user/connexion`,config).then((response) => response.data);
         await axios.put(`http://localhost:3000/api/user/connexion/me/on`,{},config);
-        console.log("getUserConnexion");
-        console.log(res)
-        
         setAllConnexion(res)
         }catch(e){
         

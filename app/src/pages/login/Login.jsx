@@ -15,7 +15,6 @@ import "../../styles/login.scss";
 
 function hasCreatedProfile(token) {
     const decoded = jwt_decode(token);
-    console.log(decoded);
     return decoded.profile_created;
 }
 

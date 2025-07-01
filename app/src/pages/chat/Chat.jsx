@@ -33,7 +33,6 @@ function Chat (){
   }
 
   const onMessageSubmit = (e) => {
-    // console.log(message)
     if (message.trim()){
       socket.emit("message", {message, name:userId, to:chatId})
       requetPost()
@@ -50,7 +49,7 @@ function Chat (){
   const getOldChat = async() =>{
     const config = {
       headers: {
-        Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+        Authorization: `Bearer ${ctx.token}`,
       },
     };
     const res = await axios.get(`http://localhost:3000/api/user/chat/me/${to}?limit=100&skip=0`,config).then((response) => response.data);

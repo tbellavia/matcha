@@ -22,7 +22,6 @@ function Feed (){
     if (myTags.length == 0 || minCommon === 0) {
       return true;
     }
-    // console.log(otherTags)
     const commonTags = myTags.map(word => word).filter(word => otherTags.some(tag => tag.toLowerCase() === word));
     return commonTags.length >= minCommon;
   }
@@ -36,8 +35,6 @@ function Feed (){
       try {
         const res = await axios.get(`http://localhost:3000/api/user/profile`,config).then((response) => response.data);
         const tags = await axios.get(`http://localhost:3000/api/user/profile/me`,config).then((response) => response.data);
-        console.log("getAllProfileForFeed");
-        console.log(res)
         setMyTags(tags.tags.toLowerCase().split(','))
         const myFilterTags = tags.filtertags.length ? tags.filtertags?.toLowerCase().split(',') : [];
         setAllProfile(res.result
@@ -64,8 +61,6 @@ function Feed (){
     try{
       const res = await axios.get(`http://localhost:3000/api/user/connexion`,config).then((response) => response.data);
       await axios.put(`http://localhost:3000/api/user/connexion/me/on`,{},config);
-      console.log("getUserConnexion");
-      console.log(res)
       setIsConnexionSet(true)
       
       setAllConnexion(res)

@@ -273,10 +273,6 @@ function EditProfile() {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        // console.log("loc : ",photos.value)
-    }, [photos.value]);
-
     /* Photos */
     const onPhotosChange = (value) => {
         dispatchPhotos({ type: "UPDATE", value });
@@ -390,7 +386,7 @@ function EditProfile() {
         try {
             const config = {
                 headers: {
-                  Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+                  Authorization: `Bearer ${ctx.token}`,
                 },
               };
             const response = await axios.put("http://localhost:3000/api/user/profile/me", {first_name: firstname.value,
@@ -417,27 +413,14 @@ function EditProfile() {
         <ProfileHeader menuOnly={true}/>
 
             <section className={styles['create-profile__form']}>
-                {/* Profile picture */}
                 <div className={styles['create-profile__image-container']}>
                     <AddPhoto
                         onChange={onPhotosChange}
                         onBlur={onPhotosValidate}
                         init={photos.value}
-                        
-                        // init={[new File([""], "photo.png", { type: "image/png" }),]}
                     />
                 </div>
-
-                {/* Input group */}
                 <div className={styles['create-profile__input-container']}>
-                    {/* <Input
-                        label="Prénom"
-                        placeholder="John"
-                        value={firstname.value || ""}
-                        // defaultValue={firstname.value}
-                        onChange={onFirstnameChange}
-                        onBlur={onFirstnameValidate}
-                    /> */}
                     <Input
                         label="Prénom"
                         placeholder="John"
@@ -453,8 +436,6 @@ function EditProfile() {
                         onBlur={onLastnameBlur}
                     />
                 </div>
-
-                {/* Input group */}
                 <div className={styles['create-profile__input-container']}>
                     <DateInput
                         label="Date de naissance"
@@ -464,8 +445,6 @@ function EditProfile() {
                     />
                     <LocationInput placeholder="Changer de localisation" onSubmit={onLocationChange} onBlur={onLocationBlur} />
                 </div>
-
-                {/* Input group */}
                 <div className={styles['create-profile__input-container']}>
                     <div className={styles['create-profile__input-group']}>
                         <RadioButtonGroup
@@ -486,19 +465,14 @@ function EditProfile() {
                         />
                     </div>
                 </div>
-
-                {/* Tag group */}
                 <div className={styles['create-profile__tags-container']}>
                     <InputTagList
                         initial={tags.value}
                         suggest={allTags}
-                        // suggest={allTags}
                         onChange={onTagsChange}
                         onBlur={onTagsValidate}
                     />
                 </div>
-
-                {/* Bio */}
                 <div className={styles['create-profile__bio-container']}>
                     <BioInput
                         value={biography.value}
@@ -513,8 +487,6 @@ function EditProfile() {
                         <Alert>{error}</Alert>
                     </div>
                 }
-
-                {/* Button */}
                 <div className={styles['create-profile__button_container']}>
                     <Button 
                         variant="validation" 

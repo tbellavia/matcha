@@ -19,12 +19,12 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-async function delNotifToFrom(to, from){
+function delNotifToFrom(to, from){
     console.log("ici 1")
     const sql = "SELECT notifsviews, notifslikes, notifmessages FROM userprofile WHERE id=$1"
     pool.query(sql, [to], (err, res) => {
         if (err) {
-            return
+            return false
         }
         console.log("ici 2")
 
@@ -38,16 +38,18 @@ async function delNotifToFrom(to, from){
         const sql2 = "UPDATE userprofile SET notifsviews= $2, notifslikes=$3, notifsmessages=$4 WHERE id = $1"
             pool.query(sql2, [to, res[0].notifsviews, res[0].notifslikes, res[0].notifsmessages], (err2, _res2) => {
                 if(err2){
-                    return
+                    return false
                 }
             })
 
-        return
     })
+    return true
+
 }
 
 router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biography = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
+    console.log("profile blocked")
     const idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
         return res.status(400).json({ message: ERROR_BAD_TOKEN })
@@ -57,6 +59,7 @@ router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, 
     // if (idChat == null) {
     //     return res.status(400).json({ message: ERROR_CHAT })
     // }
+    console.log("profile blocked")
 
     if (idChat != null) {
         const sql = "DELETE FROM message WHERE message.id_chat = $1"
@@ -75,6 +78,7 @@ router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, 
             }
         })
     }
+    console.log("profile blocked")
 
     const sql3 = "UPDATE liketable SET user1like = 'FALSE', user2like = 'FALSE' WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)"
     const arg3 = [idProfile, req.params.target]
@@ -83,6 +87,7 @@ router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, 
             return res.status(400).json({ message: err3.message })
         }
     })
+    console.log("profile blocked")
 
     const sql4 = "INSERT INTO blocked (user1, user2) VALUES ($1, $2)";
 
@@ -91,7 +96,6 @@ router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, 
         if (err4) {
             return res.status(400).json({ message: err4.message })
         }
-
     })
     delNotifToFrom(idProfile, req.params.target)
     delNotifToFrom(req.params.target, idProfile)
@@ -106,7 +110,7 @@ router.post("/me/report/:target", checkTokenMiddleware, checkProfileCreatedMiddl
     }
 
     // const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"];
-    const recipients = ["eithan.assouline6@gmail.com"]; // TODO Ajouter mai nhi
+    const recipients = ["mainhivvt@gmail.com"]; // TODO Ajouter mai nhi
 
     recipients.forEach(recipient => {
         const mailOptions = {
@@ -118,7 +122,7 @@ router.post("/me/report/:target", checkTokenMiddleware, checkProfileCreatedMiddl
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                console.log(error)
+                console.log("mail error")
                 return console.error(error.message);
             } else {
                 console.log("e-mail envoyé" + info.response)

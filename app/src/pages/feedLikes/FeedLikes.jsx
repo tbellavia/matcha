@@ -31,7 +31,6 @@ function FeedLikes (){
     }))
 
     const resUnlike = await axios.get(`http://localhost:3000/api/user/unlike`,config).then((response) => response.data);
-    console.log(resUnlike)
     setAllUnlikeProfile(resUnlike.result.map(elem => {
       return({iduser : elem.id,
         name:elem.first_name,
@@ -48,7 +47,6 @@ function FeedLikes (){
     };
     const res = await axios.get(`http://localhost:3000/api/user/connexion`,config).then((response) => response.data);
     await axios.put(`http://localhost:3000/api/user/connexion/me/on`,{},config);
-    console.log(res)
     setIsConnexionSet(true)
     setAllConnexion(res)
     const res2 = await axios.get(`http://localhost:3000/api/user/notifs/likes`,config).then((response) => response.data);

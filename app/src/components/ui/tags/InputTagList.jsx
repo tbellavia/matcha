@@ -56,7 +56,6 @@ function InputTagList({
                       Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
                     },
                   };
-                //   console.log(tags.value.join(','))
                 const response = await axios.post("http://localhost:3000/api/user/profile/tag", {newTag: newTag,}, config);
                 console.log("response : ",response)
             }

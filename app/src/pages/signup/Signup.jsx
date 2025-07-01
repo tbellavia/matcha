@@ -79,7 +79,6 @@ function Signup() {
                     usermail: email,
                     passWord: password
                 })
-                console.log(response.data);
                 navigate("/mailValidation")
             }
             catch (e) {

@@ -25,15 +25,12 @@ const ProfileHeader = ({ menuOnly = false, ipMessage = -1}) => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        // TODO: Store those infos in localStorage ?
         if (!menuOnly) {
             (async function(){
                 try {
                     const response = await fetch("/api/user/profile/me");
                     setInfos(response?.data);
-                    // console.log(infos)
                 } catch (e) {
-                    // TODO: Manage error
                     console.log("Error:", e);
                 }
             })()

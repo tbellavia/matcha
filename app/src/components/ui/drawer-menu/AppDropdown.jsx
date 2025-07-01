@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function AppDroddown({ipMessage = -1}) {
-    // console.log(ipMessage)
     const ctx = useContext(AppContext);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
@@ -21,34 +20,28 @@ export default function AppDroddown({ipMessage = -1}) {
     const [sizeMessages, setSizeMessages] = useState(0)
     const navigate = useNavigate()
  
-    // const [test, setTest] = useState(0)
     const onSettingsClickHandler = () => {
         setOpen(true);
     }
 
-    // Check if there are notifications
     const [notify, setNotify] = useState(sizeViews + sizeLikes + sizeMessages)
 
     useEffect(()=>{
         setNotify(sizeViews + sizeLikes + sizeMessages)
     }, [sizeViews, sizeLikes, sizeMessages])
     
-    // console.log(notify)
-    // const notify = 
 
     const getIdProfile = async() => {
         const config = {
             headers: {
-              Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+              Authorization: `Bearer ${ctx.token}`,
             },
           };
 
           try{
             const res = await axios.get('http://localhost:3000/api/user/profile/getId/me',config)
             const notifRes = await axios.get('http://localhost:3000/api/user/notifs',config)
-                    // console.log(notifRes.data.likes)
             ctx.setNotifs(notifRes.data)
-            // console.log(notifRes.data.views)
             setSizeViews(Object.entries(notifRes.data.views).filter(([key, value]) => value === true).length)
             setSizeLikes(Object.entries(notifRes.data.likes).filter(([key, value]) => value === true).length)
             setSizeMessages(Object.entries(notifRes.data.messages).filter(([key, value]) => value > 0).length)
@@ -68,7 +61,7 @@ export default function AppDroddown({ipMessage = -1}) {
     const delNotif = async() =>{
         const config = {
           headers: {
-            Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+            Authorization: `Bearer ${ctx.token}`,
           },
         };
         const res = await axios.put(`http://localhost:3000/api/user/notifs/del/messages/${ipMessage}`,{},config);
@@ -84,7 +77,6 @@ export default function AppDroddown({ipMessage = -1}) {
         function viewEnter({from}){
             const audio = new Audio(soundFile);
             audio.play();
-            // ctx.notifs['views'] = (ctx.notifs['views']?ctx.notifs['views']+1:1) 
             console.log(ctx.notifs.views)
             console.log(`views ${from}`)
             ctx.setNotifs({"views":{...ctx.notifs.views, from : true},"messages":{...ctx.notifs.messages},"likes":{...ctx.notifs.likes}})
@@ -94,7 +86,6 @@ export default function AppDroddown({ipMessage = -1}) {
         function likeEnter({from}){
             const audio = new Audio(soundFile);
             audio.play();
-            // ctx.notifs['likes'] = (ctx.notifs['likes']?ctx.notifs['likes']+1:1) 
             console.log(ctx.notifs.likes)
             console.log(`likes ${from}`)
             ctx.setNotifs({"likes":{...ctx.notifs.likes, from : true},"messages":{...ctx.notifs.messages},"views":{...ctx.notifs.views}})
@@ -104,7 +95,6 @@ export default function AppDroddown({ipMessage = -1}) {
         function messagesEnter({from}){
             const audio = new Audio(soundFile);
             audio.play();
-            // ctx.notifs['likes'] = (ctx.notifs['likes']?ctx.notifs['likes']+1:1) 
             console.log(ctx.notifs.likes)
             console.log(`message ${from}`)
             if (from != ipMessage){
@@ -116,7 +106,6 @@ export default function AppDroddown({ipMessage = -1}) {
             }
            
         }
-            // ctx.setNotifs({"likes":{...ctx.notifs.likes},"messages":{...ctx.notifs.messages, from : (ctx.notifs.messages[from]?ctx.notifs.messages[from]+1:1)},"likes":{...ctx.notifs.likes}})
 
         socket.on(`view${idProfile}`, viewEnter)
         socket.on(`like${idProfile}`,likeEnter)
@@ -128,7 +117,6 @@ export default function AppDroddown({ipMessage = -1}) {
           socket.off(`view${idProfile}`)
           socket.off(`messages${idProfile}`)
           socket.off(`match${idProfile}`)
-        //   socket.disconnect();
         }
       },[idProfile]) 
     
@@ -175,7 +163,7 @@ export default function AppDroddown({ipMessage = -1}) {
                 onClick: async() => {
                     const config = {
                         headers: {
-                          Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+                          Authorization: `Bearer ${ctx.token}`,
                         },
                       };
                     await axios.put(`http://localhost:3000/api/user/connexion/me/off`,{},config);
@@ -205,7 +193,6 @@ export default function AppDroddown({ipMessage = -1}) {
             borderRadius: "10px",
             position: "relative"
         }}>
-            {/* Notify Badge */}
             <Box
                 sx={{
                     width: notifyBadgeSize,
@@ -226,13 +213,10 @@ export default function AppDroddown({ipMessage = -1}) {
             />
             <Dropdown items={appDropddownItems} />
 
-            {/* Menu Modals */}
             <SettingsModal open={open} handleClose={handleClose} />
         </Box>
     )
 }
-
-// Styles
 
 const iconColor = "var(--color-light-8)";
 

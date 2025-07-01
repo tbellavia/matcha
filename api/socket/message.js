@@ -25,7 +25,6 @@ function emitProfileMessage(to, from, message) {
 function emitProfileMatch(to, from) {
   socketIO.emit(`match${to}`,{from});
   socketIO.emit(`match${from}`,{"from":to});
-  console.log("maaaaaaaaaaaaaaaaaaaaaaaaatch")
   emitProfileMessage(from, to, "nouveau match")
   emitProfileMessage(to, from, "nouveau match")
 }
