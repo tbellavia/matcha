@@ -6,8 +6,6 @@ async function getProfileId(userId) {
     try {
         const res = await pool.query(sql, [userId]);
         if (res.rowCount < 1) {
-            
-
             return null
         }
         const id = res.rows[0].id
@@ -89,9 +87,9 @@ async function getChatId(user1, user2) {
 }
 
 async function creatNewChat(user1, user2) {
+
     idChat = await getChatId(user1, user2)
     if (idChat != null) {
-
         return false
     }
     else {
@@ -100,8 +98,8 @@ async function creatNewChat(user1, user2) {
             if (err) {
                 return false
             }
-            return true
         })
+        return true
     }
 }
 

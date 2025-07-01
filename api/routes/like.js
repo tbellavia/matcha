@@ -75,7 +75,7 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                     if (creat) {
                         emitProfileMatch(req.params.target, idProfile)
                         console.log("nouvelle conversation ajoute")
-                        res.json({ "message": "match nouvelle conversation ajouté" })
+                        return res.json({ "message": "match nouvelle conversation ajouté" })
                     }
                 }
             }
@@ -96,7 +96,7 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
 
                         emitProfileMatch(req.params.target, idProfile)
                         console.log("nouvelle conversation ajoute")
-                        res.json({ "message": "match nouvelle conversation ajouté" })
+                        return res.json({ "message": "match nouvelle conversation ajouté" })
                     }
                 }
             }
