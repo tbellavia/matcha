@@ -11,6 +11,7 @@ import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHead
 function FeedHistorics (){
   const [AllProfile, setAllProfile] = useState([])
   const ctx = useContext(AppContext)
+  const [isConnexionSet, setIsConnexionSet]=useState(false)
 
   const [allConnexion, setAllConnexion] = useState({})
   const getAllProfileForFeed = async() =>{
@@ -38,14 +39,14 @@ function FeedHistorics (){
     const res = await axios.get(`http://localhost:3000/api/user/connexion`,config).then((response) => response.data);
     await axios.put(`http://localhost:3000/api/user/connexion/me/on`,{},config);
     console.log(res)
-    
+    setIsConnexionSet(true)
     setAllConnexion(res)
   }
 
   useEffect(()=>{
     getAllProfileForFeed()
     getUserConnexion()
-  },[])
+  },[isConnexionSet])
 
   useEffect(() => {
 
@@ -65,7 +66,7 @@ function FeedHistorics (){
           socket.off(`newConnexion`)
           // socket.disconnect();
         }
-      },[]) 
+      },[isConnexionSet]) 
 
   return (
 

@@ -1,17 +1,10 @@
 import GenericPage from "../page/GenericPage";
-import { useParams } from 'react-router-dom';
 import axios from "axios";
 import AppContext from "../../store/AppContext";
 import { useContext } from "react";
-import { io } from 'socket.io-client';
 import { useState , useEffect} from "react";
-import Button from "../../components/ui/button/Button";
 import socket from "../../socket";
-import ChatMessage from "../../components/ui/chatMessage/ChatMessage";
 import styles from "./FeedLikes.module.css"
-import Header from "../../components/ui/header/Header";
-import ChatProfile from "../../components/ui/chatProfile/ChatProfile";
-import AppDropdown from "../../components/ui/drawer-menu/AppDropdown";
 import FeedProfile from "../../components/ui/feedProfile/FeedProfile";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 
@@ -21,6 +14,7 @@ function FeedLikes (){
   const [notifs, setNotifs] = useState({})
   const [allConnexion, setAllConnexion] = useState({})
   const [AllUnlikeProfile, setAllUnlikeProfile]=useState([])
+  const [isConnexionSet, setIsConnexionSet]=useState(false)
   const getAllProfileForFeed = async() =>{
     const config = {
       headers: {
@@ -28,7 +22,7 @@ function FeedLikes (){
       },
     };
     const res = await axios.get(`http://localhost:3000/api/user/like`,config).then((response) => response.data);
-    console.log(res)
+
     setAllProfile(res.result.map(elem => {
       return({iduser : elem.id, 
         name:elem.first_name,
@@ -55,7 +49,7 @@ function FeedLikes (){
     const res = await axios.get(`http://localhost:3000/api/user/connexion`,config).then((response) => response.data);
     await axios.put(`http://localhost:3000/api/user/connexion/me/on`,{},config);
     console.log(res)
-    
+    setIsConnexionSet(true)
     setAllConnexion(res)
     const res2 = await axios.get(`http://localhost:3000/api/user/notifs/likes`,config).then((response) => response.data);
     await axios.put(`http://localhost:3000/api/user/notifs/del/likes`,{},config);
@@ -65,16 +59,13 @@ function FeedLikes (){
   useEffect(()=>{
     getAllProfileForFeed()
     getUserConnexion()
-  },[])
+  },[isConnexionSet])
 
   useEffect(() => {
-
         function newConnexionEnter({profileId, status}){
             console.log(`session ${profileId} ${status}`)
             setAllConnexion({ ...allConnexion, [profileId]: status })
         }
-            
-
         if (!socket.connected) {
          socket.connect();
         }
@@ -83,7 +74,7 @@ function FeedLikes (){
         return () => {
           socket.off(`newConnexion`)
         }
-      },[]) 
+      },[isConnexionSet]) 
 
   return (
 
@@ -91,7 +82,6 @@ function FeedLikes (){
         <ProfileHeader menuOnly={false}/>
         <div className={styles.allChatPage}>
           {!AllUnlikeProfile.length && !AllProfile.length && <h1>Pas encore de like ? Ça viendra :)</h1>}
-
           {AllProfile.map((elem, index) =>
               <FeedProfile key={index} profile={elem} notification={notifs[elem.iduser.toString()]} isConnected={allConnexion[elem.iduser]}/>
           )}

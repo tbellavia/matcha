@@ -16,6 +16,7 @@ function Feed (){
   const [allConnexion, setAllConnexion] = useState({})
   const [filterParams, setFilterParams] = useState([])
   const [myTags, setMyTags] = useState([])
+  const [isConnexionSet, setIsConnexionSet]=useState(false)
 
   const filterCommonTags = (myTags, otherTags, minCommon) => {
     if (myTags.length == 0 || minCommon === 0) {
@@ -50,7 +51,6 @@ function Feed (){
         
       }))}
       catch(e){
-        console.log("errooooooooooooooooooooooooooooooooooor")
         console.log(e)
       }
   }
@@ -66,6 +66,7 @@ function Feed (){
       await axios.put(`http://localhost:3000/api/user/connexion/me/on`,{},config);
       console.log("getUserConnexion");
       console.log(res)
+      setIsConnexionSet(true)
       
       setAllConnexion(res)
     }catch(e){
@@ -77,7 +78,7 @@ function Feed (){
   useEffect(()=>{
     getAllProfileForFeed()
     getUserConnexion()
-  },[filterParams])
+  },[filterParams, isConnexionSet])
 
   useEffect(() => {
         
@@ -102,7 +103,7 @@ function Feed (){
         return () => {
           socket.off(`newConnexion`)
         }
-      },[]) 
+      },[isConnexionSet]) 
 
 
     // Filter Modal
