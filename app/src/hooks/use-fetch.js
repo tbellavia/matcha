@@ -22,7 +22,6 @@ export default function useFetch(unauthorizedFallback = "/login"){
             });
         }
         catch (e){
-            console.log(e.response.data.message)
             if(e.response && e.response.status === 401){
                 return navigate(unauthorizedFallback);
             }

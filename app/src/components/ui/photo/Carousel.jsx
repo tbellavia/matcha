@@ -20,7 +20,6 @@ function Carousel({ tabPhotos }) {
                 <input type="radio" className={`${styles.inputCarousel}`} name="a" id={`${i}`} checked={checkedPhotos === i} onChange={onChangeHandle} />
                 <label className={`${styles.labelCarousel}`} htmlFor={`${i}`} ></label>
                 <div className={`${styles.ci}`}>
-                    {console.log(i)}
                     {filteredPhotos[i] && <Photo key={i} data={base64ToFile(filteredPhotos[i])} size="large" />}
                 </div>
             </React.Fragment>

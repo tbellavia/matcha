@@ -1,5 +1,5 @@
-import {useNavigate, useParams} from "react-router-dom";
-import {useContext, useEffect, useState} from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import useFetch from "../../hooks/use-fetch";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 import styles from "./Profile.module.scss";
@@ -19,7 +19,7 @@ const PROFILE_BLOCKED = "blocked";
 
 
 function GenericProfile() {
-    const {id} = useParams();
+    const { id } = useParams();
     const [infos, setInfos] = useState({})
     const [profileType, setProfileType] = useState();
     const profile = useProfile();
@@ -32,18 +32,18 @@ function GenericProfile() {
     const isAlreadyAnswered = profileType === PROFILE_ALREADY_ANSWERED;
     const isBlocked = profileType === PROFILE_BLOCKED;
 
-    const getUserConnexion= async() =>{
+    const getUserConnexion = async () => {
         const config = {
-        headers: {
-            Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
-        },
+            headers: {
+                Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+            },
         };
-        try{
-        const res = await axios.get(`http://localhost:3000/api/user/connexion`,config).then((response) => response.data);
-        await axios.put(`http://localhost:3000/api/user/connexion/me/on`,{},config);
-        setAllConnexion(res)
-        }catch(e){
-        
+        try {
+            const res = await axios.get(`http://localhost:3000/api/user/connexion`, config);
+            await axios.put(`http://localhost:3000/api/user/connexion/me/on`, {}, config);
+            setAllConnexion(res.data);
+        } catch (e) {
+
         }
 
     }
@@ -74,19 +74,19 @@ function GenericProfile() {
 
     return (
         <GenericPage className={styles.profile}>
-            <ProfileHeader menuOnly={isMe}/>
+            <ProfileHeader menuOnly={isMe} />
 
             {!isBlocked &&
                 <main className={styles['profile-container']}>
-                    <ProfileInfos profileInfos={infos} isConnected={allConnexion[id]}/>
+                    <ProfileInfos profileInfos={infos} isConnected={allConnexion[id]} />
 
                     <div className={styles['button-container']}>
-                        {isMe && <ButtonGroupMe/>}
-                        {isMatch && <ButtonGroupMatch/>}
+                        {isMe && <ButtonGroupMe />}
+                        {isMatch && <ButtonGroupMatch />}
                         {!isMe && !isMatch && !isAlreadyAnswered &&
-                            <ButtonGroupFinally profileID={id}/>
+                            <ButtonGroupFinally profileID={id} />
                         }
-                        {!isMe && !isMatch && isAlreadyAnswered && <ButtonGroupWaiting profileID={id}/>}
+                        {!isMe && !isMatch && isAlreadyAnswered && <ButtonGroupWaiting profileID={id} />}
                     </div>
                 </main>
             }
@@ -100,14 +100,14 @@ function useProfile() {
 
     return {
         fetch: async function (id) {
-             try {
+            try {
                 const response = await fetcher(`/api/user/profile/${id}`);
                 return response?.data;
-             }
+            }
             catch (err) {
                 navigate(`/feed`);
                 return null
-        }
+            }
         }
     }
 }

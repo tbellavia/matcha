@@ -179,7 +179,6 @@ const mapPrefToLabel = (pref) => {
 
 function hasCreatedProfile(token) {
     const decoded = jwt_decode(token);
-    console.log(decoded);
     return decoded.profile_created;
 }
 
@@ -220,7 +219,6 @@ function EditProfile() {
             try {
                 const res = await axios.get('http://localhost:3000/api/user/profile/me', config);
                 const birth = new Date(res.data.birth)
-                console.log("Data fetched:", res.data); // Debug
                 dispatchFirstname({
                     type: "UPDATE_AND_VALIDATE", 
                     value: res.data.first_name,  
@@ -241,7 +239,6 @@ function EditProfile() {
                     type: "UPDATE_AND_VALIDATE", 
                     value: res.data.biography,  
                 })
-                console.log(res.data.genre == 1 ? genres[0] : (res.data.genre == 2 ? genres[1] : genres[2]))
                 dispatchGenre({
                     type: "UPDATE_AND_VALIDATE", 
                     value: mapGenreToLabel(res.data.genre),  
@@ -266,9 +263,7 @@ function EditProfile() {
                 const res2 = await axios.get('http://localhost:3000/api/user/profile/tags', config);
                 setAllTags(res2.data)
 
-            } catch (error) {
-                console.error("Erreur lors de la récupération :", error);
-            }
+            } catch (error) {}
         }
         fetchData();
     }, []);
@@ -336,7 +331,6 @@ function EditProfile() {
 
     /* Preferences */
     const onPreferencesChange = (value) => {
-        console.log(value)
         dispatchPreference({ type: "UPDATE", value });
         dispatchError({ type: "CLEAR" });
     }

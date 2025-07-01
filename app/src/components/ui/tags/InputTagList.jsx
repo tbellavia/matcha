@@ -24,7 +24,6 @@ function InputTagList({
 
 
     useEffect(() => {
-        console.log(suggest)
         setSuggestedTags(suggest.filter(tag => initial.indexOf(tag) === -1))
         setAlreadyUse(removeEmptyString(initial))
     }, [suggest]);
@@ -42,7 +41,6 @@ function InputTagList({
 
 
     useUpdateEffect(() => {
-        console.log("tags init :",tagList)
         onChange(tagList);
         onBlur();
     }, [tagList])
@@ -57,7 +55,6 @@ function InputTagList({
                     },
                   };
                 const response = await axios.post("http://localhost:3000/api/user/profile/tag", {newTag: newTag,}, config);
-                console.log("response : ",response)
             }
         }   
         if(suggestedTags.indexOf(value) !== -1){

@@ -18,7 +18,6 @@ function Test() {
 
     const onModalOpen = () => setOpen(true);
     const onModalClose = (params) => {
-        console.log("Params: ", params);
         setOpen(false);
     }
 

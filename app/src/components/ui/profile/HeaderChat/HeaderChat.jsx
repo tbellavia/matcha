@@ -24,7 +24,6 @@ function HeaderChat({profileId = -1}) {
           },
         };
         const res = await axios.get(`http://localhost:3000/api/user/profile/${profileId}`,config).then((response) => response.data);
-        console.log(res.result)
         setInfos(res.result)
     }
 

@@ -16,7 +16,6 @@ function ChatProfile({chatProfile}){
     const [curentNotif, setCurentNotif] = useState(0);
     const [curentMessage, setCurentMessage] = useState(chatProfile.message)
     const ctx = useContext(AppContext)
-    console.log("message : ", ctx.theme)
     const getIdProfile = async() => {
         const config = {
             headers: {
@@ -62,7 +61,6 @@ function ChatProfile({chatProfile}){
         }
         function messagesEnter({from, message}){
             if (from == chatProfile.iduser){
-                console.log("new message", message)
                 setCurentNotif(prev => prev + 1)
                 setCurentMessage(message)
             }

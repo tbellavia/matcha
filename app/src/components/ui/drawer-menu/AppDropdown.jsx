@@ -73,12 +73,9 @@ export default function AppDroddown({ipMessage = -1}) {
         if (!socket.connected) {
          socket.connect();
         }
-        console.log("socket co")
         function viewEnter({from}){
             const audio = new Audio(soundFile);
             audio.play();
-            console.log(ctx.notifs.views)
-            console.log(`views ${from}`)
             ctx.setNotifs({"views":{...ctx.notifs.views, from : true},"messages":{...ctx.notifs.messages},"likes":{...ctx.notifs.likes}})
             setSizeViews(prev => prev + 1)
         }
@@ -86,8 +83,6 @@ export default function AppDroddown({ipMessage = -1}) {
         function likeEnter({from}){
             const audio = new Audio(soundFile);
             audio.play();
-            console.log(ctx.notifs.likes)
-            console.log(`likes ${from}`)
             ctx.setNotifs({"likes":{...ctx.notifs.likes, from : true},"messages":{...ctx.notifs.messages},"views":{...ctx.notifs.views}})
             setSizeLikes(prev => prev + 1)
         }
@@ -95,8 +90,6 @@ export default function AppDroddown({ipMessage = -1}) {
         function messagesEnter({from}){
             const audio = new Audio(soundFile);
             audio.play();
-            console.log(ctx.notifs.likes)
-            console.log(`message ${from}`)
             if (from != ipMessage){
                 ctx.setNotifs({"likes":{...ctx.notifs.likes},"messages":{...ctx.notifs.messages, from : (ctx.notifs.messages[from]?ctx.notifs['messages'][from]+1:1) },"views":{...ctx.notifs.views}})
                 setSizeMessages(prev => prev + 1)

@@ -66,7 +66,6 @@ const FilterModal = ({
                 if (!filter){
                     return;
                 }
-                console.log(filter);
                 setAges([filter.agemin, filter.agemax]);
                 setDistance(filter.distmax);
                 setTags(filter.filtertags);
@@ -75,7 +74,6 @@ const FilterModal = ({
                 setPreferences(decodePreferences(filter.preference));
             } catch (e) {
                 // TODO: Manage error
-                console.log(e);
             }
         };
         fetchFilter();
@@ -91,9 +89,7 @@ const FilterModal = ({
                 try {
                     const res = await axios.get('http://localhost:3000/api/user/profile/tags', config);
                     setAllTags([...new Set([...myTags, ...res.data])]) // TODO : add onChange or readOnly with checked value in form
-                } catch (error) {
-                    console.log("Erreur lors de la récupération :", error);
-                }
+                } catch (error) {}
             }
             fetchData();
         }, [myTags]);

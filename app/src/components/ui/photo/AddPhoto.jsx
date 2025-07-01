@@ -15,7 +15,6 @@ function AddPhoto({
     const [selectedFile, setSelectedFile] = useState(init)
 
     useEffect(() => {
-        console.log("init",init)
         setSelectedFile(init)
     }, [init]);
 

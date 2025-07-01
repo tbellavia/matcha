@@ -82,10 +82,8 @@ function Chat (){
         if (!socket.connected) {
          socket.connect();
         }
-    console.log(`chatId ${chatId}`)
     function messageEnter({message, name}){
       setAllChat(previous=>[...previous, {user:name, message}])
-      console.log(`message recu : ${message} ${name}`)
     }
 
     // socket.connect()

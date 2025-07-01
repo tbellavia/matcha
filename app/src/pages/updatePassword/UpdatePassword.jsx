@@ -48,7 +48,6 @@ function UpdatePassword() {
         const passwordIsValid = validatePassword(value);
 
         if (passwordIsValid == false) {
-            console.log(passwordIsValid)
             errManager.addInputError(ERROR_PASSWORD, passwordRef);
         } else {
             errManager.removeError(ERROR_PASSWORD);

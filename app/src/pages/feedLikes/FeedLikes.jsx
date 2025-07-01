@@ -61,7 +61,6 @@ function FeedLikes (){
 
   useEffect(() => {
         function newConnexionEnter({profileId, status}){
-            console.log(`session ${profileId} ${status}`)
             setAllConnexion({ ...allConnexion, [profileId]: status })
         }
         if (!socket.connected) {

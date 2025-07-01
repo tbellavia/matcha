@@ -30,9 +30,7 @@ const ProfileHeader = ({ menuOnly = false, ipMessage = -1}) => {
                 try {
                     const response = await fetch("/api/user/profile/me");
                     setInfos(response?.data);
-                } catch (e) {
-                    console.log("Error:", e);
-                }
+                } catch (e) {}
             })()
         }
     }, [token, menuOnly]);

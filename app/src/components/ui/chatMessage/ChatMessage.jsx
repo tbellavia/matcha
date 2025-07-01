@@ -9,7 +9,6 @@ function ChatMessage({me, allChat}){
     useEffect(() => {
         if (chatRef.current) {
         chatRef.current.scrollTop = chatRef.current.scrollHeight;
-        console.log("test")
         }
     }, [allChat]);
 

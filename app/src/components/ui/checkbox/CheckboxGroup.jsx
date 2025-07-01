@@ -36,7 +36,6 @@ function CheckboxGroup({
             setChecked(newChecked)
             setInit(newChecked)
         }
-        console.log("update")
     }, [initial]);
 
     useUpdateEffect(() => {
