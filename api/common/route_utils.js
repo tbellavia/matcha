@@ -300,6 +300,42 @@ function delNotifToFrom(to, from){
 
 }
 
+
+async function loveStates(user1, user2){
+    const sql = "SELECT * FROM liketable \
+    WHERE ((user1 = $1 AND user2 = $2 ) OR (user1 = $2 AND user2 = $1))"
+
+    try {
+        const res = await pool.query(sql, [user1, user2]);
+        let love1 = 0
+        let love2 = 0
+        if (res.rowCount < 1) {
+            return [love1,love2]
+        }
+        else if (res.rows[0].user1like == true){
+            love1=1
+        }
+        else if (res.rows[0].user1like == false ){
+            love1=2
+        }
+        if (res.rows[0].user2like == true){
+            love2 = 1
+        }
+        else if (res.rows[0].user2like == false){
+            love2 = 2
+        }
+
+        if (res.rows[0].user1 == user1){
+            return [love1,love2]
+        }
+        console.log("love = " + love1 + love2)
+        return [love2,love1]
+    } catch (err) {
+        console.log(err.message)
+        return [0,0]
+    }    
+}
+
 module.exports = {
     getProfileId,
     creatNewChat,
@@ -316,5 +352,6 @@ module.exports = {
     addNotifLike,
     addNotifMessages,
     delNotifMessages,
-    delNotifToFrom
+    delNotifToFrom,
+    loveStates
 }

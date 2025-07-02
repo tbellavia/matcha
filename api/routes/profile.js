@@ -8,7 +8,8 @@ const { getPrefTabToInt,
         saveNewTags, 
         isAlreadyAnswered, 
         isUserBlock,
-        getProfileId} = require("../common/route_utils");
+        getProfileId,
+        loveStates} = require("../common/route_utils");
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
@@ -66,6 +67,7 @@ router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async
 
 
     const type = await isAlreadyAnswered(profileId, req.params.target)
+    const love = await loveStates(profileId, req.params.target)
     const sql = "SELECT * , (DATE_PART('days', NOW() - birth) / 365) AS age , 0 AS distance, \
         (((COALESCE((SELECT COUNT(*) FROM liketable l WHERE ((l.user1 = $1 AND l.user2like = TRUE) OR (l.user2 = $1 AND l.user1like = TRUE))), 0) * 1.0)) / \
         (COALESCE((SELECT COUNT(*) FROM views v WHERE v.id_user2 = $1), 1)+0.0000001)) AS rating \
@@ -103,7 +105,7 @@ router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async
             // result3.rows[0].rating = await rating(req.params.target)
             if(result3.rows[0].tags){
                 result3.rows[0].tags = result3.rows[0].tags.split(",")}
-            return res.json({"type":type,"result":result3.rows[0],
+            return res.json({"type":type,"result":result3.rows[0],"love":love,
                 "me":{"id":result.rows[0].id,"photo":result.rows[0].photo1,
                     "first_name":result.rows[0].first_name, "last_name": result.rows[0].last_name}})
         })
