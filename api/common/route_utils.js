@@ -42,7 +42,10 @@ async function isAlreadyAnswered(user1, user2){
         else if (res.rows[0].user1like == true && res.rows[0].user2like == true){
             return "match"
         }
-        return "alreadyAnswered";
+        else if (res.rows[0].user1 == user1 && res.rows[0].user1like == true || res.rows[0].user2 == user1 && res.rows[0].user2like == true){
+            return "alreadyLiked"
+        }
+        return "alreadyUnliked";
     } catch (err) {
         console.log(err.message)
         return false

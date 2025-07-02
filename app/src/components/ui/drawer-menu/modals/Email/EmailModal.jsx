@@ -19,7 +19,7 @@ const EmailModal = ({
     onSubmitHandler = async (email, ctx) => {
         const config = {
             headers: {
-                Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête d'autorisation
+                Authorization: `Bearer ${ctx.token}`,
 
             },
 

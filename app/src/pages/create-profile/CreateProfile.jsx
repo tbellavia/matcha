@@ -129,7 +129,7 @@ function CreateProfile() {
         async function fetchData() {
             const config = {
                 headers: {
-                    Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête
+                    Authorization: `Bearer ${ctx.token}`,
                 },
             };
             try {
@@ -264,7 +264,7 @@ function CreateProfile() {
             });
             const config = {
                 headers: {
-                  Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête d'autorisation
+                  Authorization: `Bearer ${ctx.token}`,
                 },
               };
             const response = await axios.post("http://localhost:3000/api/user/updatetokenvalidprofile", {}, config);

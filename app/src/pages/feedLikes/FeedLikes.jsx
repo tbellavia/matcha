@@ -18,7 +18,7 @@ function FeedLikes() {
   const getAllProfileForFeed = async () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête d'autorisation
+        Authorization: `Bearer ${ctx.token}`, 
       },
     };
     try {
@@ -48,7 +48,7 @@ function FeedLikes() {
   const getUserConnexion = async () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête d'autorisation
+        Authorization: `Bearer ${ctx.token}`, 
       },
     };
     try {

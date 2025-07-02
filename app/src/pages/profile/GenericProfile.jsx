@@ -13,7 +13,8 @@ import axios from "axios";
 import AppContext from "../../store/AppContext";
 
 const PROFILE_ME = "me";
-const PROFILE_ALREADY_ANSWERED = "alreadyAnswered";
+const PROFILE_ALREADY_UNLIKED = "alreadyUnliked";
+const PROFILE_ALREADY_LIKED = "alreadyLiked";
 const PROFILE_MATCH = "match";
 const PROFILE_BLOCKED = "blocked";
 
@@ -29,13 +30,14 @@ function GenericProfile() {
 
     const isMe = profileType === PROFILE_ME;
     const isMatch = profileType === PROFILE_MATCH;
-    const isAlreadyAnswered = profileType === PROFILE_ALREADY_ANSWERED;
+    const isAlreadyLiked = profileType === PROFILE_ALREADY_LIKED;
+    const isAlreadyUnliked = profileType === PROFILE_ALREADY_UNLIKED;
     const isBlocked = profileType === PROFILE_BLOCKED;
 
     const getUserConnexion = async () => {
         const config = {
             headers: {
-                Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+                Authorization: `Bearer ${ctx.token}`,
             },
         };
         try {
@@ -83,10 +85,10 @@ function GenericProfile() {
                     <div className={styles['button-container']}>
                         {isMe && <ButtonGroupMe />}
                         {isMatch && <ButtonGroupMatch />}
-                        {!isMe && !isMatch && !isAlreadyAnswered &&
+                        {!isMe && !isMatch && !isAlreadyLiked && !isAlreadyUnliked &&
                             <ButtonGroupFinally profileID={id} />
                         }
-                        {!isMe && !isMatch && isAlreadyAnswered && <ButtonGroupWaiting profileID={id} />}
+                        {!isMe && !isMatch && (isAlreadyLiked || isAlreadyUnliked) && <ButtonGroupWaiting profileID={id} liked={isAlreadyLiked} />}
                     </div>
                 </main>
             }

@@ -4,9 +4,15 @@ import styles from "../../Profile.module.scss";
 import useFetch from "../../../../hooks/use-fetch";
 import {useNavigate} from "react-router-dom";
 
-function ButtonGroupWaiting({profileID}) {
+function ButtonGroupWaiting({profileID, liked}) {
 	const fetcher = useFetch()
 	const navigate = useNavigate()
+
+	function onMatchDelete() {
+        fetcher(`/api/user/unlike/me/${profileID}`, "POST");
+        navigate("/feed");
+		console.log(profileID)
+    }
 
 	const onReportClicked = async () => {
 		try {
@@ -19,6 +25,16 @@ function ButtonGroupWaiting({profileID}) {
 
 	return (
 		<React.Fragment>
+			{ liked &&
+			<Button
+                type="submit"
+                variant="regular"
+                className={styles["button"]}
+                onClick={onMatchDelete}
+            >
+                Annuler
+            </Button>
+			}
 			<Button
 				type="submit"
 				variant="action-danger"
