@@ -18,13 +18,13 @@ const checkTokenMiddleware = (req, res, next) => {
   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
   if (!token) {
     // return
-    return res.status(401).json({success: false, message: ERROR_NEED_TOKEN })
+    return res.status(308).json({success: false, message: ERROR_NEED_TOKEN })
   }
 
   // Véracité du token
   jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
     if (err) {
-      res.status(401).json({success: false, message: ERROR_BAD_TOKEN })
+      res.status(308).json({success: false, message: ERROR_BAD_TOKEN })
     } else {
       res.locals.id_user = decodedToken.id_user;
       res.locals.profile_created = decodedToken.profile_created;

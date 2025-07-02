@@ -28,7 +28,6 @@ export default function useFetch(unauthorizedFallback = "/login"){
             if(e.response && (e.response.data.message === ERROR_BAD_TOKEN  || e.response.data.message === ERROR_NEED_TOKEN)){
                 return navigate(unauthorizedFallback);
             }
-            throw e;
         }
     }
 }
