@@ -22,17 +22,13 @@ export default function useFetch(unauthorizedFallback = "/login"){
             });
         }
         catch (e){
-            console.log("here")
             if(e.response && e.response.status === 401){
-                console.log("here1")
                 return navigate(unauthorizedFallback);
             }
             if(e.response && (e.response.data.message === ERROR_BAD_TOKEN  || e.response.data.message === ERROR_NEED_TOKEN)){
-                console.log("here2", e.response.data.message)
                 return navigate(unauthorizedFallback);
             }
             if(e.response && (e.response.data.message === ERROR_PROFILE)){
-                console.log("here3")
                 return navigate("profile/create");
             }
         }
