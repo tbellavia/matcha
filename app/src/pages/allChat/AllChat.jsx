@@ -22,20 +22,20 @@ function AllChat (){
   const getAllChatProfile = async() =>{
     const config = {
       headers: {
-        Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+        Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête d'autorisation
       },
     };
-    const res = await axios.get(`http://localhost:3000/api/user/chat/me`,config).then((response) => response.data);
-
-    setAllChatProfile(res.result.map(elem => {
-      return({iduser : elem.idprofileuser, 
-        name:elem.first_name,
-        message:elem.mess,
-        photo:elem.photo1,
-        idChat:elem.idchat,
-        date:elem.date_envoi})
-      
-    }))
+    try {
+      const res = await axios.get(`http://localhost:3000/api/user/chat/me`,config);
+      setAllChatProfile(res.data.result.map(elem => {
+        return({iduser : elem.idprofileuser,
+          name:elem.first_name,
+          message:elem.mess,
+          photo:elem.photo1,
+          idChat:elem.idchat,
+          date:elem.date_envoi})
+      }))
+    } catch (e) {}
   }
 
   useEffect(()=>{

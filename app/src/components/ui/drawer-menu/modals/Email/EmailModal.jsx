@@ -12,30 +12,29 @@ import {
 import AppContext from "../../../../../store/AppContext";
 // import { useNavigate } from "react-router-dom";
 
-const EmailModal = ({ 
+const EmailModal = ({
 
-    open = false, 
-    handleClose = () => {}, 
-    onSubmitHandler = async (email,ctx) => {
+    open = false,
+    handleClose = () => { },
+    onSubmitHandler = async (email, ctx) => {
         const config = {
             headers: {
-              Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
-            
-        },
-        
-          };
-        const response = await axios.post("http://localhost:3000/api/user/defNewMail", {newMail: email},config);
-        // const response = await axios.post("http://localhost:3000/api/user/defNewMail", {
-        //     newMail: email,
-        // });
-        if (response.data.isMailSent == true){
-            alert("Un mail vous a etes envoyer a cette nouvelle adresse");
-            handleClose();
-        }
-        else{
-            alert("Imposible de mettre a jour votre mail");
-        }
-    } 
+                Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête d'autorisation
+
+            },
+
+        };
+        try {
+            const response = await axios.post("http://localhost:3000/api/user/defNewMail", { newMail: email }, config);
+            if (response.data.isMailSent == true) {
+                alert("Un mail vous a etes envoyer a cette nouvelle adresse");
+                handleClose();
+            }
+            else {
+                alert("Imposible de mettre a jour votre mail");
+            }
+        } catch (e) { }
+    }
 }) => {
     const [email, setEmail] = useState("");
     const ctx = useContext(AppContext);

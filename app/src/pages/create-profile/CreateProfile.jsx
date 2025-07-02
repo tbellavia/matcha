@@ -129,16 +129,14 @@ function CreateProfile() {
         async function fetchData() {
             const config = {
                 headers: {
-                    Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête
+                    Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête
                 },
             };
             try {
                 const res = await axios.get('http://localhost:3000/api/user/profile/tags', config);
                 setAllTags(res.data)
 
-            } catch (error) {
-                console.error("Erreur lors de la récupération :", error);
-            }
+            } catch (error) { }
         }
         fetchData();
     }, []);
@@ -266,15 +264,14 @@ function CreateProfile() {
             });
             const config = {
                 headers: {
-                  Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+                  Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête d'autorisation
                 },
               };
             const response = await axios.post("http://localhost:3000/api/user/updatetokenvalidprofile", {}, config);
             ctx.setToken(response.data.access_token);
             navigate("/feed");
         } catch (e) {
-            // TODO: show proper error from back
-            dispatchError({ type: "NETWORK", value: e.message });
+            // dispatchError({ type: "NETWORK", value: e.message }); // TODO
         }
     };
 

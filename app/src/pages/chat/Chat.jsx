@@ -25,10 +25,12 @@ function Chat (){
   const requetPost = async() =>{
     const config = {
       headers: {
-        Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+        Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête d'autorisation
       },
     };
-    const res = await axios.post(`http://localhost:3000/api/user/chat/message/me/${to}`,{message:message},config);
+    try {
+      const res = await axios.post(`http://localhost:3000/api/user/chat/message/me/${to}`,{message:message},config);
+    } catch (e) {}
     
   }
 
@@ -52,22 +54,25 @@ function Chat (){
         Authorization: `Bearer ${ctx.token}`,
       },
     };
-    const res = await axios.get(`http://localhost:3000/api/user/chat/me/${to}?limit=100&skip=0`,config).then((response) => response.data);
-
-    setAllChat(res.result.map(elem => {
-      return({user : elem.userwrite, message:elem.mess})
-    }))
-    setChatId(res.chatId)
-    setUserId(res.userId)
+    try {
+      const res = await axios.get(`http://localhost:3000/api/user/chat/me/${to}?limit=100&skip=0`,config);
+      setAllChat(res.data.result.map(elem => {
+        return({user : elem.userwrite, message:elem.mess})
+      }))
+      setChatId(res.data.chatId)
+      setUserId(res.data.userId)
+    } catch (e) {}
   }
 
   const delNotif = async() =>{
     const config = {
       headers: {
-        Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+        Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête d'autorisation
       },
     };
-    const res = await axios.put(`http://localhost:3000/api/user/notifs/del/messages/${to}`,{},config);
+    try {
+      const res = await axios.put(`http://localhost:3000/api/user/notifs/del/messages/${to}`,{},config);
+    } catch (e) {}
   }
 
 

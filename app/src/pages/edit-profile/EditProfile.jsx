@@ -213,7 +213,7 @@ function EditProfile() {
         async function fetchData() {
             const config = {
                 headers: {
-                    Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête
+                    Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête
                 },
             };
             try {
@@ -397,7 +397,7 @@ function EditProfile() {
             }, config);
             navigate("/feed");
         } catch (e) {
-            dispatchError({ type: "NETWORK", value: e.message });
+            // dispatchError({ type: "NETWORK", value: e.message }); // TODO
         }
     };
 

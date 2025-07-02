@@ -82,7 +82,7 @@ function Signup() {
                 navigate("/mailValidation")
             }
             catch (e) {
-                errManager.addNetworkError(e.response.data.message);
+                // errManager.addNetworkError(e.response.data.message); // TODO
             }
         }
     }

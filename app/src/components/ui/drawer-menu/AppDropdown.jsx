@@ -1,7 +1,7 @@
 import { AccountCircle, Chat, Favorite, History, Logout, RemoveRedEye, Settings, Group, Tune } from "@mui/icons-material";
 import Dropdown from "./Dropdown";
 import { Box, keyframes } from "@mui/material";
-import { useContext, useState , useEffect, useMemo} from "react";
+import { useContext, useState, useEffect, useMemo } from "react";
 import SettingsModal from "./modals/Settings/SettingsModal";
 import AppContext from "../../../store/AppContext";
 import socket from "../../../socket";
@@ -10,7 +10,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 
-export default function AppDroddown({ipMessage = -1}) {
+export default function AppDroddown({ ipMessage = -1 }) {
     const ctx = useContext(AppContext);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
@@ -19,129 +19,128 @@ export default function AppDroddown({ipMessage = -1}) {
     const [sizeLikes, setSizeLikes] = useState(0)
     const [sizeMessages, setSizeMessages] = useState(0)
     const navigate = useNavigate()
- 
+
     const onSettingsClickHandler = () => {
         setOpen(true);
     }
 
     const [notify, setNotify] = useState(sizeViews + sizeLikes + sizeMessages)
 
-    useEffect(()=>{
+    useEffect(() => {
         setNotify(sizeViews + sizeLikes + sizeMessages)
     }, [sizeViews, sizeLikes, sizeMessages])
-    
 
-    const getIdProfile = async() => {
+
+    const getIdProfile = async () => {
         const config = {
             headers: {
-              Authorization: `Bearer ${ctx.token}`,
+                Authorization: `Bearer ${ctx.token}`,
             },
-          };
+        };
 
-          try{
-            const res = await axios.get('http://localhost:3000/api/user/profile/getId/me',config)
-            const notifRes = await axios.get('http://localhost:3000/api/user/notifs',config)
+        try {
+            const res = await axios.get('http://localhost:3000/api/user/profile/getId/me', config)
+            const notifRes = await axios.get('http://localhost:3000/api/user/notifs', config)
             ctx.setNotifs(notifRes.data)
             setSizeViews(Object.entries(notifRes.data.views).filter(([key, value]) => value === true).length)
             setSizeLikes(Object.entries(notifRes.data.likes).filter(([key, value]) => value === true).length)
             setSizeMessages(Object.entries(notifRes.data.messages).filter(([key, value]) => value > 0).length)
             setIdProfile(res.data.id)
-          }
-          catch(e){
-          }
-
-
-
+        }
+        catch (e) {
+        }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getIdProfile()
     }, [])
 
-    const delNotif = async() =>{
+    const delNotif = async () => {
         const config = {
-          headers: {
-            Authorization: `Bearer ${ctx.token}`,
-          },
+            headers: {
+                Authorization: `Bearer ${ctx.token}`,
+            },
         };
-        const res = await axios.put(`http://localhost:3000/api/user/notifs/del/messages/${ipMessage}`,{},config);
-      }
+        try {
+            const res = await axios.put(`http://localhost:3000/api/user/notifs/del/messages/${ipMessage}`, {}, config);
+        } catch (e) {}
+    }
 
     useEffect(() => {
         if (!idProfile) return;
 
         if (!socket.connected) {
-         socket.connect();
+            socket.connect();
         }
-        function viewEnter({from}){
+        function viewEnter({ from }) {
             const audio = new Audio(soundFile);
             audio.play();
-            ctx.setNotifs({"views":{...ctx.notifs.views, from : true},"messages":{...ctx.notifs.messages},"likes":{...ctx.notifs.likes}})
+            ctx.setNotifs({ "views": { ...ctx.notifs.views, from: true }, "messages": { ...ctx.notifs.messages }, "likes": { ...ctx.notifs.likes } })
             setSizeViews(prev => prev + 1)
         }
 
-        function likeEnter({from}){
+        function likeEnter({ from }) {
             const audio = new Audio(soundFile);
             audio.play();
-            ctx.setNotifs({"likes":{...ctx.notifs.likes, from : true},"messages":{...ctx.notifs.messages},"views":{...ctx.notifs.views}})
+            ctx.setNotifs({ "likes": { ...ctx.notifs.likes, from: true }, "messages": { ...ctx.notifs.messages }, "views": { ...ctx.notifs.views } })
             setSizeLikes(prev => prev + 1)
         }
 
-        function messagesEnter({from}){
+        function messagesEnter({ from }) {
             const audio = new Audio(soundFile);
             audio.play();
-            if (from != ipMessage){
-                ctx.setNotifs({"likes":{...ctx.notifs.likes},"messages":{...ctx.notifs.messages, from : (ctx.notifs.messages[from]?ctx.notifs['messages'][from]+1:1) },"views":{...ctx.notifs.views}})
+            if (from != ipMessage) {
+                ctx.setNotifs({ "likes": { ...ctx.notifs.likes }, "messages": { ...ctx.notifs.messages, from: (ctx.notifs.messages[from] ? ctx.notifs['messages'][from] + 1 : 1) }, "views": { ...ctx.notifs.views } })
                 setSizeMessages(prev => prev + 1)
             }
-            else{
+            else {
                 delNotif();
             }
-           
+
         }
 
         socket.on(`view${idProfile}`, viewEnter)
-        socket.on(`like${idProfile}`,likeEnter)
+        socket.on(`like${idProfile}`, likeEnter)
         socket.on(`messages${idProfile}`, messagesEnter)
-        socket.on(`match${idProfile}`,messagesEnter)
+        socket.on(`match${idProfile}`, messagesEnter)
 
         return () => {
-          socket.off(`likes${idProfile}`)
-          socket.off(`view${idProfile}`)
-          socket.off(`messages${idProfile}`)
-          socket.off(`match${idProfile}`)
+            socket.off(`likes${idProfile}`)
+            socket.off(`view${idProfile}`)
+            socket.off(`messages${idProfile}`)
+            socket.off(`match${idProfile}`)
         }
-      },[idProfile]) 
-    
-    const appDropddownItems = useMemo(()=>[
+    }, [idProfile])
+
+    const appDropddownItems = useMemo(() => [
         {
             "Mon Profil": {
-                onClick: () => {navigate(`/profile/${idProfile}`)},
+                onClick: () => { navigate(`/profile/${idProfile}`) },
                 icon: <AccountCircle sx={{ color: iconColor }} />,
                 notifs: 0
             },
             "Feed": {
-                onClick: () => {navigate(`/feed`)},
+                onClick: () => { navigate(`/feed`) },
                 icon: <Group sx={{ color: iconColor }} />,
                 notifs: 0
             },
             "Vues": {
-                onClick: () => {navigate(`/feedViews`)},
+                onClick: () => { navigate(`/feedViews`) },
                 icon: <RemoveRedEye sx={{ color: iconColor }} />,
                 notifs: sizeViews
             },
             "Likes": {
-                onClick: () => { navigate(`/feedLikes`)},
+                onClick: () => { navigate(`/feedLikes`) },
                 icon: <Favorite sx={{ color: iconColor }} />,
                 notifs: sizeLikes
             },
             "Messages": {
-                onClick: () => {navigate(`/chat`)},
+                onClick: () => { navigate(`/chat`) },
                 icon: <Chat sx={{ color: iconColor }} />,
                 notifs: sizeMessages
             },
             "Historique": {
-                onClick: () => {navigate(`/feedHistorics`)},
+                onClick: () => { navigate(`/feedHistorics`) },
                 icon: <History sx={{ color: iconColor }} />,
                 notifs: 0
             }
@@ -153,14 +152,16 @@ export default function AppDroddown({ipMessage = -1}) {
                 notifs: 0
             },
             "Déconnexion": {
-                onClick: async() => {
+                onClick: async () => {
                     const config = {
                         headers: {
-                          Authorization: `Bearer ${ctx.token}`,
+                            Authorization: `Bearer ${ctx.token}`,
                         },
-                      };
-                    await axios.put(`http://localhost:3000/api/user/connexion/me/off`,{},config);
-                    ctx.logout()
+                    };
+                    try {
+                        await axios.put(`http://localhost:3000/api/user/connexion/me/off`, {}, config);
+                        ctx.logout()
+                    } catch (e) {}
                 },
                 icon: <Logout sx={{ color: iconColor }} />,
                 notifs: 0

@@ -29,15 +29,15 @@ function Feed() {
   const getAllProfileForFeed = async () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+        Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête d'autorisation
       },
     };
     try {
-      const res = await axios.get(`http://localhost:3000/api/user/profile`, config).then((response) => response.data);
-      const tags = await axios.get(`http://localhost:3000/api/user/profile/me`, config).then((response) => response.data);
-      setMyTags(tags.tags.toLowerCase().split(','))
-      const myFilterTags = tags.filtertags.length ? tags.filtertags?.toLowerCase().split(',') : [];
-      setAllProfile(res.result
+      const res = await axios.get(`http://localhost:3000/api/user/profile`, config);
+      const tags = await axios.get(`http://localhost:3000/api/user/profile/me`, config);
+      setMyTags(tags.data.tags.toLowerCase().split(','))
+      const myFilterTags = tags.data.filtertags.length ? tags.data.filtertags?.toLowerCase().split(',') : [];
+      setAllProfile(res.data.result
         .filter(elem => filterCommonTags(myTags, elem.tags.split(','), 0)) // TODO : Keep this one ? or Only fiteredTags ?
         .filter(elem => filterCommonTags(myFilterTags, elem.tags.split(','), myFilterTags.length))
         .map(elem => {
@@ -56,15 +56,15 @@ function Feed() {
   const getUserConnexion = async () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+        Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête d'autorisation
       },
     };
     try {
-      const res = await axios.get(`http://localhost:3000/api/user/connexion`, config).then((response) => response.data);
+      const res = await axios.get(`http://localhost:3000/api/user/connexion`, config);
       await axios.put(`http://localhost:3000/api/user/connexion/me/on`, {}, config);
       setIsConnexionSet(true)
 
-      setAllConnexion(res)
+      setAllConnexion(res.data)
     } catch (e) {
 
     }

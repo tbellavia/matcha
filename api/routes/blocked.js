@@ -76,8 +76,8 @@ router.post("/me/report/:target", checkTokenMiddleware, checkProfileCreatedMiddl
         return res.status(400).json({ message: ERROR_BAD_TOKEN })
     }
 
-    // const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"];
-    const recipients = ["mainhivvt@gmail.com"]; // TODO Ajouter mai nhi
+    const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"];
+    // const recipients = ["mainhivvt@gmail.com"]; // TODO Ajouter eithan
 
     recipients.forEach(recipient => {
         const mailOptions = {

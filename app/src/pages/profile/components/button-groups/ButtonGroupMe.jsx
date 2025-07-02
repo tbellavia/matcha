@@ -1,6 +1,6 @@
 import Button from "../../../../components/ui/button/Button";
 import styles from "../../Profile.module.scss";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import React, { useContext } from "react";
 import AppContext from "../../../../store/AppContext";
@@ -8,7 +8,7 @@ import AppContext from "../../../../store/AppContext";
 function ButtonGroupMe() {
     const navigate = useNavigate()
     const ctx = useContext(AppContext);
-    
+
     const onModifClicked = () => {
         // TODO: Manage error
 
@@ -17,15 +17,17 @@ function ButtonGroupMe() {
     }
 
 
-    const onDelProfilClicked = async() => {
-        await axios.delete(`http://localhost:3000/api/user/me`,{
-            headers: {
-                Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
-              },
-            data: {
-            }
-          });
-        ctx.logout()
+    const onDelProfilClicked = async () => {
+        try {
+            await axios.delete(`http://localhost:3000/api/user/me`, {
+                headers: {
+                    Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête d'autorisation
+                },
+                data: {
+                }
+            });
+            ctx.logout()
+        } catch (e) {}
     }
 
     return (
@@ -35,7 +37,7 @@ function ButtonGroupMe() {
                 variant="regular"
                 className={styles["button"]}
                 onClick={onModifClicked}>
-                
+
                 modifier
             </Button>
             <Button

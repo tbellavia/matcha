@@ -66,14 +66,14 @@ function UpdatePassword() {
                     passWord: password,
                 });
                 if (response.data.isPwUpdate == true){
-                    alert("Votre mot de passe a ete mit a jour");
+                    alert("Votre mot de passe a ete mis a jour");
                     navigate("/login");
                 }
                 else{
-                    alert("Imposible de mettre a jour ce mot de passe");
+                    alert("Impossible de mettre a jour ce mot de passe");
                 }
             } catch (e) {
-                errManager.addNetworkError(e.response.data.message);
+                // errManager.addNetworkError(e.response.data.message); // TODO
             }
         }
     }

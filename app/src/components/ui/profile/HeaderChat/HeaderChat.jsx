@@ -20,11 +20,13 @@ function HeaderChat({profileId = -1}) {
     const getAllChatProfile = async() =>{
         const config = {
           headers: {
-            Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+            Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête d'autorisation
           },
         };
-        const res = await axios.get(`http://localhost:3000/api/user/profile/${profileId}`,config).then((response) => response.data);
-        setInfos(res.result)
+        try {
+            const res = await axios.get(`http://localhost:3000/api/user/profile/${profileId}`,config);
+            setInfos(res.data.result)
+        } catch (e) {}
     }
 
     useEffect(()=>{

@@ -11,9 +11,9 @@ import axios from "axios";
 
 function InputTagList({
     initial = [],
-    suggest = [], 
-    onChange = () => {},
-    onBlur = () => {}
+    suggest = [],
+    onChange = () => { },
+    onBlur = () => { }
 }) {
     const [suggestedTags, setSuggestedTags] = useState(suggest);
     const [tagList, setTagList] = useState(removeEmptyString(initial));
@@ -46,20 +46,23 @@ function InputTagList({
     }, [tagList])
 
     const valideValue = async value => {
-        if(tagList.indexOf(value) === -1){
-            setTagList([...tagList,value])
-            if (suggestedTags.indexOf(value) === -1){
+        if (tagList.indexOf(value) === -1) {
+            setTagList([...tagList, value])
+            if (suggestedTags.indexOf(value) === -1) {
                 const config = {
                     headers: {
-                      Authorization: `Bearer ${ctx.token}`, // ajoute le jeton d'authentification dans l'en-tête d'autorisation
+                        Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête d'autorisation
                     },
-                  };
-                const response = await axios.post("http://localhost:3000/api/user/profile/tag", {newTag: newTag,}, config);
+                };
+                try {
+                    const response = await axios.post("http://localhost:3000/api/user/profile/tag", { newTag: newTag, }, config);
+                } catch (e) {}
             }
-        }   
-        if(suggestedTags.indexOf(value) !== -1){
+        }
+        if (suggestedTags.indexOf(value) !== -1) {
             setSuggestedTags(prevSuggestedTags => prevSuggestedTags.filter(tag => tag !== value));
-            setAlreadyUse([...suggestAlreadyUse, value])}
+            setAlreadyUse([...suggestAlreadyUse, value])
+        }
 
 
         setNewTag("")
@@ -67,7 +70,7 @@ function InputTagList({
 
     const onDeleteHandler = (value) => {
         setTagList(prevTagList => prevTagList.filter(tag => tag !== value));
-        if(suggestAlreadyUse.indexOf(value) !== -1){
+        if (suggestAlreadyUse.indexOf(value) !== -1) {
             setAlreadyUse(prevSuggestedTags => prevSuggestedTags.filter(tag => tag !== value));
             setSuggestedTags([...suggestedTags, value])
         }
@@ -76,7 +79,7 @@ function InputTagList({
     return (
         <div className={styles["input-tag-list"]}>
             <div className={styles["tag-label-container"]}>
-                <Label htmlFor={tagsId} label="Tags"/>
+                <Label htmlFor={tagsId} label="Tags" />
             </div>
             <div className={styles["tags-container"]}>
                 <ul className={styles["tags"]}>

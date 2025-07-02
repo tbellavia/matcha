@@ -1,4 +1,4 @@
-import { useRef, useState , useContext } from "react";
+import { useRef, useState, useContext } from "react";
 import Background from "../../components/ui/background/Background";
 import GenericPage from "../page/GenericPage";
 import Input from "../../components/ui/input/Input";
@@ -30,7 +30,7 @@ function Login() {
     const onMailHandler = (value) => {
         setEmail(value);
     }
-    
+
     const onMailValidate = (value) => {
         if (!validateEmail(value)) {
             errManager.addInputError(ERROR_MAIL, emailRef);
@@ -54,7 +54,7 @@ function Login() {
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
-        if (errManager.hasInputErrors()){
+        if (errManager.hasInputErrors()) {
             errManager.focusOnError();
         }
         else {
@@ -64,7 +64,7 @@ function Login() {
                     passWord: password,
                 });
                 const token = response.data.access_token;
-                
+
                 ctx.setToken(response.data.access_token);
                 if (hasCreatedProfile(token)) {
                     navigate("/feed");
@@ -78,27 +78,30 @@ function Login() {
         }
     }
 
-    const sendOtp = async() => {
-        if (email) {
-            const response = await axios.post("http://localhost:3000/api/user/newPassword", {
-                usermail: email
-            });
+    const sendOtp = async () => {
+        try {
+            if (email) {
+                const response = await axios.post("http://localhost:3000/api/user/newPassword", {
+                    usermail: email
+                });
 
-            if(response.data.isMailSent === true){
-                alert("Un mail pour réinitialiser votre mot de passe vous a été envoyé.")
-            }else{
-                alert("Une erreur bloque la réinitialisation de votre mot de passe")
+                if (response.data.isMailSent === true) {
+                    alert("Un mail pour réinitialiser votre mot de passe vous a été envoyé.")
+                } else {
+                    alert("Une erreur bloque la réinitialisation de votre mot de passe")
+                }
+            } else {
+                alert("Veuillez entrer votre email");
             }
-        } else {
-            alert("Veuillez entrer votre email");
-        }} 
+        } catch (e) { }
+    }
 
     let errorAlert;
 
     if (errManager.hasErrors()) {
         errorAlert = (
             <Alert>
-                <p>{ errManager.getFirstError() }</p>
+                <p>{errManager.getFirstError()}</p>
             </Alert>
         )
     }
@@ -115,7 +118,7 @@ function Login() {
                         onBlur={onMailValidate}
                         ref={emailRef}
                     />
-                    
+
                     <Input
                         label="mot de passe"
                         type="password"
@@ -129,7 +132,7 @@ function Login() {
                     </a>
                     {errorAlert}
                 </Form>
-                
+
             </Background>
         </GenericPage>
     );
