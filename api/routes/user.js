@@ -31,13 +31,13 @@ router.post('/signup', async (req, res) => {
     // Pas d'information à traiter
     const lowerMail = req.body.usermail.toLowerCase();
     if (!lowerMail || !req.body.passWord) {
-        return res.status(400).json({ message: ERROR_INVALID_LOGIN })
+        return res.status(300).json({ message: ERROR_INVALID_LOGIN })
     }
     if (!validateEmail(lowerMail)) {
-        return res.status(400).json({ message: ERROR_MAIL })
+        return res.status(300).json({ message: ERROR_MAIL })
     }
     if (!validatePassword(req.body.passWord)) {
-        return res.status(400).json({ message: ERROR_PASSWORD })
+        return res.status(300).json({ message: ERROR_PASSWORD })
     }
     const sql = "SELECT email FROM userlogin WHERE email = $1"
     const hashedPassword = crypto.createHash('sha256').update(req.body.passWord).digest('hex');
