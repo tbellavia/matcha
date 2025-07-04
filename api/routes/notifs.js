@@ -10,7 +10,7 @@ const { getProfileId } = require("../common/route_utils");
 router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
     sql = "SELECT notifsviews, notifslikes,	notifsmessages \
@@ -19,7 +19,7 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req,
     const arg = [idProfile]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         // return res.json({ "views": JSON.parse(result.rows[0].notifsmessages)})
         return res.json({ "views": JSON.parse(result.rows[0].notifsviews),
@@ -31,7 +31,7 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req,
 router.get("/views", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
     sql = "SELECT notifsviews \
@@ -40,7 +40,7 @@ router.get("/views", checkTokenMiddleware, checkProfileCreatedMiddleware, async 
     const arg = [idProfile]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         // return res.json({ "views": JSON.parse(result.rows[0].notifsmessages)})
         return res.json(JSON.parse(result.rows[0].notifsviews))
@@ -50,7 +50,7 @@ router.get("/views", checkTokenMiddleware, checkProfileCreatedMiddleware, async 
 router.get("/likes", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
     sql = "SELECT notifslikes \
@@ -59,7 +59,7 @@ router.get("/likes", checkTokenMiddleware, checkProfileCreatedMiddleware, async 
     const arg = [idProfile]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         // return res.json({ "views": JSON.parse(result.rows[0].notifsmessages)})
         return res.json(JSON.parse(result.rows[0].notifslikes))
@@ -70,14 +70,14 @@ router.get("/likes", checkTokenMiddleware, checkProfileCreatedMiddleware, async 
 router.put("/del/views", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
     sql = "UPDATE userprofile SET notifsviews='{}' WHERE id = $1"
     const arg = [idProfile]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         // return res.json({ "views": JSON.parse(result.rows[0].notifsmessages)})
         return res.json({ "message": "views delete"})
@@ -87,14 +87,14 @@ router.put("/del/views", checkTokenMiddleware, checkProfileCreatedMiddleware, as
 router.put("/del/likes", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
     sql = "UPDATE userprofile SET notifslikes='{}' WHERE id = $1"
     const arg = [idProfile]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         // return res.json({ "views": JSON.parse(result.rows[0].notifsmessages)})
         return res.json({ "message": "likes delete"})
@@ -104,7 +104,7 @@ router.put("/del/likes", checkTokenMiddleware, checkProfileCreatedMiddleware, as
 router.put("/del/messages/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
     sql = "SELECT notifsmessages \
     FROM userprofile \
@@ -112,7 +112,7 @@ router.put("/del/messages/:target", checkTokenMiddleware, checkProfileCreatedMid
     const arg = [idProfile]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         let message = JSON.parse(result.rows[0].notifsmessages)
 
@@ -122,7 +122,7 @@ router.put("/del/messages/:target", checkTokenMiddleware, checkProfileCreatedMid
         const arg2 = [idProfile,JSON.stringify(message)]
         pool.query(sql2, arg2, (err2, result2) => {
             if (err2) {
-                return res.status(400).json({ message: err.message })
+                return res.status(300).json({ message: err.message })
             }
             return res.json({ "message": "message delete"})
         })
@@ -132,7 +132,7 @@ router.put("/del/messages/:target", checkTokenMiddleware, checkProfileCreatedMid
 router.put("/add/views/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
     sql = "SELECT notifsviews \
     FROM userprofile \
@@ -140,7 +140,7 @@ router.put("/add/views/:target", checkTokenMiddleware, checkProfileCreatedMiddle
     const arg = [idProfile]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         let views = JSON.parse(result.rows[0].notifsviews)
 
@@ -150,7 +150,7 @@ router.put("/add/views/:target", checkTokenMiddleware, checkProfileCreatedMiddle
         const arg2 = [idProfile,JSON.stringify(views)]
         pool.query(sql2, arg2, (err2, result2) => {
             if (err2) {
-                return res.status(400).json({ message: err.message })
+                return res.status(300).json({ message: err.message })
             }
             return res.json({ "views": "views ajouté"})
         })
@@ -160,7 +160,7 @@ router.put("/add/views/:target", checkTokenMiddleware, checkProfileCreatedMiddle
 router.put("/add/likes/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
     sql = "SELECT notifslikes \
     FROM userprofile \
@@ -168,7 +168,7 @@ router.put("/add/likes/:target", checkTokenMiddleware, checkProfileCreatedMiddle
     const arg = [idProfile]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         let likes = JSON.parse(result.rows[0].notifslikes)
 
@@ -178,7 +178,7 @@ router.put("/add/likes/:target", checkTokenMiddleware, checkProfileCreatedMiddle
         const arg2 = [idProfile,JSON.stringify(likes)]
         pool.query(sql2, arg2, (err2, result2) => {
             if (err2) {
-                return res.status(400).json({ message: err.message })
+                return res.status(300).json({ message: err.message })
             }
             return res.json({ "likes": "likes ajouté"})
         })
@@ -188,7 +188,7 @@ router.put("/add/likes/:target", checkTokenMiddleware, checkProfileCreatedMiddle
 router.put("/add/messages/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
     sql = "SELECT notifsmessages \
     FROM userprofile \
@@ -196,7 +196,7 @@ router.put("/add/messages/:target", checkTokenMiddleware, checkProfileCreatedMid
     const arg = [idProfile]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         let message = JSON.parse(result.rows[0].notifsmessages)
 
@@ -206,7 +206,7 @@ router.put("/add/messages/:target", checkTokenMiddleware, checkProfileCreatedMid
         const arg2 = [idProfile,JSON.stringify(message)]
         pool.query(sql2, arg2, (err2, result2) => {
             if (err2) {
-                return res.status(400).json({ message: err.message })
+                return res.status(300).json({ message: err.message })
             }
             return res.json({ "message": "message ajouté"})
         })

@@ -19,7 +19,7 @@ router.post(
         ";
         pool.query(userLikeSql, [profileID, req.params.target], (err, userLikeSql) => {
             if (err) {
-                return res.status(400).json
+                return res.status(300).json
             }
         });
     }

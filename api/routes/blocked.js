@@ -24,7 +24,7 @@ router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, 
     console.log("profile blocked")
     const idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
     const idChat = await getChatId(idProfile, req.params.target)
@@ -34,7 +34,7 @@ router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, 
         const arg = [idChat]
         pool.query(sql, arg, (err, result) => {
             if (err) {
-                return res.status(400).json({ message: err.message })
+                return res.status(300).json({ message: err.message })
             }
         })
 
@@ -42,7 +42,7 @@ router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, 
         const arg2 = [idChat]
         pool.query(sql2, arg2, (err2, result2) => {
             if (err2) {
-                return res.status(400).json({ message: err2.message })
+                return res.status(300).json({ message: err2.message })
             }
         })
     }
@@ -51,7 +51,7 @@ router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, 
     const arg3 = [idProfile, req.params.target]
     pool.query(sql3, arg3, (err3, result3) => {
         if (err3) {
-            return res.status(400).json({ message: err3.message })
+            return res.status(300).json({ message: err3.message })
         }
     })
 
@@ -60,7 +60,7 @@ router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, 
     const arg4 = [idProfile, req.params.target]
     pool.query(sql4, arg4, (err4, result4) => {
         if (err4) {
-            return res.status(400).json({ message: err4.message })
+            return res.status(300).json({ message: err4.message })
         }
     })
     delNotifToFrom(idProfile, req.params.target)
@@ -75,7 +75,7 @@ router.post("/me/report/:target", checkTokenMiddleware, checkProfileCreatedMiddl
     console.log("reposrt infos :",infoUser1)
     const infoUser2 = await getProfileInfos(req.params.target)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
     const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"];

@@ -20,7 +20,7 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) 
 router.put("/me/on", checkTokenMiddleware, checkProfileCreatedMiddleware, async(req, res) => {
     const profileId = await getProfileId(res.locals.id_user)
     if (profileId == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
     userConnected[profileId] = true
     emitConnexion(profileId, true)
@@ -42,7 +42,7 @@ router.put("/me/off", checkTokenMiddleware, checkProfileCreatedMiddleware, async
     // const dateString = dateLocaleParis.toString();
 
     if (profileId == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
     userConnected[profileId] = dateLocaleParis
 

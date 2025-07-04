@@ -10,7 +10,7 @@ const { getProfileId } = require("../common/route_utils");
 router.put("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     const idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
     const sql = "UPDATE userprofile SET agemin = $1, agemax = $2, distmax = $3, preference = $4,\
@@ -27,7 +27,7 @@ router.put("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, async (re
     ]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         return res.json({ "message": "filtre modifier" })
     })
@@ -36,14 +36,14 @@ router.put("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, async (re
 router.get("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     const idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
     
     const sql = "SELECT agemin, agemax, distmax, minrating, filtertags, tri, preference FROM userprofile WHERE id = $1";
     const arg = [idProfile]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         result.rows[0].filtertags = result.rows[0].filtertags.split(',')
         return res.json({ "id": idProfile, "filter":result.rows[0] })
