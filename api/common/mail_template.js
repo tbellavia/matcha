@@ -60,4 +60,4 @@ function HTML_TEMPLATE_REPORT(user1, user2) {
 }
 
 
-module.exports = { HTML_TEMPLATE_REPORT };
+module.exports = { HTML_TEMPLATE_REPORT, HTML_TEMPLATE};

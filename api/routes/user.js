@@ -16,6 +16,7 @@ const { checkTokenMiddleware } = require("../middleware/check-token-middleware")
 const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
 const crypto = require('crypto');
 const { getProfileId } = require("../common/route_utils");
+const { HTML_TEMPLATE_REPORT, HTML_TEMPLATE } = require("../common/mail_template");
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -64,7 +65,8 @@ router.post('/signup', async (req, res) => {
                     from: process.env.MAIL,
                     to: recipient,
                     subject: "Matcha Authentification",
-                    text: "Lien d'activation : http://localhost:3000/api/user/validation/" + randString
+                    text: "Lien d'activation : http://localhost:3000/api/user/validation/" + randString,
+                    html: HTML_TEMPLATE("Validation de votre mail", "Lien d'activation : http://localhost:3000/api/user/validation/" + randString)
                 }
     
                 transporter.sendMail(mailOptions, (error, info) => {
@@ -158,7 +160,10 @@ router.post('/newPassword', async (req, res) => {
                 from: process.env.MAIL,
                 to: recipient,
                 subject: "Matcha changement de mot de passe",
-                text: "Lien de changement de mot de pass : http://localhost:9000/updatePassword/" + randString
+                text: "Lien de changement de mot de passe : http://localhost:9000/updatePassword/" + randString,
+                html: HTML_TEMPLATE("Nouveau mot de passe", "Lien de changement de mot de passe : http://localhost:9000/updatePassword/" + randString)
+                
+                
             }
 
             transporter.sendMail(mailOptions, (error, info) => {
@@ -271,7 +276,8 @@ router.post('/defNewMail',  checkTokenMiddleware, async (req, res) => {
                 from: process.env.MAIL,
                 to: recipient,
                 subject: "Matcha changement de mail",
-                text: "Lien de changement de mot de pass : http://localhost:3000/api/user/updateMail/" + randString
+                text: "Lien de changement de mail : http://localhost:3000/api/user/updateMail/" + randString,
+                html: HTML_TEMPLATE("Nouveau mail", "Lien de changement de mail : http://localhost:3000/api/user/updateMail/" + randString)
             }
 
             transporter.sendMail(mailOptions, (error, info) => {
