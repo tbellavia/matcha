@@ -29,7 +29,7 @@ export default function useFetch(unauthorizedFallback = "/login"){
                 return navigate(unauthorizedFallback);
             }
             if(e.response && (e.response.data.message === ERROR_PROFILE)){
-                return navigate("profile/create");
+                return navigate("/profile/create");
             }
         }
     }

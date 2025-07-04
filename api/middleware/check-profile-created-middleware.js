@@ -1,3 +1,5 @@
+const { ERROR_PROFILE } = require("../common/messages")
+
 const checkProfileCreatedMiddleware = (req, res, next) => {
     if (res.locals.profile_created) {
         return next()
