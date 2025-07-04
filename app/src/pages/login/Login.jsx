@@ -55,7 +55,6 @@ function Login() {
     const onSubmitHandler = async (e) => {
         e.preventDefault();
         if (errManager.hasInputErrors()) {
-            errManager.focusOnError();
         }
         else {
             try {
@@ -73,7 +72,6 @@ function Login() {
                 }
             } catch (e) {
                 errManager.addNetworkError(e.response.data.message);
-                emailRef.current.focus();
             }
         }
     }

@@ -102,7 +102,7 @@ router.post('/login', async (req, res) => {
 
     const lowerMail = req.body.usermail.toLowerCase();
     if (!lowerMail || !req.body.passWord) {
-        return res.status(400).json({ message: ERROR_INVALID_LOGIN })
+        return res.status(300).json({ message: ERROR_INVALID_LOGIN })
     }
 
     const sql = "SELECT id, id_user_profile FROM userlogin WHERE email = $1 AND passw = $2 AND active = TRUE"
@@ -113,7 +113,7 @@ router.post('/login', async (req, res) => {
         console.log(process.env.POSTGRES_HOST)
         console.log(err);
         if (err || result.rowCount == 0) {
-            return res.status(400).json({ message: ERROR_INVALID_LOGIN })
+            return res.status(300).json({ message: ERROR_INVALID_LOGIN })
         }
         console.log(`ID user profile : ${result.rows[0].id}`);
         const token = jwt.sign({
