@@ -17,12 +17,12 @@ router.post("/message/me/:target", checkTokenMiddleware, checkProfileCreatedMidd
     // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biography = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
     idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == null) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
     idChat = await getChatId(idProfile, req.params.target)
     if (idChat == null) {
-        return res.status(400).json({ message: ERROR_CHAT })
+        return res.status(300).json({ message: ERROR_CHAT })
     }
 
     const sql = "INSERT INTO message (id_chat, date_envoi, mess, userwrite) VALUES ($1, NOW(), $2, $3)";
@@ -30,7 +30,7 @@ router.post("/message/me/:target", checkTokenMiddleware, checkProfileCreatedMidd
     const arg = [idChat, req.body.message, idProfile]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         emitProfileMessage(req.params.target, idProfile, req.body.message)
         return res.json({ "message": "message ajouter" })
@@ -42,19 +42,19 @@ router.get("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, a
 
     idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
     idChat = await getChatId(idProfile, req.params.target)
     if (idChat == null) {
-        return res.status(400).json({ message: ERROR_CHAT })
+        return res.status(300).json({ message: ERROR_CHAT })
     }
 
     sql = "SELECT * FROM message WHERE id_chat = $1 ORDER BY date_envoi ASC"
     const arg = [idChat]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         return res.json({"chatId": idChat, "userId":idProfile,"result" : result.rows})
     })
@@ -64,19 +64,19 @@ router.delete("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware
 
     idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
     idChat = await getChatId(idProfile, req.params.target)
     if (idChat == null) {
-        return res.status(400).json({ message: ERROR_CHAT })
+        return res.status(300).json({ message: ERROR_CHAT })
     }
 
     sql = "DELETE FROM message WHERE message.id_chat = $1"
     const arg = [idChat]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
     })
 
@@ -84,7 +84,7 @@ router.delete("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware
     const arg2 = [idChat]
     pool.query(sql2, arg2, (err2, result2) => {
         if (err2) {
-            return res.status(400).json({ message: err2.message })
+            return res.status(300).json({ message: err2.message })
         }
     })
 
@@ -92,7 +92,7 @@ router.delete("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware
     const arg3 = [idProfile, req.params.target]
     pool.query(sql3, arg3, (err3, result3) => {
         if (err3) {
-            return res.status(400).json({ message: err3.message })
+            return res.status(300).json({ message: err3.message })
         }
     })
 
@@ -102,7 +102,7 @@ router.delete("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware
 router.get("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
     sql = "SELECT p.id AS idProfileUser, p.first_name, m.mess, p.photo1, c.id AS idChat , m.date_envoi \
@@ -123,7 +123,7 @@ router.get("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, async (re
     const arg = [idProfile]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         return res.json({ "result": result.rows })
     })
