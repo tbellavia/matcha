@@ -45,7 +45,8 @@ function Feed() {
             iduser: elem.id,
             name: elem.first_name,
             photo: elem.photo1,
-            tags: elem.tags
+            tags: elem.tags,
+            love: elem.love
           })
 
         }))

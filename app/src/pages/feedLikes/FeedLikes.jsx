@@ -28,7 +28,8 @@ function FeedLikes() {
         return ({
           iduser: elem.id,
           name: elem.first_name,
-          photo: elem.photo1
+          photo: elem.photo1,
+          love: elem.love
         })
 
       }))
@@ -38,7 +39,8 @@ function FeedLikes() {
         return ({
           iduser: elem.id,
           name: elem.first_name,
-          photo: elem.photo1
+          photo: elem.photo1,
+          love: elem.love
         })
 
       }))

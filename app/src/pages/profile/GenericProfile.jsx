@@ -1,4 +1,3 @@
-import { QueryBuilder, Favorite, HeartBroken } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import useFetch from "../../hooks/use-fetch";
@@ -12,15 +11,13 @@ import ButtonGroupFinally from "./components/button-groups/ButtonGroupFinally";
 import ButtonGroupWaiting from "./components/button-groups/ButtonGroupWaiting";
 import axios from "axios";
 import AppContext from "../../store/AppContext";
+import LoveState from "./components/button-groups/LoveState";
 
 const PROFILE_ME = "me";
 const PROFILE_ALREADY_UNLIKED = "alreadyUnliked";
 const PROFILE_ALREADY_LIKED = "alreadyLiked";
 const PROFILE_MATCH = "match";
 const PROFILE_BLOCKED = "blocked";
-
-const iconColor = "var(--color-light-8)";
-const loveIcons = [<QueryBuilder sx={{ color: iconColor }} />, <Favorite sx={{ color: iconColor }} />, <HeartBroken sx={{ color: iconColor }} />]
 
 function GenericProfile() {
     const { id } = useParams();
@@ -84,7 +81,7 @@ function GenericProfile() {
             <ProfileHeader menuOnly={isMe} />
             {!isBlocked &&
                 <main className={styles['profile-container']}>
-                    {loveIcons[loveState[0]]} {loveIcons[loveState[1]]}
+                    <div className={styles.loveStatus}>{!isMe && <LoveState love={loveState} className={styles.loveStatus} />}</div>
                     <ProfileInfos profileInfos={infos} isConnected={allConnexion[id]} />
                     <div className={styles['button-container']}>
                         {isMe && <ButtonGroupMe />}

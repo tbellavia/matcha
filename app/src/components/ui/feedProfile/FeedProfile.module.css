@@ -65,3 +65,14 @@
     left: 10px;
     text-align:center; 
     }
+
+.loveStatus {
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    left: 210px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+}
