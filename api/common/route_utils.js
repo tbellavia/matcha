@@ -106,6 +106,25 @@ async function creatNewChat(user1, user2) {
     }
 }
 
+async function getProfileInfos(id){
+    const sql = "SELECT userlogin.id_user_profile , userprofile.id , userlogin.email, userprofile.first_name , userprofile.last_name \
+    FROM userprofile\
+    INNER JOIN userlogin ON userlogin.id_user_profile=userprofile.id WHERE userlogin.id_user_profile=$1"
+    console.log("test")
+    try {
+        const res = await pool.query(sql, [id]);
+        console.log("looooog : ", res.rows)
+        if (res.rowCount < 1) {
+            return ({"id_user":"","mail":"","first_name":"","last_name":""});
+        }
+        return ({"id_user":res.rows[0].id,"mail":res.rows[0].email,"first_name":res.rows[0].first_name,"last_name":res.rows[0].last_name});
+    } catch (err) {
+        console.log("heeeere : ",err.message)
+        return ({"id_user":"","mail":"","first_name":"","last_name":""});
+    }
+
+}
+
 function getGenreStringToInt(genre) {
     const tabGenre = ["homme", "femme", "non binaire"]
 
@@ -353,5 +372,6 @@ module.exports = {
     addNotifMessages,
     delNotifMessages,
     delNotifToFrom,
-    loveStates
+    loveStates,
+    getProfileInfos
 }

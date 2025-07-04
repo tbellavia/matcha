@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db/db");
-const { getProfileId, getChatId, delNotifToFrom} = require("../common/route_utils");
+const { getProfileId, getChatId, delNotifToFrom, getProfileInfos} = require("../common/route_utils");
 const nodemailer = require("nodemailer");
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
 const { ERROR_CHAT, ERROR_BAD_TOKEN } = require("../common/messages");
+const { HTML_TEMPLATE_REPORT } = require("../common/mail_template");
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -18,8 +19,6 @@ const transporter = nodemailer.createTransport({
         pass: process.env.MAIL_PASSWORD
     }
 });
-
-
 
 router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     console.log("profile blocked")
@@ -72,6 +71,9 @@ router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, 
 
 router.post("/me/report/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     const idProfile = await getProfileId(res.locals.id_user)
+    const infoUser1 = await getProfileInfos(idProfile)
+    console.log("reposrt infos :",infoUser1)
+    const infoUser2 = await getProfileInfos(req.params.target)
     if (idProfile == undefined) {
         return res.status(400).json({ message: ERROR_BAD_TOKEN })
     }
@@ -84,7 +86,8 @@ router.post("/me/report/:target", checkTokenMiddleware, checkProfileCreatedMiddl
             from: process.env.MAIL,
             to: recipient,
             subject: "Matcha Report",
-            text: res.locals.id_user + " a signalé " + req.params.target
+            text: res.locals.id_user + " a signalé " + req.params.target,
+            html: HTML_TEMPLATE_REPORT(infoUser1, infoUser2)
         }
 
         transporter.sendMail(mailOptions, (error, info) => {

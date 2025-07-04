@@ -71,6 +71,7 @@ function Login() {
                     navigate("/profile/create");
                 }
             } catch (e) {
+                console.log("test")
                 errManager.addNetworkError(e.response.data.message);
             }
         }
