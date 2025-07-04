@@ -5,13 +5,13 @@ const pool = require("../db/db");
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
-const { getProfileId, creatNewChat, isUserBlock } = require("../common/route_utils");
+const { getProfileId, creatNewChat, isUserBlock, loveStates } = require("../common/route_utils");
 const { emitProfileMatch, emitProfileLike } = require("../socket/message");
 
 router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     const idProfile = await getProfileId(res.locals.id_user)
     if (idProfile == undefined) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
     sql = "SELECT p.id, p.first_name, p.photo1 \
@@ -21,12 +21,16 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req,
     const arg = [idProfile]
     pool.query(sql, arg, async(err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         if (result.rows){
             const rows = result.rows;
             const blockFlags = await Promise.all(rows.map(row => isUserBlock(row.id, idProfile)));
             result.rows = rows.filter((_, i) => !blockFlags[i]);
+            result.rows = await Promise.all(result.rows.map(async (row) => {
+                row.love = await loveStates(idProfile, row.id);
+                return row;
+            }));
             return res.json({ "result": result.rows })
         }
         return res.json({ "result": [] })
@@ -39,21 +43,21 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
     const idProfile = await getProfileId(res.locals.id_user)
 
     if (idProfile == null) {
-        return res.status(400).json({ message: ERROR_BAD_TOKEN })
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
     const sql2 = "SELECT id, user1like, user2like, user1 FROM liketable WHERE ((user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1))"
     pool.query(sql2, [idProfile, req.params.target], async (err2, result2) => {
 
         if (err2) {
-            return res.status(400).json({ message: err2.message })
+            return res.status(300).json({ message: err2.message })
         }
         else if (result2.rowCount < 1) {
             const sql3 = "INSERT INTO liketable (user1, user2, user1like) VALUES ($1, $2, 'TRUE')"
             pool.query(sql3, [idProfile, req.params.target], (err3, result3) => {
 
                 if (err3) {
-                    return res.status(400).json({ message: err3.message })
+                    return res.status(300).json({ message: err3.message })
                 }
             emitProfileLike(req.params.target, idProfile)
             console.log("profile liker")
@@ -66,7 +70,7 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                 const sql4 = "UPDATE liketable SET user1like = 'TRUE' WHERE id = $1"
                 pool.query(sql4, [idLike], (err4, result4) => {
                     if (err4) {
-                        return res.status(400).json({ message: err4.message })
+                        return res.status(300).json({ message: err4.message })
                     }
                 })
                 if (result2.rows[0].user2like == true) {
@@ -84,7 +88,7 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                 pool.query(sql4, [idLike], (err4, result4) => {
 
                     if (err4) {
-                        return res.status(400).json({ message: err4.message })
+                        return res.status(300).json({ message: err4.message })
                     }
                 })
 

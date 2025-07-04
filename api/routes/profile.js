@@ -1,43 +1,43 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db/db");
-const { getPrefTabToInt, 
-        getSaveNewTags, 
-        getPhotos, 
-        getGenreStringToInt , 
-        saveNewTags, 
-        isAlreadyAnswered, 
-        isUserBlock,
-        getProfileId,
-        loveStates} = require("../common/route_utils");
+const { getPrefTabToInt,
+    getSaveNewTags,
+    getPhotos,
+    getGenreStringToInt,
+    saveNewTags,
+    isAlreadyAnswered,
+    isUserBlock,
+    getProfileId,
+    loveStates } = require("../common/route_utils");
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
-const {checkProfileCreatedMiddleware, checkProfileNotCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
+const { checkProfileCreatedMiddleware, checkProfileNotCreatedMiddleware } = require("../middleware/check-profile-created-middleware");
 
 router.get("/tags", checkTokenMiddleware, (req, res) => {
     const sql = "SELECT tag FROM tag"
     pool.query(sql, [], (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         return res.json(result.rows.map((row) => row.tag))
     })
 
 })
 
-router.post("/tag",checkTokenMiddleware, (req, res) => {
+router.post("/tag", checkTokenMiddleware, (req, res) => {
     console.log(req.body.newTag);
-    
+
     const sql = "INSERT INTO tag (tag) VALUES ($1) ";
     const arg = [
         req.body.newTag
     ]
-    
+
     pool.query(sql, arg, (err, result) => {
         if (err) {
             console.log(err)
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         return res.json({ "message": "nouveau tag cree" })
     })
@@ -48,20 +48,20 @@ router.get("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res
     pool.query(sql, [res.locals.id_user], (err, result) => {
 
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         return res.json(result.rows[0])
     })
 
 })
 
-router.get("/getId/me", checkTokenMiddleware, checkProfileCreatedMiddleware,async (req, res) => {
+router.get("/getId/me", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
 
     const profileId = await getProfileId(res.locals.id_user)
-    return res.json({"id":profileId})
+    return res.json({ "id": profileId })
 })
 
-router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async (req, res) => {
+router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
 
     const profileId = await getProfileId(res.locals.id_user)
 
@@ -73,18 +73,23 @@ router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async
         (COALESCE((SELECT COUNT(*) FROM views v WHERE v.id_user2 = $1), 1)+0.0000001)) AS rating \
         FROM userprofile WHERE id = $1"
     pool.query(sql, [profileId], async (err, result) => {
-        if(await isUserBlock(profileId, req.params.target)){
-            return res.json({"type":"blocked","result":[],
-            "me":{"photo":result.rows[0].photo1,
-                "first_name":result.rows[0].first_name, "last_name": result.rows[0].last_name}})
+        if (await isUserBlock(profileId, req.params.target)) {
+            return res.json({
+                "type": "blocked", "result": [],
+                "me": {
+                    "photo": result.rows[0].photo1,
+                    "first_name": result.rows[0].first_name, "last_name": result.rows[0].last_name
+                }
+            })
         }
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
-        if(profileId == req.params.target){
-            if(result.rows[0].tags){
-                result.rows[0].tags = result.rows[0].tags.split(",")}
-            return res.json({"type":"me", "result":result.rows[0]})
+        if (profileId == req.params.target) {
+            if (result.rows[0].tags) {
+                result.rows[0].tags = result.rows[0].tags.split(",")
+            }
+            return res.json({ "type": "me", "result": result.rows[0] })
         }
         const sql3 = "SELECT * , (DATE_PART('days', NOW() - birth) / 365) AS age, \
             6371 * 2 * ASIN(SQRT( \
@@ -95,28 +100,33 @@ router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware,async
             (((COALESCE((SELECT COUNT(*) FROM liketable l WHERE ((l.user1 = $1 AND l.user2like = TRUE) OR (l.user2 = $1 AND l.user1like = TRUE))), 0) * 1.0)) / \
             (COALESCE((SELECT COUNT(*) FROM views v WHERE v.id_user2 = $1), 1)+0.0000001)) AS rating \
             FROM userprofile WHERE id = $1"
-        pool.query(sql3, [req.params.target,result.rows[0].latitude,result.rows[0].longitude], async (err3, result3) => {
+        pool.query(sql3, [req.params.target, result.rows[0].latitude, result.rows[0].longitude], async (err3, result3) => {
             if (err3) {
-                return res.status(400).json({ message: err3.message })
+                return res.status(300).json({ message: err3.message })
             }
-            else if (result3.rowCount == 0){
-                return res.status(400).json({ message: "profile inexistant" })
+            else if (result3.rowCount == 0) {
+                return res.status(300).json({ message: "profile inexistant" })
             }
             // result3.rows[0].rating = await rating(req.params.target)
-            if(result3.rows[0].tags){
-                result3.rows[0].tags = result3.rows[0].tags.split(",")}
-            return res.json({"type":type,"result":result3.rows[0],"love":love,
-                "me":{"id":result.rows[0].id,"photo":result.rows[0].photo1,
-                    "first_name":result.rows[0].first_name, "last_name": result.rows[0].last_name}})
+            if (result3.rows[0].tags) {
+                result3.rows[0].tags = result3.rows[0].tags.split(",")
+            }
+            return res.json({
+                "type": type, "result": result3.rows[0], "love": love,
+                "me": {
+                    "id": result.rows[0].id, "photo": result.rows[0].photo1,
+                    "first_name": result.rows[0].first_name, "last_name": result.rows[0].last_name
+                }
+            })
         })
     })
 })
 
-router.post("/me",checkTokenMiddleware, checkProfileNotCreatedMiddleware, (req, res) => {
+router.post("/me", checkTokenMiddleware, checkProfileNotCreatedMiddleware, (req, res) => {
     let idMax = 0
     const genre = getGenreStringToInt(req.body.genre)
     const pref = getPrefTabToInt(req.body.preference)
-    
+
     const photos = getPhotos(req.body.photos)
     const sql = "INSERT INTO userprofile (first_name, last_name, birth, genre, preference, biography, tags, latitude, longitude, photo1, photo2, photo3, photo4, photo5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) ";
     const arg = [
@@ -135,19 +145,19 @@ router.post("/me",checkTokenMiddleware, checkProfileNotCreatedMiddleware, (req, 
         photos[3],
         photos[4]
     ]
-    
+
     pool.query(sql, arg, (err, result) => {
         saveNewTags(req.body.tags)
         if (err) {
             console.log(err)
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
 
         const sql2 = "SELECT MAX(id) AS id FROM userprofile";
         pool.query(sql2, [], (err2, result2) => {
 
             if (err2) {
-                return res.status(400).json({ message: err2.message })
+                return res.status(300).json({ message: err2.message })
             }
             // return res.json(result2)
             idMax = result2.rows[0].id
@@ -156,7 +166,7 @@ router.post("/me",checkTokenMiddleware, checkProfileNotCreatedMiddleware, (req, 
             pool.query(sql3, [idMax, res.locals.id_user], (err3, result3) => {
 
                 if (err3) {
-                    return res.status(400).json({ message: err3.message })
+                    return res.status(300).json({ message: err3.message })
                 }
                 // return res.json(result2)
                 return res.json({ "message": "profile cree" })
@@ -178,7 +188,7 @@ router.put("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res
     photos[0], photos[1], photos[2], photos[3], photos[4], res.locals.id_user, req.body.birth]
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         return res.json({ "message": "profile modifier" })
     })
@@ -190,12 +200,12 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req,
     const idProfile = await getProfileId(res.locals.id_user)
     pool.query(sql, arg, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
-        if (result.rowCount == 0) { 
+        if (result.rowCount == 0) {
             return res.json({ "message": "id non trouver" })
         }
-        const tri = ['distance ASC','age_sort ASC','rating DESC'][result.rows[0].tri]
+        const tri = ['distance ASC', 'age_sort ASC', 'rating DESC'][result.rows[0].tri]
 
 
         const sql2 = `SELECT subq.tags, subq.id, subq.photo1, subq.first_name, \
@@ -248,28 +258,35 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req,
         // const sql2 = "SELECT  FROM userprofile "
         // const sql2 =  "SELECT p.* FROM userprofile p WHERE NOT EXISTS (SELECT 1 FROM liketable l WHERE ($1 = l.user1 AND l.user2 = p.id) OR ($1 = l.user2 AND l.user1 = p.id)) AND $1 != p.id "
         // const sql2 =  "SELECT p.* FROM userprofile p INNER JOIN liketable l ON p.id = l.user1 OR p.id = l.user2 WHERE ($1 = l.user1 OR $1 = l.user2) AND $1 != p.id"
-        const arg2 = [result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax, req.query.limit,result.rows[0].minrating, result.rows[0].birth]
-        pool.query(sql2, arg2, async(err2, result2) => {
+        const arg2 = [result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax, req.query.limit, result.rows[0].minrating, result.rows[0].birth]
+        pool.query(sql2, arg2, async (err2, result2) => {
             // pool.query(sql2, [] , (err2, result2) => {
             if (err2) {
-                return res.status(400).json({error:[result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax, req.query.limit, result.rows[0].minrating], message: err2.message })
+                return res.status(300).json({ error: [result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax, req.query.limit, result.rows[0].minrating], message: err2.message })
             }
-            if (result2.rows){
+            if (result2.rows) {
                 const rows = result2.rows;
                 const blockFlags = await Promise.all(rows.map(row => isUserBlock(row.id, idProfile)));
                 result2.rows = rows.filter((_, i) => !blockFlags[i]);
+                result2.rows = await Promise.all(result2.rows.map(async (row) => {
+                    row.love = await loveStates(idProfile, row.id);
+                    return row;
+                }));
             }
-            if(result.rows[0].filtertags){
+            if (result.rows[0].filtertags) {
                 const lstTags = result.rows[0].filtertags.split(",")
-                return res.json({ "result": result2.rows.filter(x => {
-                    let tags = []
-                    if (x.tags){
-                        tags = x.tags.split(",");
-                    }
+                return res.json({
+                    "result": result2.rows.filter(x => {
+                        let tags = []
+                        if (x.tags) {
+                            tags = x.tags.split(",");
+                        }
 
-                    return lstTags.every(elem => tags.includes(elem))})})
+                        return lstTags.every(elem => tags.includes(elem))
+                    })
+                })
             }
-            
+
             return res.json({ "result": result2.rows })
         })
         // return res.json({"result" : result.rows[0].longitude})
