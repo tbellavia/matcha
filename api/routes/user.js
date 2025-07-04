@@ -45,7 +45,7 @@ router.post('/signup', async (req, res) => {
     pool.query(sql, [lowerMail], (err, result) => {
 
         if (result.rowCount > 0) {
-            return res.status(400).json({ message: ERROR_USER_ALREADY_EXIST })
+            return res.status(300).json({ message: ERROR_USER_ALREADY_EXIST })
         }
 
         randString = makeRandString(125)
@@ -91,7 +91,7 @@ router.get("/validation/:stringValidation", (req, res) => {
     pool.query(sql, [req.params.stringValidation], (err, result) => {
 
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         return res.json({ text: "user valide" })
     })
@@ -140,7 +140,7 @@ router.post("/updatePassword", async (req, res) => {
 router.post('/newPassword', async (req, res) => {
     const lowerMail = req.body.usermail.toLowerCase();
     if (!lowerMail) {
-        return res.status(400).json({ message: ERROR_INVALID_LOGIN })
+        return res.status(300).json({ message: ERROR_INVALID_LOGIN })
     }
     
     randString = makeRandString(125)
@@ -193,7 +193,7 @@ router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async 
     pool.query(sql, [idProfile], (err, result) => {
 
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
     })
 
@@ -201,7 +201,7 @@ router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async 
     pool.query(sql2, [idProfile], (err2, result2) => {
 
         if (err2) {
-            return res.status(400).json({ message: err2.message })
+            return res.status(300).json({ message: err2.message })
         }
     })
 
@@ -209,7 +209,7 @@ router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async 
     pool.query(sql3, [idProfile], (err3, result3) => {
 
         if (err3) {
-            return res.status(400).json({ message: err3.message })
+            return res.status(300).json({ message: err3.message })
         }
     })
 
@@ -217,7 +217,7 @@ router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async 
     pool.query(sql4, [idProfile], (err4, result4) => {
 
         if (err4) {
-            return res.status(400).json({ message: err4.message })
+            return res.status(300).json({ message: err4.message })
         }
     })
 
@@ -225,7 +225,7 @@ router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async 
     pool.query(sql5, [idProfile], (err5, result5) => {
 
         if (err5) {
-            return res.status(400).json({ message: err5.message })
+            return res.status(300).json({ message: err5.message })
         }
     })
 
@@ -241,7 +241,7 @@ router.get("/updateMail/:stringValidation", async (req, res) => {
     pool.query(sql, arg, (err, result) => {
 
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(300).json({ message: err.message })
         }
         return res.json({ text: "mail valide" })
     })
@@ -253,7 +253,7 @@ router.post('/defNewMail',  checkTokenMiddleware, async (req, res) => {
 
     if (!req.body.newMail) {
 
-        return res.status(400).json({ message: ERROR_INVALID_LOGIN })
+        return res.status(300).json({ message: ERROR_INVALID_LOGIN })
     }
     
     randString = makeRandString(125)
