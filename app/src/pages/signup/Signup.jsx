@@ -2,7 +2,7 @@ import GenericPage from "../page/GenericPage";
 import Background from "../../components/ui/background/Background";
 import Form from "../../components/ui/form/Form";
 import Input from "../../components/ui/input/Input";
-import { useRef, useState} from "react";
+import { useContext, useEffect, useRef, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import useErrorManager from "../../hooks/use-error-manager";
 import { validateEmail, validatePassword } from "../../common/validation";
@@ -10,6 +10,8 @@ import { ERROR_MAIL, ERROR_PASSWORD, ERROR_VALIDATION_PASSWORD } from "../../com
 import Alert from "../../components/ui/alert/Alert";
 import axios from "axios";
 import '../../styles/login.scss';
+import { hasCreatedProfile, isValideToken } from "../../common/utils";
+import AppContext from "../../store/AppContext";
 
 function Signup() {
     const emailRef = useRef();
@@ -20,6 +22,19 @@ function Signup() {
     const [password, setPassword] = useState("");
     const [validation, setValidation] = useState("");
     const errManager = useErrorManager();
+    const ctx = useContext(AppContext);
+
+
+    useEffect(() => {
+        if (ctx.token && isValideToken(ctx.token)) {
+            if (!hasCreatedProfile(ctx.token)){
+                navigate("/profile/create")
+            }
+            else{
+                navigate("/feed")
+            }
+        }
+      }, [])
 
     // =================== Email ===================
     const onEmailChangeHandler = (value) => {

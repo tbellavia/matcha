@@ -3,6 +3,9 @@ import GenericPage from "../page/GenericPage";
 import HomeBackground from "../../components/home/HomeBackground";
 import Button from "../../components/ui/button/Button";
 import { useNavigate } from "react-router-dom";
+import AppContext from "../../store/AppContext";
+import { useContext, useEffect } from "react";
+import { hasCreatedProfile, isValideToken } from "../../common/utils";
 
 function Home() {
     const navigate = useNavigate();
@@ -11,6 +14,20 @@ function Home() {
         e.preventDefault();
         navigate(e.target.attributes.action.nodeValue)
     }
+
+    const ctx = useContext(AppContext);
+
+
+    useEffect(() => {
+        if (ctx.token && isValideToken(ctx.token)) {
+            if (!hasCreatedProfile(ctx.token)){
+                navigate("/profile/create")
+            }
+            else{
+                navigate("/feed")
+            }
+        }
+      }, [])
 
     return (
         <GenericPage className={style.home}>

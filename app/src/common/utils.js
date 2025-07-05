@@ -1,5 +1,6 @@
 import { Buffer } from "buffer";
 import _ from "lodash";
+import jwt_decode from "jwt-decode";
 
 /**
  * Check if two arrays are equal.
@@ -114,4 +115,16 @@ export function extractPreferences(preferences) {
             extractedPreferences.push(gender);
     })
     return extractedPreferences;
+}
+
+export function hasCreatedProfile(token) {
+    const decoded = jwt_decode(token);
+    return decoded.profile_created;
+}
+
+export function isValideToken(token) {
+    const currentTime = Math.floor(Date.now() / 1000);
+    const decoded = jwt_decode(token);
+    console.log(decoded.exp)
+    return decoded.exp > currentTime
 }

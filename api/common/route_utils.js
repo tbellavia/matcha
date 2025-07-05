@@ -113,13 +113,11 @@ async function getProfileInfos(id){
     console.log("test")
     try {
         const res = await pool.query(sql, [id]);
-        console.log("looooog : ", res.rows)
         if (res.rowCount < 1) {
             return ({"id_user":"","mail":"","first_name":"","last_name":""});
         }
         return ({"id_user":res.rows[0].id,"mail":res.rows[0].email,"first_name":res.rows[0].first_name,"last_name":res.rows[0].last_name});
     } catch (err) {
-        console.log("heeeere : ",err.message)
         return ({"id_user":"","mail":"","first_name":"","last_name":""});
     }
 

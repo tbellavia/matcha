@@ -1,4 +1,4 @@
-import { useRef, useState, useContext } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import Background from "../../components/ui/background/Background";
 import GenericPage from "../page/GenericPage";
 import Input from "../../components/ui/input/Input";
@@ -9,14 +9,11 @@ import { ERROR_MAIL, ERROR_PASSWORD } from "../../common/messages";
 import useErrorManager from "../../hooks/use-error-manager";
 import axios from "axios";
 import AppContext from "../../store/AppContext";
-import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import "../../styles/login.scss";
+import { hasCreatedProfile, isValideToken } from "../../common/utils";
 
-function hasCreatedProfile(token) {
-    const decoded = jwt_decode(token);
-    return decoded.profile_created;
-}
+
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -26,6 +23,17 @@ function Login() {
     const passwordRef = useRef();
     const ctx = useContext(AppContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (ctx.token && isValideToken(ctx.token)) {
+            if (!hasCreatedProfile(ctx.token)){
+                navigate("/profile/create")
+            }
+            else{
+                navigate("/feed")
+            }
+        }
+      }, [])
 
     const onMailHandler = (value) => {
         setEmail(value);
@@ -71,7 +79,6 @@ function Login() {
                     navigate("/profile/create");
                 }
             } catch (e) {
-                console.log("test")
                 errManager.addNetworkError(e.response.data.message);
             }
         }
