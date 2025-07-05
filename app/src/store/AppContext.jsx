@@ -15,7 +15,7 @@ const AppContext = createContext({
 export const AppContextProvider = (props) => {
     const ctx = useContext(AppContext);
     const [theme, setTheme] = useState(Theme.getStoredThemeOrDefault());
-    const [token, setToken] = useState(localStorage.getItem("token"));
+    const [token, setToken] = useState(sessionStorage.getItem("token"));
     const [notifs, setNotifs] = useState({ views: {}, messages: {}, likes: {} });
     const navigate = useNavigate();
 
@@ -29,13 +29,13 @@ export const AppContextProvider = (props) => {
     // Auth
     const onTokenSet = (token) => {
         setToken(token);
-        localStorage.setItem("token", token);
+        sessionStorage.setItem("token", token);
     }
 
     const logout = () => {
         
         setToken(null);
-        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
         navigate("/login");
     }
 

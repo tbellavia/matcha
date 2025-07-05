@@ -33,8 +33,10 @@ function Feed() {
       },
     };
     try {
+      console.log("FEED")
       const res = await axios.get(`http://localhost:3000/api/user/profile`, config);
       const tags = await axios.get(`http://localhost:3000/api/user/profile/me`, config);
+      console.log("HERE")
       setMyTags(tags.data.tags.toLowerCase().split(','))
       const myFilterTags = tags.data.filtertags.length ? tags.data.filtertags?.toLowerCase().split(',') : [];
       setAllProfile(res.data.result

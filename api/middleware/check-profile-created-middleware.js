@@ -4,7 +4,7 @@ const checkProfileCreatedMiddleware = (req, res, next) => {
     if (res.locals.profile_created) {
         return next()
     }
-    res.status(308).json({ message: ERROR_PROFILE })
+    res.status(307).json({ message: ERROR_PROFILE })
 }
 
 const checkProfileNotCreatedMiddleware = (req, res, next) => {

@@ -160,8 +160,8 @@ router.post('/newPassword', async (req, res) => {
                 from: process.env.MAIL,
                 to: recipient,
                 subject: "Matcha changement de mot de passe",
-                text: "Lien de changement de mot de passe : http://localhost:9000/updatePassword/" + randString,
-                html: HTML_TEMPLATE("Nouveau mot de passe", "Lien de changement de mot de passe : http://localhost:9000/updatePassword/" + randString)
+                text: "Lien de changement de mot de passe : http://localhost:8000/updatePassword/" + randString,
+                html: HTML_TEMPLATE("Nouveau mot de passe", "Lien de changement de mot de passe : http://localhost:8000/updatePassword/" + randString)
                 
                 
             }
