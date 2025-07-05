@@ -12,6 +12,8 @@ import axios from "axios";
 import '../../styles/login.scss';
 import { hasCreatedProfile, isValideToken } from "../../common/utils";
 import AppContext from "../../store/AppContext";
+import style from "./Signup.module.css";
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 
 function Signup() {
     const emailRef = useRef();
@@ -35,6 +37,10 @@ function Signup() {
             }
         }
       }, [])
+
+    const onClickHandlerBack = () => {
+        navigate("/");
+    }
 
     // =================== Email ===================
     const onEmailChangeHandler = (value) => {
@@ -115,6 +121,7 @@ function Signup() {
     return (
         <GenericPage>
             <Background paddingTop={1} title="inscription">
+            <KeyboardDoubleArrowLeftIcon className={style.arrowLeft} onClick={onClickHandlerBack}/>
                 <Form className="login-form" label="valider" onSubmit={onSubmitHandler}>
                     <Input
                         label="mail"

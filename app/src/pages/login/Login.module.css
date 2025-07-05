@@ -7,3 +7,10 @@
 .login-form__submit {
     width: 100%;
 }
+
+.arrowLeft{
+    position: fixed;
+    top:10px;
+    left: 10px;
+    color: #EE8B98;
+}

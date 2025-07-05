@@ -11,8 +11,9 @@ import axios from "axios";
 import AppContext from "../../store/AppContext";
 import { useNavigate } from "react-router-dom";
 import "../../styles/login.scss";
+import style from "./Login.module.css";
 import { hasCreatedProfile, isValideToken } from "../../common/utils";
-
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 
 
 function Login() {
@@ -50,6 +51,10 @@ function Login() {
 
     const onPasswordHandler = (value) => {
         setPassword(value);
+    }
+
+    const onClickHandlerBack = () => {
+        navigate("/");
     }
 
     const onPassWordValidate = (value) => {
@@ -114,7 +119,9 @@ function Login() {
 
     return (
         <GenericPage>
+
             <Background paddingTop={2} title="connexion">
+            <KeyboardDoubleArrowLeftIcon className={style.arrowLeft} onClick={onClickHandlerBack}/>
                 <Form className="login-form" onSubmit={onSubmitHandler} label="valider">
                     <Input
                         label="mail"
