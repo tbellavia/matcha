@@ -6,7 +6,7 @@ import { useContext, useEffect, useRef, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import useErrorManager from "../../hooks/use-error-manager";
 import { validateEmail, validatePassword } from "../../common/validation";
-import { ERROR_MAIL, ERROR_PASSWORD, ERROR_VALIDATION_PASSWORD } from "../../common/messages";
+import { ERROR_MAIL, ERROR_PASSWORD, ERROR_USER_ALREADY_EXIST, ERROR_VALIDATION_PASSWORD } from "../../common/messages";
 import Alert from "../../components/ui/alert/Alert";
 import axios from "axios";
 import '../../styles/login.scss';
@@ -97,7 +97,9 @@ function Signup() {
                 navigate("/mailValidation")
             }
             catch (e) {
-                // errManager.addNetworkError(e.response.data.message); // TODO
+                if(e.response.data.message === ERROR_USER_ALREADY_EXIST){
+                    errManager.addInputError(ERROR_USER_ALREADY_EXIST, emailRef);
+                }
             }
         }
     }
