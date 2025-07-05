@@ -136,7 +136,9 @@ function CreateProfile() {
                 const res = await axios.get('http://localhost:3000/api/user/profile/tags', config);
                 setAllTags(res.data)
 
-            } catch (error) { }
+            } catch (error) { 
+                console.log(error.message)
+            }
         }
         fetchData();
     }, []);

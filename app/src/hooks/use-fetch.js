@@ -5,7 +5,7 @@ import AppContext from "../store/AppContext";
 import { ERROR_BAD_TOKEN, ERROR_NEED_TOKEN, ERROR_PROFILE } from "../common/messages";
 
 const baseURL = "http://localhost:3000";
-export default function useFetch(unauthorizedFallback = "/login"){
+export default function useFetch(unauthorizedFallback = "/"){
     const { token } = useContext(AppContext);
     const navigate = useNavigate();
     const client = axios.create({
@@ -26,6 +26,7 @@ export default function useFetch(unauthorizedFallback = "/login"){
                 return navigate(unauthorizedFallback);
             }
             if(e.response && (e.response.data.message === ERROR_BAD_TOKEN  || e.response.data.message === ERROR_NEED_TOKEN)){
+                console.log("error message :",e.response.data.message)
                 return navigate(unauthorizedFallback);
             }
             if(e.response && (e.response.data.message === ERROR_PROFILE)){
