@@ -97,9 +97,9 @@ export function decodePreferences(preferences) {
 
     if (preferences & 1)
         result["homme"] = true;
-    if (preferences & 1 << 1)
+    if (preferences & (1 << 1))
         result["femme"] = true;
-    if (preferences & 1 << 2)
+    if (preferences & (1 << 2))
         result["non-binaire"] = true;
     return result;
 }

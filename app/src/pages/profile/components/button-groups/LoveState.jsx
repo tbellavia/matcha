@@ -22,9 +22,9 @@ function LoveState({ love, target }) {
 
 	return (
 		<React.Fragment>
-			{(love[0] != 0 || love[1] != 0) && loveIcons[love[0]]}
-			{(love[0] != 0 || love[1] != 0) && loveIcons[love[1]]}
-			{love[0] == 1 && love[1] == 1 && target !== 0 && (
+			{(love[0] !== 0 || love[1] !== 0) && loveIcons[love[0]]}
+			{(love[0] !== 0 || love[1] !== 0) && loveIcons[love[1]]}
+			{love[0] === 1 && love[1] === 1 && target !== 0 && (
 				<div className={styles.loveChatButton} onClick={onClickChat}>
 					{chatIcon}
 				</div>

@@ -19,7 +19,7 @@ function Feed() {
   const [isConnexionSet, setIsConnexionSet] = useState(false)
 
   const filterCommonTags = (myTags, otherTags, minCommon) => {
-    if (myTags.length == 0 || minCommon === 0) {
+    if (myTags.length === 0 || minCommon === 0) {
       return true;
     }
     const commonTags = myTags.map(word => word).filter(word => otherTags.some(tag => tag.toLowerCase() === word));
