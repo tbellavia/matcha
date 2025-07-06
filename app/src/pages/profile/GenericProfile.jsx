@@ -58,9 +58,11 @@ function GenericProfile() {
             async function fetchProfile() {
                 const result = await profile.fetch(id);
 
-                setInfos(result.result);
-                setProfileType(result.type);
-                setLoveState(result.love);
+                if (result) {
+                    setInfos(result.result);
+                    setProfileType(result.type);
+                    setLoveState(result.love);
+                }
             }
 
             fetchProfile().then()
