@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import Label from '../../label/Label';
 import { Slider } from '@mui/material';
 import styles from "./DoubleSlider.module.scss";
 import _ from 'lodash';

@@ -73,7 +73,6 @@ const FilterModal = ({
                 setSort(SORT_CHOICES[filter.tri]);
                 setPreferences(decodePreferences(filter.preference));
             } catch (e) {
-                // TODO: Manage error
             }
         };
         fetchFilter();

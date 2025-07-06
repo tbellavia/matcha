@@ -1,17 +1,10 @@
 import GenericPage from "../page/GenericPage";
-import { useParams } from 'react-router-dom';
 import axios from "axios";
 import AppContext from "../../store/AppContext";
 import { useContext } from "react";
-import { io } from 'socket.io-client';
 import { useState , useEffect} from "react";
-import Button from "../../components/ui/button/Button";
-import socket from "../../socket";
-import ChatMessage from "../../components/ui/chatMessage/ChatMessage";
 import styles from "./AllChat.module.scss"
-import Header from "../../components/ui/header/Header";
 import ChatProfile from "../../components/ui/chatProfile/ChatProfile";
-import AppDropdown from "../../components/ui/drawer-menu/AppDropdown";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 
 function AllChat (){
@@ -45,7 +38,6 @@ function AllChat (){
   return (
 
       <GenericPage className={styles.page}>
-        {/* <AppDropdown/> */}
         <ProfileHeader menuOnly={false}/>
 
         <div className={styles.allChatPage}>

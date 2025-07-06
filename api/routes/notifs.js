@@ -21,7 +21,6 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req,
         if (err) {
             return res.status(300).json({ message: err.message })
         }
-        // return res.json({ "views": JSON.parse(result.rows[0].notifsmessages)})
         return res.json({ "views": JSON.parse(result.rows[0].notifsviews),
             "messages" : JSON.parse(result.rows[0].notifsmessages),
             "likes" : JSON.parse(result.rows[0].notifslikes)})
@@ -42,7 +41,6 @@ router.get("/views", checkTokenMiddleware, checkProfileCreatedMiddleware, async 
         if (err) {
             return res.status(300).json({ message: err.message })
         }
-        // return res.json({ "views": JSON.parse(result.rows[0].notifsmessages)})
         return res.json(JSON.parse(result.rows[0].notifsviews))
     })
 })
@@ -61,7 +59,6 @@ router.get("/likes", checkTokenMiddleware, checkProfileCreatedMiddleware, async 
         if (err) {
             return res.status(300).json({ message: err.message })
         }
-        // return res.json({ "views": JSON.parse(result.rows[0].notifsmessages)})
         return res.json(JSON.parse(result.rows[0].notifslikes))
     })
 })
@@ -79,7 +76,6 @@ router.put("/del/views", checkTokenMiddleware, checkProfileCreatedMiddleware, as
         if (err) {
             return res.status(300).json({ message: err.message })
         }
-        // return res.json({ "views": JSON.parse(result.rows[0].notifsmessages)})
         return res.json({ "message": "views delete"})
     })
 })
@@ -96,7 +92,6 @@ router.put("/del/likes", checkTokenMiddleware, checkProfileCreatedMiddleware, as
         if (err) {
             return res.status(300).json({ message: err.message })
         }
-        // return res.json({ "views": JSON.parse(result.rows[0].notifsmessages)})
         return res.json({ "message": "likes delete"})
     })
 })

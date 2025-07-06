@@ -34,12 +34,8 @@ function ChatProfile({ chatProfile }) {
     }, []);
 
     useEffect(() => {
-        // getIdProfile()
         const notifCount = ctx.notifs.messages[chatProfile.iduser] || 0;
         setCurentNotif(notifCount);
-        // if (curentNotif && curentNotif > 0){
-        //     setCurentNotif(ctx.notifs.messages[chatProfile.iduser])
-        // }
     }, [ctx.notifs.messages[chatProfile.iduser]])
 
     const onClickHandlerChat = () => {
@@ -87,16 +83,8 @@ function ChatProfile({ chatProfile }) {
                 </div>
                 <div className={`${styles[`divMessage__${ctx.theme}`]} ${styles.divMessage}`}>
                     {curentMessage != null && <span className={styles.spanMessage}>{curentMessage}</span>}
-
-                    {/* <span className={styles.spanMessage}>{curentMessage}</span> */}
                     {curentMessage == null && <span className={styles.spanMessage}>DÉMARRER LA CONVERSATION</span>}
-
-                    {/* <div className={styles.rondtrue}>{curentNotif}</div> */}
-                    {/* {notif()} */}
-                    {/* {curentNotif > 0 && <div className={styles.rondtrue}>{curentNotif}</div>} */}
                     {curentNotif > 0 && <div className={`${styles[`rondtrue__${ctx.theme}`]}`}>{curentNotif}</div>}
-                    {/* {curentNotif == 0 && <div className={styles.rondtrue}>DÉMARRER LA CONVERSATION</div>} */}
-                    {/* {curentNotif} */}
                 </div>
             </div>
             <button className={`${styles[`buttonDel__${ctx.theme}`]} ${styles.buttonDel}`} onClick={onClickHandlerDelChat}>X</button>

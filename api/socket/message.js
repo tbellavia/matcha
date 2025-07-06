@@ -52,12 +52,10 @@ module.exports = {
       })
     })
   },
-  // Utils function
   emitProfileView,
   emitProfileLike,
   emitProfileMatch,
   emitProfileUnlike,
   emitProfileMessage,
-  // emitSession,
   emitConnexion
 }

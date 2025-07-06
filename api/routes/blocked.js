@@ -79,7 +79,6 @@ router.post("/me/report/:target", checkTokenMiddleware, checkProfileCreatedMiddl
     }
 
     const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"];
-    // const recipients = ["mainhivvt@gmail.com"]; // TODO Ajouter eithan
 
     recipients.forEach(recipient => {
         const mailOptions = {

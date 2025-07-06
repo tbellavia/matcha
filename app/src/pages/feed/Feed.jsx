@@ -114,9 +114,6 @@ function Feed() {
 
     <GenericPage className={styles.page}>
       <ProfileHeader menuOnly={false} />
-
-      {/* <AppDropdown/> */}
-
       <Button className={`${styles[`filterButton_${ctx.theme}`]} ${styles.filterButton}`} onClick={onModalOpen}>Filtres</Button>
       <FilterModal open={open} onClose={onModalClose} myTags={myTags} />
 

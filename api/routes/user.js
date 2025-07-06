@@ -29,7 +29,6 @@ const transporter = nodemailer.createTransport({
 });
 
 router.post('/signup', async (req, res) => {
-    // Pas d'information à traiter
     const lowerMail = req.body.usermail.toLowerCase();
     if (!lowerMail || !req.body.passWord) {
         return res.status(300).json({ message: ERROR_INVALID_LOGIN })
@@ -100,8 +99,6 @@ router.get("/validation/:stringValidation", (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-    // Pas d'information à traiter
-
     const lowerMail = req.body.usermail.toLowerCase();
     if (!lowerMail || !req.body.passWord) {
         return res.status(300).json({ message: ERROR_INVALID_LOGIN })
@@ -237,7 +234,6 @@ router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async 
     return res.json({ text: "user delete" })
 })
 
-// router.get("/updateMail", async (req, res) => {
 router.get("/updateMail/:stringValidation", async (req, res) => {
     console.log("here")
     const sql = "UPDATE userlogin SET email=newemail, newemail=NULL, hashForNewMail=NULL WHERE hashForNewMail=$1";

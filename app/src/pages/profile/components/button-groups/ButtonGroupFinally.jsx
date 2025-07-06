@@ -9,7 +9,6 @@ function ButtonGroupFinally({profileID}) {
     const navigate = useNavigate()
 
     const onNopClicked = async () => {
-        // TODO: Manage error
         try {
             await fetcher(`/api/user/unlike/me/${profileID}`, "POST");
             navigate("/feed");
@@ -27,7 +26,6 @@ function ButtonGroupFinally({profileID}) {
     }
     
     const onOkayClicked = async () => {
-        // TODO: Manage error
         try {
             await fetcher(`/api/user/like/me/${profileID}`, "POST");
             navigate("/feed")

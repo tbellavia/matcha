@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import Checkbox from "./Checkbox";
 import styles from "./CheckboxGroup.module.css";
 import useUpdateEffect from "../../../hooks/use-update-effect";
-import Label from "../label/Label";
 import AppContext from "../../../store/AppContext";
 
 /**
@@ -25,7 +24,6 @@ function CheckboxGroup({
             ? values.reduce((acc, val) => ({ ...acc, [val]: false }), {})
             : initial;
     };
-    // const [checked, setChecked] = useState(values.reduce((acc, val) => ({ ...acc, [val]: false }), {}));
 
     const [checked, setChecked] = useState(initializeChecked());
     const [init, setInit] = useState(initializeChecked())
@@ -57,8 +55,6 @@ function CheckboxGroup({
 
     return (
         <div className={styles['checkbox-group']}>
-            {/* <Label label={label}/> */}
-
             <div className={`${themeStyle} ${styles.labelDiv}`}>
                 {label}
             </div>

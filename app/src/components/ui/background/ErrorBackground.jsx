@@ -3,7 +3,6 @@ import AppContext from "../../../store/AppContext";
 import styles from "./ErrorBackground.module.css";
 import ErrorBackgroundTitles from "./ErrorBackgroundTitles";
 import ErrorBackgroundTitle from "./ErrorBackgroundTitle";
-import { useNavigate } from "react-router-dom";
 
 function ErrorBackground({ paddingTop, title, title2, children }) {
     const ctx = useContext(AppContext);

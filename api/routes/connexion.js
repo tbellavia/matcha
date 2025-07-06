@@ -5,7 +5,7 @@ const {
     ERROR_BAD_TOKEN,
     ERROR_CHAT
   } = require("../common/messages")
-const { getChatId, createNewChat, getProfileId } = require("../common/route_utils");
+const { getProfileId } = require("../common/route_utils");
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
@@ -37,9 +37,6 @@ router.put("/me/off", checkTokenMiddleware, checkProfileCreatedMiddleware, async
     };
 
     const dateLocaleParis = date.toLocaleString('fr-FR', options).toString();
-
-    // Conversion en chaîne de caractères
-    // const dateString = dateLocaleParis.toString();
 
     if (profileId == undefined) {
         return res.status(300).json({ message: ERROR_BAD_TOKEN })

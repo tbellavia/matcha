@@ -6,14 +6,12 @@ import { useContext, useState } from "react";
 import AppContext from "../../../../../store/AppContext";
 import { Box, Button, Dialog, Divider } from '@mui/material';
 import EmailModal from '../Email/EmailModal';
-// import PasswordModal from '../Password/PasswordModal';
 
 export default function SettingsModal({
     open,
     handleClose,
 }) {
     const [resetEmailOpen, setResetEmailOpen] = useState(false);
-    // const [resetPasswordOpen, setResetPasswordOpen] = useState(false);
 
     const { theme, setTheme } = useContext(AppContext);
 
@@ -28,14 +26,6 @@ export default function SettingsModal({
     const handleResetEmailClose = () => {
         setResetEmailOpen(false);
     }
-
-    // const handleResetPasswordClicked = () => {
-    //     setResetPasswordOpen(true);
-    // }
-
-    // const handleResetPasswordClose = () => {
-    //     setResetPasswordOpen(false);
-    // }
 
     return (
         <Modal
@@ -98,12 +88,7 @@ export default function SettingsModal({
                             Reset Email
                         </Button>
 
-                        {/* <Button size='small' onClick={handleResetPasswordClicked}>
-                            Reset mot de passe
-                        </Button> */}
-
                         <EmailModal open={resetEmailOpen} handleClose={handleResetEmailClose}/>
-                        {/* <PasswordModal open={resetPasswordOpen} handleClose={handleResetPasswordClose}/> */}
                     </Box>
                 </Box>
             </Box>

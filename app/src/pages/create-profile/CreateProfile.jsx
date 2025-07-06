@@ -1,5 +1,5 @@
 import { useReducer, useState } from "react";
-import React, { useContext , useEffect } from "react";
+import { useContext , useEffect } from "react";
 import AppContext from "../../store/AppContext";
 import PageHeader from "../../components/ui/page/PageHeader";
 import styles from "./CreateProfile.module.css";
@@ -85,16 +85,11 @@ const lastnameReducer = createInputReducer(validateString);
 const genreReducer = createInputReducer(validateGender);
 const preferencesReducer = createInputReducer(validatePreferences);
 const tagsReducer = createInputReducer(validateTags);
-// TODO: Check if date is in valid range
 const dateReducer = createInputReducer(validateDate);
-// TODO: Make sure location is in France
 const locationReducer = createInputReducer(validateLocation);
-// TODO: Make sure bio is valid
 const biographyReducer = createInputReducer(validateBio);
 
 const genres = ["homme", "femme", "non binaire"];
-// TODO: remove hard coded suggests
-const dummySuggests = ["beer", "baseball", "football", "yoga", "healthy"];
 
 function hasCreatedProfile(token) {
     const decoded = jwt_decode(token);
@@ -272,14 +267,12 @@ function CreateProfile() {
             ctx.setToken(response.data.access_token);
             navigate("/feed");
         } catch (e) {
-            // dispatchError({ type: "NETWORK", value: e.message }); // TODO
         }
     };
 
     return (
         <PageHeader className={styles['create-profile']}>
             <section className={styles['create-profile__form']}>
-                {/* Profile picture */}
                 <div className={styles['create-profile__image-container']}>
                     <AddPhoto
                         onChange={onPhotosChange}

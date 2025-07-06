@@ -21,7 +21,6 @@ import FeedHistorics from "./pages/feedHistorics/FeedHistorics";
 import GenericProfile from "./pages/profile/GenericProfile";
 import UpdatePassword from "./pages/updatePassword/UpdatePassword";
 import EditProfile from "./pages/edit-profile/EditProfile";
-// import UpdateProfile from "./pages/update-profile/UpdateProfile";
 
 function App() {
   return (
@@ -44,7 +43,6 @@ function App() {
             <Route index element={ <AllChat title="/chat"/> }/>
             <Route path=":id" element={ <Chat title="/chat/:id"/>  } />
           </Route>
-          <Route path="test" element={<Test />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
       </AppContextProvider>

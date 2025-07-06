@@ -15,29 +15,14 @@ import { validatePassword } from "../../common/validation";
 
 
 function UpdatePassword() {
-    // const [email, setEmail] = useState("");
     const passwordRef = useRef();
     const validationRef = useRef();
     
     const {id} = useParams();
     const [password, setPassword] = useState("");
     const errManager = useErrorManager();
-    // const emailRef = useRef();
     const ctx = useContext(AppContext);
     const navigate = useNavigate();
-
-    // const onMailHandler = (value) => {
-    //     setEmail(value);
-    // }
-    
-    // const onMailValidate = (value) => {
-    //     if (!validateEmail(value)) {
-    //         errManager.addInputError(ERROR_MAIL, emailRef);
-    //     }
-    //     else {
-    //         errManager.removeError(ERROR_MAIL);
-    //     }
-    // }
 
     const onPasswordHandler = (value) => {
         setPassword(value);

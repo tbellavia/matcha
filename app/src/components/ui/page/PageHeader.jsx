@@ -1,5 +1,3 @@
-import React from "react";
-// import ThemeSelector from "../theme/ThemeSelector";
 import Header from "../header/Header";
 
 function PageHeader({ children, className, style }) {
@@ -8,7 +6,6 @@ function PageHeader({ children, className, style }) {
             <Header/>
             <div className={className} style={style}>
                 {children}
-                {/* <ThemeSelector/> */}
             </div>
         </>
     );

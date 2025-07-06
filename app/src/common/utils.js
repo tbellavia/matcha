@@ -93,9 +93,6 @@ export function encodePreferences(preferences) {
 }
 
 export function decodePreferences(preferences) {
-    // if (!_.isArray(preferences)){
-    //     throw new TypeError("preferences must be of type array");
-    // }
     const result = {"homme": false, "femme": false, "non-binaire": false};
 
     if (preferences & 1)

@@ -10,8 +10,6 @@ function ButtonGroupMe() {
     const ctx = useContext(AppContext);
 
     const onModifClicked = () => {
-        // TODO: Manage error
-
         navigate("/profile/edit");
 
     }

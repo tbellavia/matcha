@@ -1,5 +1,4 @@
 import styles from "./AddPhoto.module.css";
-import style from "./Photo.module.css";
 import { useState , useEffect} from "react";
 import React from "react";
 import Icon from "../icons/Icon";
@@ -11,7 +10,6 @@ function AddPhoto({
     init = []
 }) {
     const classes = `${styles.addPhoto}`
-    // const classe = `${style.photo}`
     const [selectedFile, setSelectedFile] = useState(init)
 
     useEffect(() => {
@@ -30,7 +28,7 @@ function AddPhoto({
 
     const onClickHandle = ((e) => {
         let index = parseInt(e.target.getAttribute('data-index'))
-        var array = [...selectedFile]; // make a separate copy of the array
+        var array = [...selectedFile];
         if (index !== -1) {
             array.splice(index, 1);
             setSelectedFile(array);

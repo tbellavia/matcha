@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import AppContext from "../../../store/AppContext";
 import styles from "./Autocomplete.module.css"
 
@@ -44,7 +44,6 @@ const Autocomplete = ({
 
     const onKeyDownHandler = e => {
         switch (e.keyCode) {
-            // Enter
             case 13:
                 setActive(-1);
                 setIsShow(false);

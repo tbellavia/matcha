@@ -23,8 +23,9 @@
     background-color: var(--color-light-3);
 }
 
+/* Checked */
 .checkbox__light input[type="checkbox"]:checked+label {
-    /* Checked */
+
     color: var(--color-light-5);
     background-color: var(--color-light-8);
 }

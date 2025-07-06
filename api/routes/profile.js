@@ -107,7 +107,6 @@ router.get("/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, asyn
             else if (result3.rowCount == 0) {
                 return res.status(300).json({ message: "profile inexistant" })
             }
-            // result3.rows[0].rating = await rating(req.params.target)
             if (result3.rows[0].tags) {
                 result3.rows[0].tags = result3.rows[0].tags.split(",")
             }
@@ -159,7 +158,6 @@ router.post("/me", checkTokenMiddleware, checkProfileNotCreatedMiddleware, (req,
             if (err2) {
                 return res.status(300).json({ message: err2.message })
             }
-            // return res.json(result2)
             idMax = result2.rows[0].id
 
             const sql3 = "UPDATE userlogin SET id_user_profile = $1 WHERE id = $2";
@@ -168,7 +166,6 @@ router.post("/me", checkTokenMiddleware, checkProfileNotCreatedMiddleware, (req,
                 if (err3) {
                     return res.status(300).json({ message: err3.message })
                 }
-                // return res.json(result2)
                 return res.json({ "message": "profile cree" })
             })
         })
@@ -177,7 +174,6 @@ router.post("/me", checkTokenMiddleware, checkProfileNotCreatedMiddleware, (req,
 
 
 router.put("/me", checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
-    // const sql = "UPDATE userprofile JOIN userlogin ON userlogin.id_user_profile	= userprofile.id SET userprofile.first_name = $1, userprofile.last_name = $2, userprofile.genre = $3, userprofile.preference = $4, userprofile.biography = $5, userprofile.tags = $6, userprofile.loc = $7, userprofile.rating = $8, userprofile.photo1 = $9, userprofile.photo2 = $10, userprofile.photo3 = $11, userprofile.photo4 = $12, userprofile.photo5 = $13 WHERE userlogin.id = $14";
     const genre = getGenreStringToInt(req.body.genre)
     const pref = getPrefTabToInt(req.body.preference)
     getSaveNewTags(req.body.newTags)
@@ -255,12 +251,8 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req,
         AND ((COALESCE(likes.likes_count + likes2.likes2_count, 0) * 1.0) / COALESCE(views.views_count, 1)) >= $9 \
         ORDER BY ${tri}  LIMIT $8`
 
-        // const sql2 = "SELECT  FROM userprofile "
-        // const sql2 =  "SELECT p.* FROM userprofile p WHERE NOT EXISTS (SELECT 1 FROM liketable l WHERE ($1 = l.user1 AND l.user2 = p.id) OR ($1 = l.user2 AND l.user1 = p.id)) AND $1 != p.id "
-        // const sql2 =  "SELECT p.* FROM userprofile p INNER JOIN liketable l ON p.id = l.user1 OR p.id = l.user2 WHERE ($1 = l.user1 OR $1 = l.user2) AND $1 != p.id"
         const arg2 = [result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax, req.query.limit, result.rows[0].minrating, result.rows[0].birth]
         pool.query(sql2, arg2, async (err2, result2) => {
-            // pool.query(sql2, [] , (err2, result2) => {
             if (err2) {
                 return res.status(300).json({ error: [result.rows[0].id, result.rows[0].preference, result.rows[0].agemin, result.rows[0].agemax, result.rows[0].latitude, result.rows[0].longitude, result.rows[0].distmax, req.query.limit, result.rows[0].minrating], message: err2.message })
             }
@@ -289,7 +281,6 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req,
 
             return res.json({ "result": result2.rows })
         })
-        // return res.json({"result" : result.rows[0].longitude})
     })
 })
 

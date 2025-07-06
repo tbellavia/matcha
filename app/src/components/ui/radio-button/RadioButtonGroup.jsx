@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import RadioButton from "./RadioButton"
 import styles from "./RadioButtonGroup.module.css";
 import useUniqueId from "../../../hooks/use-unique-id";
-import Label from "../label/Label";
 import { useContext } from "react";
 import AppContext from "../../../store/AppContext";
 const DIRECTIONS = ["vertical", "horizontal"];
@@ -42,12 +41,10 @@ function RadioButtonGroup({
         const newValue = event.target.value;
         setSelectedValue(newValue);
         onChange(newValue);
-        // onChange(event.target.value);
     }
 
     const onBlurHandler = (event) => {
         onBlur(selectedValue);
-        // onBlur(event.target.value);
     }
 
     return (

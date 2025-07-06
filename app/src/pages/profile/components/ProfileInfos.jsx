@@ -53,7 +53,6 @@ const ProfileInfos = ({profileInfos, isConnected}) => {
             </div>
 
             <div className={styles['tags-container']}>
-                {/* TODO: Remove brackets when back returns array */}
                 <Tags tags={tags}/>
             </div>
         </React.Fragment>)

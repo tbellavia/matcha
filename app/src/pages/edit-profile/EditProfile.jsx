@@ -32,8 +32,6 @@ import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHead
 
 function base64ToFile(base64String, filename) {
 
-    
-    // Extraire uniquement la partie binaire (en supprimant "data:image/...;base64,")
     const [metadata, base64Data] = base64String.split(',');
     
     // Vérification de la validité de metadata
@@ -63,26 +61,6 @@ function base64ToFile(base64String, filename) {
 
     return file;
 }
-
-
-// function base64ToFile(base64String, filename) {
-//     // Extraire uniquement la partie binaire (en supprimant "data:image/...;base64,")
-//     const [metadata, base64Data] = base64String.split(',');
-//     const mimeType = metadata.match(/:(.*?);/)[1]; // Obtenir le type MIME
-
-//     // Convertir la chaîne base64 en un tableau d'octets
-//     const byteCharacters = atob(base64Data);
-//     const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
-//     const byteArray = new Uint8Array(byteNumbers);
-
-//     // Créer un Blob
-//     const blob = new Blob([byteArray], { type: mimeType });
-
-//     // Créer un File à partir du Blob
-//     const file = new File([blob], filename, { type: mimeType });
-
-//     return file;
-// }
 
 function createInitialState(value, fieldname) {
     return { valid: null, value, fieldname };
@@ -138,15 +116,11 @@ const lastnameReducer = createInputReducer(validateString);
 const genreReducer = createInputReducer(validateGender);
 const preferencesReducer = createInputReducer(validatePreferences);
 const tagsReducer = createInputReducer(validateTags);
-// TODO: Check if date is in valid range
 const dateReducer = createInputReducer(validateDate);
-// TODO: Make sure location is in France
 const locationReducer = createInputReducer(validateLocation);
-// TODO: Make sure bio is valid
 const biographyReducer = createInputReducer(validateBio);
 
 const genres = ["homme", "femme", "non binaire"];
-// TODO: remove hard coded suggests
 const dummySuggests = ["beer", "baseball", "football", "yoga", "healthy"];
 
 const mapGenreToLabel = (genre) => {
@@ -213,7 +187,7 @@ function EditProfile() {
         async function fetchData() {
             const config = {
                 headers: {
-                    Authorization: `Bearer ${ctx.token}`, // TODO ajoute le jeton d'authentification dans l'en-tête
+                    Authorization: `Bearer ${ctx.token}`,
                 },
             };
             try {
@@ -397,7 +371,6 @@ function EditProfile() {
             }, config);
             navigate("/feed");
         } catch (e) {
-            // dispatchError({ type: "NETWORK", value: e.message }); // TODO
         }
     };
 

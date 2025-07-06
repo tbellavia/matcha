@@ -3,13 +3,10 @@ import { useParams } from 'react-router-dom';
 import axios from "axios";
 import AppContext from "../../store/AppContext";
 import { useContext } from "react";
-import { io } from 'socket.io-client';
 import { useState , useEffect} from "react";
-import Button from "../../components/ui/button/Button";
 import socket from "../../socket";
 import ChatMessage from "../../components/ui/chatMessage/ChatMessage";
 import styles from "./Chat.module.css"
-import Header from "../../components/ui/header/Header";
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 import HeaderChat from "../../components/ui/profile/HeaderChat/HeaderChat";
 
@@ -90,13 +87,10 @@ function Chat (){
     function messageEnter({message, name}){
       setAllChat(previous=>[...previous, {user:name, message}])
     }
-
-    // socket.connect()
     socket.on(chatId, messageEnter)
 
     return () => {
       socket.off(chatId, messageEnter)
-      // socket.disconnect();
     }
   },[chatId])
 

@@ -1,6 +1,4 @@
-import {useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
-import useFetch from "../../../../hooks/use-fetch";
+import {useEffect, useState} from "react";
 import styles from "./HeaderChat.module.css";
 import { useContext } from "react";
 import AppContext from "../../../../store/AppContext";
@@ -12,9 +10,7 @@ import axios from "axios";
 function HeaderChat({profileId = -1}) {
     const navigate = useNavigate()
     const ctx = useContext(AppContext)
-    const {id} = useParams();
     const [infos, setInfos] = useState({})
-    const profile = useProfile();
 
 
     const getAllChatProfile = async() =>{
@@ -43,19 +39,6 @@ function HeaderChat({profileId = -1}) {
             <span className={`${styles[`spanName__${ctx.theme}`]} ${styles.spanName}`} onClick={onClickHandlerProfile}>{`${infos.first_name} ${infos.last_name}`}</span>
         </div>
     )
-}
-
-
-
-function useProfile() {
-    const fetcher = useFetch();
-    return {
-        fetch: async function (id) {
-            const response = await fetcher(`/api/user/profile/${id}`);
-
-            return response?.data;
-        }
-    }
 }
 
 export default HeaderChat;

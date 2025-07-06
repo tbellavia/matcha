@@ -1,12 +1,9 @@
-import React, { useContext } from 'react'
-import Label from '../../label/Label'
 import { Slider } from '@mui/material'
 import styles from "./SingleSlider.module.scss";
 import AppContext from '../../../../store/AppContext';
 
 const SlingleSlider = ({ 
     onChange, label, suffix = "",
-    // Slider parameters
     ...sliderProps
 }) => {
     const { theme } = useContext(AppContext);
