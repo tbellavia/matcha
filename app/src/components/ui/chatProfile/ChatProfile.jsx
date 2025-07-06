@@ -31,12 +31,12 @@ function ChatProfile({ chatProfile }) {
 
     useEffect(() => {
         getIdProfile();
-    }, []);
+    });
 
     useEffect(() => {
         const notifCount = ctx.notifs.messages[chatProfile.iduser] || 0;
         setCurentNotif(notifCount);
-    }, [ctx.notifs.messages[chatProfile.iduser]])
+    }, [ctx.notifs.messages[chatProfile.iduser], chatProfile.iduser])
 
     const onClickHandlerChat = () => {
         navigate(`/chat/${chatProfile.iduser}`);

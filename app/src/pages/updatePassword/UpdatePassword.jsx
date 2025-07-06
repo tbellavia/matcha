@@ -28,7 +28,7 @@ function UpdatePassword() {
     const onPasswordBlurHandler = (value) => {
         const passwordIsValid = validatePassword(value);
 
-        if (passwordIsValid == false) {
+        if (passwordIsValid === false) {
             errManager.addInputError(ERROR_PASSWORD, passwordRef);
         } else {
             errManager.removeError(ERROR_PASSWORD);
@@ -46,7 +46,7 @@ function UpdatePassword() {
                     idNewPassWord: id,
                     passWord: password,
                 });
-                if (response.data.isPwUpdate == true){
+                if (response.data.isPwUpdate === true){
                     alert("Votre mot de passe a ete mis a jour");
                     navigate("/login");
                 }

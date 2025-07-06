@@ -34,7 +34,7 @@ function Login() {
                 navigate("/feed")
             }
         }
-      }, [])
+      })
 
     const onMailHandler = (value) => {
         setEmail(value);

@@ -16,7 +16,7 @@ const ProfileInfos = ({profileInfos, isConnected}) => {
 
 
     const connected = () => {
-        if(isConnected == true){
+        if(isConnected === true){
             return <div className={styles.connecttrue}> </div>
         }
         else if(isConnected){

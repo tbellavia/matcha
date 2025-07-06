@@ -7,7 +7,6 @@ import "./palette/dark.css";
 import "./palette/blind.css";
 import "./palette/shades.css";
 import "./App.css";
-import Test from "./pages/test/Test";
 import Error404 from "./pages/error404/Error404";
 import MailValidation from "./pages/mailValidation/MailValidation";
 import CreateProfile from "./pages/create-profile/CreateProfile";

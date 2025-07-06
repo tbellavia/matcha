@@ -26,7 +26,7 @@ function Chat (){
       },
     };
     try {
-      const res = await axios.post(`http://localhost:3000/api/user/chat/message/me/${to}`,{message:message},config);
+      await axios.post(`http://localhost:3000/api/user/chat/message/me/${to}`,{message:message},config);
     } catch (e) {}
     
   }
@@ -68,7 +68,7 @@ function Chat (){
       },
     };
     try {
-      const res = await axios.put(`http://localhost:3000/api/user/notifs/del/messages/${to}`,{},config);
+      await axios.put(`http://localhost:3000/api/user/notifs/del/messages/${to}`,{},config);
     } catch (e) {}
   }
 

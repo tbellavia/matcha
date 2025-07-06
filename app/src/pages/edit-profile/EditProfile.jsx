@@ -23,7 +23,6 @@ import {
 } from "../../common/validation";
 import Alert from "../../components/ui/alert/Alert";
 import { fileToBase64 } from "../../common/utils";
-import useFetch from "../../hooks/use-fetch";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
@@ -121,7 +120,6 @@ const locationReducer = createInputReducer(validateLocation);
 const biographyReducer = createInputReducer(validateBio);
 
 const genres = ["homme", "femme", "non binaire"];
-const dummySuggests = ["beer", "baseball", "football", "yoga", "healthy"];
 
 const mapGenreToLabel = (genre) => {
     switch (genre) {
@@ -171,13 +169,9 @@ function EditProfile() {
     const [tags, dispatchTags] = useReducer(tagsReducer, createInitialState([], "TAGS"));
     const [biography, dispatchBiography] = useReducer(biographyReducer, createInitialState("", "BIOGRAPHY"));
     const [error, dispatchError] = useReducer(errorReducer, null);
-    const [allTags, setAllTags] = useState([])
-
+    const [allTags, setAllTags] = useState([]);
     const [photos, dispatchPhotos] = useReducer(photosReducer, createInitialState([], "PHOTOS"));
-
     const fields = [photos, firstname, lastname, birthDate, location, genre, preferences, tags, biography];
-    const fetcher = useFetch();
-
 
     useEffect(() => {
         if (!hasCreatedProfile(ctx.token)) {
@@ -357,7 +351,7 @@ function EditProfile() {
                   Authorization: `Bearer ${ctx.token}`,
                 },
               };
-            const response = await axios.put("http://localhost:3000/api/user/profile/me", {first_name: firstname.value,
+            await axios.put("http://localhost:3000/api/user/profile/me", {first_name: firstname.value,
                 last_name: lastname.value,
                 birth: birthDate.value,
                 genre: genre.value,

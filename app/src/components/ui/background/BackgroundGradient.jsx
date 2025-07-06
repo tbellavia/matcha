@@ -1,12 +1,8 @@
-import { useContext } from "react";
-import AppContext from "../../../store/AppContext";
 import styles from "./BackgroundGradient.module.css";
 import BackgroundTitle from "./BackgroundTitle";
 import React from "react";
 
 function BackgroundGradient({ paddingTop, title, midPass, children }) {
-    const ctx = useContext(AppContext);
-    const titleCol = styles[`title__color__${ctx.theme}`];
     let titles = [];
 
     for ( let i = 0 ; i < paddingTop ; ++i ) {
