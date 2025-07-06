@@ -44,6 +44,8 @@ function Signup() {
 
     // =================== Email ===================
     const onEmailChangeHandler = (value) => {
+        errManager.removeError(ERROR_USER_ALREADY_EXIST);
+
         setEmail(value);
     }
 
@@ -94,6 +96,7 @@ function Signup() {
         e.preventDefault();
         if (errManager.hasInputErrors()) {
             errManager.focusOnError();
+
         } else {
             try {
                 await axios.post('http://localhost:3000/api/user/signup', {
@@ -105,6 +108,8 @@ function Signup() {
             catch (e) {
                 if(e.response.data.message === ERROR_USER_ALREADY_EXIST){
                     errManager.addInputError(ERROR_USER_ALREADY_EXIST, emailRef);
+                }else{
+                    errManager.removeError(ERROR_USER_ALREADY_EXIST);
                 }
             }
         }
