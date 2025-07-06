@@ -26,13 +26,16 @@
     padding-top: 15px;
     width: 100%;
     display: flex;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
     gap: 30px;
 }
 
 .button {
     height: 40px;
     width: 100%;
+    max-width: 250px;
 }
 
 .loveStatus {
@@ -41,6 +44,11 @@
     width: 100%;
     justify-content: center;
     gap: 20px;
+}
+
+.loveChatButton {
+    margin-left: auto;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 600px) {
