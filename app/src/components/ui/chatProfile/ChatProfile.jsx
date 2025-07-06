@@ -31,7 +31,7 @@ function ChatProfile({ chatProfile }) {
 
     useEffect(() => {
         getIdProfile();
-    });
+    },[]);
 
     useEffect(() => {
         const notifCount = ctx.notifs.messages[chatProfile.iduser] || 0;

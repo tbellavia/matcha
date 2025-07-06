@@ -21,7 +21,7 @@ const Autocomplete = ({
         if (currentElementRef.current) {
             currentElementRef.current.scrollIntoView();
         }
-    });
+    },[]);
 
     const onChangeHandler = (event) => {
         const input = event.currentTarget.value;

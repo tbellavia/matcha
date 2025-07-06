@@ -20,7 +20,7 @@ function FeedProfile({profile, notification, isConnected, color="light"}){
 
     useEffect(() => {
         setLoveState(profile.love);
-    })
+    },[])
 
     const notif = () => {
         if(notification){

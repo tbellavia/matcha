@@ -53,7 +53,7 @@ export default function AppDroddown({ ipMessage = -1 }) {
 
     useEffect(() => {
         getIdProfile()
-    })
+    },[])
 
     const delNotif = async () => {
         const config = {
