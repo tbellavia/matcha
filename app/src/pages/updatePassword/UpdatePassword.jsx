@@ -1,4 +1,4 @@
-import React, { useRef, useState , useContext } from "react";
+import { useRef, useState } from "react";
 import Background from "../../components/ui/background/Background";
 import GenericPage from "../page/GenericPage";
 import Input from "../../components/ui/input/Input";
@@ -6,7 +6,6 @@ import Form from "../../components/ui/form/Form";
 import Alert from "../../components/ui/alert/Alert";
 import useErrorManager from "../../hooks/use-error-manager";
 import axios from "axios";
-import AppContext from "../../store/AppContext";
 import { useNavigate } from "react-router-dom";
 import "../../styles/login.scss";
 import {useParams} from "react-router-dom";

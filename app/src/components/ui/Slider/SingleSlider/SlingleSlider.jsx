@@ -1,6 +1,7 @@
 import { Slider } from '@mui/material'
 import styles from "./SingleSlider.module.scss";
 import AppContext from '../../../../store/AppContext';
+import { useContext } from 'react';
 
 const SlingleSlider = ({ 
     onChange, label, suffix = "",
