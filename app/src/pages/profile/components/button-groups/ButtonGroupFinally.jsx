@@ -47,17 +47,17 @@ function ButtonGroupFinally({profileID}) {
                 type="submit"
                 variant="action-danger"
                 className={styles["button"]}
-                onClick={onReportClicked}
+                onClick={onOkayClicked}
             >
-                Signaler
+                okay
             </Button>
             <Button
                 type="submit"
                 variant="action-danger"
                 className={styles["button"]}
-                onClick={onOkayClicked}
+                onClick={onReportClicked}
             >
-                okay
+                Signaler
             </Button>
         </React.Fragment>
     );

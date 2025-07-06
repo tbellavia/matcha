@@ -41,7 +41,7 @@ function FeedProfile({profile, notification, isConnected, color="light"}){
 
     const loveStatus = () => {
         if (profile.love[0] != 0 || profile.love[1] != 0) {
-            return <div className={styles.loveStatus}><LoveState love={loveState} className={styles.loveStatus} /></div>
+            return <div className={styles.loveStatus}><LoveState love={loveState} target={0} /></div>
         }
     }
 
