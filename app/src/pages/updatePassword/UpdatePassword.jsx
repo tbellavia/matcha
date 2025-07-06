@@ -16,12 +16,9 @@ import { validatePassword } from "../../common/validation";
 
 function UpdatePassword() {
     const passwordRef = useRef();
-    const validationRef = useRef();
-    
     const {id} = useParams();
     const [password, setPassword] = useState("");
     const errManager = useErrorManager();
-    const ctx = useContext(AppContext);
     const navigate = useNavigate();
 
     const onPasswordHandler = (value) => {
@@ -58,7 +55,6 @@ function UpdatePassword() {
                     alert("Impossible de mettre a jour ce mot de passe");
                 }
             } catch (e) {
-                // errManager.addNetworkError(e.response.data.message); // TODO
             }
         }
     }
