@@ -40,30 +40,31 @@
     }
 
 .connecttrue{
-        position: absolute;
-        z-index: 1;
-        width: 20px;
-        height: 20px;
-        font-size: small;
-        background-color: green;
-        color:#fff; 
-        top: 10px;
-        left: 10px;
-        text-align:center; 
-        border-radius:50%;
-        }
+    position: absolute;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    font-size: small;
+    background-color: green;
+    color:#fff;
+    top: 10px;
+    left: 10px;
+    text-align:center; 
+    border-radius:50%;
+}
 
 .connectfalse{
     position: absolute;
     z-index: 1;
     width: 20px;
     height: 20px;
-    font-size: small;
-    color:gray; 
+    font-size: normal;
+    color:grey;
     top: 10px;
     left: 10px;
-    text-align:center; 
-    }
+    text-align:center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+}
 
 .loveStatus {
     position: absolute;

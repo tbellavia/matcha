@@ -4,7 +4,6 @@
     flex-direction: column;
     padding-top: 15px;
     width: 100%;
-    justify-content: space-between;
     gap: 5px;
 }
 
@@ -15,6 +14,10 @@
 
 .profile-left-infos > h2 {
     line-height: 1.7rem;
+}
+
+.profile-right-infos {
+    margin-left: auto;
 }
 
 .profile-right-infos > h3 {
@@ -173,27 +176,23 @@
 }
 
 .connecttrue{
-        // position: absolute;
-        z-index: 1;
-        width: 20px;
-        height: 20px;
-        font-size: small;
-        background-color: green;
-        color:#fff; 
-        top: 10px;
-        left: 10px;
-        text-align:center; 
-        border-radius:50%;
-        }
-
-.connectfalse{
-    // position: absolute;
     z-index: 1;
     width: 20px;
     height: 20px;
     font-size: small;
-    color:gray; 
-    top: 10px;
-    left: 10px;
-    text-align:center; 
-    }
+    background-color: green;
+    color:#fff;
+    text-align:center;
+    border-radius:50%;
+    margin-left: 10px;
+}
+
+.connectfalse{
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    font-size: normal;
+    color:gray;
+    text-align:center;
+    margin-left: 10px;
+}

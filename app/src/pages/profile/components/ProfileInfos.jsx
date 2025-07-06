@@ -34,8 +34,8 @@ const ProfileInfos = ({profileInfos, isConnected}) => {
                         <h2 className={styles['name-label']}>{first_name}</h2>
                         <h2 className={styles['name-label']}>{last_name}</h2>
                         <div className={styles[`${ratingColor?.[Math.floor(rating * 5)] || 'rating40-60'}__${theme || 'light'}`]}></div>
-                        {connected()}
                     </div>
+                    {connected()}
 
                     <div className={styles['profile-right-infos']}>
                         <h3>{Math.floor(age)} ans</h3>

@@ -83,7 +83,7 @@ function GenericProfile() {
             <ProfileHeader menuOnly={isMe} />
             {!isBlocked &&
                 <main className={styles['profile-container']}>
-                    <div className={styles.loveStatus} >{ !isMe && <LoveState love={loveState} target={id} />}</div>
+                    { !isMe &&  <div className={styles.loveStatus} ><LoveState love={loveState} target={id} /></div> }
                     <ProfileInfos profileInfos={infos} isConnected={allConnexion[id]} />
                     <div className={styles['button-container']}>
                         {isMe && <ButtonGroupMe />}
