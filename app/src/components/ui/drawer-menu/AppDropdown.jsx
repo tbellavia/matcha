@@ -1,4 +1,4 @@
-import { AccountCircle, Chat, Favorite, History, Logout, RemoveRedEye, Settings, Group, Tune } from "@mui/icons-material";
+import { AccountCircle, Chat, Favorite, History, Logout, RemoveRedEye, Settings, Group } from "@mui/icons-material";
 import Dropdown from "./Dropdown";
 import { Box, keyframes } from "@mui/material";
 import { useContext, useState, useEffect, useMemo } from "react";
@@ -53,7 +53,7 @@ export default function AppDroddown({ ipMessage = -1 }) {
 
     useEffect(() => {
         getIdProfile()
-    }, [])
+    })
 
     const delNotif = async () => {
         const config = {
@@ -62,7 +62,7 @@ export default function AppDroddown({ ipMessage = -1 }) {
             },
         };
         try {
-            const res = await axios.put(`http://localhost:3000/api/user/notifs/del/messages/${ipMessage}`, {}, config);
+            await axios.put(`http://localhost:3000/api/user/notifs/del/messages/${ipMessage}`, {}, config);
         } catch (e) {}
     }
 
@@ -89,7 +89,7 @@ export default function AppDroddown({ ipMessage = -1 }) {
         function messagesEnter({ from }) {
             const audio = new Audio(soundFile);
             audio.play();
-            if (from != ipMessage) {
+            if (from !== ipMessage) {
                 ctx.setNotifs({ "likes": { ...ctx.notifs.likes }, "messages": { ...ctx.notifs.messages, from: (ctx.notifs.messages[from] ? ctx.notifs['messages'][from] + 1 : 1) }, "views": { ...ctx.notifs.views } })
                 setSizeMessages(prev => prev + 1)
             }

@@ -96,7 +96,7 @@ function Signup() {
             errManager.focusOnError();
         } else {
             try {
-                const response = await axios.post('http://localhost:3000/api/user/signup', {
+                await axios.post('http://localhost:3000/api/user/signup', {
                     usermail: email,
                     passWord: password
                 })

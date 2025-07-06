@@ -11,7 +11,7 @@ function Photo({ data, size = 'medium', onClick=()=>{}, color="light"}){
     const classes = `${styles.photo} ${taille} ${styles[`${color}__color`]}`;
 
     return (
-        <img className={classes} src = {data} onClick={onClick}/>
+        <img alt="" className={classes} src = {data} onClick={onClick}/>
     );
 }
 

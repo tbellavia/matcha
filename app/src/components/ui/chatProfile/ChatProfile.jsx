@@ -58,7 +58,7 @@ function ChatProfile({ chatProfile }) {
             socket.connect();
         }
         function messagesEnter({ from, message }) {
-            if (from == chatProfile.iduser) {
+            if (from === chatProfile.iduser) {
                 setCurentNotif(prev => prev + 1)
                 setCurentMessage(message)
             }

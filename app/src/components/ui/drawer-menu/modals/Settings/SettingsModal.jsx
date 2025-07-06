@@ -4,7 +4,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useContext, useState } from "react";
 import AppContext from "../../../../../store/AppContext";
-import { Box, Button, Dialog, Divider } from '@mui/material';
+import { Box, Button, Divider } from '@mui/material';
 import EmailModal from '../Email/EmailModal';
 
 export default function SettingsModal({
