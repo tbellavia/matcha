@@ -62,6 +62,13 @@ function Signup() {
     // =================== Password ===================
     const onPasswordChangeHandler = (value) => {
         setPassword(value);
+
+        const validationIsValid = (value === validation);
+        if (!validationIsValid) {
+            errManager.addInputError(ERROR_VALIDATION_PASSWORD, validationRef);
+        } else {
+            errManager.removeError(ERROR_VALIDATION_PASSWORD);
+        }
     }
 
     const onPasswordBlurHandler = (value) => {
@@ -71,6 +78,13 @@ function Signup() {
             errManager.addInputError(ERROR_PASSWORD, passwordRef);
         } else {
             errManager.removeError(ERROR_PASSWORD);
+        }
+
+        const validationIsValid = (value === validation);
+        if (!validationIsValid) {
+            errManager.addInputError(ERROR_VALIDATION_PASSWORD, validationRef);
+        } else {
+            errManager.removeError(ERROR_VALIDATION_PASSWORD);
         }
     }
 

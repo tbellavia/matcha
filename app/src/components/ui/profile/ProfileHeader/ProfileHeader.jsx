@@ -7,6 +7,7 @@ import Header from '../../header/Header';
 import AppContext from '../../../../store/AppContext';
 import useFetch from '../../../../hooks/use-fetch';
 import { useNavigate } from "react-router-dom";
+import DisconnectButton from '../../header/DisconnectButton';
 
 /**
  * ProfileHeader
@@ -53,6 +54,7 @@ const ProfileHeader = ({ menuOnly = false, ipMessage = -1}) => {
                 }
                 <div className={styles['nav__right-container']}>
                     <AppDroddown ipMessage={ipMessage}/>
+                    <DisconnectButton/>
                 </div>
             </nav>
         </Header>
