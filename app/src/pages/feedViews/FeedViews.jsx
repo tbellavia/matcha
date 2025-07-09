@@ -75,7 +75,7 @@ function FeedViews() {
   return (
 
     <GenericPage className={styles.page}>
-      <ProfileHeader menuOnly={false} />
+      <ProfileHeader menuOnly={false} viewPage={true} />
       <div className={styles.allChatPage}>
         {AllProfile.map((elem, index) =>
           <FeedProfile key={index} profile={elem} notification={notifs[elem.iduser.toString()]} isConnected={allConnexion[elem.iduser]} />

@@ -86,7 +86,7 @@ function FeedLikes() {
   return (
 
     <GenericPage className={styles.page}>
-      <ProfileHeader menuOnly={false} />
+      <ProfileHeader menuOnly={false} likePage={true}/>
       <div className={styles.allChatPage}>
         {!AllUnlikeProfile.length && !AllProfile.length && <h1>Pas encore de like ? Ça viendra :)</h1>}
         {AllProfile.map((elem, index) =>

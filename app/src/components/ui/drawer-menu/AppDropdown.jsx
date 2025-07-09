@@ -10,7 +10,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 
-export default function AppDroddown({ ipMessage = -1 }) {
+export default function AppDroddown({ ipMessage = -1 , viewPage=false, likePage=false, messagePage=false}) {
     const ctx = useContext(AppContext);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
@@ -42,9 +42,15 @@ export default function AppDroddown({ ipMessage = -1 }) {
             const res = await axios.get('http://localhost:3000/api/user/profile/getId/me', config)
             const notifRes = await axios.get('http://localhost:3000/api/user/notifs', config)
             ctx.setNotifs(notifRes.data)
-            setSizeViews(Object.entries(notifRes.data.views).filter(([key, value]) => value === true).length)
-            setSizeLikes(Object.entries(notifRes.data.likes).filter(([key, value]) => value === true).length)
-            setSizeMessages(Object.entries(notifRes.data.messages).filter(([key, value]) => value > 0).length)
+            if (!viewPage){
+                setSizeViews(Object.entries(notifRes.data.views).filter(([key, value]) => value === true).length)
+            }
+            if(!likePage){
+                setSizeLikes(Object.entries(notifRes.data.likes).filter(([key, value]) => value === true).length)
+            }
+            if(!messagePage){
+                setSizeMessages(Object.entries(notifRes.data.messages).filter(([key, value]) => value > 0).length)
+            }
             setIdProfile(res.data.id)
         }
         catch (e) {

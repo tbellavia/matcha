@@ -17,7 +17,7 @@ import DisconnectButton from '../../header/DisconnectButton';
  * In some cases, we only want to show the menu, if it is the case, the `menuOnly'
  * property allow to specify if the user part must be shown or not.
  */
-const ProfileHeader = ({ menuOnly = false, ipMessage = -1}) => {
+const ProfileHeader = ({ menuOnly = false, ipMessage = -1, viewPage=false, likePage=false, messagePage=false}) => {
     const { token, theme } = useContext(AppContext);
     const myNameTopStyle = styles[`name-top__${theme}`];
     const myNameBottomStyle = styles[`name-bottom__${theme}`];
@@ -53,7 +53,7 @@ const ProfileHeader = ({ menuOnly = false, ipMessage = -1}) => {
                     </div>
                 }
                 <div className={styles['nav__right-container']}>
-                    <AppDroddown ipMessage={ipMessage}/>
+                    <AppDroddown ipMessage={ipMessage} viewPage={viewPage} likePage={likePage} messagePage={messagePage}/>
                     <DisconnectButton/>
                 </div>
             </nav>

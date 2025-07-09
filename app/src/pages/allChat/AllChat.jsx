@@ -38,7 +38,7 @@ function AllChat (){
   return (
 
       <GenericPage className={styles.page}>
-        <ProfileHeader menuOnly={false}/>
+        <ProfileHeader menuOnly={false} messagePage={true}/>
 
         <div className={styles.allChatPage}>
           {AllChatProfile.map((elem, index) =>
