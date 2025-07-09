@@ -26,9 +26,7 @@
 .chatPage{
     width: 100%;
     max-width: 500px;
-    position: absolute;
-    top: 360px;
-    bottom: 10px;
+    height: 55vh;
     display: flex;
     flex-direction: column;
     font-size: large;

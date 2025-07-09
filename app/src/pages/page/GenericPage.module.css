@@ -1,0 +1,22 @@
+html {
+	height: 100%;
+}
+
+.footer {
+	height: 30px;
+	margin-top: 20px;
+	padding: 10px;
+}
+
+.footer__light {
+	border-top: solid var(--color-light-8) !important;
+}
+
+.footer__blind {
+	border-top: solid var(--color-blind-8) !important;
+}
+
+.footer__dark {
+	border-top: solid var(--color-dark-13) !important;
+	color: var(--color-dark-6) !important;
+}
