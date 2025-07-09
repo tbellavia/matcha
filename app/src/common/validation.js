@@ -41,7 +41,7 @@ export function validateEmail(email) {
  * @returns {Boolean}       A boolean, true if password is valid, false otherwise
  */
 export function validatePassword(password) {
-    const passwordRe = /^(?=.*[!@#$&?])(?=.*\d)(?=.*[A-Z])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{6,20}$/;
+    const passwordRe = /^(?=.*[!@#$&?])(?=.*\d)(?=.*[A-Z])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{10,20}$/;
 
     return passwordRe.test(password);
 }
