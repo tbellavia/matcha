@@ -89,7 +89,7 @@ export default function AppDroddown({ ipMessage = -1 }) {
         function messagesEnter({ from }) {
             const audio = new Audio(soundFile);
             audio.play();
-            if (from !== ipMessage) {
+            if (from != ipMessage) {
                 ctx.setNotifs({ "likes": { ...ctx.notifs.likes }, "messages": { ...ctx.notifs.messages, from: (ctx.notifs.messages[from] ? ctx.notifs['messages'][from] + 1 : 1) }, "views": { ...ctx.notifs.views } })
                 setSizeMessages(prev => prev + 1)
             }
