@@ -78,6 +78,13 @@ function Signup() {
     // =================== Confirmation ===================
     const onValidationChangeHandler = (value) => {
         setValidation(value);
+
+        const validationIsValid = (value === password);
+        if (!validationIsValid) {
+            errManager.addInputError(ERROR_VALIDATION_PASSWORD, validationRef);
+        } else {
+            errManager.removeError(ERROR_VALIDATION_PASSWORD);
+        }
     }
 
     const onValidationBlurHandler = (value) => {
