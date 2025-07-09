@@ -35,6 +35,11 @@
     top: calc(var(--photo-medium-size) / -2);
 }
 
+.button-disconnect {
+    height: 64px;
+    align-self: center;
+}
+
 @media screen and (max-width: 600px) {
     .header>h1 {
         margin-left: var(--header-horizontal-margin);

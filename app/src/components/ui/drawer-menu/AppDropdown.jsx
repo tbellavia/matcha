@@ -150,21 +150,6 @@ export default function AppDroddown({ ipMessage = -1 }) {
                 onClick: onSettingsClickHandler,
                 icon: <Settings sx={{ color: iconColor }} />,
                 notifs: 0
-            },
-            "Déconnexion": {
-                onClick: async () => {
-                    const config = {
-                        headers: {
-                            Authorization: `Bearer ${ctx.token}`,
-                        },
-                    };
-                    try {
-                        await axios.put(`http://localhost:3000/api/user/connexion/me/off`, {}, config);
-                        ctx.logout()
-                    } catch (e) {}
-                },
-                icon: <Logout sx={{ color: iconColor }} />,
-                notifs: 0
             }
         }
     ], [sizeViews, sizeLikes, sizeMessages, idProfile]);
