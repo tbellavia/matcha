@@ -14,8 +14,6 @@ const chatIcon = <Chat sx={{ color: iconColor, height: '35px', width: '35px' }} 
 
 function LoveState({ love, target }) {
     const navigate = useNavigate();
-    console.log(target)
-
 	function onClickChat() {
 		navigate("/chat/" + target);
 	}

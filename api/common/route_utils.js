@@ -345,10 +345,8 @@ async function loveStates(user1, user2){
         if (res.rows[0].user1 == user1){
             return [love1,love2]
         }
-        console.log("love = " + love1 + love2)
         return [love2,love1]
     } catch (err) {
-        console.log(err.message)
         return [0,0]
     }    
 }
