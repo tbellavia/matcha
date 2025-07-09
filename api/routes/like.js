@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db/db");
+const { ERROR_BAD_TOKEN } = require("../common/messages");
 
 // Middleware
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");

@@ -6,6 +6,7 @@ const pool = require("../db/db");
 const { checkTokenMiddleware } = require("../middleware/check-token-middleware");
 const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-created-middleware");
 const { getProfileId } = require("../common/route_utils");
+const { ERROR_BAD_TOKEN } = require("../common/messages");
 
 router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     idProfile = await getProfileId(res.locals.id_user)
