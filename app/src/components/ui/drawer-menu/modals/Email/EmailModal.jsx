@@ -26,7 +26,7 @@ const EmailModal = ({
         try {
             const response = await axios.post("http://localhost:3000/api/user/defNewMail", { newMail: email }, config);
             if (response.data.isMailSent === true) {
-                alert("Un mail vous a etes envoyer a cette nouvelle adresse");
+                alert("Un mail vous a été envoyé à cette nouvelle adresse");
                 handleClose();
             }
             else {

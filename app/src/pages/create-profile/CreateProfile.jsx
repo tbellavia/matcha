@@ -229,17 +229,17 @@ function CreateProfile() {
 
 
     const onClickHandler = async () => {
-        console.table({
-            photos,
-            firstname,
-            lastname,
-            birthDate,
-            location,
-            genre,
-            preferences,
-            tags,
-            biography
-        });
+        // console.table({
+        //     photos,
+        //     firstname,
+        //     lastname,
+        //     birthDate,
+        //     location,
+        //     genre,
+        //     preferences,
+        //     tags,
+        //     biography
+        // }); // TODO remove
 
         const invalidField = fields.find(field => !field.valid);
         if (invalidField) {
