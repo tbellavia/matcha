@@ -9,6 +9,7 @@ import ChatMessage from "../../components/ui/chatMessage/ChatMessage";
 import styles from "./Chat.module.css"
 import ProfileHeader from "../../components/ui/profile/ProfileHeader/ProfileHeader";
 import HeaderChat from "../../components/ui/profile/HeaderChat/HeaderChat";
+import { useNavigate } from "react-router-dom";
 
 function Chat (){
   const [message, setMessage] = useState("")
@@ -17,6 +18,7 @@ function Chat (){
   const [userId, setUserId] = useState(false)
   const [to] = useState(useParams().id)
   const ctx = useContext(AppContext)
+  const navigate = useNavigate()
   
 
   const requetPost = async() =>{
@@ -27,7 +29,9 @@ function Chat (){
     };
     try {
       await axios.post(`http://localhost:3000/api/user/chat/message/me/${to}`,{message:message},config);
-    } catch (e) {}
+    } catch (e) {
+      navigate(`/chat`)
+    }
     
   }
 
@@ -58,7 +62,9 @@ function Chat (){
       }))
       setChatId(res.data.chatId)
       setUserId(res.data.userId)
-    } catch (e) {}
+    } catch (e) {
+      navigate(`/chat`)
+    }
   }
 
   const delNotif = async() =>{

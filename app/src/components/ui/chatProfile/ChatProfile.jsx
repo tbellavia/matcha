@@ -87,8 +87,6 @@ function ChatProfile({ chatProfile }) {
                     {curentNotif > 0 && <div className={`${styles[`rondtrue__${ctx.theme}`]}`}>{curentNotif}</div>}
                 </div>
             </div>
-            <button className={`${styles[`buttonDel__${ctx.theme}`]} ${styles.buttonDel}`} onClick={onClickHandlerDelChat}>X</button>
-
         </div>
     )
 }
