@@ -149,6 +149,7 @@ function CreateProfile() {
 
     /* Firstname */
     const onFirstnameChange = (value) => {
+        value = value.slice(0,20)
         dispatchFirstname({ type: "UPDATE", value });
         dispatchError({ type: "CLEAR" });
     }
@@ -159,6 +160,7 @@ function CreateProfile() {
 
     /* Lastname */
     const onLastnameChange = (value) => {
+        value = value.slice(0,20)
         dispatchLastname({ type: "UPDATE", value });
         dispatchError({ type: "CLEAR" });
     }
