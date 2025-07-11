@@ -79,7 +79,9 @@ function ChatProfile({ chatProfile }) {
             <div className={styles.divInfo} onClick={onClickHandlerChat}>
                 <div className={styles.divNameDate}>
                     <span className={styles.spanName}>{chatProfile.name}</span>
-                    <span className={styles.spanDate}>{chatProfile.date}</span>
+                    {chatProfile.date && <span className={styles.spanDate}>
+                        {new Date(chatProfile.date).toLocaleString('fr-FR')}
+                    </span>}
                 </div>
                 <div className={`${styles[`divMessage__${ctx.theme}`]} ${styles.divMessage}`}>
                     {curentMessage != null && <span className={styles.spanMessage}>{curentMessage}</span>}
