@@ -16,6 +16,7 @@ export default function SettingsModal({
     const { theme, setTheme } = useContext(AppContext);
 
     const handleChange = (event, newTheme) => {
+        if (newTheme)
         setTheme(newTheme)
     };
 
