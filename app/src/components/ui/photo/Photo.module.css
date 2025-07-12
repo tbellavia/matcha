@@ -38,7 +38,7 @@
 
 @media screen and (max-width: 500px) {
     .large__photo {
-        width: 95vw;
-        height: 95vw;
+        max-width: 95vw;
+        max-height: 95vh;
     }       
 }

@@ -48,8 +48,14 @@
 
 @media screen and (max-width: 600px) {
     .profile-main-infos {
-        flex-direction: column-reverse;
+        flex-direction: column;
     }
+
+    .profile-main-infos-bottom {
+    display: flex;
+    justify-content: center;
+
+}
 }
 
 .rating0-20__light{
