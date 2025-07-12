@@ -7,11 +7,13 @@ import {useTheme} from '../../../hooks/use-theme';
 
 const ratingColor = ['rating0-20', 'rating20-40','rating40-60','rating60-80','rating80-100']
 
+const chooseGenre = ['', 'Homme', 'Femme', '', 'Non-binaire']
+
 const ProfileInfos = ({profileInfos, isConnected}) => {
     const theme = useTheme();
     const navLabelColor = styles[`nav-color__${theme}`];
     const {
-        tags = [], rating,biography, photo1, distance, photo3, photo2, photo4, photo5, age, last_name, first_name
+        tags = [], rating,biography, photo1, distance, photo3, photo2, photo4, photo5, age, last_name, first_name, genre
     } = profileInfos;
 
 
@@ -45,6 +47,7 @@ const ProfileInfos = ({profileInfos, isConnected}) => {
                 <div className={styles['profile-main-infos-bottom']}>
                     <Carousel tabPhotos={[photo1, photo2, photo3, photo4, photo5]}/>
                 </div>
+                <h2 className='name-label'>{chooseGenre[genre]}</h2>
             </div>
 
 
