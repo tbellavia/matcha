@@ -61,7 +61,6 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                     return res.status(300).json({ message: err3.message })
                 }
             emitProfileLike(req.params.target, idProfile)
-            console.log("profile liker")
             return res.json({ "message": "like ajouté" })
             })
         }
@@ -97,7 +96,6 @@ router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, 
                     if (creat) {
 
                         emitProfileMatch(req.params.target, idProfile)
-                        console.log("nouvelle conversation ajoute")
                         return res.json({ "message": "match nouvelle conversation ajouté" })
                     }
                 }

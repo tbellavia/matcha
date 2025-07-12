@@ -41,7 +41,6 @@ router.post('/signup', async (req, res) => {
     }
     const sql = "SELECT email FROM userlogin WHERE email = $1"
     const hashedPassword = crypto.createHash('sha256').update(req.body.passWord).digest('hex');
-    console.log(hashedPassword)
     pool.query(sql, [lowerMail], (err, result) => {
 
         if (result.rowCount > 0) {
@@ -104,15 +103,11 @@ router.post('/login', async (req, res) => {
 
     const sql = "SELECT id, id_user_profile FROM userlogin WHERE email = $1 AND passw = $2 AND active = TRUE"
     const hashedPassword = crypto.createHash('sha256').update(req.body.passWord).digest('hex');
-    console.log(hashedPassword)
 
     pool.query(sql, [lowerMail, hashedPassword], (err, result) => {
-        console.log(process.env.POSTGRES_HOST)
-        console.log(err);
         if (err || result.rowCount == 0) {
             return res.status(300).json({ message: ERROR_INVALID_LOGIN })
         }
-        console.log(`ID user profile : ${result.rows[0].id}`);
         const token = jwt.sign({
             profile_created: !(result.rows[0].id_user_profile === null),
             id_user: result.rows[0].id
@@ -175,7 +170,6 @@ router.post('/newPassword', async (req, res) => {
 })
 
 router.post('/updatetokenvalidprofile', checkTokenMiddleware, async (req, res) => {
-    console.log(`token update`);
     const token = jwt.sign({
         profile_created: true,
         id_user: res.locals.id_user
@@ -231,7 +225,6 @@ router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async 
 })
 
 router.get("/updateMail/:stringValidation", async (req, res) => {
-    console.log("here")
     const sql = "UPDATE userlogin SET email=newemail, newemail=NULL, hashForNewMail=NULL WHERE hashForNewMail=$1";
     
     const arg = [req.params.stringValidation]
