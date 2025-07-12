@@ -116,7 +116,7 @@ function Feed() {
       <ProfileHeader menuOnly={false} />
       <Button className={`${styles[`filterButton_${ctx.theme}`]} ${styles.filterButton}`} onClick={onModalOpen}>Filtres</Button>
       <FilterModal open={open} onClose={onModalClose} myTags={myTags} />
-
+      {AllProfile.length > 0 && <h2>{AllProfile.length} résultat(s)</h2>}
       <div className={styles.allChatPage}>
         {AllProfile.map((elem, index) =>
           <FeedProfile key={index} profile={elem} isConnected={allConnexion[elem.iduser]} />
