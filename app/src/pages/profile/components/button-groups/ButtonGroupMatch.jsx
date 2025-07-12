@@ -14,10 +14,13 @@ function ButtonGroupMatch() {
         navigate("/feed");
     }
 
-    function onMatchReport() {
-        fetcher(`/api/user/blocked/me/report/${id}`, "POST");
-        fetcher(`/api/user/blocked/me/${id}`, "POST");
-        navigate("/feed");
+    async function onMatchReport() {
+        try {
+            await fetcher(`/api/user/blocked/me/report/${id}`, "POST");
+            await fetcher(`/api/user/blocked/me/${id}`, "POST");
+            navigate("/feed");
+        } catch (e) {
+        }
     }
 
     function onMatchBlock() {

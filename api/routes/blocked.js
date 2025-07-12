@@ -98,6 +98,7 @@ router.post("/me/report/:target", checkTokenMiddleware, checkProfileCreatedMiddl
             }
         })
     })
+    return res.json({ "message": "profile signalé" })
 })
 
 module.exports = router;

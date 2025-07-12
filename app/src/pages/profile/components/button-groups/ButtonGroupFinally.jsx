@@ -18,7 +18,7 @@ function ButtonGroupFinally({profileID}) {
 
     const onReportClicked = async () => {
         try {
-            fetcher(`/api/user/blocked/me/report/${profileID}`, "POST");
+            await fetcher(`/api/user/blocked/me/report/${profileID}`, "POST");
             await fetcher(`/api/user/blocked/me/${profileID}`, "POST");
             navigate("/feed");
         } catch (e) {
