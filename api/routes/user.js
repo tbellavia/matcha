@@ -246,7 +246,6 @@ router.get("/updateMail/:stringValidation", async (req, res) => {
 
 router.post('/defNewMail',  checkTokenMiddleware, async (req, res) => {
     idUser =res.locals.id_user
-    console.log("here")
 
     if (!req.body.newMail) {
         return res.status(300).json({ message: ERROR_INVALID_LOGIN })
@@ -254,7 +253,7 @@ router.post('/defNewMail',  checkTokenMiddleware, async (req, res) => {
 
     const lowerMail = req.body.newMail.toLowerCase();
     if (!validateEmail(lowerMail)) {
-        return res.status(300).json({ message: ERROR_INVALID_LOGIN })
+        return res.status(300).json({ message: ERROR_MAIL })
     }
 
     randString = makeRandString(125)

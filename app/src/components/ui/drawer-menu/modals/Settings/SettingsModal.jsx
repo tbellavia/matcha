@@ -17,7 +17,7 @@ export default function SettingsModal({
 
     const handleChange = (event, newTheme) => {
         if (newTheme)
-        setTheme(newTheme)
+            setTheme(newTheme)
     };
 
     const handleResetEmailClicked = () => {
