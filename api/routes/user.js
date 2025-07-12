@@ -57,25 +57,23 @@ router.post('/signup', async (req, res) => {
                 return res.json({ text: err.message })
             }
 
-            const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"]; // TODO mettre mail personne inscrite
+            const recipient = lowerMail;
 
-            recipients.forEach(recipient => {
-                const mailOptions = {
-                    from: process.env.MAIL,
-                    to: recipient,
-                    subject: "Matcha Authentification",
-                    text: "Lien d'activation : http://localhost:3000/api/user/validation/" + randString,
-                    html: HTML_TEMPLATE("Validation de votre mail", "Lien d'activation : http://localhost:3000/api/user/validation/" + randString)
+            const mailOptions = {
+                from: process.env.MAIL,
+                to: recipient,
+                subject: "Matcha Authentification",
+                text: "Lien d'activation : http://localhost:3000/api/user/validation/" + randString,
+                html: HTML_TEMPLATE("Validation de votre mail", "Lien d'activation : http://localhost:3000/api/user/validation/" + randString)
+            }
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error)
+                    return console.error(error.message);
+                } else {
+                    console.log("e-mail envoyé" + info.response)
                 }
-    
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        console.log(error)
-                        return console.error(error.message);
-                    } else {
-                        console.log("e-mail envoyé" + info.response)
-                    }
-                })
             })
 
             return res.json({ text: "nouveau login cree" })
@@ -150,28 +148,26 @@ router.post('/newPassword', async (req, res) => {
             return res.json({ isMailSent: false })
         }
 
-        const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"];
+        const recipient = lowerMail;
 
-        recipients.forEach(recipient => {
-            const mailOptions = {
-                from: process.env.MAIL,
-                to: recipient,
-                subject: "Matcha changement de mot de passe",
-                text: "Lien de changement de mot de passe : http://localhost:8000/updatePassword/" + randString,
-                html: HTML_TEMPLATE("Nouveau mot de passe", "Lien de changement de mot de passe : http://localhost:8000/updatePassword/" + randString)
-                
-                
+        const mailOptions = {
+            from: process.env.MAIL,
+            to: recipient,
+            subject: "Matcha changement de mot de passe",
+            text: "Lien de changement de mot de passe : http://localhost:8000/updatePassword/" + randString,
+            html: HTML_TEMPLATE("Nouveau mot de passe", "Lien de changement de mot de passe : http://localhost:8000/updatePassword/" + randString)
+            
+            
+        }
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error)
+                return res.json({ isMailSent: false })
+            } else {
+                console.log("e-mail envoyé" + info.response)
+                return res.json({ isMailSent: true })
             }
-
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.log(error)
-                    return res.json({ isMailSent: false })
-                } else {
-                    console.log("e-mail envoyé" + info.response)
-                    return res.json({ isMailSent: true })
-                }
-            })
         })
 
         return res.json({ isMailSent: true })
@@ -253,38 +249,40 @@ router.post('/defNewMail',  checkTokenMiddleware, async (req, res) => {
     console.log("here")
 
     if (!req.body.newMail) {
-
         return res.status(300).json({ message: ERROR_INVALID_LOGIN })
     }
-    
+
+    const lowerMail = req.body.newMail.toLowerCase();
+    if (!validateEmail(lowerMail)) {
+        return res.status(300).json({ message: ERROR_INVALID_LOGIN })
+    }
+
     randString = makeRandString(125)
     const sql = "UPDATE userlogin SET newemail=$2, hashForNewMail=$3 WHERE id_user_profile = $1"
-    const log = [idUser, req.body.newMail, randString]
+    const log = [idUser, lowerMail, randString]
     pool.query(sql, log, (err, result) => {
         if (result.rowCount == 0) {
             return res.json({ isMailSent: false })
         }
 
-        const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"];
+        const recipient = lowerMail; // TODO check it
 
-        recipients.forEach(recipient => {
-            const mailOptions = {
-                from: process.env.MAIL,
-                to: recipient,
-                subject: "Matcha changement de mail",
-                text: "Lien de changement de mail : http://localhost:3000/api/user/updateMail/" + randString,
-                html: HTML_TEMPLATE("Nouveau mail", "Lien de changement de mail : http://localhost:3000/api/user/updateMail/" + randString)
+        const mailOptions = {
+            from: process.env.MAIL,
+            to: recipient,
+            subject: "Matcha changement de mail",
+            text: "Lien de changement de mail : http://localhost:3000/api/user/updateMail/" + randString,
+            html: HTML_TEMPLATE("Nouveau mail", "Lien de changement de mail : http://localhost:3000/api/user/updateMail/" + randString)
+        }
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error)
+                return res.json({ isMailSent: false })
+            } else {
+                console.log("e-mail envoyé" + info.response)
+                return res.json({ isMailSent: true })
             }
-
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.log(error)
-                    return res.json({ isMailSent: false })
-                } else {
-                    console.log("e-mail envoyé" + info.response)
-                    return res.json({ isMailSent: true })
-                }
-            })
         })
 
         return res.json({ isMailSent: true })
