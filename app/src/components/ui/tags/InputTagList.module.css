@@ -29,3 +29,12 @@
 .labelDiv {
     font-size: var(--label-font-size);
 }
+
+.labelDiv__light,
+.labelDiv__blind {
+    color: black;
+}
+
+.labelDiv__dark {
+    color: white;
+}
