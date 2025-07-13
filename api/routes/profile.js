@@ -27,7 +27,6 @@ router.get("/tags", checkTokenMiddleware, (req, res) => {
 })
 
 router.post("/tag", checkTokenMiddleware, (req, res) => {
-    console.log(req.body.newTag);
 
     const sql = "INSERT INTO tag (tag) VALUES ($1) ";
     const arg = [

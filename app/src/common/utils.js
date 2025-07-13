@@ -122,6 +122,5 @@ export function hasCreatedProfile(token) {
 export function isValideToken(token) {
     const currentTime = Math.floor(Date.now() / 1000);
     const decoded = jwt_decode(token);
-    console.log(decoded.exp)
     return decoded.exp > currentTime
 }

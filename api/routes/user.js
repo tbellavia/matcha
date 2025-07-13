@@ -41,7 +41,6 @@ router.post('/signup', async (req, res) => {
     }
     const sql = "SELECT email FROM userlogin WHERE email = $1"
     const hashedPassword = crypto.createHash('sha256').update(req.body.passWord).digest('hex');
-    console.log(hashedPassword)
     pool.query(sql, [lowerMail], (err, result) => {
 
         if (result.rowCount > 0) {
@@ -57,25 +56,23 @@ router.post('/signup', async (req, res) => {
                 return res.json({ text: err.message })
             }
 
-            const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"]; // TODO mettre mail personne inscrite
+            const recipient = lowerMail;
 
-            recipients.forEach(recipient => {
-                const mailOptions = {
-                    from: process.env.MAIL,
-                    to: recipient,
-                    subject: "Matcha Authentification",
-                    text: "Lien d'activation : http://localhost:3000/api/user/validation/" + randString,
-                    html: HTML_TEMPLATE("Validation de votre mail", "Lien d'activation : http://localhost:3000/api/user/validation/" + randString)
+            const mailOptions = {
+                from: process.env.MAIL,
+                to: recipient,
+                subject: "Matcha Authentification",
+                text: "Lien d'activation : http://localhost:3000/api/user/validation/" + randString,
+                html: HTML_TEMPLATE("Validation de votre mail", "Lien d'activation : http://localhost:3000/api/user/validation/" + randString)
+            }
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error)
+                    return console.error(error.message);
+                } else {
+                    console.log("e-mail envoyé" + info.response)
                 }
-    
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        console.log(error)
-                        return console.error(error.message);
-                    } else {
-                        console.log("e-mail envoyé" + info.response)
-                    }
-                })
             })
 
             return res.json({ text: "nouveau login cree" })
@@ -106,15 +103,11 @@ router.post('/login', async (req, res) => {
 
     const sql = "SELECT id, id_user_profile FROM userlogin WHERE email = $1 AND passw = $2 AND active = TRUE"
     const hashedPassword = crypto.createHash('sha256').update(req.body.passWord).digest('hex');
-    console.log(hashedPassword)
 
     pool.query(sql, [lowerMail, hashedPassword], (err, result) => {
-        console.log(process.env.POSTGRES_HOST)
-        console.log(err);
         if (err || result.rowCount == 0) {
             return res.status(300).json({ message: ERROR_INVALID_LOGIN })
         }
-        console.log(`ID user profile : ${result.rows[0].id}`);
         const token = jwt.sign({
             profile_created: !(result.rows[0].id_user_profile === null),
             id_user: result.rows[0].id
@@ -150,28 +143,26 @@ router.post('/newPassword', async (req, res) => {
             return res.json({ isMailSent: false })
         }
 
-        const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"];
+        const recipient = lowerMail;
 
-        recipients.forEach(recipient => {
-            const mailOptions = {
-                from: process.env.MAIL,
-                to: recipient,
-                subject: "Matcha changement de mot de passe",
-                text: "Lien de changement de mot de passe : http://localhost:8000/updatePassword/" + randString,
-                html: HTML_TEMPLATE("Nouveau mot de passe", "Lien de changement de mot de passe : http://localhost:8000/updatePassword/" + randString)
-                
-                
+        const mailOptions = {
+            from: process.env.MAIL,
+            to: recipient,
+            subject: "Matcha changement de mot de passe",
+            text: "Lien de changement de mot de passe : http://localhost:8000/updatePassword/" + randString,
+            html: HTML_TEMPLATE("Nouveau mot de passe", "Lien de changement de mot de passe : http://localhost:8000/updatePassword/" + randString)
+            
+            
+        }
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error)
+                return res.json({ isMailSent: false })
+            } else {
+                console.log("e-mail envoyé" + info.response)
+                return res.json({ isMailSent: true })
             }
-
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.log(error)
-                    return res.json({ isMailSent: false })
-                } else {
-                    console.log("e-mail envoyé" + info.response)
-                    return res.json({ isMailSent: true })
-                }
-            })
         })
 
         return res.json({ isMailSent: true })
@@ -179,7 +170,6 @@ router.post('/newPassword', async (req, res) => {
 })
 
 router.post('/updatetokenvalidprofile', checkTokenMiddleware, async (req, res) => {
-    console.log(`token update`);
     const token = jwt.sign({
         profile_created: true,
         id_user: res.locals.id_user
@@ -235,7 +225,6 @@ router.delete('/me', checkTokenMiddleware, checkProfileCreatedMiddleware, async 
 })
 
 router.get("/updateMail/:stringValidation", async (req, res) => {
-    console.log("here")
     const sql = "UPDATE userlogin SET email=newemail, newemail=NULL, hashForNewMail=NULL WHERE hashForNewMail=$1";
     
     const arg = [req.params.stringValidation]
@@ -250,41 +239,42 @@ router.get("/updateMail/:stringValidation", async (req, res) => {
 
 router.post('/defNewMail',  checkTokenMiddleware, async (req, res) => {
     idUser =res.locals.id_user
-    console.log("here")
 
     if (!req.body.newMail) {
-
         return res.status(300).json({ message: ERROR_INVALID_LOGIN })
     }
-    
+
+    const lowerMail = req.body.newMail.toLowerCase();
+    if (!validateEmail(lowerMail)) {
+        return res.status(300).json({ message: ERROR_MAIL })
+    }
+
     randString = makeRandString(125)
     const sql = "UPDATE userlogin SET newemail=$2, hashForNewMail=$3 WHERE id_user_profile = $1"
-    const log = [idUser, req.body.newMail, randString]
+    const log = [idUser, lowerMail, randString]
     pool.query(sql, log, (err, result) => {
         if (result.rowCount == 0) {
             return res.json({ isMailSent: false })
         }
 
-        const recipients = ["mainhivvt@gmail.com", "eithan.assouline6@gmail.com"];
+        const recipient = lowerMail; // TODO check it
 
-        recipients.forEach(recipient => {
-            const mailOptions = {
-                from: process.env.MAIL,
-                to: recipient,
-                subject: "Matcha changement de mail",
-                text: "Lien de changement de mail : http://localhost:3000/api/user/updateMail/" + randString,
-                html: HTML_TEMPLATE("Nouveau mail", "Lien de changement de mail : http://localhost:3000/api/user/updateMail/" + randString)
+        const mailOptions = {
+            from: process.env.MAIL,
+            to: recipient,
+            subject: "Matcha changement de mail",
+            text: "Lien de changement de mail : http://localhost:3000/api/user/updateMail/" + randString,
+            html: HTML_TEMPLATE("Nouveau mail", "Lien de changement de mail : http://localhost:3000/api/user/updateMail/" + randString)
+        }
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error)
+                return res.json({ isMailSent: false })
+            } else {
+                console.log("e-mail envoyé" + info.response)
+                return res.json({ isMailSent: true })
             }
-
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.log(error)
-                    return res.json({ isMailSent: false })
-                } else {
-                    console.log("e-mail envoyé" + info.response)
-                    return res.json({ isMailSent: true })
-                }
-            })
         })
 
         return res.json({ isMailSent: true })

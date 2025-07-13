@@ -32,7 +32,9 @@ const EmailModal = ({
             else {
                 alert("Imposible de mettre a jour votre mail");
             }
-        } catch (e) { }
+        } catch (e) {
+            alert("Veuillez renseigner une adresse email valide.");
+        }
     }
 }) => {
     const [email, setEmail] = useState("");
@@ -54,7 +56,6 @@ const EmailModal = ({
                     Veuillez renseigner votre adresse email, un mail de reset vous sera envoyé.
                 </DialogContentText>
                 <TextField
-                    autoFocus
                     margin="dense"
                     id="email"
                     label="Email"

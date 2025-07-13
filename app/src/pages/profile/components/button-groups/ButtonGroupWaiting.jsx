@@ -11,12 +11,11 @@ function ButtonGroupWaiting({profileID, liked}) {
 	function onMatchDelete() {
         fetcher(`/api/user/unlike/me/${profileID}`, "POST");
         navigate("/feed");
-		console.log(profileID)
     }
 
 	const onReportClicked = async () => {
 		try {
-			fetcher(`/api/user/blocked/me/report/${profileID}`, "POST");
+			await fetcher(`/api/user/blocked/me/report/${profileID}`, "POST");
 			await fetcher(`/api/user/blocked/me/${profileID}`, "POST");
 			navigate("/feed");
 		} catch (e) {
