@@ -74,9 +74,9 @@ export default function SettingsModal({
                             fullWidth
                             size='small'
                         >
-                            <ToggleButton value="light">light</ToggleButton>
-                            <ToggleButton value="dark">dark</ToggleButton>
-                            <ToggleButton value="blind">colorblind</ToggleButton>
+                            <ToggleButton value="light">jour</ToggleButton>
+                            <ToggleButton value="dark">nuit</ToggleButton>
+                            <ToggleButton value="blind">daltonien</ToggleButton>
                         </ToggleButtonGroup>
                     </Box>
 
