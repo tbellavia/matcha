@@ -141,9 +141,10 @@ function Login() {
                         onBlur={onPassWordValidate}
                         ref={passwordRef}
                     />
-                    <a href="#" onClick={() => sendOtp()}>
-                        Forgot Password
-                    </a>
+                    <button type="button" onClick={() => sendOtp()} style={{color: 'blue', textDecoration: 'underline',
+                        background: 'none', cursor: 'pointer', textAlign: 'left'}}>
+                        Forgot Password ?
+                    </button>
                     {errorAlert}
                 </Form>
 
