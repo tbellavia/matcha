@@ -54,6 +54,7 @@ function UpdatePassword() {
                     alert("Impossible de mettre a jour ce mot de passe");
                 }
             } catch (e) {
+                errManager.addInputError(ERROR_PASSWORD, passwordRef);
             }
         }
     }
