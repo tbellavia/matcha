@@ -1,4 +1,4 @@
-import { AccountCircle, Chat, Favorite, History, Logout, RemoveRedEye, Settings, Group } from "@mui/icons-material";
+import { AccountCircle, Chat, Favorite, History, RemoveRedEye, Settings, Group } from "@mui/icons-material";
 import Dropdown from "./Dropdown";
 import { Box, keyframes } from "@mui/material";
 import { useContext, useState, useEffect, useMemo } from "react";
@@ -59,6 +59,7 @@ export default function AppDroddown({ ipMessage = -1 , viewPage=false, likePage=
 
     useEffect(() => {
         getIdProfile()
+        // eslint-disable-next-line
     },[])
 
     const delNotif = async () => {
@@ -95,6 +96,7 @@ export default function AppDroddown({ ipMessage = -1 , viewPage=false, likePage=
         function messagesEnter({ from }) {
             const audio = new Audio(soundFile);
             audio.play();
+            // eslint-disable-next-line
             if (from != ipMessage) {
                 ctx.setNotifs({ "likes": { ...ctx.notifs.likes }, "messages": { ...ctx.notifs.messages, from: (ctx.notifs.messages[from] ? ctx.notifs['messages'][from] + 1 : 1) }, "views": { ...ctx.notifs.views } })
                 setSizeMessages(prev => prev + 1)
@@ -116,6 +118,7 @@ export default function AppDroddown({ ipMessage = -1 , viewPage=false, likePage=
             socket.off(`messages${idProfile}`)
             socket.off(`match${idProfile}`)
         }
+        // eslint-disable-next-line
     }, [idProfile])
 
     const appDropddownItems = useMemo(() => [
@@ -158,6 +161,7 @@ export default function AppDroddown({ ipMessage = -1 , viewPage=false, likePage=
                 notifs: 0
             }
         }
+        // eslint-disable-next-line
     ], [sizeViews, sizeLikes, sizeMessages, idProfile]);
 
     const notifyBadgeSize = 17;

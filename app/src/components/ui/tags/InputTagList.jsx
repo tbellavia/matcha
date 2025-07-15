@@ -26,6 +26,7 @@ function InputTagList({
     useEffect(() => {
         setSuggestedTags(suggest.filter(tag => initial.indexOf(tag) === -1))
         setAlreadyUse(removeEmptyString(initial))
+        // eslint-disable-next-line
     }, [suggest]);
 
 
@@ -37,6 +38,7 @@ function InputTagList({
                 setAlreadyUse(cleanedInitial);
             }
         }
+        // eslint-disable-next-line
     }, [initial]);
 
 
@@ -55,6 +57,7 @@ function InputTagList({
                     },
                 };
                 try {
+                    // eslint-disable-next-line
                     const response = await axios.post("http://localhost:3000/api/user/profile/tag", { newTag: newTag, }, config);
                 } catch (e) {}
             }

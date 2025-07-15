@@ -8,7 +8,8 @@ function useUpdateEffect(effect, deps) {
     if (!isFirst) {
       return effect()
     }
-  }, deps)
+    // eslint-disable-next-line
+  }, [deps])
 }
 
 export default useUpdateEffect

@@ -118,6 +118,7 @@ function CreateProfile() {
         if (hasCreatedProfile(ctx.token)) {
             navigate("/feed");
         }
+        // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
@@ -135,6 +136,7 @@ function CreateProfile() {
             }
         }
         fetchData();
+        // eslint-disable-next-line
     }, []);
 
     /* Photos */

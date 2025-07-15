@@ -27,6 +27,7 @@ function Home() {
                 navigate("/feed")
             }
         }
+        // eslint-disable-next-line
       }, [])
 
     return (

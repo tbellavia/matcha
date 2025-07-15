@@ -36,6 +36,7 @@ function Signup() {
                 navigate("/feed")
             }
         }
+        // eslint-disable-next-line
       }, [])
 
     const onClickHandlerBack = () => {

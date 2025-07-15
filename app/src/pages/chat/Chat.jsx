@@ -82,6 +82,7 @@ function Chat (){
   useEffect(()=>{
     getOldChat()
     delNotif()
+    // eslint-disable-next-line
   },[])
 
   useEffect(() => {

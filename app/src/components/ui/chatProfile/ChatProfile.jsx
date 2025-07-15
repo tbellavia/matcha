@@ -31,11 +31,13 @@ function ChatProfile({ chatProfile }) {
 
     useEffect(() => {
         getIdProfile();
+        // eslint-disable-next-line
     },[]);
 
     useEffect(() => {
         const notifCount = ctx.notifs.messages[chatProfile.iduser] || 0;
         setCurentNotif(notifCount);
+        // eslint-disable-next-line
     }, [ctx.notifs.messages[chatProfile.iduser], chatProfile.iduser])
 
     const onClickHandlerChat = () => {
@@ -69,6 +71,7 @@ function ChatProfile({ chatProfile }) {
         return () => {
             socket.off(`messages${idProfile}`)
         }
+    // eslint-disable-next-line
     }, [idProfile])
 
     return (

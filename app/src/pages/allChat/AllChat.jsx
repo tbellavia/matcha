@@ -33,6 +33,7 @@ function AllChat (){
 
   useEffect(()=>{
     getAllChatProfile()
+    // eslint-disable-next-line
   },[])
 
   return (

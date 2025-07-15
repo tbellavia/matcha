@@ -20,6 +20,7 @@ function FeedProfile({profile, notification, isConnected, color="light"}){
 
     useEffect(() => {
         setLoveState(profile.love);
+        // eslint-disable-next-line
     },[])
 
     const notif = () => {

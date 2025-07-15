@@ -234,6 +234,7 @@ function EditProfile() {
             } catch (error) {}
         }
         fetchData();
+        // eslint-disable-next-line
     }, []);
 
     /* Photos */

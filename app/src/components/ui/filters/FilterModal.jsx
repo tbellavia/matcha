@@ -91,6 +91,7 @@ const FilterModal = ({
                 } catch (error) {}
             }
             fetchData();
+            // eslint-disable-next-line
         }, [myTags]);
 
     return (

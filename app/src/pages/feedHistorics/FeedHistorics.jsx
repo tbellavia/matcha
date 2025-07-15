@@ -51,6 +51,7 @@ function FeedHistorics() {
   useEffect(() => {
     getAllProfileForFeed()
     getUserConnexion()
+    // eslint-disable-next-line
   }, [isConnexionSet])
 
   useEffect(() => {
@@ -68,6 +69,7 @@ function FeedHistorics() {
     return () => {
       socket.off(`newConnexion`)
     }
+    // eslint-disable-next-line
   }, [isConnexionSet])
 
   return (

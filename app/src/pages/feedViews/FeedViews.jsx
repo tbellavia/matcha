@@ -54,6 +54,7 @@ function FeedViews() {
   useEffect(() => {
     getAllProfileForFeed()
     getUserConnexion()
+    // eslint-disable-next-line
   }, [isConnexionSet])
 
   useEffect(() => {
@@ -70,6 +71,7 @@ function FeedViews() {
     return () => {
       socket.off(`newConnexion`)
     }
+    // eslint-disable-next-line
   }, [isConnexionSet])
 
   return (

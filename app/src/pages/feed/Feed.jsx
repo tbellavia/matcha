@@ -75,6 +75,7 @@ function Feed() {
   useEffect(() => {
     getAllProfileForFeed()
     getUserConnexion()
+    // eslint-disable-next-line
   }, [filterParams, isConnexionSet])
 
   useEffect(() => {

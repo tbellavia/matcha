@@ -34,6 +34,7 @@ function Login() {
                 navigate("/feed")
             }
         }
+        // eslint-disable-next-line
       },[])
 
     const onMailHandler = (value) => {

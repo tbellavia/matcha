@@ -34,6 +34,7 @@ const ProfileHeader = ({ menuOnly = false, ipMessage = -1, viewPage=false, likeP
                 } catch (e) {}
             })()
         }
+        // eslint-disable-next-line
     }, [token, menuOnly]);
 
     const onClickProfile = () => {    

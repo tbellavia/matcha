@@ -70,12 +70,13 @@ function GenericProfile() {
         catch (err) {
             return null
         }
-
+    // eslint-disable-next-line
     }, [id])
 
     useEffect(() => {
         if (isBlocked)
             navigate("/feed");
+    // eslint-disable-next-line
     }, [profileType])
 
     return (

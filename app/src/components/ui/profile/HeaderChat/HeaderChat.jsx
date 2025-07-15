@@ -27,6 +27,7 @@ function HeaderChat({profileId = -1}) {
 
     useEffect(()=>{
         getAllChatProfile()
+        // eslint-disable-next-line
       },[profileId])
 
     const onClickHandlerProfile = () => {
