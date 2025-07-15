@@ -117,6 +117,9 @@ router.post('/login', async (req, res) => {
 })
 
 router.post("/updatePassword", async (req, res) => {
+    if (!validatePassword(req.body.passWord)) {
+        return res.status(300).json({ message: ERROR_PASSWORD })
+    }
     const sql = "UPDATE userlogin SET passw=$2, newpassword=NULL WHERE newpassword=$1";
     const hashedPassword = crypto.createHash('sha256').update(req.body.passWord).digest('hex');
 
