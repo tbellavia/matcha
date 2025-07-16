@@ -9,7 +9,7 @@ function useUpdateEffect(effect, deps) {
       return effect()
     }
     // eslint-disable-next-line
-  }, [deps])
+  }, deps)
 }
 
 export default useUpdateEffect
