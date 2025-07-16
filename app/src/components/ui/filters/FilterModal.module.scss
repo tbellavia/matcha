@@ -18,9 +18,9 @@ $bgcolors:(
 
 .modal {
     position: fixed;
+    display: flex;
+    justify-content: center;
     z-index: 2;
-    left: 0;
-    top: 0;
     width: 100vw;
     height: 100vh;
     overflow: auto;
@@ -32,7 +32,7 @@ $bgcolors:(
     @include flexCenter(column);
     
     background-color: #fefefe;
-    margin: 15% auto;
+    margin: auto;
     padding: 20px;
     border: 1px solid #888;
     border-radius: 20px;
