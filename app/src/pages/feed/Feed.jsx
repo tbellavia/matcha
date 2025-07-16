@@ -38,7 +38,7 @@ function Feed() {
       setMyTags(tags.data.tags.toLowerCase().split(','))
       const myFilterTags = tags.data.filtertags.length ? tags.data.filtertags?.toLowerCase().split(',') : [];
       setAllProfile(res.data.result
-        .filter(elem => filterCommonTags(myTags, elem.tags.split(','), 0)) // TODO : Keep this one ? or Only fiteredTags ?
+        .filter(elem => filterCommonTags(myTags, elem.tags.split(','), 0))
         .filter(elem => filterCommonTags(myFilterTags, elem.tags.split(','), myFilterTags.length))
         .map(elem => {
           return ({

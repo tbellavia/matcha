@@ -260,7 +260,7 @@ router.post('/defNewMail',  checkTokenMiddleware, async (req, res) => {
             return res.json({ isMailSent: false })
         }
 
-        const recipient = lowerMail; // TODO check it
+        const recipient = lowerMail;
 
         const mailOptions = {
             from: process.env.MAIL,
