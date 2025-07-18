@@ -12,6 +12,7 @@ function LocationInput({
 }) {
     const [city, setCity] = useState("");
     const [suggestedCities] = useState(Object.keys(cities));
+    const [place, setPlace] = useState(placeholder)
 
     const onSubmitHandler = (val) => {
         setCity(val);
@@ -19,7 +20,8 @@ function LocationInput({
     }
 
     const onBlurHandler = (val) => {
-        onBlur(cities[val]);
+        if (val)
+            onBlur(cities[val]);
     }
 
     const onLocationIconClicked = () => {
@@ -29,6 +31,8 @@ function LocationInput({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
             })
+        }, () => {
+            setPlace("Votre position n'a pas pu être récupérée");
         });
     }
 
@@ -47,7 +51,7 @@ function LocationInput({
                     value={city}
                     onChange={setCity}
                     onSubmit={onSubmitHandler}
-                    placeholder={placeholder}
+                    placeholder={place}
                     onBlur={onBlurHandler}
                 />
             </div>

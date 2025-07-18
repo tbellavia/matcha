@@ -139,6 +139,22 @@ function CreateProfile() {
         // eslint-disable-next-line
     }, []);
 
+    useEffect(() => {
+        async function getApproxPosition() {
+
+            try {
+                const res = await axios.get("http://ip-api.com/json");
+                if (res.status === 200 && res.data.lat && res.data.lon) {
+                    const value = {lat: res.data.lat, lng: res.data.lon}
+                    dispatchLocation({ type: "UPDATE_AND_VALIDATE", value });
+                    dispatchError({ type: "CLEAR" });
+                }
+            } catch (e) {
+            }
+        }
+        getApproxPosition()
+    }, []);
+
     /* Photos */
     const onPhotosChange = (value) => {
         dispatchPhotos({ type: "UPDATE", value });
@@ -183,12 +199,15 @@ function CreateProfile() {
 
     /* Location */
     const onLocationChange = (value) => {
-        dispatchLocation({ type: "UPDATE_AND_VALIDATE", value });
-        dispatchError({ type: "CLEAR" });
+        if (value) {
+            dispatchLocation({ type: "UPDATE_AND_VALIDATE", value });
+            dispatchError({ type: "CLEAR" });
+        }
     }
 
     const onLocationBlur = (value) => {
-        dispatchLocation({ type: "UPDATE_AND_VALIDATE", value });
+        if (value)
+            dispatchLocation({ type: "UPDATE_AND_VALIDATE", value });
     }
 
     /* Genre */

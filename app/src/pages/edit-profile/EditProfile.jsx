@@ -282,12 +282,15 @@ function EditProfile() {
 
     /* Location */
     const onLocationChange = (value) => {
-        dispatchLocation({ type: "UPDATE_AND_VALIDATE", value });
-        dispatchError({ type: "CLEAR" });
+        if (value) {
+            dispatchLocation({ type: "UPDATE_AND_VALIDATE", value });
+            dispatchError({ type: "CLEAR" });
+        }
     }
 
     const onLocationBlur = (value) => {
-        dispatchLocation({ type: "UPDATE_AND_VALIDATE", value });
+        if (value)
+            dispatchLocation({ type: "UPDATE_AND_VALIDATE", value });
     }
 
     /* Genre */
