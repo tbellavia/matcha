@@ -38,7 +38,7 @@ const ProfileHeader = ({ menuOnly = false, ipMessage = -1, viewPage=false, likeP
     }, [token, menuOnly]);
 
     const onClickProfile = () => {    
-        navigate(`/profile/${infos.id}`);
+        navigate(`/profile/${infos.id_user_profile}`);
     }
 
     return (
