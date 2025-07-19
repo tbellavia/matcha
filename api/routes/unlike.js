@@ -9,7 +9,14 @@ const {checkProfileCreatedMiddleware} = require("../middleware/check-profile-cre
 const { emitProfileUnlike, emitProfileLike } = require("../socket/message");
 const { getChatId, delNotifMessages, getProfileId, isUserBlock, loveStates } = require("../common/route_utils");
 
-router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, (req, res) => {
+router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
+    const idProfile1 = await getProfileId(res.locals.id_user)
+    const idTargetProfile = await getProfileId(req.params.target)
+
+    if (idProfile1 == null || idTargetProfile == null) {
+        return res.status(300).json({ message: ERROR_BAD_TOKEN })
+    }
+
     const sql = "SELECT userprofile.id FROM userprofile INNER JOIN userlogin ON userlogin.id_user_profile = userprofile.id WHERE userlogin.id = $1 "
     pool.query(sql, [res.locals.id_user], (err, result) => {
         if (err) {

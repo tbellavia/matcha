@@ -8,9 +8,13 @@ function ButtonGroupWaiting({profileID, liked}) {
 	const fetcher = useFetch()
 	const navigate = useNavigate()
 
-	function onMatchDelete() {
-        fetcher(`/api/user/unlike/me/${profileID}`, "POST");
-        navigate("/feed");
+	async function onMatchDelete() {
+		try {
+			await fetcher(`/api/user/unlike/me/${profileID}`, "POST");
+			navigate("/feed");
+		} catch (e) {
+			navigate("/feed");
+		}
     }
 
 	const onReportClicked = async () => {

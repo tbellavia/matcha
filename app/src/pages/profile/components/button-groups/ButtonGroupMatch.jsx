@@ -9,9 +9,13 @@ function ButtonGroupMatch() {
     const fetcher = useFetch();
     const navigate = useNavigate();
 
-    function onMatchDelete() {
-        fetcher(`/api/user/unlike/me/${id}`, "POST");
-        navigate("/feed");
+    async function onMatchDelete() {
+        try {
+            await fetcher(`/api/user/unlike/me/${id}`, "POST");
+            navigate("/feed");
+        } catch (e) {
+            navigate("/feed");
+        }
     }
 
     async function onMatchReport() {
@@ -20,12 +24,17 @@ function ButtonGroupMatch() {
             await fetcher(`/api/user/blocked/me/${id}`, "POST");
             navigate("/feed");
         } catch (e) {
+            navigate("/feed");
         }
     }
 
-    function onMatchBlock() {
-        fetcher(`/api/user/blocked/me/${id}`, "POST");
-        navigate("/feed");
+    async function onMatchBlock() {
+        try {
+            await fetcher(`/api/user/blocked/me/${id}`, "POST");
+            navigate("/feed");
+        } catch (e) {
+            navigate("/feed");
+        }
     }
 
     return (

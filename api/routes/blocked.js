@@ -23,7 +23,8 @@ const transporter = nodemailer.createTransport({
 router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     console.log("profile blocked")
     const idProfile = await getProfileId(res.locals.id_user)
-    if (idProfile == undefined) {
+    const idTargetProfile = await getProfileId(req.params.target)
+    if (idProfile == undefined || idTargetProfile == undefined) {
         return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
@@ -72,9 +73,8 @@ router.post("/me/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, 
 router.post("/me/report/:target", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     const idProfile = await getProfileId(res.locals.id_user)
     const infoUser1 = await getProfileInfos(idProfile)
-    console.log("reposrt infos :",infoUser1)
     const infoUser2 = await getProfileInfos(req.params.target)
-    if (idProfile == undefined) {
+    if (idProfile == undefined || infoUser1 == undefined || infoUser2 == undefined) {
         return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 

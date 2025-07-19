@@ -13,6 +13,7 @@ function ButtonGroupFinally({profileID}) {
             await fetcher(`/api/user/unlike/me/${profileID}`, "POST");
             navigate("/feed");
         } catch (e) {
+            navigate("/feed");
         }
     }
 
@@ -22,6 +23,7 @@ function ButtonGroupFinally({profileID}) {
             await fetcher(`/api/user/blocked/me/${profileID}`, "POST");
             navigate("/feed");
         } catch (e) {
+            navigate("/feed");
         }
     }
     
@@ -30,6 +32,7 @@ function ButtonGroupFinally({profileID}) {
             await fetcher(`/api/user/like/me/${profileID}`, "POST");
             navigate("/feed")
         } catch (e) {
+            navigate("/feed");
         }
     }
 

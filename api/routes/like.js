@@ -42,8 +42,9 @@ router.get("/", checkTokenMiddleware, checkProfileCreatedMiddleware, async (req,
 
 router.post('/me/:target', checkTokenMiddleware, checkProfileCreatedMiddleware, async (req, res) => {
     const idProfile = await getProfileId(res.locals.id_user)
+    const idTargetProfile = await getProfileId(req.params.target)
 
-    if (idProfile == null) {
+    if (idProfile == null || idTargetProfile == null) {
         return res.status(300).json({ message: ERROR_BAD_TOKEN })
     }
 
