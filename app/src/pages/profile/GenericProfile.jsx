@@ -63,6 +63,9 @@ function GenericProfile() {
                     setProfileType(result.type);
                     setLoveState(result.love);
                 }
+                else {
+                    navigate("/feed");
+                }
             }
 
             fetchProfile().then()
